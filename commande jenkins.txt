@@ -1,0 +1,1 @@
+clean package -U org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.host.url=http://sonar.modelsis.net:9000 -Dsonar.login=bab73211853362838ce7ba7211d462d1aefe6ec9
