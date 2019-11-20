@@ -3,6 +3,7 @@ package sn.modelsis.signart.converter;
 import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.LigneCommande;
 import sn.modelsis.signart.dto.LigneCommandeDto;
 import sn.modelsis.signart.facade.OeuvreFacade;
@@ -45,9 +46,11 @@ public class LigneCommandeConverter {
     public LigneCommande dtoToEntity(LigneCommandeDto dto) {
         LigneCommande entity = new LigneCommande();
         entity.setIdOeuvre(oeuvreFacade.find(dto.getOeuvre().getId()));
-        entity.setIdCommande(commandeFacade.findByIdClient(dto.getIdClient()));
+        entity.setIdCommande((Commande) commandeFacade.findByIdClient(dto.getIdClient()));
         entity.setPrix(dto.getPrix());
         entity.setQuantite(dto.getQuantite());
         return entity;
+        
+       
     }
 }

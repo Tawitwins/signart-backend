@@ -27,7 +27,7 @@ public class CommandeFacade extends AbstractFacade<Commande> {
         super(Commande.class);
     }
 
-    public Commande findByIdClient(Integer id) {
+    public List<Commande> findByIdClient(Integer id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Commande> cq = cb.createQuery(Commande.class);
@@ -39,7 +39,7 @@ public class CommandeFacade extends AbstractFacade<Commande> {
         List<Commande> list = q.getResultList();
 
         if (list != null && !list.isEmpty()) {
-            return list.get(0);
+            return list;
         }
 
         return null;
