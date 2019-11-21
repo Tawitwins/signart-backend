@@ -9,21 +9,9 @@ import java.util.Set;
  * @author SNLOM
  */
 public class PaiementDto {
-    /*
-    id: string;
-    source_type: string;
-    source_id: string;
-    amount: string;
-    display_amount: string;
-    payment_method_id: string;
-    response_code: string;
-    state: string;
-    avs_response: string;
-    created_at: string;
-    updated_at: string;
-    */
     private Integer id;
     private BigDecimal montant;
+    private Integer idCommande;
     private Integer idModePaiement;
     private Integer idEtatPaiement;
     private String codeModePaiement;
@@ -55,6 +43,12 @@ public class PaiementDto {
         return idModePaiement;
     }
 
+    public void setIdCommande(Integer idCommande) {
+        this.idCommande = idCommande;
+    }
+    public Integer getIdCommande() {
+        return idCommande;
+    }
     public void setIdModePaiement(Integer idModePaiement) {
         this.idModePaiement = idModePaiement;
     }
