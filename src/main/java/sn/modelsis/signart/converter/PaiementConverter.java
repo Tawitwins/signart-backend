@@ -83,14 +83,14 @@ public class PaiementConverter {
         entity.setIdEtatPaiement(etatPaiementFacade.findByCode(dto.getCodeEtatPaiement()).getId());
         entity.setIdModePaiement(dto.getIdModePaiement());
         entity.setDatePaiement(dto.getDatePaiement());
-        LignePaiement lignePaiement;
-        List<LigneCommande> ligneCommandeSet = lignecommandeFacade.findByIdCommande(dto.getIdCommande());
+        //LignePaiement lignePaiement;
+        //List<LigneCommande> ligneCommandeSet = lignecommandeFacade.findByIdCommande(dto.getIdCommande());
         //Set<LignePaiement> lignePaiementSet = lignePaiementConverter.dtoToEntity(dto.getLignePaiements());
         //ligneCommandeSet = lignecommandeConverter.entityToDto(commande).getLignesCommande();
         /*if(lignecommande != null) {
             lignePaiement.set
         }*/
-        if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
+        //if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
             //Set<LigneCommandeDto> ligneCommandeDtoSet = new HashSet<>();
             //LignePaiementDto lignePaiementDto;
             //for (LigneCommande ligneCommande : ligneCommandeSet) {
@@ -104,7 +104,7 @@ public class PaiementConverter {
                // taxes = taxes.add(ligneCommande.getIdOeuvre().getTaxes() != null ? ligneCommande.getIdOeuvre().getTaxes() : BigDecimal.ZERO);
             //}
            // dto.setLignesCommande(ligneCommandeDtoSet);
-        }
+        //}
 
         //entity.setLignePaiementSet(lignePaiementSet);
         return entity;
