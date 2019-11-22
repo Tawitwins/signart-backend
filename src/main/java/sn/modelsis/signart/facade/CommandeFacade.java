@@ -61,7 +61,6 @@ public class CommandeFacade extends AbstractFacade<Commande> {
         return null;
     }
 
-
     @Override
     protected EntityManager getEntityManager() {
         return em;

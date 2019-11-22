@@ -56,23 +56,6 @@ public class LigneCommandeFacade extends AbstractFacade<LigneCommande> {
 
     }
 
-    /**
-     * Retourne la liste des lignes de commande pour un numero de commande donné
-     * @param idCommande
-     * @return 
-     */
-   
-    public List<LigneCommande> findByIdCommande(Integer idCommande) {
-        final TypedQuery<LigneCommande> query = getEntityManager().createNamedQuery("Commande.findByIsCommande", LigneCommande.class);
-        query.setParameter("idCommande", idCommande);
-        List<LigneCommande> list = query.getResultList();
-        if (list != null && !list.isEmpty()) {
-            return list;
-        }
-        return null;
-    }
-
-
     @Override
     protected EntityManager getEntityManager() {
         return em;

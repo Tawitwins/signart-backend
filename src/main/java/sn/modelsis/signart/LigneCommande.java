@@ -31,7 +31,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "LigneCommande.findAll", query = "SELECT l FROM LigneCommande l")
     , @NamedQuery(name = "LigneCommande.findById", query = "SELECT l FROM LigneCommande l WHERE l.id = :id")
     , @NamedQuery(name = "LigneCommande.findByPrix", query = "SELECT l FROM LigneCommande l WHERE l.prix = :prix")
-    , @NamedQuery(name = "LigneCommande.findByIdCommande", query = "SELECT l FROM LigneCommande l WHERE l.idCommande = :idCommande")
     , @NamedQuery(name = "LigneCommande.findByQuantite", query = "SELECT l FROM LigneCommande l WHERE l.quantite = :quantite")})
 public class LigneCommande implements Serializable {
 

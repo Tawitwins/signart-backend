@@ -54,23 +54,6 @@ public class EtatPaiementFacade extends AbstractFacade<EtatPaiement> {
         return null;
     }
 
-    /**
-     *
-     * @param id
-     * @return
-     */
-    public EtatPaiement findById(Integer id) {
-        final TypedQuery<EtatPaiement> query = getEntityManager().createNamedQuery("EtatPaiement.findById",
-                EtatPaiement.class);
-        query.setParameter("id", id);
-        List<EtatPaiement> list = query.getResultList();
-        if (list != null && !list.isEmpty()) {
-            return list.get(0);
-        }
-        return null;
-    }
-
-
     @Override
     protected EntityManager getEntityManager() {
         return em;

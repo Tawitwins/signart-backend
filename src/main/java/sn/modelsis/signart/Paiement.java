@@ -50,10 +50,10 @@ public class Paiement implements Serializable {
     private Commande commande;
     @JoinColumn(name = "idEtatPaiement", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Integer idEtatPaiement;
+    private EtatPaiement idEtatPaiement;
     @JoinColumn(name = "idModePaiement", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Integer idModePaiement;
+    private ModePaiement idModePaiement;
 
     public Paiement() {
     }
@@ -100,19 +100,19 @@ public class Paiement implements Serializable {
         this.commande = commande;
     }
 
-    public Integer getIdEtatPaiement() {
+    public EtatPaiement getIdEtatPaiement() {
         return idEtatPaiement;
     }
 
-    public void setIdEtatPaiement(Integer idEtatPaiement) {
+    public void setIdEtatPaiement(EtatPaiement idEtatPaiement) {
         this.idEtatPaiement = idEtatPaiement;
     }
 
-    public Integer getIdModePaiement() {
+    public ModePaiement getIdModePaiement() {
         return idModePaiement;
     }
 
-    public void setIdModePaiement(Integer idModePaiement) {
+    public void setIdModePaiement(ModePaiement idModePaiement) {
         this.idModePaiement = idModePaiement;
     }
 
