@@ -10,8 +10,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Paiement.class)
 public abstract class Paiement_ {
 
-	public static volatile SingularAttribute<Paiement, EtatPaiement> idEtatPaiement;
-	public static volatile SingularAttribute<Paiement, ModePaiement> idModePaiement;
+	public static volatile SingularAttribute<Paiement, Integer> idEtatPaiement;
+	public static volatile SingularAttribute<Paiement, Integer> idModePaiement;
 	public static volatile SingularAttribute<Paiement, Date> datePaiement;
 	public static volatile SetAttribute<Paiement, LignePaiement> lignePaiementSet;
 	public static volatile SingularAttribute<Paiement, Integer> id;

@@ -54,6 +54,22 @@ public class ModePaiementFacade extends AbstractFacade<ModePaiement> {
         return null;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public ModePaiement findById(Integer id) {
+        final TypedQuery<ModePaiement> query = getEntityManager().createNamedQuery("ModePaiement.findById",
+                ModePaiement.class);
+        query.setParameter("id", id);
+        List<ModePaiement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
