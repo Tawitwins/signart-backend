@@ -78,6 +78,17 @@ public class ArtisteREST {
         }
         return listDto;
     }
+    
+//Récupération de de l'artiste by idUser
+@GET
+@Path("user/{idUser}")
+@Produces({MediaType.APPLICATION_JSON})
+public ArtisteDto findByUser(@PathParam("idUser") Integer idUser) throws SignArtException {
+    if (idUser == null || idUser == 0) {
+        throw new SignArtException("Utilisateur invalide!");
+    }
+    return entityToDto(artisteFacade.findByUser(idUser));
+}
 
     /*@GET
      @Path("artiste/{id}")
