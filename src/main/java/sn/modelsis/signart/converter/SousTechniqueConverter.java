@@ -4,10 +4,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import sn.modelsis.signart.SousTechnique;
-import sn.modelsis.signart.Technique;
 import sn.modelsis.signart.dto.SousTechniqueDto;
-import sn.modelsis.signart.dto.TechniqueDto;
-import sn.modelsis.signart.facade.MenuFacade;
 import sn.modelsis.signart.facade.TechniqueFacade;
 /**
  * @author SNNGOMN
@@ -22,6 +19,7 @@ public class SousTechniqueConverter {
         SousTechniqueDto dto = new SousTechniqueDto();
         dto.setId(entity.getId());
         dto.setLibelle(entity.getLibelle());
+        dto.setIcone(entity.getIcone());
         dto.setIdTechnique(entity.getIdTechnique()!=null ? entity.getIdTechnique().getId() : null);
         return dto;
     }
@@ -31,6 +29,7 @@ public class SousTechniqueConverter {
 
         entity.setId(dto.getId());
         entity.setLibelle(dto.getLibelle());
+        entity.setIcone(dto.getIcone());
         entity.setIdTechnique(techniqueFacade.find(dto.getIdTechnique()));
         return entity;
     }
