@@ -6,16 +6,31 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author SNNGOM
  */
+@Entity
+@Table(name = "Souscription", catalog = "signart", schema = "dbo")
+@NamedQueries({
+    @NamedQuery(name = "Souscription.findAll", query = "SELECT a FROM Souscription a")
+    , @NamedQuery(name = "Souscription.findById", query = "SELECT a FROM Souscription a WHERE a.id = :id")
+    , @NamedQuery(name = "Souscription.findByNom", query = "SELECT a FROM Souscription a WHERE a.nom = :nom")
+    , @NamedQuery(name = "Souscription.findByPrenom", query = "SELECT a FROM Souscription a WHERE a.prenom = :prenom")
+    , @NamedQuery(name = "Souscription.findByEmail", query = "SELECT a FROM Souscription a WHERE a.email = :email")
+    , @NamedQuery(name = "Souscription.findByTelephone", query = "SELECT a FROM Souscription a WHERE a.telephone = :telephone")
+    , @NamedQuery(name = "Souscription.findByAdresseGalerie", query = "SELECT a FROM Souscription a WHERE a.adresseGalerie = :adresseGalerie")
+    , @NamedQuery(name = "Souscription.findByVille", query = "SELECT a FROM Souscription a WHERE a.ville = :ville")})
 public class Souscription implements Serializable {
     /**
      *
