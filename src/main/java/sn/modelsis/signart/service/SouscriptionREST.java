@@ -17,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import sn.modelsis.signart.Souscription;
+import sn.modelsis.signart.converter.SouscriptionConverter;
 import sn.modelsis.signart.dto.SouscriptionDto;
 import sn.modelsis.signart.facade.SouscriptionFacade;
 
@@ -30,20 +31,22 @@ public class SouscriptionREST {
 
     @Inject
     SouscriptionFacade souscriptionFacade;
+    @Inject
+    SouscriptionConverter souscriptionConverter;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(Souscription entity) {
-        souscriptionFacade.create(entity);
-        return Response.status(Response.Status.CREATED).build();
+    public Response create(SouscriptionDto dto) {
+        souscriptionFacade.create(souscriptionConverter.dtoToEntity(dto));
+        return Response.status(Response.Status.CREATED).entity(dto).build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, Souscription entity) {
-        souscriptionFacade.edit(entity);
-        return Response.status(Response.Status.OK).build();
+    public Response edit(@PathParam("id") Integer id, SouscriptionDto dto) {
+        souscriptionFacade.edit(souscriptionConverter.dtoToEntity(dto));
+        return Response.status(Response.Status.OK).entity(dto).build();
     }
 
     @DELETE
@@ -57,8 +60,8 @@ public class SouscriptionREST {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public SouscriptionDto find(@PathParam("id") Integer id) {
-        Souscription Souscription = souscriptionFacade.find(id);
-        return entityToDto(Souscription);
+        Souscription souscription = souscriptionFacade.find(id);
+        return souscriptionConverter.entityToDto(souscription);
     }
 
     @GET
@@ -68,7 +71,7 @@ public class SouscriptionREST {
         List<Souscription> listEnt = souscriptionFacade.findAll();
         if (listEnt != null) {
             listEnt.stream().map((entity) -> {
-                return entityToDto(entity);
+                return souscriptionConverter.entityToDto(entity);
             }).forEachOrdered((dto) -> {
                 listDto.add(dto);
             });
@@ -90,26 +93,6 @@ public class SouscriptionREST {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(souscriptionFacade.count());
-    }
-
-    private SouscriptionDto entityToDto(Souscription entity) {
-        SouscriptionDto dto = new SouscriptionDto();
-        dto.setAdresseGalerie(entity.getAdresseGalerie());
-        dto.setId(entity.getId());
-        dto.setNom(entity.getNom());
-        dto.setCodePays(entity.getCodePays());
-        dto.setPrenom(entity.getPrenom());
-        dto.setTelephone(entity.getTelephone());
-        dto.setEmail(entity.getEmail());
-        dto.setSexe(entity.getSexe());
-        dto.setSiteWeb(entity.getSiteWeb());
-        dto.setVille(entity.getVille());
-        dto.setNomGalerie(entity.getNomGalerie());
-        dto.setSpecialite(entity.getSpecialite());
-        dto.setFormation(entity.getFormation());
-        dto.setExposition(entity.getExposition());
-      
-        return dto;
-    }
+    }   
 
 }
