@@ -9,15 +9,12 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.SetJoin;
-
-import sn.modelsis.signart.exception.SignArtException;
 
 import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.OeuvreSouscription_;
 
 import sn.modelsis.signart.Souscription;
-import sn.modelsis.signart.OeuvreSouscription_;
+import sn.modelsis.signart.Souscription_;
 
 /**
  *
