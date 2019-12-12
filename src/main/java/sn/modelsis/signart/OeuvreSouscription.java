@@ -36,7 +36,7 @@ public class OeuvreSouscription implements Serializable {
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "nom", length = 200)
+    @Column(name = "nom", length = 50)
     private String nom;
     @Lob
     @Column(name = "image")

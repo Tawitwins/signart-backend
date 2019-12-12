@@ -1,59 +1,29 @@
-package sn.modelsis.signart;
+package sn.modelsis.signart.dto;
 
 import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author SNNGOM
  */
-public class Souscription implements Serializable {
-    /**
-     *
-     */
+public class SouscriptionDto implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+
     private Integer id;
-    @Column(name = "nom", length = 50)
     private String nom;
-    @Column(name = "prenom", length = 50)
     private String prenom;
-    @Column(name = "email", length = 50)
     private String email;
-    @Column(name = "telephone", length = 20)
     private String telephone;
-    @Column(name = "sexe", length = 1)
     private Character sexe;
-    @Column(name = "codePays", length = 5)
     private String codePays;
-    @Column(name = "siteWeb", length = 50)
     private String siteWeb;
-    @Column(name = "specialite", length = 50)
     private String specialite;
-    @Column(name = "nomGalerie", length = 50)
     private String nomGalerie;
-    @Column(name = "adresseGalerie", length = 100)
     private String adresseGalerie;
-    @Column(name = "ville", length = 50)
     private String ville;
-    @Column(name = "formation", length = 255)
     private String formation;
-    @Column(name = "exposition", length = 255)
     private String exposition;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSouscription")
-    private Set<OeuvreSouscription> oeuvreSouscriptionSet;
 
     public Integer getId() {
         return id;
@@ -166,13 +136,4 @@ public class Souscription implements Serializable {
     public void setExposition(String exposition) {
         this.exposition = exposition;
     }
-    @XmlTransient
-    public Set<OeuvreSouscription> getOeuvreSouscriptionSet() {
-        return oeuvreSouscriptionSet;
-    }
-
-    public void setOeuvreSouscriptionSet(Set<OeuvreSouscription> oeuvreSouscriptionSet) {
-        this.oeuvreSouscriptionSet = oeuvreSouscriptionSet;
-    }
-    
 }

@@ -3,6 +3,9 @@ package sn.modelsis.signart.rest.application.config;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
+import sn.modelsis.signart.service.OeuvreSouscriptionFacadeREST;
+import sn.modelsis.signart.service.SouscriptionREST;
+
 /**
  *
  * @author SNLOM
@@ -65,5 +68,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.TypeCommandeFacadeREST.class);
         resources.add(sn.modelsis.signart.service.TypeCompteFacadeREST.class);
         resources.add(sn.modelsis.signart.service.UserFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.SouscriptionREST.class);
+        resources.add(sn.modelsis.signart.service.OeuvreSouscriptionFacadeREST.class);
     }
 }
