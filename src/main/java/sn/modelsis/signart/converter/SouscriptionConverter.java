@@ -1,6 +1,8 @@
 package sn.modelsis.signart.converter;
 
 import javax.ejb.Stateless;
+
+import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.Souscription;
 import sn.modelsis.signart.dto.SouscriptionDto;
 
@@ -34,6 +36,7 @@ public class SouscriptionConverter {
     
 
     public Souscription dtoToEntity(SouscriptionDto dto) {
+        OeuvreSouscription oeuvreSouscription = new OeuvreSouscription();
         Souscription entity = new Souscription();
         entity.setId(dto.getId());
         entity.setPrenom(dto.getPrenom());

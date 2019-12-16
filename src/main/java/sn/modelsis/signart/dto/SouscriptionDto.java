@@ -1,6 +1,7 @@
 package sn.modelsis.signart.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -24,6 +25,7 @@ public class SouscriptionDto implements Serializable {
     private String ville;
     private String formation;
     private String exposition;
+    private List<OeuvreSouscriptionDto> oeuvres;
 
     public Integer getId() {
         return id;
@@ -135,5 +137,13 @@ public class SouscriptionDto implements Serializable {
 
     public void setExposition(String exposition) {
         this.exposition = exposition;
+    }
+
+    public List<OeuvreSouscriptionDto> getOeuvres() {
+        return oeuvres;
+    }
+
+    public void setOeuvres(List<OeuvreSouscriptionDto> oeuvres) {
+        this.oeuvres = oeuvres;
     }
 }
