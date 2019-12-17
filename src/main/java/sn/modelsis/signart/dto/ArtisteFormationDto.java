@@ -5,6 +5,7 @@ package sn.modelsis.signart.dto;
  * @author SNLOM
  */
 public class ArtisteFormationDto {
+    private Integer id;
     private String sigle;
     private String libelle;
     private String lieu;
@@ -22,6 +23,14 @@ public class ArtisteFormationDto {
 
     public Integer getAnneeFin() {
         return anneeFin;
+    }
+    //
+     public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setAnneeFin(Integer anneeFin) {

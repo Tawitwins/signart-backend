@@ -113,6 +113,7 @@ public class FormationREST {
         }
 
         if (form != null) {
+            dto.setId(form.getId());
             dto.setLieu(form.getLieu());
             dto.setSigle(form.getSigle());
             dto.setLibelle(form.getLibelle());
