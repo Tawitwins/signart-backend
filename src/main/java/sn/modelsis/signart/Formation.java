@@ -59,9 +59,13 @@ public class Formation implements Serializable {
         this.id = id;
     }
 
-    public Formation(Integer id, String adresse) {
+    public Formation(Integer id, String adresse,String libelle,Integer anneeDebut,Integer anneeFin,String specialisation) {
         this.id = id;
+        this.libelle=libelle;
         this.lieu = adresse;
+        this.anneeDebut=anneeDebut;
+        this.anneeFin=anneeFin;
+        this.specialisation=specialisation;
     }
 
     public Integer getId() {
