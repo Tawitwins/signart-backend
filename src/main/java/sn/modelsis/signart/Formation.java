@@ -42,6 +42,12 @@ public class Formation implements Serializable {
     @Basic(optional = false)
     @Column(name = "lieu", nullable = false, length = 20)
     private String lieu;
+    @Column(name = "specialisation")
+    private String specialisation;
+    @Column(name = "anneeDebut")
+    private Integer anneeDebut;
+    @Column(name = "anneeFin")
+    private Integer anneeFin;
     
     @ManyToMany(mappedBy = "formationSet")
     private Set<Artiste> artisteSet;
@@ -81,7 +87,32 @@ public class Formation implements Serializable {
     public void setLieu(String lieu) {
         this.lieu = lieu;
     }
-    
+    //modif
+     
+    public String getSpecialisation() {
+        return specialisation;
+    }
+
+    public void setSpecialisation(String specialisation) {
+        this.specialisation = specialisation;
+    }
+
+    public Integer getAnneeDebut() {
+        return anneeDebut;
+    }
+
+    public void setAnneeDebut(Integer anneeDebut) {
+        this.anneeDebut = anneeDebut;
+    }
+
+    public Integer getAnneeFin() {
+        return anneeFin;
+    }
+
+    public void setAnneeFin(Integer anneeFin) {
+        this.anneeFin = anneeFin;
+    }
+    //---
     @XmlTransient
     public Set<Artiste> getArtisteSet() {
         return artisteSet;

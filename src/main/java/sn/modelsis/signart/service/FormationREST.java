@@ -137,6 +137,9 @@ public class FormationREST {
         entity.setLieu(dto.getLieu());
         entity.setSigle(dto.getSigle());
         entity.setLibelle(dto.getLibelle());
+        entity.setAnneeDebut(dto.getAnneeDebut());
+        entity.setAnneeFin(dto.getAnneeFin());
+        entity.setSpecialisation(dto.getSpecialisation());
         return entity;
     }
 }

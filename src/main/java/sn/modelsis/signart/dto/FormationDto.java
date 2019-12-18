@@ -9,6 +9,9 @@ public class FormationDto {
     private String sigle;
     private String libelle;
     private String lieu;
+    private Integer anneeDebut;
+    private Integer anneeFin;
+    private String specialisation;
 
     public Integer getId() {
         return id;
@@ -59,5 +62,30 @@ public class FormationDto {
     public void setLieu(String lieu) {
         this.lieu = lieu;
     }
+    //Annee Debut Getter & Setter
+    public Integer getAnneeDebut() {
+        return anneeDebut;
+    }
 
+    public void setAnneeDebut(Integer anneeDebut) {
+        this.anneeDebut = anneeDebut;
+    }
+    //Annee Fin getter & Setter
+     public Integer getAnneeFin() {
+        return anneeFin;
+    }
+     public void setAnneeFin(Integer anneeFin) {
+        this.anneeFin = anneeFin;
+    }
+    // Specialisation getter & setter
+        public String getSpecialisation() {
+        return specialisation;
+    }
+
+    /**
+     * @param specialisation the specialisation to set
+     */
+    public void setSpecialisation(String specialisation) {
+        this.specialisation = specialisation;
+    } 
 }
