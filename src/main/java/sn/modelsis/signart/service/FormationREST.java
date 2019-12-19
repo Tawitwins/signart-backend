@@ -43,11 +43,6 @@ public class FormationREST {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(FormationDto dto) {
         formationFacade.create(dtoToEntity(dto));
-        /*
-        ArtisteFormationDto AFdto = new ArtisteFormationDto();
-        AFdto.setIdArtiste(id);
-        AFdto.setIdFormation(dto.getId());
-        */
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
 
