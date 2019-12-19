@@ -6,7 +6,6 @@ public class SousTechniqueDto {
 
     private Integer id;
     private String libelle;
-    private String icone;
     private Integer idTechnique;
 
     public Integer getId() {
@@ -31,14 +30,6 @@ public class SousTechniqueDto {
 
     public void setIdTechnique(Integer idTechnique) {
         this.idTechnique = idTechnique;
-    }
-
-    public String getIcone() {
-        return icone;
-    }
-
-    public void setIcone(String icone) {
-        this.icone = icone;
     }
 
 }
