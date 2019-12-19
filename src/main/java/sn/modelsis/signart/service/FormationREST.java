@@ -42,7 +42,6 @@ public class FormationREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(FormationDto dto) {
-        //ajout formation
         formationFacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
@@ -114,7 +113,6 @@ public class FormationREST {
         }
 
         if (form != null) {
-            dto.setId(form.getId());
             dto.setLieu(form.getLieu());
             dto.setSigle(form.getSigle());
             dto.setLibelle(form.getLibelle());
