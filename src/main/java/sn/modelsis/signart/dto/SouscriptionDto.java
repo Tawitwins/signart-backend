@@ -26,6 +26,7 @@ public class SouscriptionDto implements Serializable {
     private String formation;
     private String exposition;
     private List<OeuvreSouscriptionDto> oeuvres;
+    //private List<OeuvreSouscriptionDto> listeuvres;
 
     public Integer getId() {
         return id;
