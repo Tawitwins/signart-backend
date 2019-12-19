@@ -48,32 +48,30 @@ public class CommandeConverter {
         dto.setIdEtatCommande(entity.getIdEtatCommande().getId());
         dto.setLibelleEtatCommande(entity.getIdEtatCommande().getLibelle());
         Set<LigneCommande> ligneCommandeSet = entity.getLigneCommandeSet();
-        // int nb = 0;
-        Integer nb = Integer.valueOf(0);
-        // BigDecimal montant = BigDecimal.ZERO, livraison = BigDecimal.ZERO;
-        BigDecimal taxes = BigDecimal.ZERO;
+        int nb = 0;
+        BigDecimal montant = BigDecimal.ZERO, livraison = BigDecimal.ZERO, taxes = BigDecimal.ZERO;
         if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
             Set<LigneCommandeDto> ligneCommandeDtoSet = new HashSet<>();
             LigneCommandeDto ligneCommandeDto;
             for (LigneCommande ligneCommande : ligneCommandeSet) {
                 ligneCommandeDto = ligneCommandeConverter.entityToDto(ligneCommande);
                 ligneCommandeDtoSet.add(ligneCommandeDto);
-                // nb++;
-                // montant = montant.add(ligneCommande.getIdOeuvre().getPrix() != null ? ligneCommande.getIdOeuvre().getPrix() : BigDecimal.ZERO);
-                // livraison = livraison.add(ligneCommande.getIdOeuvre().getFraisLivraison() != null ? ligneCommande.getIdOeuvre().getFraisLivraison() : BigDecimal.ZERO);
+                nb++;
+                montant = montant.add(ligneCommande.getIdOeuvre().getPrix() != null ? ligneCommande.getIdOeuvre().getPrix() : BigDecimal.ZERO);
+                livraison = livraison.add(ligneCommande.getIdOeuvre().getFraisLivraison() != null ? ligneCommande.getIdOeuvre().getFraisLivraison() : BigDecimal.ZERO);
                 taxes = taxes.add(ligneCommande.getIdOeuvre().getTaxes() != null ? ligneCommande.getIdOeuvre().getTaxes() : BigDecimal.ZERO);
-                nb = nb + ligneCommande.getQuantite();
             }
             dto.setLignesCommande(ligneCommandeDtoSet);
         }
+
         dto.setNbTotal(nb);
         dto.setNumero(entity.getNumero());
         //dto.setPaymentAdress(paymentAdress);
         //dto.setBillAdress(billAdress);
         //dto.setPayments(payments);
         dto.setRisque(false);
-        dto.setTotal(entity.getMontant());
-        dto.setTotalLivraison(entity.getFraisLivraison());
+        dto.setTotal(montant);
+        dto.setTotalLivraison(livraison);
         dto.setTotalTaxes(taxes);
         dto.setState(entity.getEtat());
         //dto.setTotal(entity.get.multiply(BigDecimal.valueOf(entity.getQuantite())));

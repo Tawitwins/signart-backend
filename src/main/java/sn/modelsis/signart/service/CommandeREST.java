@@ -167,7 +167,7 @@ public class CommandeREST {
             commande.setDelaiLivraison(1);
             commande.setIdEtatCommande(etatCommandeFacade.findByCode("INITIE"));
             LigneCommande ligneCommande;
-            BigDecimal montant = BigDecimal.ZERO, fraisLivraison = BigDecimal.ZERO, taxes = BigDecimal.ZERO;
+            BigDecimal montant = BigDecimal.ZERO, fraisLivraison = BigDecimal.ZERO;
             for (LignePanier lignePanier : listLignePanier) {
                 ligneCommande = new LigneCommande();
                 ligneCommande.setIdCommande(commande);

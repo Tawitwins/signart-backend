@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SousTechnique.findAll", query = "SELECT s FROM SousTechnique s")
     , @NamedQuery(name = "SousTechnique.findById", query = "SELECT s FROM SousTechnique s WHERE s.id = :id")
     , @NamedQuery(name = "SousTechnique.findByLibelle", query = "SELECT s FROM SousTechnique s WHERE s.libelle = :libelle")
-    , @NamedQuery(name = "SousTechnique.findByIcone", query = "SELECT s FROM SousTechnique s WHERE s.icone = :icone")
     , @NamedQuery(name = "SousTechnique.findByTechnique", query = "SELECT s FROM SousTechnique s WHERE s.idTechnique.id = :idTechnique")})
 public class SousTechnique implements Serializable {
 
@@ -40,8 +39,6 @@ public class SousTechnique implements Serializable {
     @Basic(optional = false)
     @Column(name = "libelle", nullable = false, length = 50)
     private String libelle;
-    @Column(name = "icone", nullable = false, length = 50)
-    private String icone;
     @JoinColumn(name = "idTechnique", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Technique idTechnique;
@@ -116,14 +113,6 @@ public class SousTechnique implements Serializable {
     @Override
     public String toString() {
         return "sn.modelsis.signart.SousTechnique[ id=" + id + " ]";
-    }
-
-    public String getIcone() {
-        return icone;
-    }
-
-    public void setIcone(String icone) {
-        this.icone = icone;
     }
     
 }

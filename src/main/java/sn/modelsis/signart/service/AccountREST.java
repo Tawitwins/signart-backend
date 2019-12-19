@@ -49,8 +49,8 @@ public class AccountREST {
     PasswordEncoder passwordEncoder;
 
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON })
-    // @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    //@Produces({MediaType.APPLICATION_JSON})
     public Response create(AccountDto dto) {
         Utilisateur user = dtoToEntity(dto);
         user.setActif(Boolean.TRUE);
@@ -62,27 +62,27 @@ public class AccountREST {
         } else {
             user.setUserType(Utilisateur.CODE_USER_TYPE_CLIENT);
         }
-        // utilisateurFacade.create(user);
-        // Vérification du type d'utilisateur
-        // if (user.getIdProfil().getCode().equals(Profil.CODE_PROFIL_ARTISTE)) {
-        // //création de l'artiste
-        // Artiste artiste = dtoToArtisteEntity(dto, user);
-        // artiste.setIdEtatArtiste(etatArtisteFacade.findByCode(EtatArtiste.CODE_ETAT_ARTISTE_ACTIF));
-        // artiste.setTelephone(dto.getMobile());
-        // artisteFacade.create(artiste);
-        // if (artiste.getId() != null) {
-        // dto.setIdArtiste(artiste.getId());
-        // }
-        // } else {
-        // création du client
-        Client client = dtoToClientEntity(dto, user);
-        client.setIdEtatClient(etatClientFacade.findByCode(EtatClient.CODE_ETAT_CLIENT_ACTIF));
-        client.setTelephone(dto.getMobile());
-        clientFacade.create(client);
-        if (client.getId() != null) {
-            dto.setIdClient(client.getId());
+        //utilisateurFacade.create(user);
+        //Vérification du type d'utilisateur
+        if (user.getIdProfil().getCode().equals(Profil.CODE_PROFIL_ARTISTE)) {
+            //création de l'artiste
+            Artiste artiste = dtoToArtisteEntity(dto, user);
+            artiste.setIdEtatArtiste(etatArtisteFacade.findByCode(EtatArtiste.CODE_ETAT_ARTISTE_ACTIF));
+            artiste.setTelephone(dto.getMobile());
+            artisteFacade.create(artiste);
+            if (artiste.getId() != null) {
+                dto.setIdArtiste(artiste.getId());
+            }
+        } else {
+            //création du client
+            Client client = dtoToClientEntity(dto, user);
+            client.setIdEtatClient(etatClientFacade.findByCode(EtatClient.CODE_ETAT_CLIENT_ACTIF));
+            client.setTelephone(dto.getMobile());
+            clientFacade.create(client);
+            if (client.getId() != null) {
+                dto.setIdClient(client.getId());
+            }
         }
-        // }
         dto.setIdUser(user.getId());
 
         return Response.status(Response.Status.CREATED).entity(dto).build();
@@ -110,14 +110,14 @@ public class AccountREST {
         return client;
     }
 
-    // private Artiste dtoToArtisteEntity(AccountDto dto, Utilisateur user) {
-    //     Artiste artiste = new Artiste();
-    //     artiste.setPrenom(dto.getPrenom());
-    //     artiste.setNom(dto.getNom());
-    //     artiste.setIdUser(user);
-    //     artiste.setTelephone(dto.getMobile());
-    //     artiste.setIdPays(paysFacade.findByCode(dto.getCodePays()));
+    private Artiste dtoToArtisteEntity(AccountDto dto, Utilisateur user) {
+        Artiste artiste = new Artiste();
+        artiste.setPrenom(dto.getPrenom());
+        artiste.setNom(dto.getNom());
+        artiste.setIdUser(user);
+        artiste.setTelephone(dto.getMobile());
+        artiste.setIdPays(paysFacade.findByCode(dto.getCodePays()));
 
-    //     return artiste;
-    // }
+        return artiste;
+    }
 }
