@@ -42,7 +42,6 @@ public class FormationREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(FormationDto dto) {
-        //modif
         formationFacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
@@ -138,9 +137,6 @@ public class FormationREST {
         entity.setLieu(dto.getLieu());
         entity.setSigle(dto.getSigle());
         entity.setLibelle(dto.getLibelle());
-        entity.setAnneeDebut(dto.getAnneeDebut());
-        entity.setAnneeFin(dto.getAnneeFin());
-        entity.setSpecialisation(dto.getSpecialisation());
         return entity;
     }
 }
