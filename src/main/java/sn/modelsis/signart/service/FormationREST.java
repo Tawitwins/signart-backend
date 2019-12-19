@@ -42,6 +42,7 @@ public class FormationREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(FormationDto dto) {
+        //ajout formation
         formationFacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
