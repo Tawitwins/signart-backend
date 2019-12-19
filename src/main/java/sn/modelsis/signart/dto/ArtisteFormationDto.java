@@ -12,9 +12,11 @@ public class ArtisteFormationDto {
     private Integer anneeDebut;
     private Integer anneeFin;
     private String specialisation;
+    /*
     private Integer idArtiste;
     private Integer idFormation;
-
+    */
+    /* 
     public Integer getIdArtiste() {
         return idArtiste;
     }
@@ -30,7 +32,7 @@ public class ArtisteFormationDto {
     public void setIdFormation(Integer idFormation) {
         this.idFormation = idFormation;
     }
-   
+    */
     
     public Integer getAnneeDebut() {
         return anneeDebut;
