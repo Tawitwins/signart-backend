@@ -12,7 +12,6 @@ public abstract class ModeLivraison_ {
 	public static volatile SingularAttribute<ModeLivraison, String> code;
 	public static volatile SingularAttribute<ModeLivraison, String> libelle;
 	public static volatile SingularAttribute<ModeLivraison, Integer> id;
-	public static volatile SetAttribute<ModeLivraison, LigneLivraison> ligneLivraisonSet;
 	public static volatile SetAttribute<ModeLivraison, Livraison> livraisonSet;
 
 }

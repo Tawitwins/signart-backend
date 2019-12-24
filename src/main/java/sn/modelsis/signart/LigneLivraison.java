@@ -50,10 +50,10 @@ public class LigneLivraison implements Serializable {
     @JoinColumn(name = "idLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Livraison idLivraison;
-    @JoinColumn(name = "idModeLivraison", referencedColumnName = "id", nullable = false)
+    /*@JoinColumn(name = "idModeLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private ModeLivraison idModeLivraison;
-
+*/
     public LigneLivraison() {
     }
 
@@ -106,13 +106,13 @@ public class LigneLivraison implements Serializable {
         this.idLivraison = idLivraison;
     }
 
-    public ModeLivraison getIdModeLivraison() {
+    /*public ModeLivraison getIdModeLivraison() {
         return idModeLivraison;
     }
 
     public void setIdModeLivraison(ModeLivraison idModeLivraison) {
         this.idModeLivraison = idModeLivraison;
-    }
+    }*/
 
     @Override
     public int hashCode() {

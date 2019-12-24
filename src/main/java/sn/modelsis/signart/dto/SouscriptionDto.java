@@ -25,7 +25,7 @@ public class SouscriptionDto implements Serializable {
     private String ville;
     private String formation;
     private String exposition;
-    private List<OeuvreSouscriptionDto> oeuvres;
+    //private List<OeuvreSouscriptionDto> oeuvres;
     //private List<OeuvreSouscriptionDto> listeuvres;
 
     public Integer getId() {
@@ -140,11 +140,11 @@ public class SouscriptionDto implements Serializable {
         this.exposition = exposition;
     }
 
-    public List<OeuvreSouscriptionDto> getOeuvres() {
+    /*public List<OeuvreSouscriptionDto> getOeuvres() {
         return oeuvres;
     }
 
     public void setOeuvres(List<OeuvreSouscriptionDto> oeuvres) {
         this.oeuvres = oeuvres;
-    }
+    }*/
 }

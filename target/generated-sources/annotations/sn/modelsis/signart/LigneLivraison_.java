@@ -14,7 +14,6 @@ public abstract class LigneLivraison_ {
 	public static volatile SingularAttribute<LigneLivraison, EtatLivraison> idEtatLivraison;
 	public static volatile SingularAttribute<LigneLivraison, Integer> id;
 	public static volatile SingularAttribute<LigneLivraison, Livraison> idLivraison;
-	public static volatile SingularAttribute<LigneLivraison, ModeLivraison> idModeLivraison;
 
 }
 
