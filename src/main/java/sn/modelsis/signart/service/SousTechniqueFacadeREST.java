@@ -17,19 +17,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import sn.modelsis.signart.SousTechnique;
+/*import sn.modelsis.signart.SousTechnique;
 import sn.modelsis.signart.Technique;
 import sn.modelsis.signart.converter.SousTechniqueConverter;
 import sn.modelsis.signart.converter.TechniqueConverter;
 import sn.modelsis.signart.dto.SousTechniqueDto;
 import sn.modelsis.signart.dto.TechniqueDto;
-import sn.modelsis.signart.facade.SousTechniqueFacade;
+//import sn.modelsis.signart.facade.SousTechniqueFacade;
 import sn.modelsis.signart.facade.TechniqueFacade;
 
 /**
  *
  * @author SNLOM
- */
+
 @Stateless
 @Path("soustechnique")
 public class SousTechniqueFacadeREST extends AbstractFacade<SousTechnique> {
@@ -114,3 +114,4 @@ public class SousTechniqueFacadeREST extends AbstractFacade<SousTechnique> {
     }
     
 }
+ */

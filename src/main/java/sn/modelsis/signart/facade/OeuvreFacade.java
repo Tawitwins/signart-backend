@@ -9,15 +9,13 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.SetJoin;
 
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Artiste_;
 import sn.modelsis.signart.Oeuvre;
 import sn.modelsis.signart.Oeuvre_;
-import sn.modelsis.signart.SousTechnique;
-import sn.modelsis.signart.SousTechnique_;
+//import sn.modelsis.signart.SousTechnique_;
 import sn.modelsis.signart.Technique;
 import sn.modelsis.signart.Technique_;
 import sn.modelsis.signart.Theme;
@@ -43,7 +41,7 @@ public class OeuvreFacade extends AbstractFacade<Oeuvre> {
      * @param idSousTechnique
      * @return
      */
-    public List<Oeuvre> findBySousTechnique(Integer idSousTechnique) {
+   /* public List<Oeuvre> findBySousTechnique(Integer idSousTechnique) {
         //EntityManager em = getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -76,8 +74,8 @@ public class OeuvreFacade extends AbstractFacade<Oeuvre> {
 
         CriteriaQuery<Oeuvre> cq = cb.createQuery(Oeuvre.class);
         javax.persistence.criteria.Root<Oeuvre> oeuv = cq.from(Oeuvre.class);
-        Join<Oeuvre, SousTechnique> sousTech = oeuv.join(Oeuvre_.idSousTechnique);
-        Join<SousTechnique, Technique> tech = sousTech.join(SousTechnique_.idTechnique);
+        Join<Oeuvre, Technique> tech = oeuv.join(Oeuvre_.idTechnique);
+        //Join<SousTechnique, Technique> tech = sousTech.join(SousTechnique_.idTechnique);
         cq.where(cb.and(cb.equal(tech.get(Technique_.id), idTechnique)));
         //cq.orderBy(cb.asc(oeuv.get(Modele_.libelle)));
 
@@ -97,8 +95,8 @@ public class OeuvreFacade extends AbstractFacade<Oeuvre> {
         CriteriaQuery<Oeuvre> cq = cb.createQuery(Oeuvre.class);
 
         javax.persistence.criteria.Root<Oeuvre> oeuv = cq.from(Oeuvre.class);
-        Join<Oeuvre, SousTechnique> sousTech = oeuv.join(Oeuvre_.idSousTechnique);
-        Join<SousTechnique, Technique> tech = sousTech.join(SousTechnique_.idTechnique);
+        Join<Oeuvre, Technique> tech = oeuv.join(Oeuvre_.idTechnique);
+        //Join<SousTechnique, Technique> tech = sousTech.join(SousTechnique_.idTechnique);
         Join<Oeuvre, Theme> them = oeuv.join(Oeuvre_.themeSet);
         cq.where(cb.and(
             cb.equal(them.get(Theme_.id), idTheme),

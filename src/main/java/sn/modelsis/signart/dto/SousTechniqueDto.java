@@ -1,7 +1,7 @@
 package sn.modelsis.signart.dto;
 /**
  * @author SNNGOMN
- */
+
 public class SousTechniqueDto {
 
     private Integer id;
@@ -32,4 +32,4 @@ public class SousTechniqueDto {
         this.idTechnique = idTechnique;
     }
 
-}
+} */

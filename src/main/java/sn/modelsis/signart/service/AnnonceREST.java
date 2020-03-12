@@ -20,6 +20,7 @@ import sn.modelsis.signart.Annonce;
 import sn.modelsis.signart.dto.AnnonceDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.AnnonceFacade;
+import sn.modelsis.signart.facade.ArtisteFacade;
 
 /**
  *
@@ -31,10 +32,13 @@ public class AnnonceREST {
 
     @Inject
     AnnonceFacade annonceFacade;
+    
+    @Inject
+    ArtisteFacade artisteFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(AnnonceDto dto) {
+    public Response create(AnnonceDto dto) throws SignArtException {
         annonceFacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
@@ -42,7 +46,7 @@ public class AnnonceREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, AnnonceDto dto) {
+    public Response edit(@PathParam("id") Integer id, AnnonceDto dto) throws SignArtException {
         annonceFacade.edit(dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -104,6 +108,8 @@ public class AnnonceREST {
         dto.setId(entity.getId());
         dto.setDateDebut(entity.getDateDebut());
         dto.setDateFin(entity.getDateFin());
+        dto.setIdArtiste(entity.getIdArtiste().getId());
+        dto.setEtatPublication(entity.getEtatPublication());
         return dto;
     }
 
@@ -112,7 +118,7 @@ public class AnnonceREST {
      * @param dto
      * @return
      */
-    private Annonce dtoToEntity(AnnonceDto dto) {
+    private Annonce dtoToEntity(AnnonceDto dto) throws SignArtException {
         Annonce entity = new Annonce();
         entity.setId(dto.getId());
         entity.setDescription(dto.getDescription());
@@ -120,6 +126,8 @@ public class AnnonceREST {
         entity.setLieu(dto.getLieu());
         entity.setDateDebut(dto.getDateDebut());
         entity.setDateFin(dto.getDateFin());
+        entity.setIdArtiste(artisteFacade.findById(dto.getIdArtiste()));
+        entity.setEtatPublication(dto.getEtatPublication());
         return entity;
     }
 }

@@ -19,9 +19,11 @@ import javax.ws.rs.core.Response;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Biographie;
+import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.ArtisteDto;
 import sn.modelsis.signart.dto.BiographieDto;
 import sn.modelsis.signart.facade.ArtisteFacade;
+import sn.modelsis.signart.facade.UtilisateurFacade;
 
 /**
  *
@@ -33,6 +35,9 @@ public class ArtisteREST {
 
     @Inject
     ArtisteFacade artisteFacade;
+    
+    @Inject
+    UtilisateurFacade utilisateurFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -61,6 +66,15 @@ public class ArtisteREST {
     @Produces({MediaType.APPLICATION_JSON})
     public ArtisteDto find(@PathParam("id") Integer id) {
         Artiste artiste = artisteFacade.find(id);
+        return entityToDto(artiste);
+    }
+    
+    @GET
+    @Path("user/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ArtisteDto findByUser(@PathParam("id") Integer id) throws SignArtException {
+        Utilisateur user = utilisateurFacade.find(id);
+        Artiste artiste = artisteFacade.findByUser(user.getId());
         return entityToDto(artiste);
     }
 

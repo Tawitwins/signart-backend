@@ -51,61 +51,95 @@ public class Oeuvre implements Serializable {
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
+    
     @Column(name = "nom", length = 200)
     private String nom;
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
-    @Column(name = "description", length = 1000)
-    private String description;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "prix", precision = 19, scale = 4)
-    private BigDecimal prix;
-    @Column(name = "taxes", precision = 19, scale = 4)
-    private BigDecimal taxes;
-    @Column(name = "tauxremise")
-    private Integer tauxremise;
-    @Column(name = "fraisLivraison", precision = 19, scale = 4)
-    private BigDecimal fraisLivraison;
-    @Column(name = "dateAjout")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateAjout;
-    @Column(name = "nouveau")
-    private Boolean nouveau;
-    @Column(name = "dimensions", length = 50)
-    private String dimensions;
-    @Lob
-    @Column(name = "miniature")
-    private byte[] miniature;
-    @ManyToMany(mappedBy = "oeuvreSet")
-    private Set<MotCle> motCleSet;
-    @JoinTable(name = "Theme_Oeuvre", joinColumns = {
-        @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "idTheme", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
-    private Set<Theme> themeSet;
-    @ManyToMany(mappedBy = "oeuvreSet")
-    private Set<Domaine> domaineSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
-    private Set<Image> imageSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
-    private Set<MarquageOeuvre> marquageOeuvreSet;
-    @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
+        
+   @JoinColumn(name = "idTechnique", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Artiste idArtiste;
+    private Technique idTechnique;
+     
     @JoinColumn(name = "idCouleur", referencedColumnName = "id")
     @ManyToOne
     private Couleur idCouleur;
-    @JoinColumn(name = "idSousTechnique", referencedColumnName = "id", nullable = false)
+        
+    @Column(name = "nouveau")
+    private Boolean nouveau;
+    
+     @Column(name = "lithographie")
+    private Boolean lithographie;
+      
+      @Column(name = "auteur", length = 50)
+    private String auteur;
+      
+       @Column(name = "dimensions", length = 50)
+    private String dimensions;
+       
+       @Column(name = "annee")
+    private Integer annee;
+       
+           // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "prix", precision = 19, scale = 4)
+    private BigDecimal prix;
+        
+    @Column(name = "tauxremise")
+    private Integer tauxremise;
+        
+    @Column(name = "taxes", precision = 19, scale = 4)
+    private BigDecimal taxes;
+    
+        @Lob
+    @Column(name = "image")
+    private byte[] image;
+            
+    @Column(name = "description", length = 1000)
+    private String description;
+    
+      @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private SousTechnique idSousTechnique;
-    @JoinColumn(name = "idStatut", referencedColumnName = "id", nullable = false)
+    private Artiste idArtiste;
+    
+    @Column(name = "fraisLivraison", precision = 19, scale = 4)
+    private BigDecimal fraisLivraison;
+    
+    @Column(name = "dateAjout")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateAjout;
+ 
+    @Lob
+    @Column(name = "miniature")
+    private byte[] miniature;
+    
+    @ManyToMany(mappedBy = "oeuvreSet")
+    private Set<MotCle> motCleSet;
+    
+    @JoinTable(name = "Theme_Oeuvre", joinColumns = {
+        @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = true)}, inverseJoinColumns = {
+        @JoinColumn(name = "idTheme", referencedColumnName = "id", nullable = true)})
+    @ManyToMany
+    private Set<Theme> themeSet;
+    
+    @ManyToMany(mappedBy = "oeuvreSet")
+    private Set<Domaine> domaineSet;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
+    private Set<Image> imageSet;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
+    private Set<MarquageOeuvre> marquageOeuvreSet;
+    
+  
+   
+    @JoinColumn(name = "idStatut", referencedColumnName = "id", nullable = true)
     @ManyToOne(optional = false)
     private StatutOeuvre idStatut;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
     private Set<PromotionOeuvre> promotionOeuvreSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
     private Set<LignePanier> lignePanierSet;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
     private Set<LigneCommande> ligneCommandeSet;
 
@@ -273,12 +307,12 @@ public class Oeuvre implements Serializable {
         this.idCouleur = idCouleur;
     }
 
-    public SousTechnique getIdSousTechnique() {
-        return idSousTechnique;
+    public Technique getIdTechnique() {
+        return idTechnique;
     }
 
-    public void setIdSousTechnique(SousTechnique idSousTechnique) {
-        this.idSousTechnique = idSousTechnique;
+    public void setIdTechnique(Technique idTechnique) {
+        this.idTechnique = idTechnique;
     }
 
     public StatutOeuvre getIdStatut() {
@@ -315,6 +349,32 @@ public class Oeuvre implements Serializable {
     public void setLigneCommandeSet(Set<LigneCommande> ligneCommandeSet) {
         this.ligneCommandeSet = ligneCommandeSet;
     }
+
+    public Boolean getLithographie() {
+        return lithographie;
+    }
+
+    public void setLithographie(Boolean lithographie) {
+        this.lithographie = lithographie;
+    }
+
+    public String getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(String auteur) {
+        this.auteur = auteur;
+    }
+
+    public Integer getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(Integer annee) {
+        this.annee = annee;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -14,6 +14,8 @@ public class ExpositionDto {
     private Date dateFin;
     private String description;
     private String type;
+    private Integer idArtiste;
+    private Boolean etatExposition;
     
 
     public Integer getId() {
@@ -23,6 +25,25 @@ public class ExpositionDto {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Integer getIdArtiste() {
+        return idArtiste;
+    }
+
+    public void setIdArtiste(Integer idArtiste) {
+        this.idArtiste = idArtiste;
+    }
+
+    public Boolean getEtatExposition() {
+        return etatExposition;
+    }
+
+    public void setEtatExposition(Boolean etatExposition) {
+        this.etatExposition = etatExposition;
+    }
+    
+    
+    
 
     public Date getDateDebut() {
         return dateDebut;

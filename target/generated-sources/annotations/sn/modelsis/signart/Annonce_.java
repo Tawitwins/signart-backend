@@ -9,6 +9,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Annonce.class)
 public abstract class Annonce_ {
 
+	public static volatile SingularAttribute<Annonce, Boolean> etatPublication;
 	public static volatile SingularAttribute<Annonce, Date> dateDebut;
 	public static volatile SingularAttribute<Annonce, String> titre;
 	public static volatile SingularAttribute<Annonce, String> description;

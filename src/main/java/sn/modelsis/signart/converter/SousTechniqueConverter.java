@@ -3,15 +3,15 @@ package sn.modelsis.signart.converter;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import sn.modelsis.signart.SousTechnique;
+//import sn.modelsis.signart.SousTechnique;
 import sn.modelsis.signart.Technique;
-import sn.modelsis.signart.dto.SousTechniqueDto;
+//import sn.modelsis.signart.dto.SousTechniqueDto;
 import sn.modelsis.signart.dto.TechniqueDto;
 import sn.modelsis.signart.facade.MenuFacade;
 import sn.modelsis.signart.facade.TechniqueFacade;
 /**
  * @author SNNGOMN
- */
+
 @Stateless
 public class SousTechniqueConverter {
 
@@ -34,4 +34,4 @@ public class SousTechniqueConverter {
         entity.setIdTechnique(techniqueFacade.find(dto.getIdTechnique()));
         return entity;
     }
-}
+} */

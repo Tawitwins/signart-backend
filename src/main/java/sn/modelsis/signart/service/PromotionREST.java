@@ -23,7 +23,8 @@ import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.OeuvreFacade;
 import sn.modelsis.signart.facade.PromotionFacade;
 import sn.modelsis.signart.facade.PromotionOeuvreFacade;
-import sn.modelsis.signart.facade.SousTechniqueFacade;
+import sn.modelsis.signart.facade.TechniqueFacade;
+//import sn.modelsis.signart.facade.SousTechniqueFacade;
 
 /**
  *
@@ -40,7 +41,7 @@ public class PromotionREST {
     @Inject
     OeuvreFacade oeuvreFacade;
     @Inject
-    SousTechniqueFacade sousTechniqueFacade;
+    TechniqueFacade techniqueFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -232,7 +233,7 @@ public class PromotionREST {
         entity.setTauxReduction(dto.getTauxReduction());
         entity.setDateDebut(dto.getDateDebut());
         entity.setDateFin(dto.getDateFin());
-        entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
+        //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
         return entity;
     }
 

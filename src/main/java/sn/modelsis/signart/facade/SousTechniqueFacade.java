@@ -7,12 +7,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import sn.modelsis.signart.SousTechnique;
+//import sn.modelsis.signart.SousTechnique;
 
 /**
  *
  * @author SNLOM
- */
+ 
 @Stateless
 public class SousTechniqueFacade extends AbstractFacade<SousTechnique> {
 
@@ -35,4 +35,4 @@ public class SousTechniqueFacade extends AbstractFacade<SousTechnique> {
         List<SousTechnique> list = query.getResultList();
         return list;
     }
-}
+}*/

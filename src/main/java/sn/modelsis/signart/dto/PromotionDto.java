@@ -14,7 +14,7 @@ public class PromotionDto {
     private Integer tauxReduction;
     private BigDecimal montantReduction;
     private Integer idOeuvre;
-    private Integer idSousTechnique;
+    private Integer idTechnique;
 
     public Integer getId() {
         return id;
@@ -64,11 +64,11 @@ public class PromotionDto {
         this.idOeuvre = idOeuvre;
     }
 
-    public Integer getIdSousTechnique() {
-        return idSousTechnique;
+    public Integer getIdTechnique() {
+        return idTechnique;
     }
 
-    public void setIdSousTechnique(Integer idSousTechnique) {
-        this.idSousTechnique = idSousTechnique;
+    public void setIdTechnique(Integer idTechnique) {
+        this.idTechnique = idTechnique;
     }
 }

@@ -49,6 +49,18 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
         }
 
     }
+    
+     public Artiste findById(Integer idArtiste) throws SignArtException {
+        try {
+            final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.findById",
+                    Artiste.class);
+            query.setParameter("id", idArtiste);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
 
     /**
      *

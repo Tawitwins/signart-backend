@@ -15,10 +15,11 @@ public abstract class Exposition_ {
 	public static volatile SetAttribute<Exposition, Artiste> artisteSet;
 	public static volatile SingularAttribute<Exposition, String> adresse;
 	public static volatile SingularAttribute<Exposition, String> description;
-	public static volatile SingularAttribute<Exposition, byte[]> photo;
 	public static volatile SingularAttribute<Exposition, Integer> id;
 	public static volatile SingularAttribute<Exposition, Date> dateFin;
+	public static volatile SingularAttribute<Exposition, Artiste> idArtiste;
 	public static volatile SingularAttribute<Exposition, String> type;
+	public static volatile SingularAttribute<Exposition, Boolean> etatExposition;
 
 }
 

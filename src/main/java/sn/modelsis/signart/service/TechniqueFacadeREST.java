@@ -1,5 +1,6 @@
 package sn.modelsis.signart.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -47,6 +48,22 @@ public class TechniqueFacadeREST extends AbstractFacade<Technique> {
     public void create(Technique entity) {
         super.create(entity);
     }
+    
+    @GET
+    @Path("getAll")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<TechniqueDto> findAllTechnique() {
+        List<TechniqueDto> listDto = new ArrayList<>();
+        List<Technique> listEnt = techniqueFacade.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map((entity) -> {
+                return entityToDto(entity);
+            }).forEachOrdered((dto) -> {
+                listDto.add(dto);
+            });
+        }
+        return listDto;
+    }
 
     @PUT
     @Path("{id}")
@@ -74,13 +91,24 @@ public class TechniqueFacadeREST extends AbstractFacade<Technique> {
     public TechniqueDto findByMenu(@PathParam("idMenu") Integer idMenu) {
         return techniqueConverter.toDto(techniqueFacade.findByMenu(idMenu));
     }
-
-    @GET
+    
+   @GET
     @Override
     @Produces({MediaType.APPLICATION_JSON})
     public List<Technique> findAll() {
         return super.findAll();
     }
+    
+     private TechniqueDto entityToDto(Technique entity) {
+        TechniqueDto dto = new TechniqueDto();
+        dto.setIdMenu(entity.getMenu().getId());
+        dto.setLibelle(entity.getLibelle());
+        dto.setId(entity.getId());   
+        return dto;
+    }
+     
+     
+     
 
     @GET
     @Path("{from}/{to}")

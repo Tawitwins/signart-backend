@@ -13,27 +13,49 @@ public class OeuvreDto implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String nom;
+    private Integer idTechnique;
+    private Integer idCouleur;
+    private Boolean nouveau;
+    private Boolean lithographie;
+    private String auteur;
+    private String dimensions;
+    private Integer annee;
+    private BigDecimal prix;
+    private Integer tauxremise;
+    private BigDecimal taxes;
     private byte[] image;
     private String description;
-    private BigDecimal prix;
-    private BigDecimal taxes;
-    private Integer tauxremise;
+    private Integer idArtiste;
     private BigDecimal fraisLivraison;
-    private Date dateAjout;
-    private Boolean nouveau;
-    private String dimensions;
+    private Date dateAjout;   
     private  byte[] miniature;
     //private Collection<MotCle> motCleCollection;
     //private Collection<Theme> themeCollection;
-    //private Collection<Domaine> domaineCollection;
-    private Integer idCouleur;
-    private String couleur;
-    private Integer idSousTechnique;
-    private String sousTechnique;
-    private Integer idTechnique;
-    private String technique;
-    private Integer idArtiste;
-    private String artiste;
+    //private Collection<Domaine> domaineCollection;    
+    //private String couleur;
+    //private Integer idSousTechnique;
+    //private String sousTechnique;   
+   // private String technique; 
+    //private String artiste;
+
+    public OeuvreDto(String nom, Integer idTechnique, Integer idCouleur, Boolean nouveau, Boolean lithographie, String auteur, String dimensions, Integer annee, BigDecimal prix, Integer tauxremise, BigDecimal taxes, byte[] image, String description, Integer idArtiste) {
+        this.nom = nom;
+        this.idTechnique = idTechnique;
+        this.idCouleur = idCouleur;
+        this.nouveau = nouveau;
+        this.lithographie = lithographie;
+        this.auteur = auteur;
+        this.dimensions = dimensions;
+        this.annee = annee;
+        this.prix = prix;
+        this.tauxremise = tauxremise;
+        this.taxes = taxes;
+        this.image = image;
+        this.description = description;
+        this.idArtiste = idArtiste;
+    }
+    
+    
 
     public OeuvreDto() {
     }
@@ -138,7 +160,7 @@ public class OeuvreDto implements Serializable {
         this.miniature = miniature;
     }
 
-    public String getCouleur() {
+    /*public String getCouleur() {
         return couleur;
     }
 
@@ -162,7 +184,7 @@ public class OeuvreDto implements Serializable {
         this.artiste = artiste;
     }
 
-    public Integer getIdSousTechnique() {
+   /* public Integer getIdSousTechnique() {
         return idSousTechnique;
     }
 
@@ -176,7 +198,7 @@ public class OeuvreDto implements Serializable {
 
     public void setSousTechnique(String sousTechnique) {
         this.sousTechnique = sousTechnique;
-    }
+    }*/
 
     public Integer getIdTechnique() {
         return idTechnique;
@@ -201,6 +223,32 @@ public class OeuvreDto implements Serializable {
     public void setIdCouleur(Integer idCouleur) {
         this.idCouleur = idCouleur;
     }
+
+    public Boolean getLithographie() {
+        return lithographie;
+    }
+
+    public void setLithographie(Boolean lithographie) {
+        this.lithographie = lithographie;
+    }
+
+    public String getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(String auteur) {
+        this.auteur = auteur;
+    }
+
+    public Integer getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(Integer annee) {
+        this.annee = annee;
+    }
+    
+    
 
     
     @Override

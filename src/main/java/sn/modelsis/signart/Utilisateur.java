@@ -34,6 +34,7 @@ public class Utilisateur implements Serializable {
     public static final String CODE_USER_TYPE_ARTISTE = "ARTISTE";
     
     public static final String FIND_BY_MAIL = "Utilisateur.findByMail";
+    public static final String FIND_BY_ID = "Utilisateur.findById";
 
     private static final long serialVersionUID = 1L;
     @Id

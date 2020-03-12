@@ -37,7 +37,7 @@ public class OeuvreFacadeREST {
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(OeuvreDto dto) {
+    public Response create(OeuvreDto dto) throws SignArtException {
         oeuvreFacade.create(oeuvreConverter.dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
@@ -45,7 +45,7 @@ public class OeuvreFacadeREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, OeuvreDto dto) {
+    public Response edit(@PathParam("id") Integer id, OeuvreDto dto) throws SignArtException {
         oeuvreFacade.edit(oeuvreConverter.dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -111,12 +111,12 @@ public class OeuvreFacadeREST {
         return listDto;
     }
 
-    @GET
-    @Path("soustechnique/{id}")
+    /*@GET
+    @Path("technique/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<OeuvreDto> findBySousTechnique(@PathParam("id") Integer idSousTechnique) {
+    public List<OeuvreDto> findBySousTechnique(@PathParam("id") Integer idTechnique) {
         List<OeuvreDto> listDto = new ArrayList<>();
-        List<Oeuvre> listEnt = oeuvreFacade.findBySousTechnique(idSousTechnique);
+        List<Oeuvre> listEnt = oeuvreFacade.findByTechnique(idTechnique);
         if (listEnt != null) {
             listEnt.stream().map(oeuvre -> 
                 oeuvreConverter.entityToDto(oeuvre)
@@ -125,7 +125,7 @@ public class OeuvreFacadeREST {
             );
         }
         return listDto;
-    }
+    }*/
 
     @GET
     @Path("artiste/{id}")

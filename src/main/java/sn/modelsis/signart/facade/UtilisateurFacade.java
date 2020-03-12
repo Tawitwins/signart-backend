@@ -42,5 +42,22 @@ public class UtilisateurFacade extends AbstractFacade<Utilisateur> {
         }
         return users.get(0);
     }
+    
+    /**
+     * Find user by id
+     *
+     * @param id
+     * @return found user
+     */
+    public Utilisateur findById(final int id) {
+        final TypedQuery<Utilisateur> query = (TypedQuery<Utilisateur>) em.createNamedQuery(Utilisateur.FIND_BY_ID, Utilisateur.class);
+        query.setParameter("id", id);
+        query.setMaxResults(1);
+        final List<Utilisateur> users = query.getResultList();
+        if (users.isEmpty()) {
+            return null;
+        }
+        return users.get(0);
+    }
 
 }

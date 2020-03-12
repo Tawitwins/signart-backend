@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import sn.modelsis.signart.Exposition;
 import sn.modelsis.signart.dto.ExpositionDto;
 import sn.modelsis.signart.exception.SignArtException;
+import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.ExpositionFacade;
 
 /**
@@ -31,10 +32,13 @@ public class ExpositionREST {
 
     @Inject
     ExpositionFacade expositionFacade;
+    
+    @Inject
+    ArtisteFacade artisteFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(ExpositionDto dto) {
+    public Response create(ExpositionDto dto) throws SignArtException {
         expositionFacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
@@ -42,7 +46,7 @@ public class ExpositionREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, ExpositionDto dto) {
+    public Response edit(@PathParam("id") Integer id, ExpositionDto dto) throws SignArtException {
         expositionFacade.edit(dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -57,8 +61,9 @@ public class ExpositionREST {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public ExpositionDto find(@PathParam("id") Integer id) {
+    public ExpositionDto findById(@PathParam("id") Integer id) {
         Exposition exposition = expositionFacade.find(id);
+        
         return entityToDto(exposition);
     }
 
@@ -98,13 +103,15 @@ public class ExpositionREST {
      */
     private ExpositionDto entityToDto(Exposition entity) {
         ExpositionDto dto = new ExpositionDto();
-        dto.setAdresse(entity.getAdresse());
         dto.setId(entity.getId());
+        dto.setAdresse(entity.getAdresse());
         dto.setTitre(entity.getTitre());
         dto.setDescription(entity.getDescription());
         dto.setDateDebut(entity.getDateDebut());
         dto.setDateFin(entity.getDateFin());
         dto.setType(entity.getType());
+        dto.setEtatExposition(entity.getEtatExposition());
+        dto.setIdArtiste(entity.getIdArtiste().getId());
         return dto;
     }
 
@@ -113,7 +120,7 @@ public class ExpositionREST {
      * @param dto
      * @return
      */
-    private Exposition dtoToEntity(ExpositionDto dto) {
+    private Exposition dtoToEntity(ExpositionDto dto) throws SignArtException {
         Exposition entity = new Exposition();
         entity.setId(dto.getId());
         entity.setAdresse(dto.getAdresse());
@@ -122,6 +129,8 @@ public class ExpositionREST {
         entity.setDateDebut(dto.getDateDebut());
         entity.setDateFin(dto.getDateFin());
         entity.setType(dto.getType());
+        entity.setEtatExposition(dto.getEtatExposition());
+        entity.setIdArtiste(artisteFacade.findById(dto.getIdArtiste()));
         return entity;
     }
 }
