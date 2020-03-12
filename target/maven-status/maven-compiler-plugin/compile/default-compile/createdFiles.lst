@@ -12,10 +12,7 @@ sn\modelsis\signart\EtatPaiement.class
 sn\modelsis\signart\TypeNewsletter.class
 sn\modelsis\signart\service\MotCleFacadeREST.class
 sn\modelsis\signart\SousTechnique_.class
-<<<<<<< HEAD
 sn\modelsis\signart\converter\OeuvreSouscriptionConverter.class
-=======
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\Devise.class
 sn\modelsis\signart\TypeNewsletter_.class
 sn\modelsis\signart\facade\EtatLivraisonFacade.class
@@ -27,10 +24,7 @@ sn\modelsis\signart\Annonce.class
 sn\modelsis\signart\facade\EtatPanierFacade.class
 sn\modelsis\signart\Annonce_.class
 sn\modelsis\signart\Couleur.class
-<<<<<<< HEAD
-=======
 sn\modelsis\signart\dto\PaysDto.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\facade\ArtisteFonctionFacade.class
 sn\modelsis\signart\dto\CodeLibDescDTO.class
 sn\modelsis\signart\Oeuvre.class
@@ -60,10 +54,7 @@ sn\modelsis\signart\EtatCommande.class
 sn\modelsis\signart\dto\PaiementDto.class
 sn\modelsis\signart\TypeMarquage_.class
 sn\modelsis\signart\service\OeuvreFacadeREST.class
-<<<<<<< HEAD
 sn\modelsis\signart\service\OeuvreSouscriptionREST.class
-=======
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\service\PanierREST.class
 sn\modelsis\signart\Oeuvre_.class
 sn\modelsis\signart\service\EtatPaiementFacadeREST.class
@@ -76,10 +67,6 @@ sn\modelsis\signart\converter\PaiementConverter.class
 sn\modelsis\signart\service\ClientFacadeREST.class
 sn\modelsis\signart\dto\CouleurDto.class
 sn\modelsis\signart\converter\TechniqueConverter.class
-<<<<<<< HEAD
-=======
-sn\modelsis\signart\facade\SousTechniqueFacade.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\Menu.class
 sn\modelsis\signart\service\UserFacadeREST.class
 sn\modelsis\signart\Compte.class
@@ -100,10 +87,7 @@ sn\modelsis\signart\Technique.class
 sn\modelsis\signart\dto\ArtisteDto.class
 sn\modelsis\signart\facade\LivraisonFacade.class
 sn\modelsis\signart\facade\CommandeFacade.class
-<<<<<<< HEAD
 sn\modelsis\signart\facade\OeuvreSouscriptionFacade.class
-=======
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\dto\ArtisteFonctionDto.class
 sn\modelsis\signart\service\ExpositionREST.class
 sn\modelsis\signart\dto\TechniqueDto.class
@@ -121,10 +105,7 @@ sn\modelsis\signart\facade\EtatPaiementFacade.class
 sn\modelsis\signart\facade\ArtisteFormationFacade.class
 sn\modelsis\signart\Pays_.class
 sn\modelsis\signart\facade\TypeNewsletterFacade.class
-<<<<<<< HEAD
-=======
 sn\modelsis\signart\facade\VisiteurFacade.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\EtatLigneCommande.class
 sn\modelsis\signart\Adresse.class
 sn\modelsis\signart\dto\MarquageArtisteDto.class
@@ -136,20 +117,14 @@ sn\modelsis\signart\utils\Utils.class
 sn\modelsis\signart\dto\LivraisonCommandeDto.class
 sn\modelsis\signart\service\ModeLivraisonFacadeREST.class
 sn\modelsis\signart\converter\LigneLivraisonConverter.class
-<<<<<<< HEAD
-=======
 sn\modelsis\signart\converter\PaysConverter.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\TypeAdresse.class
 sn\modelsis\signart\service\ThemeFacadeREST.class
 sn\modelsis\signart\AbonnementNewsletter_.class
 sn\modelsis\signart\facade\AbonnementNewsletterFacade.class
 sn\modelsis\signart\ArtisteFonctionPK.class
 sn\modelsis\signart\Menu_.class
-<<<<<<< HEAD
-=======
 sn\modelsis\signart\Visiteur_.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\TypeCommande.class
 sn\modelsis\signart\dto\ClientDto.class
 sn\modelsis\signart\facade\MarquageOeuvreFacade.class
@@ -158,20 +133,13 @@ sn\modelsis\signart\facade\EtatLignePanierFacade.class
 sn\modelsis\signart\MarquageArtiste.class
 sn\modelsis\signart\dto\SouscriptionDto.class
 sn\modelsis\signart\dto\BiographieDto.class
-<<<<<<< HEAD
-=======
-sn\modelsis\signart\dto\SousTechniqueDto.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\ModeLivraison.class
 sn\modelsis\signart\service\BiographieREST.class
 sn\modelsis\signart\ArtisteFonction_.class
 sn\modelsis\signart\service\LoginREST.class
 sn\modelsis\signart\dto\LigneCommandeDto.class
 sn\modelsis\signart\exception\SignArtException.class
-<<<<<<< HEAD
-=======
 sn\modelsis\signart\Visiteur.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\dto\AccountInformation.class
 sn\modelsis\signart\MarquageArtiste_.class
 sn\modelsis\signart\EtatPaiement_.class
@@ -187,10 +155,7 @@ sn\modelsis\signart\facade\OeuvreFacade.class
 sn\modelsis\signart\service\MenuFacadeREST.class
 sn\modelsis\signart\LignePanier_.class
 sn\modelsis\signart\Technique_.class
-<<<<<<< HEAD
-=======
 sn\modelsis\signart\dto\VisiteurDto.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\LigneCommande.class
 sn\modelsis\signart\Theme_.class
 sn\modelsis\signart\converter\LivraisonConverter.class
@@ -199,19 +164,12 @@ sn\modelsis\signart\MotCle.class
 sn\modelsis\signart\service\CouleurFacadeREST.class
 sn\modelsis\signart\facade\TypeAdresseFacade.class
 sn\modelsis\signart\Profil.class
-<<<<<<< HEAD
-=======
-sn\modelsis\signart\service\SousTechniqueFacadeREST.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\StatutOeuvre.class
 sn\modelsis\signart\Fonction.class
 sn\modelsis\signart\Compte_.class
 sn\modelsis\signart\ArtisteFormationPK_.class
 sn\modelsis\signart\facade\FilmographieFacade.class
-<<<<<<< HEAD
 sn\modelsis\signart\OeuvreSouscription.class
-=======
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\ArtisteFonction.class
 sn\modelsis\signart\facade\BiographieFacade.class
 sn\modelsis\signart\EtatLivraison_.class
@@ -274,23 +232,15 @@ sn\modelsis\signart\service\EtatArtisteFacadeREST.class
 sn\modelsis\signart\PromotionOeuvre.class
 sn\modelsis\signart\Fonction_.class
 sn\modelsis\signart\LigneLivraison.class
-<<<<<<< HEAD
 sn\modelsis\signart\OeuvreSouscription_.class
 sn\modelsis\signart\dto\PanierDto.class
 sn\modelsis\signart\facade\PromotionFacade.class
-=======
-sn\modelsis\signart\dto\PanierDto.class
-sn\modelsis\signart\facade\PromotionFacade.class
 sn\modelsis\signart\service\VisiteurFacadeREST.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\TypeCompte_.class
 sn\modelsis\signart\converter\OeuvreConverter.class
 sn\modelsis\signart\Formation_.class
 sn\modelsis\signart\ArtisteFormation.class
-<<<<<<< HEAD
 sn\modelsis\signart\dto\OeuvreSouscriptionDto.class
-=======
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\dto\NewsletterDto.class
 sn\modelsis\signart\Image_.class
 sn\modelsis\signart\PromotionOeuvre_.class
@@ -304,10 +254,6 @@ sn\modelsis\signart\service\DeviseFacadeREST.class
 sn\modelsis\signart\Theme.class
 sn\modelsis\signart\service\PromotionREST.class
 sn\modelsis\signart\Commentaire.class
-<<<<<<< HEAD
-=======
-sn\modelsis\signart\converter\SousTechniqueConverter.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\dto\AccountDto.class
 sn\modelsis\signart\facade\EtatArtisteFacade.class
 sn\modelsis\signart\TypeCompte.class
@@ -323,10 +269,7 @@ sn\modelsis\signart\Commande_.class
 sn\modelsis\signart\MotCle_.class
 sn\modelsis\signart\Filmographie.class
 sn\modelsis\signart\dto\CommandeDto.class
-<<<<<<< HEAD
-=======
 sn\modelsis\signart\converter\VisiteurConverter.class
->>>>>>> 6cc2afc72400dc18a5d6337719b4b3b8ce7f857c
 sn\modelsis\signart\dto\FilmographieDto.class
 sn\modelsis\signart\converter\CommandeConverter.class
 sn\modelsis\signart\service\MarquageOeuvreFacadeREST.class

@@ -79,7 +79,7 @@ public class ArtisteREST {
         return entityToDto(artiste);
     }
 
-    @GET
+    /*@GET
     @Path("user/{idUser}")
     @Produces({MediaType.APPLICATION_JSON})
     public ArtisteDto findByUser(@PathParam("idUser") Integer idUser) throws SignArtException {
@@ -87,7 +87,7 @@ public class ArtisteREST {
             throw new SignArtException("Utilisateur invalide!");
         }
         return this.entityToDto(artisteFacade.findByUser(idUser));
-    }
+    }*/
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<ArtisteDto> findAll() {
