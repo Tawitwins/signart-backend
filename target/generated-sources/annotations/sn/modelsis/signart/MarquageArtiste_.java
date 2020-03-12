@@ -14,6 +14,7 @@ public abstract class MarquageArtiste_ {
 	public static volatile SingularAttribute<MarquageArtiste, TypeMarquage> idTypeMarquage;
 	public static volatile SingularAttribute<MarquageArtiste, Integer> id;
 	public static volatile SingularAttribute<MarquageArtiste, Artiste> idArtiste;
+	public static volatile SingularAttribute<MarquageArtiste, Visiteur> idVisiteur;
 
 }
 

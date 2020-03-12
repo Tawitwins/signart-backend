@@ -2,6 +2,7 @@ package sn.modelsis.signart;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.annotation.Generated;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
