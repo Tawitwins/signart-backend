@@ -8,12 +8,21 @@ import java.util.Date;
  */
 public class MarquageArtisteDto {
 
+    private Integer id;
     private int idArtiste;
     private int idClient;
+    private int idVisiteur;
     private int idTypeMarquage;
     private String codeTypeMarquage;
     private Date dateMarquage;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
     public int getIdArtiste() {
         return idArtiste;
     }
@@ -29,7 +38,14 @@ public class MarquageArtisteDto {
     public void setIdClient(int idClient) {
         this.idClient = idClient;
     }
+    
+    public int getIdVisiteur() {
+        return idVisiteur;
+    }
 
+    public void setIdVisiteur(int idVisiteur) {
+        this.idVisiteur = idVisiteur;
+    }
     public int getIdTypeMarquage() {
         return idTypeMarquage;
     }

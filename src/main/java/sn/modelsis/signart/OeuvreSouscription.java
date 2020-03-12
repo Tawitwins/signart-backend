@@ -1,0 +1,242 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package sn.modelsis.signart;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/**
+ *
+ * @author snfayemp
+ */
+
+@Entity
+@Table(name = "OeuvreSouscription", catalog = "signart", schema = "dbo")
+@NamedQueries({
+    @NamedQuery(name = "OeuvreSouscription.findAll", query = "SELECT o FROM OeuvreSouscription o")
+    , @NamedQuery(name = "OeuvreSouscription.countOeuvreSouscriptionByArtiste", query = "SELECT count(o) FROM OeuvreSouscription o WHERE o.idArtiste.id = :idArtiste")
+    , @NamedQuery(name = "OeuvreSouscription.findById", query = "SELECT o FROM OeuvreSouscription o WHERE o.id = :id")
+    , @NamedQuery(name = "OeuvreSouscription.findByNom", query = "SELECT o FROM OeuvreSouscription o WHERE o.nom = :nom")
+    , @NamedQuery(name = "OeuvreSouscription.findByDateAjout", query = "SELECT o FROM OeuvreSouscription o WHERE o.dateAjout = :dateAjout")
+    , @NamedQuery(name = "OeuvreSouscription.findByNouveau", query = "SELECT o FROM OeuvreSouscription o WHERE o.nouveau = :nouveau")
+    , @NamedQuery(name = "OeuvreSouscription.findByDimensions", query = "SELECT o FROM OeuvreSouscription o WHERE o.dimensions = :dimensions")})
+public class OeuvreSouscription implements Serializable{
+    
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id", nullable = false)
+    private Integer id;
+    
+    @Column(name = "nom", length = 200)
+    private String nom;
+        
+   @JoinColumn(name = "idTechnique", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Technique idTechnique;
+     
+    @JoinColumn(name = "idCouleur", referencedColumnName = "id", nullable = false)
+    @ManyToOne
+    private Couleur idCouleur;
+        
+    @Column(name = "nouveau")
+    private Boolean nouveau;
+    
+     @Column(name = "lithographie")
+    private Boolean lithographie;
+      
+      @Column(name = "auteur", length = 50)
+    private String auteur;
+      
+       @Column(name = "dimensions", length = 50)
+    private String dimensions;
+       
+       @Column(name = "annee")
+    private Integer annee;
+       
+           // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "prix", precision = 19, scale = 4)
+    private BigDecimal prix;
+        
+    @Column(name = "tauxremise")
+    private Integer tauxremise;
+        
+    @Column(name = "taxes", precision = 19, scale = 4)
+    private BigDecimal taxes;
+    
+    @Lob
+    @Column(name = "image")
+    private Byte image;
+            
+    @Column(name = "description", length = 1000)
+    private String description;
+    
+      @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Artiste idArtiste;
+    
+    @Column(name = "dateAjout")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateAjout;
+
+    public OeuvreSouscription() {
+    }
+
+    public OeuvreSouscription(Integer id) {
+        this.id = id;
+    }
+    
+    
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Technique getIdTechnique() {
+        return idTechnique;
+    }
+
+    public void setIdTechnique(Technique idTechnique) {
+        this.idTechnique = idTechnique;
+    }
+
+    public Couleur getIdCouleur() {
+        return idCouleur;
+    }
+
+    public void setIdCouleur(Couleur idCouleur) {
+        this.idCouleur = idCouleur;
+    }
+
+    public Boolean getNouveau() {
+        return nouveau;
+    }
+
+    public void setNouveau(Boolean nouveau) {
+        this.nouveau = nouveau;
+    }
+
+    public Boolean getLithographie() {
+        return lithographie;
+    }
+
+    public void setLithographie(Boolean lithographie) {
+        this.lithographie = lithographie;
+    }
+
+    public String getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(String auteur) {
+        this.auteur = auteur;
+    }
+
+    public String getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(String dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    public Integer getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(Integer annee) {
+        this.annee = annee;
+    }
+
+    public BigDecimal getPrix() {
+        return prix;
+    }
+
+    public void setPrix(BigDecimal prix) {
+        this.prix = prix;
+    }
+
+    public Integer getTauxremise() {
+        return tauxremise;
+    }
+
+    public void setTauxremise(Integer tauxremise) {
+        this.tauxremise = tauxremise;
+    }
+
+    public BigDecimal getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(BigDecimal taxes) {
+        this.taxes = taxes;
+    }
+
+    public Byte getImage() {
+        return image;
+    }
+
+    public void setImage(Byte image) {
+        this.image = image;
+    }
+
+   
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Artiste getIdArtiste() {
+        return idArtiste;
+    }
+
+    public void setIdArtiste(Artiste idArtiste) {
+        this.idArtiste = idArtiste;
+    }
+
+    public Date getDateAjout() {
+        return dateAjout;
+    }
+
+    public void setDateAjout(Date dateAjout) {
+        this.dateAjout = dateAjout;
+    }
+    
+    
+    
+}

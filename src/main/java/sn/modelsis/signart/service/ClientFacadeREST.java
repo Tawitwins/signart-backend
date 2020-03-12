@@ -1,5 +1,6 @@
 package sn.modelsis.signart.service;
 
+import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,10 +18,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import sn.modelsis.signart.Client;
+import sn.modelsis.signart.MarquageArtiste;
 import sn.modelsis.signart.converter.ClientConverter;
 import sn.modelsis.signart.dto.ClientDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ClientFacade;
+import sn.modelsis.signart.facade.MarquageArtisteFacade;
 
 /**
  *
@@ -32,6 +35,8 @@ public class ClientFacadeREST {
 
     @Inject
     ClientFacade clientFacade;
+    @Inject
+    MarquageArtisteFacade marquageArtiste;
     @Inject
     ClientConverter clientConverter;
 
@@ -101,6 +106,7 @@ public class ClientFacadeREST {
         }
         return null;
     }
+     
 
     @GET
     @Path("{from}/{to}")

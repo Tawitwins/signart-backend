@@ -22,6 +22,7 @@ import sn.modelsis.signart.Biographie;
 import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.ArtisteDto;
 import sn.modelsis.signart.dto.BiographieDto;
+import sn.modelsis.signart.dto.ClientDto;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.UtilisateurFacade;
 
@@ -78,6 +79,15 @@ public class ArtisteREST {
         return entityToDto(artiste);
     }
 
+    @GET
+    @Path("user/{idUser}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ArtisteDto findByUser(@PathParam("idUser") Integer idUser) throws SignArtException {
+        if (idUser == null || idUser == 0) {
+            throw new SignArtException("Utilisateur invalide!");
+        }
+        return this.entityToDto(artisteFacade.findByUser(idUser));
+    }
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<ArtisteDto> findAll() {

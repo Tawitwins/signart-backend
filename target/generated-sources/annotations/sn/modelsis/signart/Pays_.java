@@ -10,6 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class Pays_ {
 
 	public static volatile SingularAttribute<Pays, String> code;
+	public static volatile SetAttribute<Pays, Visiteur> VisiteurSet;
 	public static volatile SetAttribute<Pays, Client> clientSet;
 	public static volatile SingularAttribute<Pays, String> libelle;
 	public static volatile SetAttribute<Pays, Artiste> artisteSet;

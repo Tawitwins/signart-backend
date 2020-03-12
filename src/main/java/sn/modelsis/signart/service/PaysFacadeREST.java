@@ -1,7 +1,10 @@
 package sn.modelsis.signart.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -12,8 +15,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import sn.modelsis.signart.Pays;
+import sn.modelsis.signart.converter.PaysConverter;
+import sn.modelsis.signart.dto.PaysDto;
 
 /**
  *
@@ -25,7 +32,9 @@ public class PaysFacadeREST extends AbstractFacade<Pays> {
 
     @PersistenceContext(unitName = "SignArtPU")
     private EntityManager em;
-
+    @Inject
+    PaysConverter paysConverter;
+    
     public PaysFacadeREST() {
         super(Pays.class);
     }
@@ -53,17 +62,11 @@ public class PaysFacadeREST extends AbstractFacade<Pays> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Pays find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public PaysDto find(@PathParam("id") Integer id) {
+        return paysConverter.toDto(super.find(id));
     }
 
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Pays> findAll() {
-        return super.findAll();
-    }
-
+    
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -81,6 +84,27 @@ public class PaysFacadeREST extends AbstractFacade<Pays> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Asynchronous
+    public void findAll(@Suspended final AsyncResponse asyncResponse) {
+        asyncResponse.resume(doFindAll());
+    }
+
+    private List<PaysDto> doFindAll() {
+       
+        List<PaysDto> listDto = new ArrayList<>();
+        List<Pays> listEnt = super.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map((entity) -> {
+                return paysConverter.toDto(entity);
+            }).forEachOrdered((dto) -> {
+                listDto.add(dto);
+            });
+        }
+        return listDto;
     }
     
 }
