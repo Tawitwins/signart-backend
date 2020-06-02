@@ -14,6 +14,7 @@ C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendL
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\EtatPanierFacade.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\service\TypeCompteFacadeREST.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\dto\MarquageOeuvreDto.java
+C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\Souscription.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\ArtisteFonction.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\ArtisteFonctionPK.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\Domaine.java
@@ -83,6 +84,7 @@ C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendL
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\service\TechniqueFacadeREST.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\dto\AccountInformation.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\service\LignePanierREST.java
+C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\TchatPackage\serverChat.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\EtatLignePanier.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\utils\Utils.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\dto\ExpositionDto.java
@@ -99,6 +101,7 @@ C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendL
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\converter\ClientConverter.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\ClientFacade.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\dto\AdressesDto.java
+C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\service\SouscriptionREST.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\DeviseFacade.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\PanierFacade.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\service\EtatArtisteFacadeREST.java
@@ -139,6 +142,7 @@ C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendL
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\converter\LivraisonConverter.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\LigneCommandeFacade.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\EtatClient.java
+C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\StatutOeuvreFacade.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\dto\PromotionDto.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\ConfigState.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\service\VisiteurFacadeREST.java
@@ -202,6 +206,7 @@ C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendL
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\dto\ArtisteFormationDto.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\service\EtatClientFacadeREST.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\MarquageArtisteFacade.java
+C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\facade\SouscriptionFacade.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\MotCle.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\dto\NewsletterDto.java
 C:\Users\SNMBENGUEO\Desktop\SignArt\referentielsignart-master\GitSignArtBackendLast\GitSignArtBackLast\src\main\java\sn\modelsis\signart\EtatLivraison.java

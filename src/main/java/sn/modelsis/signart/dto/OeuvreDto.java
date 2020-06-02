@@ -29,6 +29,11 @@ public class OeuvreDto implements Serializable {
     private BigDecimal fraisLivraison;
     private Date dateAjout;   
     private  byte[] miniature;
+    private Integer idStatus;
+    private Integer stock;
+    
+    
+    
     //private Collection<MotCle> motCleCollection;
     //private Collection<Theme> themeCollection;
     //private Collection<Domaine> domaineCollection;    
@@ -160,29 +165,30 @@ public class OeuvreDto implements Serializable {
         this.miniature = miniature;
     }
 
-    /*public String getCouleur() {
-        return couleur;
+    public Integer getStock() {
+        return this.stock;
     }
 
-    public void setCouleur(String couleur) {
-        this.couleur = couleur;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
-    public String getTechnique() {
-        return technique;
+    public Integer getIdStatus() {
+        return idStatus;
     }
 
-    public void setTechnique(String technique) {
-        this.technique = technique;
+    public void setIdStatus(Integer idStatus) {
+        this.idStatus = idStatus;
     }
 
-    public String getArtiste() {
-        return artiste;
+    /*public Integer getArtiste() {
+        return idArtiste;
     }
-
-    public void setArtiste(String artiste) {
-        this.artiste = artiste;
-    }
+    
+    public void setArtiste(Integer idArtiste) {
+        this.idArtiste = idArtiste;
+    }*/
+    
 
    /* public Integer getIdSousTechnique() {
         return idSousTechnique;

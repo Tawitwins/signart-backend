@@ -10,6 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(OeuvreSouscription.class)
 public abstract class OeuvreSouscription_ {
 
+	public static volatile SingularAttribute<OeuvreSouscription, Souscription> idSouscription;
 	public static volatile SingularAttribute<OeuvreSouscription, Byte> image;
 	public static volatile SingularAttribute<OeuvreSouscription, Integer> tauxremise;
 	public static volatile SingularAttribute<OeuvreSouscription, BigDecimal> prix;

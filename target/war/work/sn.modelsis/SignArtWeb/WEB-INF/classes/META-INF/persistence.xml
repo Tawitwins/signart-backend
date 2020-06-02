@@ -17,6 +17,7 @@
     <class>sn.modelsis.signart.EtatLivraison</class>
     <class>sn.modelsis.signart.EtatPaiement</class>
     <class>sn.modelsis.signart.EtatPanier</class>
+    <class>sn.modelsis.signart.Exposition</class>
     <class>sn.modelsis.signart.LignePanier</class>
     <class>sn.modelsis.signart.Livraison</class>
     <class>sn.modelsis.signart.Menu</class>
@@ -24,6 +25,7 @@
     <class>sn.modelsis.signart.ModePaiement</class>
     <class>sn.modelsis.signart.MotCle</class>
     <class>sn.modelsis.signart.Oeuvre</class>
+    <class>sn.modelsis.signart.OeuvreSouscription</class>
     <class>sn.modelsis.signart.Paiement</class>
     <class>sn.modelsis.signart.Panier</class>
     <class>sn.modelsis.signart.Pays</class>
@@ -42,6 +44,7 @@
     <class>sn.modelsis.signart.Formation</class>
     <class>sn.modelsis.signart.ArtisteFormation</class>
     <class>sn.modelsis.signart.Visiteur</class>
+    <class>sn.modelsis.signart.Souscription</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>

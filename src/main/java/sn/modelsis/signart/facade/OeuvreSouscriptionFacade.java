@@ -10,6 +10,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.GenerationType;
+
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -49,7 +51,17 @@ public class OeuvreSouscriptionFacade extends AbstractFacade<OeuvreSouscription>
         }
         return new ArrayList();
     }
-    
+    public OeuvreSouscription findById(Integer id) {
+
+        final TypedQuery<OeuvreSouscription> query = getEntityManager().createNamedQuery("OeuvreSouscription.findById",
+                OeuvreSouscription.class);
+        query.setParameter("id", id);
+        List<OeuvreSouscription> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
     
     
     @Override

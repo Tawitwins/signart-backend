@@ -10,6 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class Couleur_ {
 
 	public static volatile SetAttribute<Couleur, Oeuvre> oeuvreSet;
+	public static volatile SetAttribute<Couleur, OeuvreSouscription> oeuvreSouscriptionSet;
 	public static volatile SingularAttribute<Couleur, String> libelle;
 	public static volatile SingularAttribute<Couleur, Integer> id;
 

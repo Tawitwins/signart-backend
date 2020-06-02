@@ -25,6 +25,7 @@ public abstract class Oeuvre_ {
 	public static volatile SingularAttribute<Oeuvre, StatutOeuvre> idStatut;
 	public static volatile SetAttribute<Oeuvre, MotCle> motCleSet;
 	public static volatile SingularAttribute<Oeuvre, Integer> id;
+	public static volatile SingularAttribute<Oeuvre, Integer> stock;
 	public static volatile SingularAttribute<Oeuvre, byte[]> image;
 	public static volatile SetAttribute<Oeuvre, Domaine> domaineSet;
 	public static volatile SingularAttribute<Oeuvre, Integer> tauxremise;

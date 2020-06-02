@@ -44,6 +44,7 @@
     <class>sn.modelsis.signart.Formation</class>
     <class>sn.modelsis.signart.ArtisteFormation</class>
     <class>sn.modelsis.signart.Visiteur</class>
+    <class>sn.modelsis.signart.Souscription</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>

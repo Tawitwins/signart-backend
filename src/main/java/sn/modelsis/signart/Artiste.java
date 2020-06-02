@@ -69,6 +69,25 @@ public class Artiste implements Serializable {
     private String ville;
     @Column(name = "biographie", length = 2000)
     private String biographie;
+    
+    @Column(name = "email", length = 50)
+    private String email;
+    @Column(name = "genre", length = 10)
+    private String genre;
+    @Column(name = "nomGalerie", length = 100)
+    private String nomGalerie;
+    @Column(name = "adrGalerie", length = 200)
+    private String adrGalerie;
+    @Column(name = "villeGalerie", length = 50)
+    private String villeGalerie;
+    @Column(name = "spécialités", length = 200)
+    private String specialites;
+    @Column(name = "formations", length = 2000)
+    private String formation;
+    @Column(name = "expositions", length = 2000)
+    private String expositions;
+    
+    
     @Column(name = "profession", length = 200)
     private String profession;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
@@ -79,7 +98,7 @@ public class Artiste implements Serializable {
     @JoinColumn(name = "idPays", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Pays idPays;
-    @JoinColumn(name = "idUser", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "idUser", referencedColumnName = "id", nullable = true)
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Utilisateur idUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
@@ -177,6 +196,71 @@ public class Artiste implements Serializable {
     public void setBiographie(String biographie) {
         this.biographie = biographie;
     }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+    
+    public String getNomGalerie() {
+        return nomGalerie;
+    }
+
+    public void setNomGalerie(String nomGalerie) {
+        this.nomGalerie = nomGalerie;
+    }
+
+    public String getAdrGalerie() {
+        return adrGalerie;
+    }
+
+    public void setAdrGalerie(String adrGalerie ) {
+        this.adrGalerie = adrGalerie;
+    }
+
+    public String getVilleGalerie() {
+        return villeGalerie;
+    }
+
+    public void setVilleGalerie(String villeGalerie) {
+        this.villeGalerie = villeGalerie;
+    }
+
+    public String getSpecialites() {
+        return specialites;
+    }
+
+    public void setSpecialites(String specialites) {
+        this.specialites = specialites;
+    }
+    public String getFormation() {
+        return formation;
+    }
+
+    public void setFormation(String formation) {
+        this.formation = formation;
+    }
+    
+    public String getExpositions() {
+        return expositions;
+    }
+
+    public void setExpositions(String expositions) {
+        this.expositions = expositions;
+    }
+
+
 
 
     public String getProfession() {

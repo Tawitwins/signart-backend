@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,8 +60,8 @@ public class Oeuvre implements Serializable {
     @ManyToOne(optional = false)
     private Technique idTechnique;
      
-    @JoinColumn(name = "idCouleur", referencedColumnName = "id")
-    @ManyToOne
+    @JoinColumn(name = "idCouleur", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional= false)
     private Couleur idCouleur;
         
     @Column(name = "nouveau")
@@ -78,6 +79,8 @@ public class Oeuvre implements Serializable {
        @Column(name = "annee")
     private Integer annee;
        
+       @Column(name = "stock")
+    private Integer stock;
            // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "prix", precision = 19, scale = 4)
     private BigDecimal prix;
@@ -119,7 +122,7 @@ public class Oeuvre implements Serializable {
     @ManyToMany
     private Set<Theme> themeSet;
     
-    @ManyToMany(mappedBy = "oeuvreSet")
+    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "oeuvreSet")
     private Set<Domaine> domaineSet;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
@@ -375,7 +378,13 @@ public class Oeuvre implements Serializable {
     }
     
     
+    public Integer getStock() {
+        return this.stock;
+    }
 
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
     @Override
     public int hashCode() {
         int hash = 0;

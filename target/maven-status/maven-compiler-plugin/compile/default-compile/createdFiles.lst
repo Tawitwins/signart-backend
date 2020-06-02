@@ -2,7 +2,9 @@ sn\modelsis\signart\service\ArtisteREST.class
 sn\modelsis\signart\Utilisateur.class
 sn\modelsis\signart\Adresse_.class
 sn\modelsis\signart\Profil_.class
+sn\modelsis\signart\Souscription_.class
 sn\modelsis\signart\service\NewCrossOriginResourceSharingFilter.class
+sn\modelsis\signart\Souscription.class
 sn\modelsis\signart\Utilisateur_.class
 sn\modelsis\signart\service\LignePanierREST.class
 sn\modelsis\signart\Exposition.class
@@ -68,6 +70,7 @@ sn\modelsis\signart\service\ClientFacadeREST.class
 sn\modelsis\signart\dto\CouleurDto.class
 sn\modelsis\signart\converter\TechniqueConverter.class
 sn\modelsis\signart\Menu.class
+TchatPackage\serverChat$3.class
 sn\modelsis\signart\service\UserFacadeREST.class
 sn\modelsis\signart\Compte.class
 sn\modelsis\signart\dto\LivraisonDto.class
@@ -80,6 +83,7 @@ sn\modelsis\signart\facade\AdresseFacade.class
 sn\modelsis\signart\facade\ExpositionFacade.class
 sn\modelsis\signart\TypeCommande_.class
 sn\modelsis\signart\rest\application\config\ApplicationConfig.class
+TchatPackage\serverChat$2.class
 sn\modelsis\signart\dto\AdresseDto.class
 sn\modelsis\signart\dto\FormationDto.class
 sn\modelsis\signart\service\TypeCommandeFacadeREST.class
@@ -109,6 +113,7 @@ sn\modelsis\signart\facade\VisiteurFacade.class
 sn\modelsis\signart\EtatLigneCommande.class
 sn\modelsis\signart\Adresse.class
 sn\modelsis\signart\dto\MarquageArtisteDto.class
+TchatPackage\serverChat$1.class
 sn\modelsis\signart\ModePaiement.class
 sn\modelsis\signart\service\CommentaireFacadeREST.class
 sn\modelsis\signart\EtatArtiste_.class
@@ -170,6 +175,7 @@ sn\modelsis\signart\Compte_.class
 sn\modelsis\signart\ArtisteFormationPK_.class
 sn\modelsis\signart\facade\FilmographieFacade.class
 sn\modelsis\signart\OeuvreSouscription.class
+TchatPackage\serverChat.class
 sn\modelsis\signart\ArtisteFonction.class
 sn\modelsis\signart\facade\BiographieFacade.class
 sn\modelsis\signart\EtatLivraison_.class
@@ -209,6 +215,7 @@ sn\modelsis\signart\service\EtatCommandeFacadeREST.class
 sn\modelsis\signart\service\CommandeREST.class
 sn\modelsis\signart\facade\EtatCommandeFacade.class
 sn\modelsis\signart\facade\LigneCommandeFacade.class
+sn\modelsis\signart\facade\StatutOeuvreFacade.class
 sn\modelsis\signart\service\ModePaiementFacadeREST.class
 sn\modelsis\signart\ModePaiement_.class
 sn\modelsis\signart\dto\PasserCommandeDto.class
@@ -218,6 +225,7 @@ sn\modelsis\signart\Promotion.class
 sn\modelsis\signart\dto\LignePaiementDto.class
 sn\modelsis\signart\NewsletterTrace_.class
 sn\modelsis\signart\dto\CodeLibDto.class
+sn\modelsis\signart\service\SouscriptionREST.class
 sn\modelsis\signart\EtatLignePanier.class
 sn\modelsis\signart\Pays.class
 sn\modelsis\signart\dto\OeuvreDto.class
@@ -274,6 +282,7 @@ sn\modelsis\signart\dto\FilmographieDto.class
 sn\modelsis\signart\converter\CommandeConverter.class
 sn\modelsis\signart\service\MarquageOeuvreFacadeREST.class
 sn\modelsis\signart\NewsletterTrace.class
+sn\modelsis\signart\facade\SouscriptionFacade.class
 sn\modelsis\signart\service\AnnonceREST.class
 sn\modelsis\signart\facade\AbstractFacade.class
 sn\modelsis\signart\MarquageOeuvre.class

@@ -3,6 +3,7 @@ package sn.modelsis.signart;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,8 +36,11 @@ public class Couleur implements Serializable {
     @Basic(optional = false)
     @Column(name = "libelle", nullable = false, length = 50)
     private String libelle;
-    @OneToMany(mappedBy = "idCouleur")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCouleur")
     private Set<Oeuvre> oeuvreSet;
+     
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCouleur")
+    private Set<OeuvreSouscription> oeuvreSouscriptionSet;
 
     public Couleur() {
     }
@@ -73,6 +77,14 @@ public class Couleur implements Serializable {
 
     public void setOeuvreSet(Set<Oeuvre> oeuvreSet) {
         this.oeuvreSet = oeuvreSet;
+    }
+    @XmlTransient
+    public Set<OeuvreSouscription> getOeuvreSouscriptionSet() {
+        return oeuvreSouscriptionSet;
+    }
+
+    public void setOeuvreSouscriptionSet(Set<OeuvreSouscription> oeuvreSouscriptionSet) {
+        this.oeuvreSouscriptionSet = oeuvreSouscriptionSet;
     }
 
     @Override
