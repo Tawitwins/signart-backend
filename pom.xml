@@ -106,12 +106,6 @@
             <type>war</type>
         </dependency>
         
-<!--        <dependency>
-         <groupId>com.corundumstudio.socketio</groupId>
-         <artifactId>netty-socketio</artifactId>
-         <version>1.7.18</version>
-        </dependency>-->
-       
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
