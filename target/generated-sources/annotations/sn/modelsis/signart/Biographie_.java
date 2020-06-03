@@ -13,8 +13,11 @@ public abstract class Biographie_ {
 	public static volatile SingularAttribute<Biographie, String> lieuNaissance;
 	public static volatile SingularAttribute<Biographie, String> nationalite;
 	public static volatile SingularAttribute<Biographie, Date> dateNaissance;
+	public static volatile SingularAttribute<Biographie, String> libelle;
 	public static volatile SetAttribute<Biographie, Artiste> artisteSet;
 	public static volatile SingularAttribute<Biographie, Integer> id;
+	public static volatile SingularAttribute<Biographie, Artiste> idArtiste;
+	public static volatile SingularAttribute<Biographie, Boolean> etatBiographie;
 
 }
 

@@ -21,8 +21,24 @@ public class ArtisteDto implements Serializable {
     private String profession;
     private String etatArtiste;
     private String pays;
+    private String email;
     private Long nbFans;
     private Long nbOeuvres;
+    private Integer idBiographie;
+
+    public ArtisteDto(Integer id, String nom, String prenom, String surnom, String telephone, String adresse, String ville, String pays, String email) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.surnom = surnom;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.pays = pays;
+        this.email = email;
+    }
+    
+    
 
     public ArtisteDto() {
     }
@@ -38,6 +54,24 @@ public class ArtisteDto implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Integer getIdBiographie() {
+        return idBiographie;
+    }
+
+    public void setIdBiographie(Integer idBiographie) {
+        this.idBiographie = idBiographie;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
 
     public String getNom() {
         return nom;

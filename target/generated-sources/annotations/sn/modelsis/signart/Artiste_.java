@@ -30,6 +30,7 @@ public abstract class Artiste_ {
 	public static volatile SetAttribute<Artiste, Formation> formationSet;
 	public static volatile SetAttribute<Artiste, Filmographie> filmographieSet;
 	public static volatile SingularAttribute<Artiste, String> prenom;
+	public static volatile SingularAttribute<Artiste, String> email;
 	public static volatile SingularAttribute<Artiste, String> surnom;
 
 }

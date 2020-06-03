@@ -18,6 +18,7 @@
     <class>sn.modelsis.signart.EtatPaiement</class>
     <class>sn.modelsis.signart.EtatPanier</class>
     <class>sn.modelsis.signart.Exposition</class>
+    <class>sn.modelsis.signart.ImageProfil</class>
     <class>sn.modelsis.signart.LignePanier</class>
     <class>sn.modelsis.signart.Livraison</class>
     <class>sn.modelsis.signart.Menu</class>

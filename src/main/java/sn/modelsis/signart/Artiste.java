@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Artiste.findByVille", query = "SELECT a FROM Artiste a WHERE a.ville = :ville")
     , @NamedQuery(name = "Artiste.findByIdBiographie", query = "SELECT a FROM Artiste a WHERE a.idBiographie.id = :idBiographie")
     , @NamedQuery(name = "Artiste.findByPhoto", query = "SELECT a FROM Artiste a WHERE a.photo = :photo")
+   // , @NamedQuery(name = "Artiste.updateProfil", query = "UPDATE Artiste a SET a.nom = :nom, a.prenom = :prenom, a.surnom = :surnom, a.telephone = :telephone, a.email = :email, a.adresse = :adresse, a.ville = :ville, a.idPays = :pays WHERE a.id = :id ")
     , @NamedQuery(name = "Artiste.findByProfession", query = "SELECT a FROM Artiste a WHERE a.profession = :profession")
     , @NamedQuery(name = "Artiste.findByIdUser", query = "SELECT a FROM Artiste a WHERE a.idUser.id = :idUser")})
 
@@ -63,6 +64,8 @@ public class Artiste implements Serializable {
     private String surnom;
     @Column(name = "telephone", length = 20)
     private String telephone;
+    @Column(name = "email", length = 50)
+    private String email;
     @Column(name = "adresse", length = 200)
     private String adresse;
     @Column(name = "ville", length = 50)
@@ -110,6 +113,17 @@ public class Artiste implements Serializable {
     public Artiste() {
     }
 
+    public Artiste(String nom, String prenom, String surnom, String telephone, String email, String adresse, String ville, Pays idPays) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.surnom = surnom;
+        this.telephone = telephone;
+        this.email = email;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.idPays = idPays;
+    }
+
     public Artiste(Integer id) {
         this.id = id;
     }
@@ -129,6 +143,16 @@ public class Artiste implements Serializable {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
 
     public String getPrenom() {
         return prenom;
