@@ -70,7 +70,6 @@ sn\modelsis\signart\service\ClientFacadeREST.class
 sn\modelsis\signart\dto\CouleurDto.class
 sn\modelsis\signart\converter\TechniqueConverter.class
 sn\modelsis\signart\Menu.class
-TchatPackage\serverChat$3.class
 sn\modelsis\signart\service\UserFacadeREST.class
 sn\modelsis\signart\Compte.class
 sn\modelsis\signart\dto\LivraisonDto.class
@@ -83,7 +82,6 @@ sn\modelsis\signart\facade\AdresseFacade.class
 sn\modelsis\signart\facade\ExpositionFacade.class
 sn\modelsis\signart\TypeCommande_.class
 sn\modelsis\signart\rest\application\config\ApplicationConfig.class
-TchatPackage\serverChat$2.class
 sn\modelsis\signart\dto\AdresseDto.class
 sn\modelsis\signart\dto\FormationDto.class
 sn\modelsis\signart\service\TypeCommandeFacadeREST.class
@@ -113,7 +111,6 @@ sn\modelsis\signart\facade\VisiteurFacade.class
 sn\modelsis\signart\EtatLigneCommande.class
 sn\modelsis\signart\Adresse.class
 sn\modelsis\signart\dto\MarquageArtisteDto.class
-TchatPackage\serverChat$1.class
 sn\modelsis\signart\ModePaiement.class
 sn\modelsis\signart\service\CommentaireFacadeREST.class
 sn\modelsis\signart\EtatArtiste_.class
@@ -175,7 +172,6 @@ sn\modelsis\signart\Compte_.class
 sn\modelsis\signart\ArtisteFormationPK_.class
 sn\modelsis\signart\facade\FilmographieFacade.class
 sn\modelsis\signart\OeuvreSouscription.class
-TchatPackage\serverChat.class
 sn\modelsis\signart\ArtisteFonction.class
 sn\modelsis\signart\facade\BiographieFacade.class
 sn\modelsis\signart\EtatLivraison_.class
