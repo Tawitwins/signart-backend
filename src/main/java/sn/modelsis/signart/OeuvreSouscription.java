@@ -55,7 +55,7 @@ public class OeuvreSouscription implements Serializable{
     private Technique idTechnique;
      
     @JoinColumn(name = "idCouleur", referencedColumnName = "id", nullable = false)
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Couleur idCouleur;
         
     @Column(name = "nouveau")
@@ -90,9 +90,13 @@ public class OeuvreSouscription implements Serializable{
     @Column(name = "description", length = 1000)
     private String description;
     
-      @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Artiste idArtiste;
+    
+    @JoinColumn(name = "idSouscription", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = false)
+    private Souscription idSouscription;
     
     @Column(name = "dateAjout")
     @Temporal(TemporalType.TIMESTAMP)
@@ -227,6 +231,14 @@ public class OeuvreSouscription implements Serializable{
 
     public void setIdArtiste(Artiste idArtiste) {
         this.idArtiste = idArtiste;
+    }
+    
+    public Souscription getIdSouscription() {
+        return idSouscription;
+    }
+
+    public void setIdSouscription(Souscription idSouscription) {
+        this.idSouscription = idSouscription;
     }
 
     public Date getDateAjout() {

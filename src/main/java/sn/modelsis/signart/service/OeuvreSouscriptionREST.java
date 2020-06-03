@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -47,6 +48,14 @@ public class OeuvreSouscriptionREST {
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
     
+    @DELETE
+    @Path("{id}")
+    public Response remove(@PathParam("id") Integer id) {
+        OeuvreSouscription entity = oeuvreSouscriptionFacade.findById(id); 
+        OeuvreSouscriptionDto dtoRes = oeuvreSouscriptionConverter.entityToDto(entity);
+        oeuvreSouscriptionFacade.remove(entity);
+        return Response.status(Response.Status.OK).entity(dtoRes).build();
+    }
     
     @GET
     @Path("artiste/{id}")
@@ -59,6 +68,21 @@ public class OeuvreSouscriptionREST {
                 oeuvreSouscriptionConverter.entityToDto(oeuvre)
             ).forEachOrdered(dto -> 
                 listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<OeuvreSouscriptionDto> findAll() {
+        List<OeuvreSouscriptionDto> listDto = new ArrayList<>();
+        List<OeuvreSouscription> listEnt = oeuvreSouscriptionFacade.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> oeuvreSouscriptionConverter.entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
             );
         }
         return listDto;

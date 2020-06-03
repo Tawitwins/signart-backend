@@ -33,6 +33,7 @@ import sn.modelsis.signart.dto.BiographieDto;
 import sn.modelsis.signart.dto.ClientDto;
 import sn.modelsis.signart.dto.ImageProfilDto;
 import sn.modelsis.signart.facade.ArtisteFacade;
+import sn.modelsis.signart.facade.EtatArtisteFacade;
 import sn.modelsis.signart.facade.PaysFacade;
 import sn.modelsis.signart.facade.UtilisateurFacade;
 
@@ -52,14 +53,15 @@ public class ArtisteREST {
     
     @Inject
     PaysFacade paysFacade;
+    
     @Inject
-    EtatArtisteFacadeREST  etatArtisteFacade;
+    EtatArtisteFacade etatArtisteFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(Artiste entity) {
-        artisteFacade.create(entity);
-        return Response.status(Response.Status.CREATED).build();
+    public Response create(ArtisteDto dto) {
+        artisteFacade.create(dtoToEntity(dto));
+        return Response.status(Response.Status.CREATED).entity(dto).build();
     }
 
     @PUT
@@ -102,6 +104,10 @@ public class ArtisteREST {
     public Response upadteProfilArtiste(ArtisteDto dto) throws SignArtException {
         artisteFacade.updateProfil(dtoToEtityProfil(dto));
         return Response.status(Response.Status.OK).build();
+    public Response edit(@PathParam("id") Integer id, ArtisteDto dto) {
+        Artiste entity = dtoToEntity(dto);
+        artisteFacade.edit(entity);
+        return Response.status(Response.Status.OK).entity(dto).build();
     }
     
     @PUT
@@ -147,7 +153,7 @@ public class ArtisteREST {
         return this.entityToDto(artisteFacade.findByUser(idUser));
     }*/
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON}) 
     public List<ArtisteDto> findAll() {
         List<ArtisteDto> listDto = new ArrayList<>();
         List<Artiste> listEnt = artisteFacade.findAll();
@@ -215,18 +221,56 @@ public class ArtisteREST {
         return String.valueOf(artisteFacade.count());
     }
 
-    private ArtisteDto entityToDto(Artiste entity) {
+    
+    
+    public Artiste dtoToEntity(ArtisteDto dto) {
+        Artiste entity = new Artiste();
+        entity.setAdresse(dto.getAdresse());
+        entity.setBiographie(dto.getBiographie());
+        entity.setIdEtatArtiste(etatArtisteFacade.findByLibelle(dto.getEtatArtiste()));
+        entity.setId(dto.getId());
+        entity.setIdUser(utilisateurFacade.findById(dto.getIdUser()));       
+        entity.setNom(dto.getNom());
+        if(dto.getPays() != null)
+            entity.setIdPays(paysFacade.findByLibelle(dto.getPays()));
+        entity.setPrenom(dto.getPrenom());
+        entity.setSurnom(dto.getSurnom());
+        entity.setTelephone(dto.getTelephone());
+        entity.setVille(dto.getVille());
+        entity.setEmail(dto.getEmail());
+        entity.setGenre(dto.getGenre());    
+        entity.setNomGalerie(dto.getNomGalerie());   
+        entity.setAdrGalerie(dto.getAdrGalerie());  
+        entity.setVilleGalerie(dto.getVilleGalerie());  
+        entity.setSpecialites(dto.getSpecialites());
+        entity.setFormation(dto.getFormation());  
+        entity.setExpositions(dto.getExpositions());
+        entity.setProfession(dto.getProfession());
+        return entity;
+    }
+            
+    public ArtisteDto entityToDto(Artiste entity) {
         ArtisteDto dto = new ArtisteDto();
         dto.setAdresse(entity.getAdresse());
         dto.setBiographie(entity.getBiographie());
         dto.setEtatArtiste(entity.getIdEtatArtiste().getLibelle());
         dto.setId(entity.getId());
+        dto.setIdUser(entity.getIdUser().getId());
         dto.setNom(entity.getNom());
         dto.setPays(entity.getIdPays().getLibelle());
         dto.setPrenom(entity.getPrenom());
         dto.setSurnom(entity.getSurnom());
         dto.setTelephone(entity.getTelephone());
         dto.setVille(entity.getVille());
+        dto.setEmail(entity.getEmail());
+        dto.setGenre(entity.getGenre());
+        dto.setNomGalerie(entity.getNomGalerie());
+        dto.setAdrGalerie(entity.getAdrGalerie());
+        dto.setVilleGalerie(entity.getVilleGalerie());
+        dto.setSpecialites(entity.getSpecialites());
+        dto.setFormation(entity.getFormation());
+        dto.setExpositions(entity.getExpositions());
+        
         dto.setProfession(entity.getProfession());
         try {
             dto.setNbFans(artisteFacade.countMarqueArtiste("SUIV"));//TODO calculer

@@ -67,6 +67,22 @@ public class AnnonceREST {
     }
 
     @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<AnnonceDto> findAll() {
+        List<AnnonceDto> listDto = new ArrayList<>();
+        List<Annonce> listEnt = annonceFacade.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    
+    @GET
     @Path("artiste/{idArtiste}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<AnnonceDto> findByArtiste(@PathParam("idArtiste") Integer idArtiste) {

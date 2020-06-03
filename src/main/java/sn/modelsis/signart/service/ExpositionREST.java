@@ -68,6 +68,21 @@ public class ExpositionREST {
     }
 
     @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<ExpositionDto> findAll() {
+        List<ExpositionDto> listDto = new ArrayList<>();
+        List<Exposition> listEnt = expositionFacade.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    @GET
     @Path("artiste/{idArtiste}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<ExpositionDto> findByArtiste(@PathParam("idArtiste") Integer idArtiste) {
@@ -111,7 +126,8 @@ public class ExpositionREST {
         dto.setDateFin(entity.getDateFin());
         dto.setType(entity.getType());
         dto.setEtatExposition(entity.getEtatExposition());
-        dto.setIdArtiste(entity.getIdArtiste().getId());
+        if(entity.getIdArtiste()!= null)
+            dto.setIdArtiste(entity.getIdArtiste().getId());
         return dto;
     }
 

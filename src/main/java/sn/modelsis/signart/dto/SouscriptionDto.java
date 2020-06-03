@@ -1,11 +1,10 @@
 package sn.modelsis.signart.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
- * @author SNNGOM
+ * @author SNLOM
  */
 public class SouscriptionDto implements Serializable {
 
@@ -14,19 +13,23 @@ public class SouscriptionDto implements Serializable {
     private Integer id;
     private String nom;
     private String prenom;
-    private String email;
     private String telephone;
-    private Character sexe;
-    private String codePays;
-    private String siteWeb;
-    private String specialite;
-    private String nomGalerie;
-    private String adresseGalerie;
     private String ville;
+    private String email;
+    private String genre;
+    private String nomGalerie;
+    private String siteWeb;
+    private String adrGalerie;
+    private String specialites;
     private String formation;
-    private String exposition;
-    //private List<OeuvreSouscriptionDto> oeuvres;
-    //private List<OeuvreSouscriptionDto> listeuvres;
+    private String expositions;
+    private String codePays;
+    public SouscriptionDto() {
+    }
+
+    public SouscriptionDto(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -52,13 +55,7 @@ public class SouscriptionDto implements Serializable {
         this.prenom = prenom;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getTelephone() {
         return telephone;
@@ -68,53 +65,6 @@ public class SouscriptionDto implements Serializable {
         this.telephone = telephone;
     }
 
-    public Character getSexe() {
-        return sexe;
-    }
-
-    public void setSexe(Character sexe) {
-        this.sexe = sexe;
-    }
-
-    public String getCodePays() {
-        return codePays;
-    }
-
-    public void setCodePays(String codePays) {
-        this.codePays = codePays;
-    }
-
-    public String getSiteWeb() {
-        return siteWeb;
-    }
-
-    public void setSiteWeb(String siteWeb) {
-        this.siteWeb = siteWeb;
-    }
-
-    public String getSpecialite() {
-        return specialite;
-    }
-
-    public void setSpecialite(String specialite) {
-        this.specialite = specialite;
-    }
-
-    public String getNomGalerie() {
-        return nomGalerie;
-    }
-
-    public void setNomGalerie(String nomGalerie) {
-        this.nomGalerie = nomGalerie;
-    }
-
-    public String getAdresseGalerie() {
-        return adresseGalerie;
-    }
-
-    public void setAdresseGalerie(String adresseGalerie) {
-        this.adresseGalerie = adresseGalerie;
-    }
 
     public String getVille() {
         return ville;
@@ -124,6 +74,60 @@ public class SouscriptionDto implements Serializable {
         this.ville = ville;
     }
 
+    public String getSiteWeb() {
+        return siteWeb;
+    }
+
+    public void setSiteWeb(String siteWeb) {
+        this.siteWeb = siteWeb;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getCodePays() {
+        return codePays;
+    }
+
+    public void setCodePays(String codePays) {
+        this.codePays = codePays;
+    }
+    
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+    
+    public String getNomGalerie() {
+        return nomGalerie;
+    }
+
+    public void setNomGalerie(String nomGalerie) {
+        this.nomGalerie = nomGalerie;
+    }
+
+    public String getAdrGalerie() {
+        return adrGalerie;
+    }
+
+    public void setAdrGalerie(String adrGalerie ) {
+        this.adrGalerie = adrGalerie;
+    }
+
+  
+    public String getSpecialites() {
+        return specialites;
+    }
+
+    public void setSpecialites(String specialites) {
+        this.specialites = specialites;
+    }
     public String getFormation() {
         return formation;
     }
@@ -131,20 +135,35 @@ public class SouscriptionDto implements Serializable {
     public void setFormation(String formation) {
         this.formation = formation;
     }
-
-    public String getExposition() {
-        return exposition;
+    
+    public String getExpositions() {
+        return expositions;
     }
 
-    public void setExposition(String exposition) {
-        this.exposition = exposition;
+    public void setExpositions(String expositions) {
+        this.expositions = expositions;
     }
 
-    /*public List<OeuvreSouscriptionDto> getOeuvres() {
-        return oeuvres;
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
 
-    public void setOeuvres(List<OeuvreSouscriptionDto> oeuvres) {
-        this.oeuvres = oeuvres;
-    }*/
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof SouscriptionDto)) {
+            return false;
+        }
+        SouscriptionDto other = (SouscriptionDto) object;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+    }
+
+    @Override
+    public String toString() {
+        return "sn.modelsis.signart.Artiste[ id=" + id + " ]";
+    }
+    
 }

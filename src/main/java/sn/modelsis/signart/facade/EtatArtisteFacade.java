@@ -36,4 +36,14 @@ public class EtatArtisteFacade extends AbstractFacade<EtatArtiste>{
         }
         return null;
     }
+    public EtatArtiste findByLibelle(String libelle) {
+        final TypedQuery<EtatArtiste> query = getEntityManager().createNamedQuery("EtatArtiste.findByLibelle",
+                EtatArtiste.class);
+        query.setParameter("libelle", libelle);
+        List<EtatArtiste> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
 }

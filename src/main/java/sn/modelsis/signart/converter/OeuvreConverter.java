@@ -12,6 +12,7 @@ import sn.modelsis.signart.dto.OeuvreDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.CouleurFacade;
+import sn.modelsis.signart.facade.StatutOeuvreFacade;
 //import sn.modelsis.signart.facade.SousTechniqueFacade;
 import sn.modelsis.signart.facade.TechniqueFacade;
 
@@ -30,6 +31,8 @@ public class OeuvreConverter {
     SousTechniqueFacade sousTechniqueFacade;*/
     @Inject
     CouleurFacade couleurFacade;
+    @Inject
+    StatutOeuvreFacade statutOeuvreFacade;
 
     public OeuvreDto entityToDto(Oeuvre entity) {
         OeuvreDto dto = new OeuvreDto();
@@ -51,9 +54,11 @@ public class OeuvreConverter {
         dto.setTaxes(entity.getTaxes());
         dto.setImage(entity.getImage());
         dto.setMiniature(entity.getMiniature());
-        dto.setFraisLivraison(entity.getFraisLivraison());
         dto.setDateAjout(entity.getDateAjout());
         dto.setDescription(entity.getDescription());
+        if(entity.getIdStatut() != null)
+            dto.setIdStatus(entity.getIdStatut().getId());
+        dto.setStock(entity.getStock());
         //dto.setIdSousTechnique(entity.getIdSousTechnique().getId());
         //dto.setTechnique(entity.getIdSousTechnique().getIdTechnique().getLibelle());
        // dto.setSousTechnique(entity.getIdSousTechnique().getLibelle());
@@ -86,6 +91,8 @@ public class OeuvreConverter {
         entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
         entity.setFraisLivraison(BigDecimal.valueOf(1500.00));
         entity.setMiniature(dto.getMiniature());
+        if(dto.getIdStatus() != null)
+            entity.setIdStatut(statutOeuvreFacade.find(dto.getIdStatus()));
         
         //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
         

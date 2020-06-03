@@ -8,9 +8,6 @@ package sn.modelsis.signart.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import sn.modelsis.signart.Artiste;
-import sn.modelsis.signart.Couleur;
-import sn.modelsis.signart.Technique;
 
 /**
  *
@@ -21,8 +18,8 @@ public class OeuvreSouscriptionDto implements Serializable{
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String nom;
-    private Integer idTechnique;
-    private Integer idCouleur;
+    private TechniqueDto idTechnique;
+    private CouleurDto idCouleur;
     private Boolean nouveau;
     private Boolean lithographie;
     private String auteur;
@@ -34,6 +31,7 @@ public class OeuvreSouscriptionDto implements Serializable{
     private Byte image; 
     private String description;
     private Integer idArtiste;
+    private Integer idSouscription;
     private Date dateAjout;
 
     public OeuvreSouscriptionDto() {
@@ -145,19 +143,19 @@ public class OeuvreSouscriptionDto implements Serializable{
         this.description = description;
     }
 
-    public Integer getIdTechnique() {
+    public TechniqueDto getIdTechnique() {
         return idTechnique;
     }
 
-    public void setIdTechnique(Integer idTechnique) {
-        this.idTechnique = idTechnique;
+    public void setIdTechnique(TechniqueDto technique) {
+        this.idTechnique = technique;
     }
 
-    public Integer getIdCouleur() {
+    public CouleurDto getIdCouleur() {
         return idCouleur;
     }
 
-    public void setIdCouleur(Integer idCouleur) {
+    public void setIdCouleur(CouleurDto idCouleur) {
         this.idCouleur = idCouleur;
     }
 
@@ -169,7 +167,13 @@ public class OeuvreSouscriptionDto implements Serializable{
         this.idArtiste = idArtiste;
     }
 
-   
+    public Integer getIdSouscription() {
+        return idSouscription;
+    }
+
+    public void setIdSouscription(Integer idSouscription) {
+        this.idSouscription = idSouscription;
+    }
 
     public Date getDateAjout() {
         return dateAjout;

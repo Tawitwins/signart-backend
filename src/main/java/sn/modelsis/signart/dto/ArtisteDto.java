@@ -11,6 +11,7 @@ public class ArtisteDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
+    private Integer idUser;
     private String nom;
     private String prenom;
     private String surnom;
@@ -18,10 +19,19 @@ public class ArtisteDto implements Serializable {
     private String adresse;
     private String ville;
     private String biographie;
+
+    private String email;
+    private String genre;
+    private String nomGalerie;
+    private String adrGalerie;
+    private String villeGalerie;
+    private String specialites;
+    private String formation;
+    private String expositions;
+
     private String profession;
     private String etatArtiste;
     private String pays;
-    private String email;
     private Long nbFans;
     private Long nbOeuvres;
     private Integer idBiographie;
@@ -53,6 +63,13 @@ public class ArtisteDto implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+     public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
     }
 
     public Integer getIdBiographie() {
@@ -129,6 +146,61 @@ public class ArtisteDto implements Serializable {
         this.biographie = biographie;
     }
 
+     public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+    
+    public String getNomGalerie() {
+        return nomGalerie;
+    }
+
+    public void setNomGalerie(String nomGalerie) {
+        this.nomGalerie = nomGalerie;
+    }
+
+    public String getAdrGalerie() {
+        return adrGalerie;
+    }
+
+    public void setAdrGalerie(String adrGalerie ) {
+        this.adrGalerie = adrGalerie;
+    }
+
+    public String getVilleGalerie() {
+        return villeGalerie;
+    }
+
+    public void setVilleGalerie(String villeGalerie) {
+        this.villeGalerie = villeGalerie;
+    }
+
+    public String getSpecialites() {
+        return specialites;
+    }
+
+    public void setSpecialites(String specialites) {
+        this.specialites = specialites;
+    }
+    public String getFormation() {
+        return formation;
+    }
+
+    public void setFormation(String formation) {
+        this.formation = formation;
+    }
+    
+    public String getExpositions() {
+        return expositions;
+    }
+
+    public void setExpositions(String expositions) {
+        this.expositions = expositions;
+    }
+
     public String getProfession() {
         return profession;
     }
@@ -192,3 +264,7 @@ public class ArtisteDto implements Serializable {
     }
     
 }
+package sn.modelsis.signart.dto;
+
+import java.io.Serializable;
+
