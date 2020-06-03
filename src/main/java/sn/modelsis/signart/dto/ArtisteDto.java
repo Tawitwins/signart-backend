@@ -264,7 +264,5 @@ public class ArtisteDto implements Serializable {
     }
     
 }
-package sn.modelsis.signart.dto;
 
-import java.io.Serializable;
 

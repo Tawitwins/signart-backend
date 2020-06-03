@@ -72,9 +72,7 @@ public class Artiste implements Serializable {
     private String ville;
     @Column(name = "biographie", length = 2000)
     private String biographie;
-    
-    @Column(name = "email", length = 50)
-    private String email;
+
     @Column(name = "genre", length = 10)
     private String genre;
     @Column(name = "nomGalerie", length = 100)
@@ -220,14 +218,7 @@ public class Artiste implements Serializable {
     public void setBiographie(String biographie) {
         this.biographie = biographie;
     }
-    
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  
     
     public String getGenre() {
         return genre;
