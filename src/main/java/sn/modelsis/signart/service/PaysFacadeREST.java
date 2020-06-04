@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import sn.modelsis.signart.Pays;
 import sn.modelsis.signart.converter.PaysConverter;
 import sn.modelsis.signart.dto.PaysDto;
+import sn.modelsis.signart.facade.PaysFacade;
 
 /**
  *
@@ -34,6 +35,8 @@ public class PaysFacadeREST extends AbstractFacade<Pays> {
     private EntityManager em;
     @Inject
     PaysConverter paysConverter;
+    @Inject
+    PaysFacade paysFacade;
     
     public PaysFacadeREST() {
         super(Pays.class);
@@ -87,24 +90,41 @@ public class PaysFacadeREST extends AbstractFacade<Pays> {
     }
 
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    @Asynchronous
-    public void findAll(@Suspended final AsyncResponse asyncResponse) {
-        asyncResponse.resume(doFindAll());
-    }
-
-    private List<PaysDto> doFindAll() {
-       
+    @Path("all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<PaysDto> findAllPays() {
+        //return paysFacade.findAll();
         List<PaysDto> listDto = new ArrayList<>();
-        List<Pays> listEnt = super.findAll();
+        List<Pays> listEnt = paysFacade.findAll();
         if (listEnt != null) {
-            listEnt.stream().map((entity) -> {
-                return paysConverter.toDto(entity);
-            }).forEachOrdered((dto) -> {
-                listDto.add(dto);
-            });
+            listEnt.stream().map(entity -> 
+                paysConverter.toDto(entity)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
         }
         return listDto;
     }
+
+//    @GET
+//    @Produces(value = {MediaType.APPLICATION_JSON})
+//    @Asynchronous
+//    public void findAll(@Suspended final AsyncResponse asyncResponse) {
+//        asyncResponse.resume(doFindAll());
+//    }
+//
+//    private List<PaysDto> doFindAll() {
+//       
+//        List<PaysDto> listDto = new ArrayList<>();
+//        List<Pays> listEnt = super.findAll();
+//        if (listEnt != null) {
+//            listEnt.stream().map((entity) -> {
+//                return paysConverter.toDto(entity);
+//            }).forEachOrdered((dto) -> {
+//                listDto.add(dto);
+//            });
+//        }
+//        return listDto;
+//    }
     
 }

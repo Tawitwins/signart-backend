@@ -75,8 +75,10 @@ public class OeuvreConverter {
         
         entity.setId(dto.getId());
         entity.setNom(dto.getNom());
-        entity.setIdTechnique(recupTechnique(dto.getIdTechnique()));
-        entity.setIdCouleur(recupCouleur(dto.getIdCouleur()));
+        if(dto.getIdTechnique() != null)
+            entity.setIdTechnique(recupTechnique(dto.getIdTechnique()));
+        if(dto.getIdCouleur() != null)
+            entity.setIdCouleur(recupCouleur(dto.getIdCouleur()));
         entity.setNouveau(dto.getNouveau());
         entity.setLithographie(dto.getLithographie());
         entity.setAuteur(dto.getAuteur());
@@ -88,7 +90,8 @@ public class OeuvreConverter {
         entity.setTaxes(dto.getTaxes());
         entity.setImage(dto.getImage());
         entity.setDescription(dto.getDescription());
-        entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
+        if(dto.getIdArtiste() != null)
+            entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
         entity.setFraisLivraison(BigDecimal.valueOf(1500.00));
         entity.setMiniature(dto.getMiniature());
         if(dto.getIdStatus() != null)

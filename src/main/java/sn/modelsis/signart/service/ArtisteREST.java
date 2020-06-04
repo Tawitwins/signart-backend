@@ -60,8 +60,10 @@ public class ArtisteREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(ArtisteDto dto) {
-        artisteFacade.create(dtoToEntity(dto));
-        return Response.status(Response.Status.CREATED).entity(dto).build();
+        Artiste entity = dtoToEntity(dto);
+        artisteFacade.create(entity);
+        ArtisteDto dtoRes = entityToDto(entity);
+        return Response.status(Response.Status.CREATED).entity(dtoRes).build();
     }
 
     @PUT
