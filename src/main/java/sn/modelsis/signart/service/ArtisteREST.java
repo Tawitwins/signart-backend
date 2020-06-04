@@ -1,7 +1,12 @@
 package sn.modelsis.signart.service;
 
+import com.sun.jersey.multipart.FormDataParam;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -16,13 +21,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Biographie;
+import sn.modelsis.signart.Pays;
 import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.ArtisteDto;
 import sn.modelsis.signart.dto.BiographieDto;
 import sn.modelsis.signart.dto.ClientDto;
+import sn.modelsis.signart.dto.ImageProfilDto;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.EtatArtisteFacade;
 import sn.modelsis.signart.facade.PaysFacade;
@@ -58,11 +67,57 @@ public class ArtisteREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
+    public Response edit(@PathParam("id") Integer id, ArtisteDto dto) throws SignArtException {
+        Artiste artiste = artisteFacade.findById(id);
+        artisteFacade.edit(dtoToEtityProfil(dto,artiste));
+        return Response.status(Response.Status.OK).build();
+    }
+   
+    @PUT
+    @Path("updatePhoto/{idArtiste}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response editPhoto(@PathParam("idArtiste") Integer idArtiste, ImageProfilDto dto) throws SignArtException, IOException {
+        Artiste artiste; 
+            
+            artiste = artisteFacade.findById(idArtiste);           
+            //System.out.println(artiste+"+++++++++++++++++++++++++++++++++++++++artiste++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+            String valeur = dto.getValue();
+            //System.out.println(valeur+"+++++++++++++++++++++++++++++++++++++++valeur++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+            final byte[] imageByte = Base64.decodeBase64(valeur.getBytes());
+            //System.out.println(imageByte+"+++++++++++++++++++++++++++++++++++++++imageByte++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+            //byte[] bytes = valeur.getBytes();
+            //System.out.println(bytes+"+++++++++++++++++++++++++++++++++++++++bytes++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+           
+            artiste.setPhoto(imageByte);
+            artisteFacade.edit(artiste);
+            return Response.status(Response.Status.OK).build();
+       
+    }
+    
+    /*@PUT
+    @Path("updateprofil")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response upadteProfilArtiste(ArtisteDto dto) throws SignArtException {
+        artisteFacade.updateProfil(dtoToEtityProfil(dto));
+        return Response.status(Response.Status.OK).build();
     public Response edit(@PathParam("id") Integer id, ArtisteDto dto) {
         Artiste entity = dtoToEntity(dto);
         artisteFacade.edit(entity);
         return Response.status(Response.Status.OK).entity(dto).build();
     }
+    
+    @PUT
+    @Path("updatename")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void upadteNomArtiste(ArtisteDto dto) throws SignArtException {
+        
+        artisteFacade.updateNom(dtoToEtityProfil(dto));
+        //return Response.status(Response.Status.OK).build();
+    }*/
 
     @DELETE
     @Path("{id}")
@@ -225,6 +280,26 @@ public class ArtisteREST {
         }
         return dto;
     }
+    
+    private Artiste dtoToEtityProfil(ArtisteDto dto, Artiste entity) {
+        entity.setNom(dto.getNom());
+        entity.setPrenom(dto.getPrenom());
+        entity.setSurnom(dto.getSurnom());
+        entity.setTelephone(dto.getTelephone());
+        entity.setEmail(dto.getEmail());
+        entity.setAdresse(dto.getAdresse());
+        entity.setVille(dto.getVille());
+        entity.setIdPays(findPays(dto.getPays()));
+       
+        
+        return entity;
+    }
+    
+    private Pays findPays(String libelle){
+        return paysFacade.findByLibelle(libelle);
+    }
+    
+    
 
     private BiographieDto entityToBiographieDto(Biographie entity) {
 

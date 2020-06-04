@@ -57,3 +57,4 @@ public class PaysFacade extends AbstractFacade<Pays> {
     }
 
 }
+

@@ -1,9 +1,13 @@
 package sn.modelsis.signart.facade;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import sn.modelsis.signart.Annonce;
 import sn.modelsis.signart.Biographie;
+import sn.modelsis.signart.exception.SignArtException;
 
 /**
  *
@@ -22,6 +26,19 @@ public class BiographieFacade extends AbstractFacade<Biographie> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    
+    public Biographie findByArtiste(Integer idArtiste) throws SignArtException {
+        try {
+            final TypedQuery<Biographie> query = getEntityManager().createNamedQuery("Biographie.findByIdArtiste",
+                    Biographie.class);
+            query.setParameter("idArtiste", idArtiste);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
     }
 
     /**

@@ -19,7 +19,7 @@ public class ArtisteDto implements Serializable {
     private String adresse;
     private String ville;
     private String biographie;
-    
+
     private String email;
     private String genre;
     private String nomGalerie;
@@ -28,12 +28,27 @@ public class ArtisteDto implements Serializable {
     private String specialites;
     private String formation;
     private String expositions;
-    
+
     private String profession;
     private String etatArtiste;
     private String pays;
     private Long nbFans;
     private Long nbOeuvres;
+    private Integer idBiographie;
+
+    public ArtisteDto(Integer id, String nom, String prenom, String surnom, String telephone, String adresse, String ville, String pays, String email) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.surnom = surnom;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.pays = pays;
+        this.email = email;
+    }
+    
+    
 
     public ArtisteDto() {
     }
@@ -49,7 +64,7 @@ public class ArtisteDto implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-    public Integer getIdUser() {
+     public Integer getIdUser() {
         return idUser;
     }
 
@@ -57,6 +72,23 @@ public class ArtisteDto implements Serializable {
         this.idUser = idUser;
     }
 
+    public Integer getIdBiographie() {
+        return idBiographie;
+    }
+
+    public void setIdBiographie(Integer idBiographie) {
+        this.idBiographie = idBiographie;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
 
     public String getNom() {
         return nom;
@@ -113,16 +145,8 @@ public class ArtisteDto implements Serializable {
     public void setBiographie(String biographie) {
         this.biographie = biographie;
     }
-    
-     public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public String getGenre() {
+     public String getGenre() {
         return genre;
     }
 
@@ -176,7 +200,6 @@ public class ArtisteDto implements Serializable {
     public void setExpositions(String expositions) {
         this.expositions = expositions;
     }
-
 
     public String getProfession() {
         return profession;
@@ -241,3 +264,5 @@ public class ArtisteDto implements Serializable {
     }
     
 }
+
+

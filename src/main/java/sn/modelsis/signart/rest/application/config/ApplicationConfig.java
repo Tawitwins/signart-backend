@@ -56,6 +56,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.FilmographieREST.class);
         resources.add(sn.modelsis.signart.service.FonctionREST.class);
         resources.add(sn.modelsis.signart.service.FormationREST.class);
+        resources.add(sn.modelsis.signart.service.ImageProfilREST.class);
         resources.add(sn.modelsis.signart.service.ImageREST.class);
         resources.add(sn.modelsis.signart.service.LigneCommandeREST.class);
         resources.add(sn.modelsis.signart.service.LignePanierREST.class);
@@ -74,6 +75,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.PaiementREST.class);
         resources.add(sn.modelsis.signart.service.PanierREST.class);
         resources.add(sn.modelsis.signart.service.PaysFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.PresentationREST.class);
         resources.add(sn.modelsis.signart.service.ProfilFacadeREST.class);
         resources.add(sn.modelsis.signart.service.PromotionREST.class);
         resources.add(sn.modelsis.signart.service.SouscriptionREST.class);

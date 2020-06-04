@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import sn.modelsis.signart.Utilisateur;
+import sn.modelsis.signart.dto.AccountDto;
 import sn.modelsis.signart.dto.AccountInformation;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.UtilisateurFacade;
@@ -61,4 +62,29 @@ public class LoginREST {
             throw new SignArtException("Erreur de generation du token jwt, contacter l'administrateur" + e.getMessage());
         }
     }
+    
+    
+    @POST
+    @Path("passwordFind")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public AccountDto testPassword(AccountInformation account){
+        final Utilisateur foundUser = userFacade.findByMail(account.getUserName());
+        final String passwordEncoded = passwordEncoder.encodePassword(account.getPassword(), account.getUserName());
+        if (StringUtils.equals(foundUser.getPassword(), passwordEncoded)) {
+            return entityToDtoAccount(foundUser);
+        }
+        return null;
+    }
+    
+    private AccountDto entityToDtoAccount(Utilisateur entity){
+        AccountDto dto = new AccountDto();
+        dto.setIdUser(entity.getId());
+        dto.setEmail(entity.getMail());
+       
+        return dto;  
+    }
+    
+    
+    
+    
 }
