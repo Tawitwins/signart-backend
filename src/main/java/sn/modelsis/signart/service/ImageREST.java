@@ -33,11 +33,13 @@ import sn.modelsis.signart.Artiste;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 import sn.modelsis.signart.Oeuvre;
+import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.dto.ArtisteDto;
 import sn.modelsis.signart.dto.ImageDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.OeuvreFacade;
+import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
 import sun.misc.BASE64Encoder;
 //import org.glassfish.jersey.media.multipart.MultiPartFeature;
 //import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -52,6 +54,8 @@ public class ImageREST {
 
     @Inject
     OeuvreFacade oeuvreFacade;
+    @Inject
+    OeuvreSouscriptionFacade oeuvreSouscriptionFacade;
     @Inject
     ArtisteFacade artisteFacade;
 
@@ -163,6 +167,24 @@ public class ImageREST {
         }
     }
     
+     @GET
+    @Produces({MediaType.APPLICATION_OCTET_STREAM})
+    @Path("/oeuvreSouscription/{id}")
+    public Response findOeuvreSouscriptionImage(@PathParam("id") Integer id) {
+        try {
+        //ImageDto imgdto = new ImageDto();
+            OeuvreSouscription oeuvreSouscription = oeuvreSouscriptionFacade.findById(id);
+            //System.out.println(oeuvreSouscription.getImage()+"+++++++++++++++++++++++++++++++++++++++OEUVRE IMAGE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            
+            final ResponseBuilder response = Response.ok(oeuvreSouscription.getImage());
+            response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
+            return response.build();
+            //return imgdto;
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
+    
     static BufferedImage addTextWatermarkMin(String text,  BufferedImage sourceImage) {
 	   
 	       
@@ -256,7 +278,7 @@ public class ImageREST {
        byte[] imgfinal = createBytesFromImage(waterImg);
        
        oeuvre.setImage(imgfinal);
-        oeuvreFacade.edit(oeuvre);
+       oeuvreFacade.edit(oeuvre);
         return Response.status(Response.Status.OK).build();
     }
     

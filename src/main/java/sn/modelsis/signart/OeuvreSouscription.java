@@ -85,7 +85,7 @@ public class OeuvreSouscription implements Serializable{
     
     @Lob
     @Column(name = "image")
-    private Byte image;
+    private byte[] image;
             
     @Column(name = "description", length = 1000)
     private String description;
@@ -101,6 +101,7 @@ public class OeuvreSouscription implements Serializable{
     @Column(name = "dateAjout")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAjout;
+    
 
     public OeuvreSouscription() {
     }
@@ -109,8 +110,6 @@ public class OeuvreSouscription implements Serializable{
         this.id = id;
     }
     
-    
-
     public Integer getId() {
         return id;
     }
@@ -207,11 +206,11 @@ public class OeuvreSouscription implements Serializable{
         this.taxes = taxes;
     }
 
-    public Byte getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Byte image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

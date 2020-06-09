@@ -9,6 +9,7 @@ import java.util.Calendar;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.PathParam;
+import org.apache.commons.codec.binary.Base64;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Couleur;
 import sn.modelsis.signart.OeuvreSouscription;
@@ -68,10 +69,12 @@ public class OeuvreSouscriptionConverter {
         //java.sql.Timestamp dateAjout = new java.sql.Timestamp(currentDate.getTime());  
        // entity.setId(dto.getId());
         entity.setNom(dto.getNom());
-        if(dto.getIdTechnique()!= null)
-            entity.setIdTechnique(recupTechnique(dto.getIdTechnique().getId()));
-        if(dto.getIdCouleur()!= null)
-            entity.setIdCouleur(recupCouleur(dto.getIdCouleur().getId()));
+        //if(dto.getIdTechnique()!= null)
+        //    entity.setIdTechnique(recupTechnique(dto.getIdTechnique().getId()));
+        //if(dto.getIdCouleur()!= null)
+        //    entity.setIdCouleur(recupCouleur(dto.getIdCouleur().getId()));
+        entity.setIdTechnique(recupTechnique(dto.getIdTechnique()));
+        entity.setIdCouleur(recupCouleur(dto.getIdCouleur()));
         entity.setNouveau(dto.getNouveau());
         entity.setLithographie(dto.getLithographie());
         entity.setAuteur(dto.getAuteur());
@@ -81,13 +84,17 @@ public class OeuvreSouscriptionConverter {
         entity.setPrix(dto.getPrix());
         entity.setTauxremise(dto.getTauxremise());
         entity.setTaxes(dto.getTaxes());
-        entity.setImage(dto.getImage());
         entity.setDescription(dto.getDescription());
         if(dto.getIdArtiste() != null)
             entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
         if(dto.getIdSouscription() != null)
             entity.setIdSouscription(souscriptionFacade.find(dto.getIdSouscription()));
         
+        String imageValue = dto.getImage().getValue();
+        //System.out.println(imageValue+"+++++++++++++++++++++++++++++++++++++++++++++++imageValue++++++++++++++++++++++++++++++++++++++++++++++");
+        final byte[] image = Base64.decodeBase64(imageValue.getBytes());
+        entity.setImage(image);
+        //System.out.println(entity.getImage()+"+++++++++++++++++++++++++++++++++++++++++++++++entity image++++++++++++++++++++++++++++++++++++++++++++++");
         //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique())); 
         return entity;
     }
@@ -97,10 +104,12 @@ public class OeuvreSouscriptionConverter {
         OeuvreSouscriptionDto dto = new OeuvreSouscriptionDto();
          dto.setId(entity.getId());
         dto.setNom(entity.getNom());
-        if(entity.getIdTechnique() != null)
+       /* if(entity.getIdTechnique() != null)
             dto.setIdTechnique(techniqueConverter.toDto(entity.getIdTechnique()));
         if(entity.getIdCouleur() != null)
-            dto.setIdCouleur(entityToDto(entity.getIdCouleur()));
+            dto.setIdCouleur(entityToDto(entity.getIdCouleur()));*/
+        dto.setIdTechnique(entity.getIdTechnique().getId());
+        dto.setIdCouleur(entity.getIdCouleur().getId());
         dto.setNouveau(entity.getNouveau());
         dto.setLithographie(entity.getLithographie());
         dto.setAnnee(entity.getAnnee());
@@ -109,7 +118,6 @@ public class OeuvreSouscriptionConverter {
         dto.setPrix(entity.getPrix());
         dto.setTauxremise(entity.getTauxremise());
         dto.setTaxes(entity.getTaxes());
-        dto.setImage(entity.getImage());
         dto.setDescription(entity.getDescription());
         if(entity.getIdArtiste()!=null)
             dto.setIdArtiste(entity.getIdArtiste().getId());
