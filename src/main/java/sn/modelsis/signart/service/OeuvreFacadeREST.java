@@ -38,7 +38,8 @@ public class OeuvreFacadeREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(OeuvreDto dto) throws SignArtException {
-        oeuvreFacade.create(oeuvreConverter.dtoToEntity(dto));
+        Oeuvre entity = oeuvreConverter.dtoToEntity(dto);
+        oeuvreFacade.create(entity);
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
 

@@ -49,7 +49,7 @@ public class Biographie implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "dateNaissance")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateNaissance;
     @Size(max = 50)
     @Column(name = "lieuNaissance")
