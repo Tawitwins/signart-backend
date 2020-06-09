@@ -28,7 +28,7 @@ public class OeuvreSouscriptionDto implements Serializable{
     private BigDecimal prix;
     private Integer tauxremise;
     private BigDecimal taxes;
-    private byte[] image; 
+    private ImageProfilDto image;
     private String description;
     private Integer idArtiste;
     private Integer idSouscription;
@@ -58,7 +58,6 @@ public class OeuvreSouscriptionDto implements Serializable{
     public void setNom(String nom) {
         this.nom = nom;
     }
-
   
 
     public Boolean getNouveau() {
@@ -125,16 +124,16 @@ public class OeuvreSouscriptionDto implements Serializable{
         this.taxes = taxes;
     }
 
-    public byte[] getImage() {
+
+
+
+    public ImageProfilDto getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(ImageProfilDto image) {
         this.image = image;
-    }
-
-    
-
+    } 
     public String getDescription() {
         return description;
     }
@@ -158,6 +157,8 @@ public class OeuvreSouscriptionDto implements Serializable{
     public void setIdCouleur(CouleurDto idCouleur) {
         this.idCouleur = idCouleur;
     }
+
+ 
 
     public Integer getIdArtiste() {
         return idArtiste;

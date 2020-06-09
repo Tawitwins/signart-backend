@@ -103,6 +103,7 @@ public class OeuvreSouscription implements Serializable{
     @Column(name = "dateAjout")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAjout;
+    
 
     public OeuvreSouscription() {
     }
@@ -111,8 +112,6 @@ public class OeuvreSouscription implements Serializable{
         this.id = id;
     }
     
-    
-
     public Integer getId() {
         return id;
     }

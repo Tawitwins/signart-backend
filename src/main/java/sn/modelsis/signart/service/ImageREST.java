@@ -166,26 +166,17 @@ public class ImageREST {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
-    @GET
+    
+     @GET
     @Produces({MediaType.APPLICATION_OCTET_STREAM})
     @Path("/oeuvreSouscription/{id}")
     public Response findOeuvreSouscriptionImage(@PathParam("id") Integer id) {
         try {
         //ImageDto imgdto = new ImageDto();
-            OeuvreSouscription oeuvreSousc = oeuvreSouscriptionFacade.find(id);
-            //System.out.println(oeuvre.getImage()+"+++++++++++++++++++++++++++++++++++++++OEUVRE IMAGE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-           // BufferedImage res = createImageFromBytes(oeuvre.getImage());
-           //             System.out.println(res+"+++++++++++++++++++++++++++++++++++++++RES++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-          /* BufferedImage resimg = addTextWatermarkMin("SignArt",res);
-           System.out.println(resimg+"+++++++++++++++++++++++++++++++++++++++water++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            String imageBase = encodeToString(resimg,"jpg");            
-            System.out.println(imageBase+"+++++++++++++++++++++++++++++++++++++++IMAGE base++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-            imgdto.setValeur(imageBase);*/
+            OeuvreSouscription oeuvreSouscription = oeuvreSouscriptionFacade.findById(id);
+            //System.out.println(oeuvreSouscription.getImage()+"+++++++++++++++++++++++++++++++++++++++OEUVRE IMAGE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             
-            final ResponseBuilder response = Response.ok(oeuvreSousc.getImage());
+            final ResponseBuilder response = Response.ok(oeuvreSouscription.getImage());
             response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
             return response.build();
             //return imgdto;
@@ -193,6 +184,7 @@ public class ImageREST {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
+    
     static BufferedImage addTextWatermarkMin(String text,  BufferedImage sourceImage) {
 	   
 	       
@@ -286,7 +278,7 @@ public class ImageREST {
        byte[] imgfinal = createBytesFromImage(waterImg);
        
        oeuvre.setImage(imgfinal);
-        oeuvreFacade.edit(oeuvre);
+       oeuvreFacade.edit(oeuvre);
         return Response.status(Response.Status.OK).build();
     }
     

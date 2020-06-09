@@ -91,6 +91,23 @@ public class PresentationREST {
     }
     
     @GET
+    @Path("artisteAll/{idArtiste}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<PresentationDto> findAllByArtiste(@PathParam("idArtiste") Integer idArtiste) throws SignArtException {
+        //Presentation dto = presentationFacade.findByArtiste(idArtiste);
+         List<PresentationDto> listDto = new ArrayList<>();
+        List<Presentation> listEnt = presentationFacade.findAllByArtiste(idArtiste);
+        if (listEnt != null) {
+            listEnt.stream().map(oeuvre -> 
+                entityToDto(oeuvre)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    
+    @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
