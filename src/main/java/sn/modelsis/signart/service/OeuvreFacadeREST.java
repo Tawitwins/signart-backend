@@ -40,7 +40,8 @@ public class OeuvreFacadeREST {
     public Response create(OeuvreDto dto) throws SignArtException {
         Oeuvre entity = oeuvreConverter.dtoToEntity(dto);
         oeuvreFacade.create(entity);
-        return Response.status(Response.Status.CREATED).entity(dto).build();
+        OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
+        return Response.status(Response.Status.CREATED).entity(dtoRes).build();
     }
 
     @PUT

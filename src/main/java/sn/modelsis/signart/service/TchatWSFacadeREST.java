@@ -1,9 +1,11 @@
 package sn.modelsis.signart.service;
 
-import TchatPackage.TchatWS;
+
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -12,36 +14,37 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.server.ServerEndpointConfig;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import sn.modelsis.signart.Visiteur;
-import sn.modelsis.signart.converter.VisiteurConverter;
-import sn.modelsis.signart.dto.VisiteurDto;
+import sn.modelsis.signart.Artiste;
+import sn.modelsis.signart.MessagesTchats;
+import sn.modelsis.signart.converter.MessagesTchatsConverter;
+import sn.modelsis.signart.dto.MessagesTchatsDto;
+import sn.modelsis.signart.facade.ArtisteFacade;
+import sn.modelsis.signart.facade.MessagesTchatsFacade;
 import sn.modelsis.signart.facade.VisiteurFacade;
 
 /**
  *
- * @author SNLOM
+ * @author SNMBENGUEO
  */
 @Stateless
 @Path("admin")
-@ServerEndpoint(value="/admin/Ws/{pseudo}", 
+@ServerEndpoint(value="/admin/Ws/{username}/{isAdmin}/{idUser}", 
                 configurator=TchatWSFacadeREST.EndpointConfigurator.class)
 
 public class TchatWSFacadeREST {
 
+    private @Inject MessagesTchatsFacade messagesTchatsFacade;
+    private @Inject MessagesTchatsConverter messagesTchatsConverter;
+    
+    
     private static TchatWSFacadeREST singleton = new TchatWSFacadeREST();
+    private List<MessagesTchatsDto> messages;
+    private List<MessagesTchatsDto> messagesAdmin; 
 
-    public TchatWSFacadeREST() {
-    }
 
     /**
      * Acquisition de notre unique instance ChatRoom 
@@ -64,14 +67,25 @@ public class TchatWSFacadeREST {
     /**
      * Cette méthode est déclenchée à chaque connexion d'un utilisateur.
      * @param session
-     * @param pseudo
+     * @param username
+     * @param isAdmin
      */
     @OnOpen
-    public void open(Session session, @javax.websocket.server.PathParam("pseudo") String pseudo ) {
+    public void open(Session session, @javax.websocket.server.PathParam("username") String username,@javax.websocket.server.PathParam("isAdmin") boolean isAdmin) {
         
-        session.getUserProperties().put( "pseudo", pseudo );
+        session.getUserProperties().put( "username", username );
         sessions.put( session.getId(), session );
-        sendMessage( "Admin >>> Connection established for " + pseudo );
+        
+        messages = ConvertListEntityToDto(messagesTchatsFacade.findAll());
+        
+        sendMessageCon( "Admin >>> Data sent to the user " + username,session);
+        sendMessageAll("Admin >>> Connection established for " + username);
+        if(isAdmin==true)
+        {
+             messagesAdmin = ConvertListEntityToDto(messagesTchatsFacade.findAll());
+             sendMessageData( "Admin >>> Data sent to the (admin) user" + username,session);
+        }
+        
     }
 
     /**
@@ -80,9 +94,9 @@ public class TchatWSFacadeREST {
      */
     @OnClose
     public void close(Session session) {
-        String pseudo = (String) session.getUserProperties().get( "pseudo" );
+        String username = (String) session.getUserProperties().get( "username" );
         sessions.remove( session.getId() );
-        sendMessage( "Admin >>> Connection closed for " + pseudo );
+        sendMessageAll( "Admin >>> Connection closed for " + username );
     }
 
     /**
@@ -101,17 +115,51 @@ public class TchatWSFacadeREST {
      */
     @OnMessage
     public void handleMessage(String message, Session session) {
-        String pseudo = (String) session.getUserProperties().get( "pseudo" );
-        String fullMessage = pseudo + " >>> " + message; 
+        String username = (String) session.getUserProperties().get( "username" );
+        String fullMessage = username + " >>> " + message; 
         
-        sendMessage( fullMessage );
+        sendMessageAll( fullMessage );
     }
 
     /**
      * Une méthode privée, spécifique à notre exemple.
-     * Elle permet l'envoie d'un message aux participants de la discussion.
+     * Elle permet l'envoie d'un message au participant qui vient juste de se connecter.
      */
-    private void sendMessage( String fullMessage ) {
+    private void sendMessageCon( String fullMessage,Session sessionCon ) {
+        // Affichage sur la console du server Web.
+        System.out.println( fullMessage );      
+        
+        // On envoie le message à tout le monde.
+       
+            try {
+                sessionCon.getBasicRemote().sendObject(messages);
+                sessionCon.getBasicRemote().sendText( fullMessage );
+            } catch( Exception exception ) {
+                System.out.println( "ERROR: cannot send message to " + sessionCon.getId() );
+            }   
+    }
+    /**
+     * Une méthode privée, spécifique à notre exemple.
+     * Elle permet l'envoie d'un message au participant qui vient juste de se connecter.
+     */
+    private void sendMessageData( String fullMessage,Session sessionCon ) {
+        // Affichage sur la console du server Web.
+        System.out.println( fullMessage );      
+        
+        // On envoie le message à tout le monde.
+       
+            try {
+                sessionCon.getBasicRemote().sendText( fullMessage );
+                sessionCon.getBasicRemote().sendObject(messagesAdmin);
+            } catch( Exception exception ) {
+                System.out.println( "ERROR: cannot send message to " + sessionCon.getId() );
+            }   
+    }
+    /**
+     * Une méthode privée, spécifique à notre exemple.
+     * Elle permet l'envoie de donnés à une session spécifique.
+     */
+    private void sendMessageAll( String fullMessage ) {
         // Affichage sur la console du server Web.
         System.out.println( fullMessage );      
         
@@ -124,16 +172,31 @@ public class TchatWSFacadeREST {
             }
         });       
     }
+    private List<MessagesTchatsDto> ConvertListEntityToDto(List<MessagesTchats> listEnt )
+    {
+        List<MessagesTchatsDto> listDto = new ArrayList<>();
+        //List<MessagesTchats> listEnt = messagesTchatsFacade.findAll();
+        if (listEnt != null) {
+                listEnt.stream().map((MessagesTchats) -> {
+                    return messagesTchatsConverter.entityToDto(MessagesTchats);
+                }).forEachOrdered((dto) -> {
+                    listDto.add(dto);
+                });
+            }
+        return listDto;
+    }
     
     /**
      * Permet de ne pas avoir une instance différente par client.
      * ChatRoom est donc gérer en "singleton" et le configurateur utilise ce singleton. 
      */
     public static class EndpointConfigurator extends ServerEndpointConfig.Configurator {
+        private @Inject VisiteurFacade visiteurFacade;
+        private @Inject ArtisteFacade artisteFacade;
         @Override 
         @SuppressWarnings("unchecked")
         public <T> T getEndpointInstance(Class<T> endpointClass) {
-            return (T) TchatWSFacadeREST.getInstance();
+            return  CDI.current().select(endpointClass).get(); 
         }
     }
 }

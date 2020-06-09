@@ -62,7 +62,18 @@ public class OeuvreSouscriptionFacade extends AbstractFacade<OeuvreSouscription>
         }
         return null;
     }
-    
+     /*public List<OeuvreSouscription> findAllButImg() {
+
+        final TypedQuery<OeuvreSouscription> query = getEntityManager().createNamedQuery("OeuvreSouscription.findAllButImg",
+                OeuvreSouscription.class);
+        //query.setParameter("id", id);
+        List<OeuvreSouscription> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list;
+        }
+        return null;
+    }
+    */
     
     @Override
     protected EntityManager getEntityManager() {

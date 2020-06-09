@@ -32,6 +32,8 @@ import javax.persistence.TemporalType;
 @Table(name = "OeuvreSouscription", catalog = "signart", schema = "dbo")
 @NamedQueries({
     @NamedQuery(name = "OeuvreSouscription.findAll", query = "SELECT o FROM OeuvreSouscription o")
+//    , @NamedQuery(name = "OeuvreSouscription.findAllButImg", query = "SELECT nom,idTechnique,idCouleur,nouveau,lithographie,auteur,dimensions,annee,prix,tauxremise,taxes,description,idArtiste,dateAjout,"
+ //           + "id,idSouscription FROM OeuvreSouscription WHERE 1=1")
     , @NamedQuery(name = "OeuvreSouscription.countOeuvreSouscriptionByArtiste", query = "SELECT count(o) FROM OeuvreSouscription o WHERE o.idArtiste.id = :idArtiste")
     , @NamedQuery(name = "OeuvreSouscription.findById", query = "SELECT o FROM OeuvreSouscription o WHERE o.id = :id")
     , @NamedQuery(name = "OeuvreSouscription.findByNom", query = "SELECT o FROM OeuvreSouscription o WHERE o.nom = :nom")
@@ -85,7 +87,7 @@ public class OeuvreSouscription implements Serializable{
     
     @Lob
     @Column(name = "image")
-    private Byte image;
+    private byte[] image;
             
     @Column(name = "description", length = 1000)
     private String description;
@@ -207,11 +209,11 @@ public class OeuvreSouscription implements Serializable{
         this.taxes = taxes;
     }
 
-    public Byte getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Byte image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

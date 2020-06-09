@@ -37,7 +37,7 @@ public class VisiteurFacade extends AbstractFacade<Visiteur>  {
      */
     public List<Visiteur> findByArtiste() throws SignArtException {
         try {
-            final TypedQuery<Visiteur> query = getEntityManager().createNamedQuery("Visiteur.findVsiteurs",
+            final TypedQuery<Visiteur> query = getEntityManager().createNamedQuery("Visiteur.findAll",
                     Visiteur.class);
             return query.getResultList();
         } catch (Exception e) {

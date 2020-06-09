@@ -28,7 +28,7 @@ public class OeuvreSouscriptionDto implements Serializable{
     private BigDecimal prix;
     private Integer tauxremise;
     private BigDecimal taxes;
-    private Byte image; 
+    private byte[] image; 
     private String description;
     private Integer idArtiste;
     private Integer idSouscription;
@@ -125,11 +125,11 @@ public class OeuvreSouscriptionDto implements Serializable{
         this.taxes = taxes;
     }
 
-    public Byte getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Byte image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

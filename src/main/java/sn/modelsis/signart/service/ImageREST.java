@@ -33,11 +33,13 @@ import sn.modelsis.signart.Artiste;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 import sn.modelsis.signart.Oeuvre;
+import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.dto.ArtisteDto;
 import sn.modelsis.signart.dto.ImageDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.OeuvreFacade;
+import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
 import sun.misc.BASE64Encoder;
 //import org.glassfish.jersey.media.multipart.MultiPartFeature;
 //import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -52,6 +54,8 @@ public class ImageREST {
 
     @Inject
     OeuvreFacade oeuvreFacade;
+    @Inject
+    OeuvreSouscriptionFacade oeuvreSouscriptionFacade;
     @Inject
     ArtisteFacade artisteFacade;
 
@@ -162,7 +166,33 @@ public class ImageREST {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
-    
+    @GET
+    @Produces({MediaType.APPLICATION_OCTET_STREAM})
+    @Path("/oeuvreSouscription/{id}")
+    public Response findOeuvreSouscriptionImage(@PathParam("id") Integer id) {
+        try {
+        //ImageDto imgdto = new ImageDto();
+            OeuvreSouscription oeuvreSousc = oeuvreSouscriptionFacade.find(id);
+            //System.out.println(oeuvre.getImage()+"+++++++++++++++++++++++++++++++++++++++OEUVRE IMAGE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+           // BufferedImage res = createImageFromBytes(oeuvre.getImage());
+           //             System.out.println(res+"+++++++++++++++++++++++++++++++++++++++RES++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+          /* BufferedImage resimg = addTextWatermarkMin("SignArt",res);
+           System.out.println(resimg+"+++++++++++++++++++++++++++++++++++++++water++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            String imageBase = encodeToString(resimg,"jpg");            
+            System.out.println(imageBase+"+++++++++++++++++++++++++++++++++++++++IMAGE base++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+            imgdto.setValeur(imageBase);*/
+            
+            final ResponseBuilder response = Response.ok(oeuvreSousc.getImage());
+            response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
+            return response.build();
+            //return imgdto;
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
     static BufferedImage addTextWatermarkMin(String text,  BufferedImage sourceImage) {
 	   
 	       

@@ -42,8 +42,10 @@ public class OeuvreConverter {
         dto.setId(entity.getId());
         dto.setNom(entity.getNom());
         dto.setIdArtiste(entity.getIdArtiste().getId());
-        dto.setIdTechnique(entity.getIdTechnique().getId());
-        dto.setIdCouleur(entity.getIdCouleur().getId());
+        if(entity.getIdTechnique()!= null)
+            dto.setIdTechnique(entity.getIdTechnique().getId());
+        if(entity.getIdCouleur()!= null)
+            dto.setIdCouleur(entity.getIdCouleur().getId());
         dto.setNouveau(entity.getNouveau());
         dto.setLithographie(entity.getLithographie());
         dto.setAuteur(entity.getAuteur());
@@ -96,6 +98,7 @@ public class OeuvreConverter {
         entity.setMiniature(dto.getMiniature());
         if(dto.getIdStatus() != null)
             entity.setIdStatut(statutOeuvreFacade.find(dto.getIdStatus()));
+        entity.setStock(dto.getStock());
         
         //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
         
