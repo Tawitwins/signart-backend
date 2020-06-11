@@ -75,7 +75,11 @@ public class OeuvreSouscriptionConverter {
         //if(dto.getIdCouleur()!= null)
         //    entity.setIdCouleur(recupCouleur(dto.getIdCouleur().getId()));
         entity.setIdTechnique(recupTechnique(dto.getIdTechnique().getId()));
-        entity.setIdCouleur(recupCouleur(dto.getIdCouleur().getId()));
+        if(dto.getIdCouleur() != null)
+        {
+             if(dto.getIdCouleur().getId() != null)
+                entity.setIdCouleur(recupCouleur(dto.getIdCouleur().getId()));
+        }
         entity.setNouveau(dto.getNouveau());
         entity.setLithographie(dto.getLithographie());
         entity.setAuteur(dto.getAuteur());
@@ -91,12 +95,16 @@ public class OeuvreSouscriptionConverter {
         if(dto.getIdSouscription() != null)
             entity.setIdSouscription(souscriptionFacade.find(dto.getIdSouscription()));
         
-        String imageValue = dto.getImage().getValue();
-        //System.out.println(imageValue+"+++++++++++++++++++++++++++++++++++++++++++++++imageValue++++++++++++++++++++++++++++++++++++++++++++++");
-        final byte[] image = Base64.decodeBase64(imageValue.getBytes());
-        entity.setImage(image);
-        //System.out.println(entity.getImage()+"+++++++++++++++++++++++++++++++++++++++++++++++entity image++++++++++++++++++++++++++++++++++++++++++++++");
-        //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique())); 
+        if(dto.getImage() != null)
+        {
+             String imageValue = dto.getImage().getValue();
+            //System.out.println(imageValue+"+++++++++++++++++++++++++++++++++++++++++++++++imageValue++++++++++++++++++++++++++++++++++++++++++++++");
+            final byte[] image = Base64.decodeBase64(imageValue.getBytes());
+            entity.setImage(image);
+            //System.out.println(entity.getImage()+"+++++++++++++++++++++++++++++++++++++++++++++++entity image++++++++++++++++++++++++++++++++++++++++++++++");
+            //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique())); 
+        }
+        
         return entity;
     }
     
@@ -109,8 +117,10 @@ public class OeuvreSouscriptionConverter {
             dto.setIdTechnique(techniqueConverter.toDto(entity.getIdTechnique()));
         if(entity.getIdCouleur() != null)
             dto.setIdCouleur(entityToDto(entity.getIdCouleur()));*/
-        dto.setIdTechnique(entityToDtoTechnique(entity.getIdTechnique()));
-        dto.setIdCouleur(entityToDtoCouleur(entity.getIdCouleur()));
+        if(entity.getIdTechnique() != null)
+            dto.setIdTechnique(entityToDtoTechnique(entity.getIdTechnique()));
+        if(entity.getIdCouleur() != null)
+            dto.setIdCouleur(entityToDtoCouleur(entity.getIdCouleur()));
         dto.setNouveau(entity.getNouveau());
         dto.setLithographie(entity.getLithographie());
         dto.setAnnee(entity.getAnnee());
@@ -158,7 +168,7 @@ public class OeuvreSouscriptionConverter {
         dto.setLibelle(entity.getLibelle());
         dto.setId(entity.getId());
         dto.setIdMenu(entity.getMenu().getId());
-        dto.setMenu(entity.getMenu());
+        //dto.setMenu(entity.getMenu());
         return dto;
     }
     

@@ -27,6 +27,7 @@ public class MessagesTchatsConverter {
         dto.setIdReceiver(entity.getIdReceiver());
         dto.setUsername(entity.getUsername());
         dto.setContenu(entity.getContenu());
+        dto.setProfilReceiver(entity.getProfilReceiver());
         dto.setProfilSender(entity.getProfilSender());
         dto.setFilename(entity.getFilename());
         dto.setUrlFile(entity.getUrlfile());
@@ -34,6 +35,7 @@ public class MessagesTchatsConverter {
         dto.setMsgStateSender(entity.getMsgStateSender());
         dto.setMsgStateReceiver(entity.getMsgStateReceiver());
         dto.setDateEnvoi(entity.getDateEnvoi());
+        dto.setShowDate(entity.getShowDate());
         return dto;
     }
 
@@ -45,6 +47,7 @@ public class MessagesTchatsConverter {
         entity.setUsername(dto.getUsername());
         entity.setContenu(dto.getContenu());
         entity.setProfilSender(dto.getProfilSender());
+        entity.setProfilReceiver(dto.getProfilReceiver());
         entity.setFilename(dto.getFilename());
         entity.setUrlFile(dto.getUrlfile());
         entity.setMsgFile(dto.getMsgFile());
