@@ -15,12 +15,14 @@ public class MessagesTchatsDto {
     private String username;
     private String contenu;
     private String profilSender;
+    private String profilReceiver;
     private String filename;
     private String urlFile;
     private byte[] msgFile;
     private String msgStateSender;
     private String msgStateReceiver;
     private Date dateEnvoi;
+    private boolean showDate;
   
 
     public Integer getIdMsg() {
@@ -68,6 +70,13 @@ public class MessagesTchatsDto {
     public void setProfilSender(String profilSender) {
         this.profilSender = profilSender;
     }
+    public String getProfilReceiver() {
+        return this.profilReceiver;
+    }
+
+    public void setProfilReceiver(String profilReceiver) {
+        this.profilReceiver = profilReceiver;
+    }
     
     public String getFilename() {
         return this.filename;
@@ -111,5 +120,12 @@ public class MessagesTchatsDto {
 
     public void setDateEnvoi(Date dateEnvoi) {
         this.dateEnvoi = dateEnvoi;
+    }
+     public boolean getShowDate() {
+        return this.showDate;
+    }
+
+    public void setShowDate(boolean showDate) {
+        this.showDate = showDate;
     }
 }

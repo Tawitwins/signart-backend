@@ -52,6 +52,8 @@ public class MessagesTchats implements Serializable {
     private String contenu;
     @Column(name = "profilSender", length = 50)
     private String profilSender;
+    @Column(name = "profilReceiver", length = 50)
+    private String profilReceiver;
     @Column(name = "filename", length = 200)
     private String filename;
     @Column(name = "urlFile", length = 200)
@@ -64,7 +66,8 @@ public class MessagesTchats implements Serializable {
     private String msgStateReceiver;
     @Column(name = "dateEnvoi", nullable = true)
     private Date dateEnvoi;
-  
+    @Column(name = "showDate", nullable = true)
+    private boolean showDate;
 
     public MessagesTchats() {
     }
@@ -118,7 +121,13 @@ public class MessagesTchats implements Serializable {
     public void setProfilSender(String profilSender) {
         this.profilSender = profilSender;
     }
-    
+     public String getProfilReceiver() {
+        return this.profilReceiver;
+    }
+
+    public void setProfilReceiver(String profilReceiver) {
+        this.profilReceiver = profilReceiver;
+    }
     public String getFilename() {
         return this.filename;
     }
@@ -161,6 +170,13 @@ public class MessagesTchats implements Serializable {
 
     public void setDateEnvoi(Date dateEnvoi) {
         this.dateEnvoi = dateEnvoi;
+    }
+    public boolean getShowDate() {
+        return this.showDate;
+    }
+
+    public void setShowDate(boolean showDate) {
+        this.showDate = showDate;
     }
     /*public Integer getIdPays() {
         return this.Pays.getId();

@@ -91,12 +91,16 @@ public class OeuvreSouscriptionConverter {
         if(dto.getIdSouscription() != null)
             entity.setIdSouscription(souscriptionFacade.find(dto.getIdSouscription()));
         
-        String imageValue = dto.getImage().getValue();
-        //System.out.println(imageValue+"+++++++++++++++++++++++++++++++++++++++++++++++imageValue++++++++++++++++++++++++++++++++++++++++++++++");
-        final byte[] image = Base64.decodeBase64(imageValue.getBytes());
-        entity.setImage(image);
-        //System.out.println(entity.getImage()+"+++++++++++++++++++++++++++++++++++++++++++++++entity image++++++++++++++++++++++++++++++++++++++++++++++");
-        //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique())); 
+        if(dto.getImage() != null)
+        {
+             String imageValue = dto.getImage().getValue();
+            //System.out.println(imageValue+"+++++++++++++++++++++++++++++++++++++++++++++++imageValue++++++++++++++++++++++++++++++++++++++++++++++");
+            final byte[] image = Base64.decodeBase64(imageValue.getBytes());
+            entity.setImage(image);
+            //System.out.println(entity.getImage()+"+++++++++++++++++++++++++++++++++++++++++++++++entity image++++++++++++++++++++++++++++++++++++++++++++++");
+            //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique())); 
+        }
+        
         return entity;
     }
     
@@ -158,7 +162,7 @@ public class OeuvreSouscriptionConverter {
         dto.setLibelle(entity.getLibelle());
         dto.setId(entity.getId());
         dto.setIdMenu(entity.getMenu().getId());
-        dto.setMenu(entity.getMenu());
+        //dto.setMenu(entity.getMenu());
         return dto;
     }
     
