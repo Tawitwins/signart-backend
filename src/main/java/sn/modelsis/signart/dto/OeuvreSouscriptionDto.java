@@ -18,8 +18,8 @@ public class OeuvreSouscriptionDto implements Serializable{
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String nom;
-    private TechniqueDto idTechnique;
-    private CouleurDto idCouleur;
+    private Integer idTechnique;
+    private Integer idCouleur;
     private Boolean nouveau;
     private Boolean lithographie;
     private String auteur;
@@ -142,21 +142,22 @@ public class OeuvreSouscriptionDto implements Serializable{
         this.description = description;
     }
 
-    public TechniqueDto getIdTechnique() {
+    public Integer getIdTechnique() {
         return idTechnique;
     }
 
-    public void setIdTechnique(TechniqueDto technique) {
-        this.idTechnique = technique;
+    public void setIdTechnique(Integer idTechnique) {
+        this.idTechnique = idTechnique;
     }
 
-    public CouleurDto getIdCouleur() {
+    public Integer getIdCouleur() {
         return idCouleur;
     }
 
-    public void setIdCouleur(CouleurDto idCouleur) {
+    public void setIdCouleur(Integer idCouleur) {
         this.idCouleur = idCouleur;
     }
+
 
  
 
