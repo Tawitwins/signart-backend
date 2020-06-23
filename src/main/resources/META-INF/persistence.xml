@@ -56,6 +56,7 @@
     <class>sn.modelsis.signart.ListeSelection</class>
     <class>sn.modelsis.signart.ListeSelection_Oeuvres</class>
     <class>sn.modelsis.signart.OeuvreNumerique</class>
+    <class>sn.modelsis.signart.AdminsTable</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>

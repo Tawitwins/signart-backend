@@ -50,10 +50,10 @@ public class MessagesTchats implements Serializable {
     private String username;
     @Column(name = "contenu", length = 5000)
     private String contenu;
-    @Column(name = "profilSender", length = 50)
-    private String profilSender;
-    @Column(name = "profilReceiver", length = 50)
-    private String profilReceiver;
+//    @Column(name = "profilSender", length = 50)
+//    private String profilSender;
+//    @Column(name = "profilReceiver", length = 50)
+//    private String profilReceiver;
     @Column(name = "filename", length = 200)
     private String filename;
     @Column(name = "urlFile", length = 200)
@@ -114,20 +114,20 @@ public class MessagesTchats implements Serializable {
         this.contenu = contenu;
     }
     
-    public String getProfilSender() {
-        return this.profilSender;
-    }
-
-    public void setProfilSender(String profilSender) {
-        this.profilSender = profilSender;
-    }
-     public String getProfilReceiver() {
-        return this.profilReceiver;
-    }
-
-    public void setProfilReceiver(String profilReceiver) {
-        this.profilReceiver = profilReceiver;
-    }
+//    public String getProfilSender() {
+//        return this.profilSender;
+//    }
+//
+//    public void setProfilSender(String profilSender) {
+//        this.profilSender = profilSender;
+//    }
+//     public String getProfilReceiver() {
+//        return this.profilReceiver;
+//    }
+//
+//    public void setProfilReceiver(String profilReceiver) {
+//        this.profilReceiver = profilReceiver;
+//    }
     public String getFilename() {
         return this.filename;
     }

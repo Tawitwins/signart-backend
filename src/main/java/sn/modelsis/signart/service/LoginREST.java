@@ -7,16 +7,22 @@ import java.security.NoSuchAlgorithmException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
+import sn.modelsis.signart.AdminsTable;
 import sn.modelsis.signart.Utilisateur;
+import sn.modelsis.signart.converter.AdminsTableConverter;
 import sn.modelsis.signart.dto.AccountDto;
 import sn.modelsis.signart.dto.AccountInformation;
+import sn.modelsis.signart.dto.AdminsTableDto;
 import sn.modelsis.signart.exception.SignArtException;
+import sn.modelsis.signart.facade.AdminsTableFacade;
 import sn.modelsis.signart.facade.UtilisateurFacade;
 import sn.modelsis.signart.tools.JwtService;
 import sn.modelsis.signart.utils.PasswordEncoder;
@@ -31,6 +37,10 @@ public class LoginREST {
 
     @Inject
     UtilisateurFacade userFacade;
+    @Inject
+    AdminsTableFacade adminsTableFacade;
+    @Inject
+    AdminsTableConverter adminsTableConverter;
     @Inject
     PasswordEncoder passwordEncoder;
     @Inject
@@ -63,6 +73,35 @@ public class LoginREST {
         }
     }
     
+    @GET
+    @Path("adminInfos/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public AdminsTableDto find(@PathParam("id") Integer idUser) throws SignArtException {
+        return adminsTableConverter.entityToDto(adminsTableFacade.findByIdUser(idUser));
+    }
+
+    
+    @POST
+    @Path("adminLogin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Produces({MediaType.APPLICATION_JSON})
+    public Response login(final AccountInformation account) throws SignArtException, NoSuchAlgorithmException {
+        if (account == null || !account.isValid()) {
+            throw new SignArtException("Nom d'utilisateur ou mot de passe invalide");
+        }
+        
+        final Utilisateur foundUser = userFacade.findByMail(account.getUserName());
+        final String passwordEncoded = passwordEncoder.encodePassword(account.getPassword(), account.getUserName());
+        System.out.println("passwordEncoded " + passwordEncoded);
+        
+        if (foundUser == null || !StringUtils.equals(foundUser.getPassword(), passwordEncoded)) {
+            throw new SignArtException("Nom d'utilisateur ou mot de passe invalide");
+        }
+        if (!foundUser.getActif()) {
+            throw new SignArtException("Compte utilisateur n'est pas encore activé");
+        }
+        return Response.status(Response.Status.OK).entity(foundUser).build();
+    }
     
     @POST
     @Path("passwordFind")

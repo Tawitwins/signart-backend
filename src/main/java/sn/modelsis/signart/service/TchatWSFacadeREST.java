@@ -3,12 +3,16 @@ package sn.modelsis.signart.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -19,12 +23,21 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.server.ServerEndpointConfig;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.apache.commons.codec.binary.Base64;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.MessagesTchats;
+import static sn.modelsis.signart.MessagesTchats_.filename;
 import sn.modelsis.signart.converter.MessagesTchatsConverter;
 import sn.modelsis.signart.dto.MessagesTchatsDto;
 import sn.modelsis.signart.facade.ArtisteFacade;
@@ -59,11 +72,49 @@ public class TchatWSFacadeREST {
     public static TchatWSFacadeREST getInstance() {
         return TchatWSFacadeREST.singleton;
     }
+
+     /**
+     *
+     * @param asyncResponse
+     * @param signartFile
+     * @throws IOException
+     */
+    @PUT
+    @Path(value = "/files/{filename}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes(value = {MediaType.TEXT_PLAIN})
+    @Asynchronous
+    public void PostFile(@Suspended final AsyncResponse asyncResponse, String fileContent,@PathParam("filename") String filename) throws IOException {
+        SignartFile signartFile= new SignartFile();
+        fileContent = fileContent.split("base64,")[1];
+        signartFile.setName(filename);
+        signartFile.setContent(Base64.decodeBase64(fileContent));
+        
+        asyncResponse.resume(doPostFile(signartFile));
+    }
+
+    private Response doPostFile(SignartFile signartFile) throws IOException {
+        byte[] data = signartFile.getContent();
+        java.nio.file.Path filee = (java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+signartFile.getName());
+        Files.write(filee, data);
+        return Response.status(Response.Status.CREATED).entity(signartFile).build();
+    }
+    @DELETE
+    @Path("filesRemove/{filename}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public boolean DeleteFile(@PathParam("filename") String filename) throws IOException {
+        return Files.deleteIfExists((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
+    }
+    
     @GET
-    @Path("count")
+    @Path("GetFiles/{filename}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(22222222);
+    public String GetFile(@PathParam("filename") String filename) throws IOException {
+        byte [] myFile = Files.readAllBytes((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
+        String File = Base64.encodeBase64String(myFile);
+        String vof = String.valueOf(myFile);
+        String mimeType = Files.probeContentType((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
+        return mimeType+";"+File;
     }
     /**
      * On maintient toutes les sessions utilisateurs dans une collection.
@@ -80,22 +131,26 @@ public class TchatWSFacadeREST {
      */
     @OnOpen
     public void open(Session session, @javax.websocket.server.PathParam("username") String username,@javax.websocket.server.PathParam("isAdmin") boolean isAdmin
-            ,@javax.websocket.server.PathParam("idUser") String idUser,@javax.websocket.server.PathParam("profilUser") String profilUser) {
+            ,@javax.websocket.server.PathParam("idUser") Integer idUser,@javax.websocket.server.PathParam("profilUser") String profilUser) {
+        try {
+            session.getUserProperties().put( "username", username );
+            session.getUserProperties().put( "idUser", idUser );
+            session.getUserProperties().put( "profilUser", profilUser );
+            sessions.put( session.getId(), session );
         
-        session.getUserProperties().put( "username", username );
-        session.getUserProperties().put( "idUser", idUser );
-        session.getUserProperties().put( "profilUser", profilUser );
-        sessions.put( session.getId(), session );
         
-        messages = ConvertListEntityToDto(messagesTchatsFacade.findAll());
-        
-        sendMessageCon( "Admin >>> Data sent to the user " + username,session);
-        sendMessageAll("Admin >>> Connection established for " + username);
-        if(isAdmin==true)
-        {
-             messagesAdmin = ConvertListEntityToDto(messagesTchatsFacade.findAll());
-             sendMessageData( "Admin >>> Data sent to the (admin) user" + username,session);
-        }
+            messages = ConvertListEntityToDto(messagesTchatsFacade.findAll());
+
+            sendMessageCon( "Admin >>> Data sent to the user " + username,session);
+            sendMessageAll("Admin >>> Connection established for " + username);
+            if(isAdmin==true)
+            {
+                 messagesAdmin = ConvertListEntityToDto(messagesTchatsFacade.findAll());
+                 sendMessageData( "Admin >>> Data sent to the (admin) user" + username,session);
+            }
+            }catch( Exception exception ) {
+                System.out.println( "ERROR: on open " + exception );
+                }   
         
     }
 
@@ -126,24 +181,29 @@ public class TchatWSFacadeREST {
      */
     @OnMessage
     public void handleMessage(String messagePackage, Session session) {
-        String username = (String) session.getUserProperties().get( "username" );
-        String fullMessage = username + " >>> " + messagePackage; 
-        List<String> splittedMessage = Arrays.asList(messagePackage.split(Pattern.quote("|")));
-        messageTmp = new MessagesTchatsDto();
-        int headerCount=splittedMessage.get(0).length()+splittedMessage.get(1).length()+splittedMessage.get(2).length()+3;
-        String message=messagePackage.substring(headerCount);
-        messageTmp.setContenu(message);
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date currentDate = calendar.getTime();
-        java.sql.Timestamp dateEnvoi = new java.sql.Timestamp(currentDate.getTime());
-        System.out.println( calendar+"/"+currentDate+"/"+dateEnvoi );
-        messageTmp.setDateEnvoi(dateEnvoi);
-        messageTmp.setUsername(username);
-        messageTmp.setIdSender(Integer.parseInt((String)session.getUserProperties().get( "idUser" )));
-        messageTmp.setIdReceiver(Integer.parseInt(splittedMessage.get(0)));
-        messageTmp.setProfilSender((String)session.getUserProperties().get( "profilUser" ));
-        messageTmp.setProfilReceiver(splittedMessage.get(1));
-        sendMessageTmp( messageTmp);
+        try{
+            String username = (String) session.getUserProperties().get( "username" );
+            String fullMessage = username + " >>> " + messagePackage; 
+            List<String> splittedMessage = Arrays.asList(messagePackage.split(Pattern.quote("|")));
+            messageTmp = new MessagesTchatsDto();
+            int headerCount=splittedMessage.get(0).length()+splittedMessage.get(1).length()+splittedMessage.get(2).length()+3;
+            String message=messagePackage.substring(headerCount);
+            messageTmp.setContenu(message);
+            Calendar calendar = Calendar.getInstance();
+            java.util.Date currentDate = calendar.getTime();
+            //java.sql.Timestamp dateEnvoi = new java.sql.Timestamp(currentDate.getTime());
+            System.out.println( calendar+"/"+currentDate+"/"+currentDate );
+            messageTmp.setDateEnvoi(currentDate);
+            messageTmp.setUsername(username);
+            messageTmp.setFilename(splittedMessage.get(2));
+            messageTmp.setIdSender(((Integer)session.getUserProperties().get( "idUser" )));
+            messageTmp.setIdReceiver(Integer.parseInt(splittedMessage.get(0)));
+            messageTmp.setProfilSender((String)session.getUserProperties().get( "profilUser" ));
+            messageTmp.setProfilReceiver(splittedMessage.get(1));
+            sendMessageTmp( messageTmp, session);
+            }catch( Exception exception ) {
+                System.out.println( "ERROR: on message " + exception );
+                } 
     }
 
     /**
@@ -204,23 +264,31 @@ public class TchatWSFacadeREST {
      * Une méthode privée, spécifique à notre exemple.
      * Elle permet l'envoie de donnés à une session spécifique.
      */
-    private void sendMessageTmp( MessagesTchatsDto messageTmp ) {
+    private void sendMessageTmp( MessagesTchatsDto messageTmp, Session session ) {
         // Affichage sur la console du server Web.
         System.out.println( messageTmp );  
-        Session Reveiversession = sessions.values().stream()       
-        //.filter(sess -> messageTmp.getIdReceiver().equals((int)sess.getUserProperties().get( "idUser" ))&& messageTmp.getProfilReceiver().equals(sess.getUserProperties().get( "profilUser" )))
-        .filter(sess -> messageTmp.getUsername().equals((String)sess.getUserProperties().get( "username" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
-        .findAny()
-        .orElse(null);
+        
+         try {
+             Session Reveiversession = sessions.values().stream()   
+             .filter(sess -> messageTmp.getIdReceiver().equals((Integer)sess.getUserProperties().get( "idUser" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
+                //.filter(sess -> messageTmp.getUsername().equals((String)sess.getUserProperties().get( "username" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
+                .findAny()
+                .orElse(null);
+            
+         
         System.out.println(Reveiversession );
         // On envoie le message au destinateur seulement.
         try {
             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
             String messagesJson = ow.writeValueAsString(messageTmp);
             Reveiversession.getBasicRemote().sendObject(messagesJson );
+            session.getBasicRemote().sendObject(messagesJson );
         } catch( Exception exception ) {
             System.out.println( "ERROR: cannot send message to " + Reveiversession.getId() );
         }
+        }catch(Exception exception){
+            System.out.println( "ERROR: sessions is empty"+ exception);
+       }
 //        // On envoie le message à tout le monde.
 //        sessions.values().forEach((session) -> {
 //            try {
@@ -259,4 +327,26 @@ public class TchatWSFacadeREST {
             return  CDI.current().select(endpointClass).get(); 
         }
     }
+
+    public  class SignartFile {
+
+        private String name;
+        private byte [] content;
+        public SignartFile() {
+        }
+        public String getName(){
+            return this.name;
+        }
+        public void setName (String name){
+            this.name = name;
+        }
+        public byte[] getContent(){
+            return this.content;
+        }
+        public void setContent ( byte[] content){
+            this.content = content;
+        }
+    }
+
+   
 }

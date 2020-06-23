@@ -2,15 +2,9 @@ package sn.modelsis.signart.converter;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import sn.modelsis.signart.Client;
 import sn.modelsis.signart.MessagesTchats;
-import sn.modelsis.signart.Visiteur;
-import sn.modelsis.signart.dto.ClientDto;
 import sn.modelsis.signart.dto.MessagesTchatsDto;
-import sn.modelsis.signart.dto.VisiteurDto;
 import sn.modelsis.signart.facade.UtilisateurFacade;
-import sn.modelsis.signart.facade.EtatClientFacade;
-import sn.modelsis.signart.facade.PaysFacade;
 
 /**
  *
@@ -19,6 +13,8 @@ import sn.modelsis.signart.facade.PaysFacade;
 @Stateless
 public class MessagesTchatsConverter {
 
+    @Inject
+    UtilisateurFacade utilisateurFacade;
 
     public MessagesTchatsDto entityToDto(MessagesTchats entity) {
         MessagesTchatsDto dto = new MessagesTchatsDto();
@@ -27,8 +23,10 @@ public class MessagesTchatsConverter {
         dto.setIdReceiver(entity.getIdReceiver());
         dto.setUsername(entity.getUsername());
         dto.setContenu(entity.getContenu());
-        dto.setProfilReceiver(entity.getProfilReceiver());
-        dto.setProfilSender(entity.getProfilSender());
+        if(dto.getIdReceiver() != null)
+            dto.setProfilReceiver(utilisateurFacade.findById(dto.getIdReceiver()).getUserType());
+        if(dto.getIdSender() != null)
+            dto.setProfilSender(utilisateurFacade.findById(dto.getIdSender()).getUserType());
         dto.setFilename(entity.getFilename());
         dto.setUrlFile(entity.getUrlfile());
         dto.setMsgFile(entity.getMsgFile());
@@ -46,8 +44,8 @@ public class MessagesTchatsConverter {
         entity.setIdReceiver(dto.getIdReceiver());
         entity.setUsername(dto.getUsername());
         entity.setContenu(dto.getContenu());
-        entity.setProfilSender(dto.getProfilSender());
-        entity.setProfilReceiver(dto.getProfilReceiver());
+//        entity.setProfilSender(dto.getProfilSender());
+//        entity.setProfilReceiver(dto.getProfilReceiver());
         entity.setFilename(dto.getFilename());
         entity.setUrlFile(dto.getUrlfile());
         entity.setMsgFile(dto.getMsgFile());
