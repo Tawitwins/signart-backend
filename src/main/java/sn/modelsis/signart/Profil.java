@@ -31,6 +31,7 @@ public class Profil implements Serializable {
     
     public static final String CODE_PROFIL_ARTISTE = "ARTISTE";
     public static final String CODE_PROFIL_CLIENT = "CLIENT";
+    public static final String CODE_PROFIL_ADMIN = "ADMIN";
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,10 +45,8 @@ public class Profil implements Serializable {
     @Basic(optional = false)
     @Column(name = "libelle", nullable = false, length = 50)
     private String libelle;
-    @ManyToMany(mappedBy = "profilSet")
-    private Set<Menu> menuSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProfil")
-    private Set<Utilisateur> utilisateurSet;
+   
+
 
     public Profil() {
     }
@@ -85,22 +84,22 @@ public class Profil implements Serializable {
         this.libelle = libelle;
     }
 
-    public Set<Menu> getMenuSet() {
-        return menuSet;
-    }
-
-    public void setMenuSet(Set<Menu> menuSet) {
-        this.menuSet = menuSet;
-    }
-
-    @XmlTransient
-    public Set<Utilisateur> getUtilisateurSet() {
-        return utilisateurSet;
-    }
-
-    public void setUtilisateurSet(Set<Utilisateur> utilisateurSet) {
-        this.utilisateurSet = utilisateurSet;
-    }
+//    public Set<Menu> getMenuSet() {
+//        return menuSet;
+//    }
+//
+//    public void setMenuSet(Set<Menu> menuSet) {
+//        this.menuSet = menuSet;
+//    }
+//
+//    @XmlTransient
+//    public Set<Utilisateur> getUtilisateurSet() {
+//        return utilisateurSet;
+//    }
+//
+//    public void setUtilisateurSet(Set<Utilisateur> utilisateurSet) {
+//        this.utilisateurSet = utilisateurSet;
+//    }
 
     @Override
     public int hashCode() {
