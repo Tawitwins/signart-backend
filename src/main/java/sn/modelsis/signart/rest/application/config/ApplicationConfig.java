@@ -34,6 +34,8 @@ public class ApplicationConfig extends Application {
         resources.add(org.jboss.resteasy.plugins.providers.multipart.XopWithMultipartRelatedReader.class);
         resources.add(org.jboss.resteasy.plugins.providers.multipart.XopWithMultipartRelatedWriter.class);
         resources.add(sn.modelsis.signart.rest.application.config.SignArtExceptionMapper.class);
+        resources.add(sn.modelsis.signart.service.AbonneREST.class);
+        resources.add(sn.modelsis.signart.service.AbonnementREST.class);
         resources.add(sn.modelsis.signart.service.AccountREST.class);
         resources.add(sn.modelsis.signart.service.AdresseREST.class);
         resources.add(sn.modelsis.signart.service.AnnonceREST.class);
@@ -44,8 +46,10 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.CommentaireFacadeREST.class);
         resources.add(sn.modelsis.signart.service.CompteFacadeREST.class);
         resources.add(sn.modelsis.signart.service.CouleurFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.DelaiREST.class);
         resources.add(sn.modelsis.signart.service.DeviseFacadeREST.class);
         resources.add(sn.modelsis.signart.service.DomaineFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.EtatAbonnementREST.class);
         resources.add(sn.modelsis.signart.service.EtatArtisteFacadeREST.class);
         resources.add(sn.modelsis.signart.service.EtatClientFacadeREST.class);
         resources.add(sn.modelsis.signart.service.EtatCommandeFacadeREST.class);
@@ -56,10 +60,13 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.FilmographieREST.class);
         resources.add(sn.modelsis.signart.service.FonctionREST.class);
         resources.add(sn.modelsis.signart.service.FormationREST.class);
+        resources.add(sn.modelsis.signart.service.ImageNumeriqueREST.class);
         resources.add(sn.modelsis.signart.service.ImageProfilREST.class);
         resources.add(sn.modelsis.signart.service.ImageREST.class);
         resources.add(sn.modelsis.signart.service.LigneCommandeREST.class);
         resources.add(sn.modelsis.signart.service.LignePanierREST.class);
+        resources.add(sn.modelsis.signart.service.ListeSelectionREST.class);
+        resources.add(sn.modelsis.signart.service.ListeSelection_OeuvresREST.class);
         resources.add(sn.modelsis.signart.service.LivraisonREST.class);
         resources.add(sn.modelsis.signart.service.LoginREST.class);
         resources.add(sn.modelsis.signart.service.MarquageArtisteFacadeREST.class);
@@ -81,6 +88,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.SouscriptionREST.class);
         resources.add(sn.modelsis.signart.service.TchatWSFacadeREST.class);
         resources.add(sn.modelsis.signart.service.TechniqueFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.TerminalREST.class);
         resources.add(sn.modelsis.signart.service.ThemeFacadeREST.class);
         resources.add(sn.modelsis.signart.service.TypeCommandeFacadeREST.class);
         resources.add(sn.modelsis.signart.service.TypeCompteFacadeREST.class);

@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Artiste.findByVille", query = "SELECT a FROM Artiste a WHERE a.ville = :ville")
     , @NamedQuery(name = "Artiste.findByIdBiographie", query = "SELECT a FROM Artiste a WHERE a.idBiographie.id = :idBiographie")
     , @NamedQuery(name = "Artiste.findByPhoto", query = "SELECT a FROM Artiste a WHERE a.photo = :photo")
+    , @NamedQuery(name = "Artiste.findByIdentite", query = "SELECT a FROM Artiste a WHERE a.identite = :identite")
    // , @NamedQuery(name = "Artiste.updateProfil", query = "UPDATE Artiste a SET a.nom = :nom, a.prenom = :prenom, a.surnom = :surnom, a.telephone = :telephone, a.email = :email, a.adresse = :adresse, a.ville = :ville, a.idPays = :pays WHERE a.id = :id ")
     , @NamedQuery(name = "Artiste.findByProfession", query = "SELECT a FROM Artiste a WHERE a.profession = :profession")
     , @NamedQuery(name = "Artiste.findByIdUser", query = "SELECT a FROM Artiste a WHERE a.idUser.id = :idUser")})
@@ -72,6 +73,8 @@ public class Artiste implements Serializable {
     private String ville;
     @Column(name = "biographie", length = 2000)
     private String biographie;
+    @Column(name = "identite", length = 160)
+    private String identite;
 
     @Column(name = "genre", length = 10)
     private String genre;
@@ -167,6 +170,14 @@ public class Artiste implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getIdentite() {
+        return identite;
+    }
+
+    public void setIdentite(String identite) {
+        this.identite = identite;
     }
     
     

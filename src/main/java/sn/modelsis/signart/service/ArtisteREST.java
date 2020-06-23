@@ -157,6 +157,7 @@ public class ArtisteREST {
     public List<ArtisteDto> findAll() {
         List<ArtisteDto> listDto = new ArrayList<>();
         List<Artiste> listEnt = artisteFacade.findAll();
+        
         if (listEnt != null) {
             listEnt.stream().map((entity) -> {
                 return entityToDto(entity);
@@ -164,8 +165,35 @@ public class ArtisteREST {
                 listDto.add(dto);
             });
         }
+        
         return listDto;
     }
+   /* @PUT
+    @Path("updateAllIdentite/{idArtiste}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response replaceAllIdentite(@PathParam("idArtiste") Integer idArtiste) throws SignArtException {
+        Artiste entity = artisteFacade.findById(idArtiste);
+            String nom = "";
+            String prenom = "";
+            String surnom = "";
+            String identite = "";
+            if(entity.getIdentite().equals("a")){
+                prenom = entity.getPrenom().replaceAll("\\s","");
+                nom = entity.getNom().replaceAll("\\s","");
+                surnom = entity.getSurnom();
+                if(entity.getSurnom().equals("a")){
+                    surnom = "artiste000"+entity.getTelephone();
+                }else{
+                    surnom = entity.getSurnom().replaceAll("\\s","_");
+                }
+                identite = nom+"_"+prenom+"_"+surnom;
+                entity.setIdentite(identite);
+                System.out.println("+++++++++++++++++++++++++++++++++++++++++"+entity.getIdentite()+"+++++++++++++++++++++++++++++++++++++++++++");
+                artisteFacade.edit(entity);
+            }
+        
+        return Response.status(Response.Status.OK).build();
+    }*/
 
     /*@GET
      @Path("artiste/{id}")
@@ -246,6 +274,11 @@ public class ArtisteREST {
         entity.setFormation(dto.getFormation());  
         entity.setExpositions(dto.getExpositions());
         entity.setProfession(dto.getProfession());
+        String prenom = dto.getPrenom().replaceAll("\\s","");
+        String nom = dto.getNom().replaceAll("\\s","");
+        String surnom = "artiste00"+dto.getTelephone();
+        String identite = nom+"_"+prenom+"_"+surnom;
+        entity.setIdentite(identite);
         return entity;
     }
             
@@ -270,6 +303,8 @@ public class ArtisteREST {
         dto.setSpecialites(entity.getSpecialites());
         dto.setFormation(entity.getFormation());
         dto.setExpositions(entity.getExpositions());
+        dto.setIdentite(entity.getIdentite());
+        
         
         dto.setProfession(entity.getProfession());
         try {
@@ -290,6 +325,12 @@ public class ArtisteREST {
         entity.setAdresse(dto.getAdresse());
         entity.setVille(dto.getVille());
         entity.setIdPays(findPays(dto.getPays()));
+        
+        String prenom = dto.getPrenom().replaceAll("\\s","");
+        String nom = dto.getNom().replaceAll("\\s","");
+        String surnom = "artiste00"+dto.getTelephone();
+        String identite = nom+"_"+prenom+"_"+surnom;
+        entity.setIdentite(identite);
        
         
         return entity;

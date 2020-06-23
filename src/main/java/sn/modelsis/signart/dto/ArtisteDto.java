@@ -19,6 +19,7 @@ public class ArtisteDto implements Serializable {
     private String adresse;
     private String ville;
     private String biographie;
+    private String identite;
 
     private String email;
     private String genre;
@@ -87,6 +88,16 @@ public class ArtisteDto implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getIdentite() {
+        return identite;
+    }
+
+    public void setIdentite(String identite) {
+        this.identite = identite;
+    }
+    
+    
     
     
 
