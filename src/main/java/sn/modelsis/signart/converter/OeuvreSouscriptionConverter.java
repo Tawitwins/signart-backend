@@ -113,8 +113,10 @@ public class OeuvreSouscriptionConverter {
             dto.setIdTechnique(techniqueConverter.toDto(entity.getIdTechnique()));
         if(entity.getIdCouleur() != null)
             dto.setIdCouleur(entityToDto(entity.getIdCouleur()));*/
-        dto.setIdTechnique(entity.getIdTechnique().getId());
-        dto.setIdCouleur(entity.getIdCouleur().getId());
+        if(entity.getIdTechnique() != null)
+            dto.setIdTechnique(entity.getIdTechnique().getId());
+        if(entity.getIdCouleur() != null)
+            dto.setIdCouleur(entity.getIdCouleur().getId());
         dto.setNouveau(entity.getNouveau());
         dto.setLithographie(entity.getLithographie());
         dto.setAnnee(entity.getAnnee());

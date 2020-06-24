@@ -3,7 +3,13 @@ package sn.modelsis.signart.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -11,11 +17,19 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Pattern;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import static javax.mail.Session.getDefaultInstance;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -26,6 +40,7 @@ import javax.websocket.server.ServerEndpointConfig;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -39,6 +54,7 @@ import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.MessagesTchats;
 import static sn.modelsis.signart.MessagesTchats_.filename;
 import sn.modelsis.signart.converter.MessagesTchatsConverter;
+import sn.modelsis.signart.dto.EmailDto;
 import sn.modelsis.signart.dto.MessagesTchatsDto;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.MessagesTchatsFacade;
@@ -73,6 +89,80 @@ public class TchatWSFacadeREST {
         return TchatWSFacadeREST.singleton;
     }
 
+    @POST
+    @Path(value = "/sendMail")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response SendMail(EmailDto emailDto) throws IOException {
+        String path = Paths.get("").toAbsolutePath().toString();
+        System.out.println("Working Directory = " + path);
+        OutputStream output = new FileOutputStream("./hellofreish.txt");
+        Properties prop2 = new Properties();
+        prop2.store(output, null);
+        String propFileName = "/../../../../../../config.properties";
+        InputStream inputStream =  new FileInputStream(propFileName);
+        Properties prop = new Properties();
+        try {
+            
+			//inputStream = getClass().getResourceAsStream(propFileName); 
+			if (inputStream != null) {
+				prop.load(inputStream);
+                                inputStream.close();
+			} else {
+				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			}
+            } catch (Exception e) {
+			System.out.println("Exception: " + e);
+            }
+      String to = emailDto.getTo();
+//      String host = "smtp.gmail.com";//or IP address
+//      //String PORT="587";
+//      String PORT="465";
+//      String userSMTP = "SignArtEmail2020";
+//      String passwordSMTP = "Sign@rtEm@il2020";
+     //Get the session object  
+      Properties properties = System.getProperties();  
+      properties.put("mail.smtp.host", prop.getProperty("mail.smtp.port")); 
+      properties.put("mail.smtp.auth", "true");
+      properties.put("mail.smtp.port", prop.getProperty("mail.smtp.port")); 
+      properties.put("mail.transport.protocol", "smtp");
+      //properties.put("mail.smtp.starttls.enable", "true");
+      properties.put("mail.smtp.startssl.enable", "true");
+
+//      javax.mail.Authenticator authentificator= new javax.mail.Authenticator() { 
+//      @Override
+//      protected  PasswordAuthentication getPasswordAuthentication() {  
+//        return new PasswordAuthentication(userSMTP,passwordSMTP);
+//      }  };
+      javax.mail.Session session = javax.mail.Session.getInstance(properties,new javax.mail.Authenticator() {  
+        protected PasswordAuthentication getPasswordAuthentication() {  
+            return new PasswordAuthentication( prop.getProperty("userSMTP"),prop.getProperty("passwordSMTP"));  
+        }  
+      });  
+//      ,new javax.mail.Authenticator() {  
+//      protected PasswordAuthentication getPasswordAuthentication() {  
+//        return new PasswordAuthentication(userSMTP,passwordSMTP);  
+//      }  
+//    }
+      
+     //compose the message  
+      try{  
+         MimeMessage message = new MimeMessage(session);  
+         message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
+         message.setSubject(emailDto.getObjet()); 
+         message.setText(emailDto.getContent());  
+  
+        // Transport transport = session.getTransport("smtp");
+         // Send message 
+ //        transport.connect(host, "SignArtEmail2020@gmail.com","Sign@rtEm@il2020");
+         Transport.send(message);  
+         System.out.println("message sent successfully ....");
+  
+      }catch (MessagingException mex) {
+          mex.printStackTrace();
+          return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(emailDto).build();
+      }
+      return Response.status(Response.Status.CREATED).entity(emailDto).build();
+    }
      /**
      *
      * @param asyncResponse
@@ -100,14 +190,14 @@ public class TchatWSFacadeREST {
         return Response.status(Response.Status.CREATED).entity(signartFile).build();
     }
     @DELETE
-    @Path("filesRemove/{filename}")
+    @Path("/filesRemove/{filename}")
     @Consumes({MediaType.APPLICATION_JSON})
     public boolean DeleteFile(@PathParam("filename") String filename) throws IOException {
         return Files.deleteIfExists((java.nio.file.Path) Paths.get("./"+filename));
     }
     
     @GET
-    @Path("GetFiles/{filename}")
+    @Path("/GetFiles/{filename}")
     @Produces(MediaType.TEXT_PLAIN)
     public String GetFile(@PathParam("filename") String filename) throws IOException {
         byte [] myFile = Files.readAllBytes((java.nio.file.Path) Paths.get("./"+filename));
@@ -328,7 +418,7 @@ public class TchatWSFacadeREST {
         }
     }
 
-    public  class SignartFile {
+    public class SignartFile {
 
         private String name;
         private byte [] content;

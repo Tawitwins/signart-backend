@@ -1,0 +1,4 @@
+mail.smtp.host=smtp.gmail.com
+mail.smtp.port=465
+userSMTP=SignArtEmail2020
+passwordSMTP=Sign@rtEm@il2020
