@@ -38,7 +38,7 @@ public class Licence implements Serializable {
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "valeur", length = 50)
+    @Column(name = "valeur", length = 5000)
     private String valeur;
     @JoinColumn(name = "idAbonnement", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
