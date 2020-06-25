@@ -79,8 +79,7 @@ public class AbonnementREST {
     public Response editPhoto(@PathParam("idAbonnement") Integer idAbonnement, Integer idEtat) throws SignArtException{
         Abonnement abonnement;
                 abonnement = abonnementfacade.findById(idAbonnement);
-                abonnement.setEtatAbonnement(etatAbonnementFacade.findById(idEtat));
-                
+                abonnement.setEtatAbonnement(etatAbonnementFacade.findById(idEtat));      
                 abonnementfacade.edit(abonnement);
                 return Response.status(Response.Status.OK).build();
                  
