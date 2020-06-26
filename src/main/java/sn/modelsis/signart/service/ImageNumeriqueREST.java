@@ -195,7 +195,7 @@ public class ImageNumeriqueREST {
     public void save(OeuvreNumeriqueDto dto) throws SignArtException{
         OeuvreNumeriqueDto imgbrut = dto;
         ImageNumeriqueDto imgdto = dto.getAvatar();
-                System.out.println(imgdto.getValue()+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
+               // System.out.println(imgdto.getValue()+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
 
         Integer largeur = dto.getLargeur()/3; 
         System.out.println(largeur+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
@@ -210,24 +210,24 @@ public class ImageNumeriqueREST {
        
         
         String img = imgdto.getValue();
-                System.out.println(img+"+++++++++++++++++++++++++++++++++++++++++++++imhg++++++++++++++++++++++++++++++++++++");
+              //  System.out.println(img+"+++++++++++++++++++++++++++++++++++++++++++++imhg++++++++++++++++++++++++++++++++++++");
 
         final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
-                        System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");
+                      //  System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");
 
         final InputStream in = new ByteArrayInputStream(imageInByte);
-                                System.out.println(in+"+++++++++++++++++++++++++++++++++++++++++++++InputStream++++++++++++++++++++++++++++++++++++");
+                        //        System.out.println(in+"+++++++++++++++++++++++++++++++++++++++++++++InputStream++++++++++++++++++++++++++++++++++++");
          
           
             try {
                 BufferedImage bImageFromConvert = ImageIO.read(in);
                 System.out.println(bImageFromConvert+"+++++++++++++++++++++++++++++++++++++++++++++bImageFromConvert++++++++++++++++++++++++++++++++++++");
-                ImageIO.write(bImageFromConvert, "jpg", new File("http://10.42.1.122:8282/root/image/"+nom+".jpg"));
-                //                ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
+                ImageIO.write(bImageFromConvert, "jpg", new File("//root//image//"+nom+".jpg"));
+                               //ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
 
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
-                addTextWatermarkMin("SignArt", resizeImageJpg, new File("http://10.42.1.122:8282/root/image/min"+"_"+nom+".jpg"));
+                addTextWatermarkMin("SignArt", resizeImageJpg, new File("//root//image//min_"+nom+".jpg"));
             } catch (IOException e) {
                 
             }
@@ -404,7 +404,7 @@ public class ImageNumeriqueREST {
         OeuvreNumeriqueDto dtoImgB = new OeuvreNumeriqueDto();
         ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
         
-        BufferedImage minImage = ImageIO.read(new File("http://10.42.1.122:8282/root/image/min_"+imageName+".jpg"));
+        BufferedImage minImage = ImageIO.read(new File("//root//image//min_"+imageName+".jpg"));
                 System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
 
         String imageBase64 = encodeToString(minImage,"jpg");
@@ -442,7 +442,7 @@ public class ImageNumeriqueREST {
         for(int j=0; j< dtoImgB.size(); j++){
             System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
-            BufferedImage minImage = ImageIO.read(new File("http://10.42.1.122:8282/root/image/min_"+dtoImgB.get(j).getNom()+".jpg"));
+            BufferedImage minImage = ImageIO.read(new File("//root//image//min_"+dtoImgB.get(j).getNom()+".jpg"));
             System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
             String imageBase64 = encodeToString(minImage,"jpg");
