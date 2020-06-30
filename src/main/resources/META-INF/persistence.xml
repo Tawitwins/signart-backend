@@ -55,6 +55,7 @@
     <class>sn.modelsis.signart.ImageNumerique</class>
     <class>sn.modelsis.signart.ListeSelection</class>
     <class>sn.modelsis.signart.ListeSelection_Oeuvres</class>
+    <class>sn.modelsis.signart.Licence</class>
     <class>sn.modelsis.signart.OeuvreNumerique</class>
     <class>sn.modelsis.signart.AdminsTable</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>

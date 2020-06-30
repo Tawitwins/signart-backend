@@ -5,6 +5,13 @@
  */
 package sn.modelsis.signart.service;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -31,7 +38,7 @@ import sn.penda.signart.dto.LicenceDto;
  * @author Pendaaa
  */
 @Stateless
-@Path("terminal")
+@Path("licence")
 public class LicenceREST {
     
     @Inject
@@ -43,20 +50,22 @@ public class LicenceREST {
     @Inject
     DelaiFacade delaiFacade;
     
-   /* @POST
+    private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    
+    @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(LicenceDto dto) {
+    public Response create(LicenceDto dto) throws SignArtException {
         licenceFacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
     
-    @GET
+   /* @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public LicenceDto find(@PathParam("id") Integer id) {
         Licence licence = licenceFacade.find(id);
         return entityToDto(licence);
-    }
+    }*/
     
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -68,24 +77,57 @@ public class LicenceREST {
         
         Licence entity = new Licence();
         Abonnement abonnement = abonnementFacade.findById(dto.getIdAbonnement());
+        System.out.println(abonnement+"++++++++++++++++++++++++++++++abonnement++++++++++++++++++++++++++++++++++++");
         Abonne abonne = abonneFacade.findById(abonnement.getIdAbonne().getId());
+       System.out.println(abonne+"++++++++++++++++++++++++++++++abonne++++++++++++++++++++++++++++++++++++");
         Delai delai = delaiFacade.findById(abonnement.getIdDelai().getId());
-        String username = abonne.getPrenom()+""+abonne.getNom()+""+abonne.getTelephone();
-       
-        int dateExp = delai.getNbMois();
-        
-       // entity.setId(dto.getId());
-        //entity.setIdAbonnement(dto.getIdAbonnement());
+        String username = abonne.getPrenom()+""+abonne.getNom()+""+abonne.getTelephone();  
+        System.out.println(username+"++++++++++++++++++++++++++++++username++++++++++++++++++++++++++++++++++++");
+        int nbMois = delai.getNbMois();
+        String licenceValue = createLicence(username, nbMois);
+        entity.setId(dto.getId());
+        entity.setIdAbonnement(abonnementFacade.findById(dto.getIdAbonnement()));
+        entity.setValeur(licenceValue);
         
         return entity;
     }
     
-   /* private TerminalDto entityToDto(Terminal entity){
-        TerminalDto dto = new TerminalDto();
-        dto.setId(entity.getId());
-        dto.setLibelle(entity.getLibelle());
-        dto.setDescription(entity.getDescription());
-        dto.setPrix(entity.getPrix());
-        return dto;
-    }*/
+    private String createLicence(String username, int nbMois){
+        Date currentDate = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(currentDate);
+                String licence2 = "";
+                String licence3 = "";
+		c.add(Calendar.MONTH, nbMois);
+		
+		Date currentDatePlusOne = c.getTime();
+		//System.out.println(dateFormat.format(currentDatePlusOne));
+		String date = dateFormat.format(currentDatePlusOne);
+		//System.out.println(date);
+		
+		String licence = "Application: SignArt\n" + 
+				         "Version: 1.0\n" + 
+				         "Expiration: date_expiration\n" + 
+				         "Utilisateur: nom_du_client";
+                
+		//System.out.println("++++++++Avant+++++++++");
+		//System.out.println(licence);
+		//String nom = "Penda_Faye_00777966116";
+		licence2 = licence.replaceAll("nom_du_client", username);
+		licence3 = licence2.replaceAll("date_expiration", date);
+		//System.out.println("++++++++Après+++++++++");
+		//System.out.println(licence2);
+                String filename = "licence00"+username;    
+                 try {
+                        FileWriter myWriter = new FileWriter("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\Licences\\"+filename);
+                        myWriter.write(licence3);
+                        myWriter.close();
+                        System.out.println("Successfully wrote to the file.");
+                    } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                    }
+		
+		return licence3;
+    }
 }

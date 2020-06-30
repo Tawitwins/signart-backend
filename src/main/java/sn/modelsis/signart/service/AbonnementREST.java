@@ -95,6 +95,22 @@ public class AbonnementREST {
     }
     
     @GET
+    @Path("abonne/{idAbonne}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<AbonnementDto> findByAbonne(@PathParam("idAbonne") Integer idAbonne) throws SignArtException {
+         List<AbonnementDto> dtoList = new ArrayList<>();
+         List<Abonnement> entityList = abonnementfacade.findByIdAbonne(idAbonne);
+            if (entityList != null) {
+                entityList.stream().map(entity
+                        -> entityToDto(entity)
+                ).forEachOrdered(dto
+                        -> dtoList.add(dto)
+                );
+            }
+        return dtoList;
+    }
+    
+    @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String test() {
         return "test abonnement rest";
