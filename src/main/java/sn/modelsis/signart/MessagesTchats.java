@@ -24,7 +24,10 @@ import javax.persistence.Table;
     , @NamedQuery(name = "MessagesTchats.findById", query = "SELECT mt FROM MessagesTchats mt WHERE mt.idMsg = :idMsg")
     , @NamedQuery(name = "MessagesTchats.findByIdSender", query = "SELECT mt FROM MessagesTchats mt WHERE mt.idSender = :idSender")
     , @NamedQuery(name = "MessagesTchats.findByPrenom", query = "SELECT mt FROM MessagesTchats mt WHERE mt.idReceiver = :idReceiver")
-    //, @NamedQuery(name = "MessagesTchats.findByRaisonSociale", query = "SELECT c FROM MessagesTchats c WHERE c.raisonsociale = :raisonsociale")
+    , @NamedQuery(name = "MessagesTchats.findAllMine", query = "SELECT mt FROM MessagesTchats mt WHERE mt.idSender = :idUser or mt.idReceiver = :idUser ")
+    , @NamedQuery(name = "MessagesTchats.findNewMsg", query = "SELECT mt FROM MessagesTchats mt WHERE mt.idReceiver = 0 ")
+    , @NamedQuery(name = "MessagesTchats.findAllForAdmin", query = "SELECT mt FROM MessagesTchats mt  WHERE mt.idReceiver = 0 or mt.idReceiver = :idUser")
+    //, @NamedQuery(name = "MessagesTchats.findByRaisonSociale", query = "SELECT c FROM MessagesTchats c WHERE c.raisonsociale = :raisonsociale") GROUP BY mt.idSender,mt.idMsg,mt.contenu,mt.dateEnvoi
     , /*@NamedQuery(name = "Visiteur.findByPays", query = "SELECT c FROM Visiteur c WHERE c.pays = :pays")*/})
 
 /**

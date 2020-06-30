@@ -205,13 +205,13 @@ public class TchatWSFacadeREST {
             sessions.put( session.getId(), session );
         
         
-            messages = ConvertListEntityToDto(messagesTchatsFacade.findAll());
+            messages = ConvertListEntityToDto(messagesTchatsFacade.findAllMine(idUser));
 
             sendMessageCon( "Admin >>> Data sent to the user " + username,session);
             sendMessageAll("Admin >>> Connection established for " + username);
             if(isAdmin==true)
             {
-                 messagesAdmin = ConvertListEntityToDto(messagesTchatsFacade.findAll());
+                 messagesAdmin = ConvertListEntityToDto(messagesTchatsFacade.findAllForAdmin(idUser));
                  sendMessageData( "Admin >>> Data sent to the (admin) user" + username,session);
             }
             }catch( Exception exception ) {
@@ -335,6 +335,9 @@ public class TchatWSFacadeREST {
         System.out.println( messageTmp );  
         
          try {
+             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+             String messagesJson = ow.writeValueAsString(messageTmp);
+             session.getBasicRemote().sendObject(messagesJson );
              Session Reveiversession = sessions.values().stream()   
              .filter(sess -> messageTmp.getIdReceiver().equals((Integer)sess.getUserProperties().get( "idUser" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
                 //.filter(sess -> messageTmp.getUsername().equals((String)sess.getUserProperties().get( "username" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
@@ -345,16 +348,17 @@ public class TchatWSFacadeREST {
         System.out.println(Reveiversession );
         // On envoie le message au destinateur seulement.
         try {
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            String messagesJson = ow.writeValueAsString(messageTmp);
+            
             Reveiversession.getBasicRemote().sendObject(messagesJson );
-            session.getBasicRemote().sendObject(messagesJson );
         } catch( Exception exception ) {
             System.out.println( "ERROR: cannot send message to " + Reveiversession.getId() );
         }
         }catch(Exception exception){
             System.out.println( "ERROR: sessions is empty"+ exception);
-       }
+        }
+         finally{
+             messagesTchatsFacade.create(messagesTchatsConverter.dtoToEntity(messageTmp));
+        }
 //        // On envoie le message à tout le monde.
 //        sessions.values().forEach((session) -> {
 //            try {
