@@ -61,10 +61,10 @@
     <properties>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect"/>
-      <!--property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost;databaseName=signart"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost;databaseName=signart"/>
       <property name="javax.persistence.jdbc.user" value="signart"/>
       <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-      <property name="javax.persistence.jdbc.password" value="signart"/-->
+      <property name="javax.persistence.jdbc.password" value="signart"/>
     </properties>
   </persistence-unit>
 </persistence>

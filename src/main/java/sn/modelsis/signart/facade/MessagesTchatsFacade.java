@@ -93,6 +93,7 @@ public class MessagesTchatsFacade extends AbstractFacade<MessagesTchats> {
         try {
             final TypedQuery<MessagesTchats> query = getEntityManager().createNamedQuery("MessagesTchats.findNewMsg",
                     MessagesTchats.class);
+            System.out.println(query.getResultList());
             return query.getResultList();
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
