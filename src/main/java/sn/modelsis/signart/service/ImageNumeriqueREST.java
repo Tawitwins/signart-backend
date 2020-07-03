@@ -192,10 +192,11 @@ public class ImageNumeriqueREST {
     
     @POST
     @Path("output")
+    @Consumes({MediaType.APPLICATION_JSON})
     public void save(OeuvreNumeriqueDto dto) throws SignArtException{
         OeuvreNumeriqueDto imgbrut = dto;
         ImageNumeriqueDto imgdto = dto.getAvatar();
-                System.out.println(imgdto.getValue()+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
+               // System.out.println(imgdto.getValue()+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
 
         Integer largeur = dto.getLargeur()/3; 
         System.out.println(largeur+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
@@ -210,23 +211,25 @@ public class ImageNumeriqueREST {
        
         
         String img = imgdto.getValue();
-                System.out.println(img+"+++++++++++++++++++++++++++++++++++++++++++++imhg++++++++++++++++++++++++++++++++++++");
+              //  System.out.println(img+"+++++++++++++++++++++++++++++++++++++++++++++imhg++++++++++++++++++++++++++++++++++++");
 
         final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
-                        System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");
+                      //  System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");
 
         final InputStream in = new ByteArrayInputStream(imageInByte);
-                                System.out.println(in+"+++++++++++++++++++++++++++++++++++++++++++++InputStream++++++++++++++++++++++++++++++++++++");
+                        //        System.out.println(in+"+++++++++++++++++++++++++++++++++++++++++++++InputStream++++++++++++++++++++++++++++++++++++");
          
           
             try {
                 BufferedImage bImageFromConvert = ImageIO.read(in);
                 System.out.println(bImageFromConvert+"+++++++++++++++++++++++++++++++++++++++++++++bImageFromConvert++++++++++++++++++++++++++++++++++++");
-                ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
-                
+               // ImageIO.write(bImageFromConvert, "jpg", new File("/root/image/"+nom+".jpg"));
+                  ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
+
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
-                addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min"+"_"+nom+".jpg"));
+               // addTextWatermarkMin("SignArt", resizeImageJpg, new File("/root/image/min_"+nom+".jpg"));
+                 addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+nom+".jpg"));
             } catch (IOException e) {
                 
             }
@@ -404,7 +407,10 @@ public class ImageNumeriqueREST {
         ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
         
         BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+imageName+".jpg"));
-                System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
+        //BufferedImage minImage = ImageIO.read(new File("/root/image/min_"+imageName+".jpg"));
+
+        
+             //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
 
         String imageBase64 = encodeToString(minImage,"jpg");
         System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
