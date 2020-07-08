@@ -51,7 +51,7 @@ public class MessagesTchats implements Serializable {
     
     @Column(name = "username", length = 100)
     private String username;
-    @Column(name = "contenu", length = 5000)
+    @Column(name = "contenu", length = 4000)
     private String contenu;
 //    @Column(name = "profilSender", length = 50)
 //    private String profilSender;

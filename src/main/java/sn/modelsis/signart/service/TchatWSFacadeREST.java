@@ -398,6 +398,8 @@ public class TchatWSFacadeREST {
             System.out.println( "ERROR: sessions is empty"+ exception);
         }
          finally{
+             System.out.println(messageTmp);
+             //messageTmp.setContenu(Base64.encodeBase64String(messageTmp.getContenu().getBytes()));
              messagesTchatsFacade.create(messagesTchatsConverter.dtoToEntity(messageTmp));
         }
 //        // On envoie le message à tout le monde.

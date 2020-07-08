@@ -2,6 +2,7 @@ package sn.modelsis.signart.converter;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import org.apache.commons.codec.binary.Base64;
 import sn.modelsis.signart.MessagesTchats;
 import sn.modelsis.signart.dto.MessagesTchatsDto;
 import sn.modelsis.signart.facade.UtilisateurFacade;
@@ -23,6 +24,7 @@ public class MessagesTchatsConverter {
         dto.setIdReceiver(entity.getIdReceiver());
         dto.setUsername(entity.getUsername());
         dto.setContenu(entity.getContenu());
+        //dto.setContenu(new String(Base64.decodeBase64(entity.getContenu())));
         if(dto.getIdReceiver() != null)
             dto.setProfilReceiver(utilisateurFacade.findById(dto.getIdReceiver()).getUserType());
         if(dto.getIdSender() != null)
@@ -44,6 +46,7 @@ public class MessagesTchatsConverter {
         entity.setIdReceiver(dto.getIdReceiver());
         entity.setUsername(dto.getUsername());
         entity.setContenu(dto.getContenu());
+        //entity.setContenu(Base64.encodeBase64String(dto.getContenu().getBytes()));
 //        entity.setProfilSender(dto.getProfilSender());
 //        entity.setProfilReceiver(dto.getProfilReceiver());
         entity.setFilename(dto.getFilename());
