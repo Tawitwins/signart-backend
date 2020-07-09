@@ -78,4 +78,37 @@ public class MessagesTchatsFacade extends AbstractFacade<MessagesTchats> {
         }
 
     }
+    public List<MessagesTchats> findAllMine(Integer idUser) throws SignArtException {
+        try {
+            final TypedQuery<MessagesTchats> query = getEntityManager().createNamedQuery("MessagesTchats.findAllMine",
+                    MessagesTchats.class);
+             query.setParameter("idUser", idUser);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
+    public List<MessagesTchats> findNewMsg() throws SignArtException {
+        try {
+            final TypedQuery<MessagesTchats> query = getEntityManager().createNamedQuery("MessagesTchats.findNewMsg",
+                    MessagesTchats.class);
+            System.out.println(query.getResultList());
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
+            public List<MessagesTchats> findAllForAdmin(Integer idUser) throws SignArtException {
+        try {
+            final TypedQuery<MessagesTchats> query = getEntityManager().createNamedQuery("MessagesTchats.findAllForAdmin",
+                    MessagesTchats.class);
+             query.setParameter("idUser", idUser);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
 }

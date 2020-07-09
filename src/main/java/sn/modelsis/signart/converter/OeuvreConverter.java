@@ -36,7 +36,7 @@ public class OeuvreConverter {
 
     public OeuvreDto entityToDto(Oeuvre entity) {
         OeuvreDto dto = new OeuvreDto();
-      // dto.setArtiste(entity.getIdArtiste().getPrenom() + " " + entity.getIdArtiste().getNom());
+        dto.setArtiste(entity.getIdArtiste().getPrenom() + " " + entity.getIdArtiste().getNom());
       // dto.setCouleur(entity.getIdCouleur().getLibelle());
         dto.setFraisLivraison(entity.getFraisLivraison());
         dto.setId(entity.getId());

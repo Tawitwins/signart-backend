@@ -3,6 +3,7 @@ package sn.modelsis.signart.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import sn.modelsis.signart.Artiste;
 
 /**
  *
@@ -18,6 +19,7 @@ public class OeuvreDto implements Serializable {
     private Boolean nouveau;
     private Boolean lithographie;
     private String auteur;
+    private String artiste;
     private String dimensions;
     private Integer annee;
     private BigDecimal prix;
@@ -181,13 +183,13 @@ public class OeuvreDto implements Serializable {
         this.idStatus = idStatus;
     }
 
-    /*public Integer getArtiste() {
-        return idArtiste;
+    public String getArtiste() {
+        return this.artiste;
     }
     
-    public void setArtiste(Integer idArtiste) {
-        this.idArtiste = idArtiste;
-    }*/
+    public void setArtiste(String artiste) {
+        this.artiste = artiste;
+    }
     
 
    /* public Integer getIdSousTechnique() {
