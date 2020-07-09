@@ -5,6 +5,7 @@
  */
 package sn.modelsis.signart.service;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -120,6 +121,13 @@ public class LicenceREST {
                 String filename = "licence00"+username;    
                  try {
                         FileWriter myWriter = new FileWriter("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\Licences\\"+filename);
+                                                //System.out.println(LicenceREST.class.getResource("/Stockage/licences").getPath()+"++++++++++++++++++++++++++++++path++++++++++++++++++++++++++++++++++++");
+
+                        //File file = new File("");
+                       // FileWriter myWriter = new FileWriter();
+                       // FileWriter myWriter = new FileWriter(LicenceREST.class.getResource("/Stockage/licences").getPath()+"/"+filename+".txt");
+                       // File(ImageNumeriqueREST.class.getResource("/Stockage/images").getPath()+"/"+nom+".jpg")
+
                         myWriter.write(licence3);
                         myWriter.close();
                         System.out.println("Successfully wrote to the file.");
