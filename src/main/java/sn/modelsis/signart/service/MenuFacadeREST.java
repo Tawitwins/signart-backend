@@ -38,7 +38,7 @@ public class MenuFacadeREST {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response create(Menu entity) {
         menuFacade.create(entity);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(entity).build();
     }
 
     @PUT
@@ -46,14 +46,15 @@ public class MenuFacadeREST {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response edit(@PathParam("id") Integer id, Menu entity) {
         menuFacade.edit(entity);
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK).entity(entity).build();
     }
 
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") Integer id) {
-        menuFacade.remove(menuFacade.find(id));
-        return Response.status(Response.Status.OK).build();
+        Menu entity = menuFacade.find(id);
+        menuFacade.remove(entity);
+        return Response.status(Response.Status.OK).entity(entity).build();
     }
 
     @GET
@@ -187,6 +188,7 @@ public class MenuFacadeREST {
         dto.setIcon(entity.getIcon());
         dto.setPath(entity.getPath());
         dto.setTitle(entity.getTitle());
+        dto.setIdParent(entity.getIdParent());
         dto.setChildren(new ArrayList<>());
         return dto;
     }
