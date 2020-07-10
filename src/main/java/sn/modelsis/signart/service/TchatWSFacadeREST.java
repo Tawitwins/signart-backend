@@ -94,7 +94,7 @@ public class TchatWSFacadeREST {
         return Response.status(Response.Status.CREATED).entity(message).build();
     }
     
-    
+     
     @POST
     @Path(value = "/sendMail")
     @Consumes({MediaType.APPLICATION_JSON})
