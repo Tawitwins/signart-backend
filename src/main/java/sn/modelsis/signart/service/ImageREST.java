@@ -135,7 +135,7 @@ public class ImageREST {
             //logger.warn("Une erreur est survenue lors de l'ajout de la piece de code ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity("Image sauvegardee").build();
 
     }
 
