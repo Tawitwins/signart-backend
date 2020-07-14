@@ -268,7 +268,7 @@ public class ImageNumeriqueREST {
         System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");*/
 
            //return Response.status(Response.Status.CREATED).build();
-           return Response.status(Response.Status.CREATED).entity("Image sauvegardée").build();
+           return Response.status(Response.Status.CREATED).entity.build();
     }
     
 
