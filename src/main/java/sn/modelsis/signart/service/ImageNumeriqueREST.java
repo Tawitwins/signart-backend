@@ -195,7 +195,7 @@ public class ImageNumeriqueREST {
     @POST
     @Path("output")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void save(OeuvreNumeriqueDto dto) throws SignArtException{
+    public Response save(OeuvreNumeriqueDto dto) throws SignArtException{
         OeuvreNumeriqueDto imgbrut = dto;
         ImageNumeriqueDto imgdto = dto.getAvatar();
                // System.out.println(imgdto.getValue()+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
@@ -267,7 +267,7 @@ public class ImageNumeriqueREST {
         
         System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");*/
 
-            
+           return Response.status(Response.Status.CREATED).build();
     }
     
 
