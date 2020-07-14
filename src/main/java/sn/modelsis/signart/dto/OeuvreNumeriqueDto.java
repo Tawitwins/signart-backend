@@ -18,7 +18,6 @@ public class OeuvreNumeriqueDto {
     private Integer longueur;
     private String motscles;
     private Integer tarif;
-    private String categorie;
     private String description;
     private String technique;
     private ImageNumeriqueDto avatar;
@@ -89,14 +88,6 @@ public class OeuvreNumeriqueDto {
 
     public void setTarif(Integer tarif) {
         this.tarif = tarif;
-    }
-
-    public String getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
     }
 
     public String getDescription() {

@@ -59,8 +59,6 @@ public class OeuvreNumerique implements Serializable{
     private String motscles;
     @Column(name = "tarif", nullable = false, length = 5000)
     private Integer tarif;
-    @Column(name = "categorie", nullable = false)
-    private String categorie;
     @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "nom", nullable = false)
@@ -139,14 +137,6 @@ public class OeuvreNumerique implements Serializable{
 
     public void setTarif(Integer tarif) {
         this.tarif = tarif;
-    }
-
-    public String getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
     }
 
     public String getDescription() {

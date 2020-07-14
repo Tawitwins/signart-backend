@@ -94,7 +94,6 @@ public class ImageNumeriqueREST {
         entity.setLongueur(dto.getLongueur());
         entity.setMotscles(dto.getMotscles());
         entity.setTarif(dto.getTarif());
-        entity.setCategorie(dto.getCategorie());
         entity.setDescription(dto.getDescription());
         entity.setTechnique(dto.getTechnique());
         entity.setNom(nom);
@@ -112,7 +111,6 @@ public class ImageNumeriqueREST {
         dto.setLongueur(entity.getLongueur());
         dto.setMotscles(entity.getMotscles());
         dto.setTarif(entity.getTarif());
-        dto.setCategorie(entity.getCategorie());
         dto.setDescription(entity.getDescription());
         dto.setTechnique(entity.getTechnique());
         dto.setNom(entity.getNom());
@@ -412,7 +410,31 @@ public class ImageNumeriqueREST {
         return dtoImgB;               
     }
     
-   @GET
+    @GET
+    @Path("loadImage/{imageName}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public OeuvreNumeriqueDto findByImageName(@PathParam("imageName") String imageName) throws IOException, SignArtException {
+        System.out.println(imageName+"+++++++++++++++++++++++++++++++++++++++++++++imageName+++++++++++++++++++++++++++++++++++++");
+
+        OeuvreNumeriqueDto dtoImgB = new OeuvreNumeriqueDto();
+        ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
+        
+        //BufferedImage minImage = ImageIO.read(ImageNumeriqueREST.class.getResource("/Stockage/images/min_"+imageName+".jpg"));
+        //BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+imageName+".jpg"));
+
+                BufferedImage minImage = ImageIO.read(new File("/opt/images/"+imageName+".jpg"));
+
+             //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
+        String imageBase64 = encodeToString(minImage,"jpg");
+        System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
+        dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
+        dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
+        dtoImg.setValue(imageBase64);
+        dtoImgB.setAvatar(dtoImg);     
+        return dtoImgB;               
+    }
+    
+    @GET
     @Path("loadAll")
     @Produces({MediaType.APPLICATION_JSON})
     public List<OeuvreNumeriqueDto> findAll() throws IOException, SignArtException {
