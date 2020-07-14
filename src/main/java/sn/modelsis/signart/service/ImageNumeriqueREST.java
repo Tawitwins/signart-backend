@@ -195,7 +195,7 @@ public class ImageNumeriqueREST {
     @POST
     @Path("output")
     @Consumes({MediaType.APPLICATION_JSON})
-    public OeuvreNumerique save(OeuvreNumeriqueDto dto) throws SignArtException{
+    public Response save(OeuvreNumeriqueDto dto) throws SignArtException{
         OeuvreNumeriqueDto imgbrut = dto;
         ImageNumeriqueDto imgdto = dto.getAvatar();
                // System.out.println(imgdto.getValue()+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
@@ -237,39 +237,21 @@ public class ImageNumeriqueREST {
                 addTextWatermarkMin("SignArt", resizeImageJpg, new File("/opt/images/min_"+nom+".jpg"));
                 // addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+nom+".jpg"));
                //  addTextWatermarkMin("SignArt", resizeImageJpg, new File( "../../../../../../resources/stockage/images/min_"+nom+".jpg"));
-            } catch (IOException e) {
-                
-            }
-            
-             
-        imageNumeriqueFacade.create(dtoToEntityImg(imgdto,nom));
-       return oeuvreNumeriqueFacade.add(dtoToEntityOeuvre(dto,nom));
-            
-        
-        //BufferedImage originalImage = ImageIO.read(new File("/Users/macbookpro/Desktop/art.jpg"));
-        
-        
-        
-        
-       /* System.out.println(dto+"+++++++++++++++++++++++++++++++++++++++++++++dto++++++++++++++++++++++++++++++++++++");
-        
+            } catch (IOException e) {               
+            }     
+       imageNumeriqueFacade.create(dtoToEntityImg(imgdto,nom));
+       oeuvreNumeriqueFacade.create(dtoToEntityOeuvre(dto,nom)); 
+        //BufferedImage originalImage = ImageIO.read(new File("/Users/macbookpro/Desktop/art.jpg"));     
+       /* System.out.println(dto+"+++++++++++++++++++++++++++++++++++++++++++++dto++++++++++++++++++++++++++++++++++++");    
         System.out.println(imgbrut.getName()+"+++++++++++++++++++++++++++++++++++++++++++++imgbrut++++++++++++++++++++++++++++++++++++");
-
         String name = "salut";
         name = imgbrut.getName();
-        System.out.println(name+"+++++++++++++++++++++++++++++++++++++++++++++name++++++++++++++++++++++++++++++++++++");
-
-        
-        
+        System.out.println(name+"+++++++++++++++++++++++++++++++++++++++++++++name++++++++++++++++++++++++++++++++++++"); 
         System.out.println(img+"+++++++++++++++++++++++++++++++++++++++++++++img++++++++++++++++++++++++++++++++++++");
-
-        
-    
-        
         System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");*/
 
            //return Response.status(Response.Status.CREATED).build();
-           //return Response.status(Response.Status.CREATED).entity(identite).build();
+           return Response.status(Response.Status.CREATED).entity(imgbrut).build();
     }
     
 
@@ -421,22 +403,13 @@ public class ImageNumeriqueREST {
                 BufferedImage minImage = ImageIO.read(new File("/opt/images/min_"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
-
         String imageBase64 = encodeToString(minImage,"jpg");
         System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
-
-        
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
-        dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));
-                
-        
-        
+        dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
         dtoImg.setValue(imageBase64);
-        dtoImgB.setAvatar(dtoImg);
-        
-        return dtoImgB;
-        
-        
+        dtoImgB.setAvatar(dtoImg);     
+        return dtoImgB;               
     }
     
    @GET
