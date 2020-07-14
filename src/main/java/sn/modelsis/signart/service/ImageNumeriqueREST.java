@@ -195,7 +195,7 @@ public class ImageNumeriqueREST {
     @POST
     @Path("output")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response save(OeuvreNumeriqueDto dto) throws SignArtException{
+    public OeuvreNumerique save(OeuvreNumeriqueDto dto) throws SignArtException{
         OeuvreNumeriqueDto imgbrut = dto;
         ImageNumeriqueDto imgdto = dto.getAvatar();
                // System.out.println(imgdto.getValue()+"+++++++++++++++++++++++++++++++++++++++++++++largeur++++++++++++++++++++++++++++++++++++");
@@ -241,8 +241,9 @@ public class ImageNumeriqueREST {
                 
             }
             
-             oeuvreNumeriqueFacade.create(dtoToEntityOeuvre(dto,nom));
+             
         imageNumeriqueFacade.create(dtoToEntityImg(imgdto,nom));
+       return oeuvreNumeriqueFacade.add(dtoToEntityOeuvre(dto,nom));
             
         
         //BufferedImage originalImage = ImageIO.read(new File("/Users/macbookpro/Desktop/art.jpg"));
@@ -268,7 +269,7 @@ public class ImageNumeriqueREST {
         System.out.println(imageInByte+"+++++++++++++++++++++++++++++++++++++++++++++imageInByte++++++++++++++++++++++++++++++++++++");*/
 
            //return Response.status(Response.Status.CREATED).build();
-           return Response.status(Response.Status.CREATED).build();
+           //return Response.status(Response.Status.CREATED).entity(identite).build();
     }
     
 
