@@ -106,7 +106,7 @@ public class ImageNumeriqueREST {
     private OeuvreNumeriqueDto entityToDtoOeuvre(OeuvreNumerique entity) {
         
         OeuvreNumeriqueDto dto = new OeuvreNumeriqueDto();
-       // entity.setId(dto.getId());
+       dto.setId(entity.getId());
         dto.setAnnee(entity.getAnnee());
         dto.setIdentiteAuteur(entity.getIdentiteAuteur().getId());
         dto.setTitre(entity.getTitre());
