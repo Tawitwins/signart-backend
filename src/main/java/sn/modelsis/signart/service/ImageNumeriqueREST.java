@@ -476,10 +476,34 @@ public class ImageNumeriqueREST {
     }
     
     @DELETE
-    @Path("deleteOeuvreTest/{id}")
+    @Path("deleteOeuvre/{id}")
     public Response remove(@PathParam("id") Integer id) throws SignArtException {
         
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
+             ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
+             java.nio.file.Path minImagePath = Paths.get("/opt/images/min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get("/opt/images/"+oeuvreNum.getNom()+".jpg");
+
+            try {
+                    Files.delete((java.nio.file.Path) minImagePath);
+                    Files.delete((java.nio.file.Path) imagePath);
+                   System.out.println("++++++++++++++++++++++++++++++++++++++++successfully removed+++++++++++++++++++++++++++++++++++++");
+            } catch (IOException e) {
+                System.err.println("+++++++++++++++++++++++++++++++++++++++++++++Unable to delete+++++++++++++++++++++++++++++++++++++++++ ");
+                e.printStackTrace();
+            }
+            imageNumeriqueFacade.remove(imageNum);
+            oeuvreNumeriqueFacade.remove(oeuvreNum);
+           
+        return Response.status(Response.Status.OK).build();
+    }
+    
+    @DELETE
+    @Path("deleteOeuvreTest/{id}")
+    public Response remove2(@PathParam("id") Integer id) throws SignArtException {
+        
+             OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
+             ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
              java.nio.file.Path minImagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg");
              java.nio.file.Path imagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg");
 
@@ -491,6 +515,9 @@ public class ImageNumeriqueREST {
                 System.err.println("+++++++++++++++++++++++++++++++++++++++++++++Unable to delete+++++++++++++++++++++++++++++++++++++++++ ");
                 e.printStackTrace();
             }
+            imageNumeriqueFacade.remove(imageNum);
+            oeuvreNumeriqueFacade.remove(oeuvreNum);
+           
         return Response.status(Response.Status.OK).build();
     }
     
@@ -499,7 +526,12 @@ public class ImageNumeriqueREST {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response editPhoto(@PathParam("idOeuvre") Integer idOeuvre, OeuvreNumeriqueDto dto) throws SignArtException, IOException {
             OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);
+            System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++oeuvreNum getNom +++++++++++++++++++++++++++++++++++++");
+            ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
+            
             ImageNumeriqueDto dto2 = dto.getAvatar();
+            System.out.println(dto2+"++++++++++++++++++++++++++++++++++++++++dto2 avatar+++++++++++++++++++++++++++++++++++++");
+
             Integer largeur = dto.getLargeur()/3; 
             Integer longueur = dto.getLongueur()/3;
             
@@ -515,8 +547,17 @@ public class ImageNumeriqueREST {
             }
             
             oeuvreNum = dtoEntityEdit(dto,idOeuvre);
-            ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
-                        
+            System.out.println(oeuvreNum+"++++++++++++++++++++++++++++++++++++++++oeuvreNum +++++++++++++++++++++++++++++++++++++");
+
+            
+            System.out.println(imageNum+"++++++++++++++++++++++++++++++++++++++++imageNum +++++++++++++++++++++++++++++++++++++");
+            imageNum.setFilename(dto2.getFilename());
+            imageNum.setFiletype(dto2.getFiletype());
+            System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++imageNum oeuvreNum.getNom()+++++++++++++++++++++++++++++++++++++");
+            imageNum.setValue(oeuvreNum.getNom());
+            System.out.println(imageNum.getValue()+"++++++++++++++++++++++++++++++++++++++++imageNum.getValue()+++++++++++++++++++++++++++++++++++++");
+
+            
             String img = dto2.getValue();
             final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
             final InputStream in = new ByteArrayInputStream(imageInByte);
@@ -530,9 +571,81 @@ public class ImageNumeriqueREST {
             } catch (IOException e) {               
             }     
             
+           
+            
+            
+            
+           // ImageNumerique imageNum = dtoEntityImgEdit(dto,oeuvreNum);
+              
+              oeuvreNumeriqueFacade.edit(oeuvreNum);
+              imageNumeriqueFacade.edit(imageNum);
+            return Response.status(Response.Status.CREATED).build();
+       
+    }
+    
+    @GET
+    @Path("loadOeuvre/{idOeuvre}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public OeuvreNumeriqueDto findByImageName(@PathParam("idOeuvre") Integer idOeuvre) throws IOException, SignArtException {
+        OeuvreNumeriqueDto dtoImgB = new OeuvreNumeriqueDto();
+        ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
+        dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findById(idOeuvre));
+        dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(dtoImgB.getNom()));     
+        dtoImgB.setAvatar(dtoImg);     
+        return dtoImgB;               
+    }
+    
+    @PUT
+    @Path("updateOeuvreTest/{idOeuvre}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response editPhoto2(@PathParam("idOeuvre") Integer idOeuvre, OeuvreNumeriqueDto dto) throws SignArtException, IOException {
+            OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);
+            System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++oeuvreNum getNom +++++++++++++++++++++++++++++++++++++");
+            ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
+            
+            ImageNumeriqueDto dto2 = dto.getAvatar();
+            System.out.println(dto2+"++++++++++++++++++++++++++++++++++++++++dto2 avatar+++++++++++++++++++++++++++++++++++++");
+
+            Integer largeur = dto.getLargeur()/3; 
+            Integer longueur = dto.getLongueur()/3;
+            
+            java.nio.file.Path minImagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path imagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg");
+            try {
+                   Files.delete((java.nio.file.Path) minImagePath);
+                    Files.delete((java.nio.file.Path) imagePath);
+                   System.out.println(" successfully removed");
+            } catch (IOException e) {
+                System.err.println("Unable to delete ");
+                e.printStackTrace();
+            }
+            
+            oeuvreNum = dtoEntityEdit(dto,idOeuvre);
+            System.out.println(oeuvreNum+"++++++++++++++++++++++++++++++++++++++++oeuvreNum +++++++++++++++++++++++++++++++++++++");
+
+            
+            System.out.println(imageNum+"++++++++++++++++++++++++++++++++++++++++imageNum +++++++++++++++++++++++++++++++++++++");
             imageNum.setFilename(dto2.getFilename());
             imageNum.setFiletype(dto2.getFiletype());
+            System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++imageNum oeuvreNum.getNom()+++++++++++++++++++++++++++++++++++++");
             imageNum.setValue(oeuvreNum.getNom());
+            System.out.println(imageNum.getValue()+"++++++++++++++++++++++++++++++++++++++++imageNum.getValue()+++++++++++++++++++++++++++++++++++++");
+
+            
+            String img = dto2.getValue();
+            final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
+            final InputStream in = new ByteArrayInputStream(imageInByte);
+            BufferedImage bImageFromConvert;        
+            try {
+                bImageFromConvert = ImageIO.read(in);
+                ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg"));
+                int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
+                BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
+                addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg"));
+            } catch (IOException e) {               
+            }     
+            
+           
             
             
             
@@ -545,17 +658,6 @@ public class ImageNumeriqueREST {
        
     }
     
-     @GET
-    @Path("loadOeuvre/{idOeuvre}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public OeuvreNumeriqueDto findByImageName(@PathParam("idOeuvre") Integer idOeuvre) throws IOException, SignArtException {
-        OeuvreNumeriqueDto dtoImgB = new OeuvreNumeriqueDto();
-        ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
-        dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findById(idOeuvre));
-        dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(dtoImgB.getNom()));     
-        dtoImgB.setAvatar(dtoImg);     
-        return dtoImgB;               
-    }
      private OeuvreNumerique dtoEntityEdit(OeuvreNumeriqueDto dto, Integer idOeuvre) throws SignArtException {
         OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);   
         String identite = artisteFacade.findById(dto.getIdentiteAuteur()).getIdentite();
