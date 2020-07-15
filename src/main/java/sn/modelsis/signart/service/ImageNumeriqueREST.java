@@ -479,7 +479,7 @@ public class ImageNumeriqueREST {
     @Path("deleteOeuvreTest/{id}")
     public Response remove(@PathParam("id") Integer id) throws SignArtException {
         
-        OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
+             OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              java.nio.file.Path minImagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg");
              java.nio.file.Path imagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg");
 
@@ -499,9 +499,12 @@ public class ImageNumeriqueREST {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response editPhoto(@PathParam("idOeuvre") Integer idOeuvre, OeuvreNumeriqueDto dto) throws SignArtException, IOException {
             OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);
-             java.nio.file.Path minImagePath = Paths.get("/opt/images/min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get("/opt/images/"+oeuvreNum.getNom()+".jpg");
-
+            ImageNumeriqueDto dto2 = dto.getAvatar();
+            Integer largeur = dto.getLargeur()/3; 
+            Integer longueur = dto.getLongueur()/3;
+            
+            java.nio.file.Path minImagePath = Paths.get("/opt/images/min_"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path imagePath = Paths.get("/opt/images/"+oeuvreNum.getNom()+".jpg");
             try {
                    Files.delete((java.nio.file.Path) minImagePath);
                     Files.delete((java.nio.file.Path) imagePath);
@@ -512,11 +515,32 @@ public class ImageNumeriqueREST {
             }
             
             oeuvreNum = dtoEntityEdit(dto,idOeuvre);
-            ImageNumerique imageNum = dtoEntityImgEdit(dto,oeuvreNum);
+            ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
+                        
+            String img = dto2.getValue();
+            final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
+            final InputStream in = new ByteArrayInputStream(imageInByte);
+            BufferedImage bImageFromConvert;        
+            try {
+                bImageFromConvert = ImageIO.read(in);
+                ImageIO.write(bImageFromConvert, "jpg", new File("/opt/images/"+oeuvreNum.getNom()+".jpg"));
+                int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
+                BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
+                addTextWatermarkMin("SignArt", resizeImageJpg, new File("/opt/images/min_"+oeuvreNum.getNom()+".jpg"));
+            } catch (IOException e) {               
+            }     
+            
+            imageNum.setFilename(dto2.getFilename());
+            imageNum.setFiletype(dto2.getFiletype());
+            imageNum.setValue(oeuvreNum.getNom());
+            
+            
+            
+           // ImageNumerique imageNum = dtoEntityImgEdit(dto,oeuvreNum);
               
               oeuvreNumeriqueFacade.edit(oeuvreNum);
               imageNumeriqueFacade.edit(imageNum);
-            return Response.status(Response.Status.CREATED).entity(dto).build();
+            return Response.status(Response.Status.CREATED).build();
             //return Response.status(Response.Status.OK).build();
        
     }
@@ -538,33 +562,7 @@ public class ImageNumeriqueREST {
         return oeuvreNum;
     }
      
-     private ImageNumerique dtoEntityImgEdit(OeuvreNumeriqueDto dto, OeuvreNumerique oeuvreNum) throws SignArtException { 
-        ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
-        ImageNumeriqueDto dto2 = dto.getAvatar();
-       // entity.setId(dto.getId());
-       Integer largeur = dto.getLargeur()/3; 
-       Integer longueur = dto.getLongueur()/3;
-        String img = dto2.getValue();
-
-            final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
-
-            final InputStream in = new ByteArrayInputStream(imageInByte);
-            BufferedImage bImageFromConvert;
-          
-            try {
-                bImageFromConvert = ImageIO.read(in);
-                ImageIO.write(bImageFromConvert, "jpg", new File("/opt/images/"+oeuvreNum.getNom()+".jpg"));
-                int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
-                BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
-                addTextWatermarkMin("SignArt", resizeImageJpg, new File("/opt/images/min_"+oeuvreNum.getNom()+".jpg"));
-            } catch (IOException e) {               
-            }     
-            
-        imageNum.setFilename(dto2.getFilename());
-        imageNum.setFiletype(dto2.getFiletype());
-        imageNum.setValue(oeuvreNum.getNom());
-        return imageNum;
-    }
+     
     /*@GET
     @Produces({MediaType.APPLICATION_OCTET_STREAM})
     @Path("/oeuvre/miniature/{id}")
