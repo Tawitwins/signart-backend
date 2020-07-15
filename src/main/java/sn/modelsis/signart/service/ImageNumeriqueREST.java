@@ -544,6 +544,18 @@ public class ImageNumeriqueREST {
             //return Response.status(Response.Status.OK).build();
        
     }
+    
+     @GET
+    @Path("loadOeuvre/{idOeuvre}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public OeuvreNumeriqueDto findByImageName(@PathParam("idOeuvre") Integer idOeuvre) throws IOException, SignArtException {
+        OeuvreNumeriqueDto dtoImgB = new OeuvreNumeriqueDto();
+        ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
+        dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findById(idOeuvre));
+        dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(dtoImgB.getNom()));     
+        dtoImgB.setAvatar(dtoImg);     
+        return dtoImgB;               
+    }
      private OeuvreNumerique dtoEntityEdit(OeuvreNumeriqueDto dto, Integer idOeuvre) throws SignArtException {
         OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);   
         String identite = artisteFacade.findById(dto.getIdentiteAuteur()).getIdentite();
