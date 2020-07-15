@@ -424,7 +424,7 @@ public class ImageNumeriqueREST {
             System.out.println(oeuvreNum+"++++++++++++++++++++++++++++++++++++++++oeuvreNum +++++++++++++++++++++++++++++++++++++");
 
             
-            System.out.println(imageNum+"++++++++++++++++++++++++++++++++++++++++imageNum +++++++++++++++++++++++++++++++++++++");
+            System.out.println(imageNum+"++++++++++++++++++++++++++++++++++++++++imageNu +++++++++++++++++++++++++++++++++++++");
             imageNum.setFilename(dto2.getFilename());
             imageNum.setFiletype(dto2.getFiletype());
             System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++imageNum oeuvreNum.getNom()+++++++++++++++++++++++++++++++++++++");
