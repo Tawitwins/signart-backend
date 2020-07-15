@@ -254,133 +254,7 @@ public class ImageNumeriqueREST {
            //return Response.status(Response.Status.CREATED).build();
            return Response.status(Response.Status.CREATED).entity(imgbrut).build();
     }
-    
-
-   /* @POST
-    @Path("upload")
-    @Consumes({MediaType.MULTIPART_FORM_DATA})
-    @Produces({MediaType.APPLICATION_JSON})
-    //public Response create(@PathParam("id") Integer id, final MultipartFormDataInput input){//, @Context final SecurityContext securityContext) {
-    public Response create(@FormDataParam("file") InputStream uploadedInputStream) throws IOException {
-        //,@FormDataParam("file") FormDataContentDisposition fileDetail) {
-        //String fileName = "";
-        ImageProfil image = new ImageProfil("JEANTHEO","image/jpg");
-       // Logger logger = Logger.getLogger(getClass().getName());
-       //  logger("");
-      
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++saluuuuuuuu+++++++++++++++++++++++++++++++++++++");
-        System.out.println(uploadedInputStream+"+++++++++++++++++++++++++++++++++++++++++++++upload+++++++++++++++++++++++++++++++++++++");
-        
-        try {
-                    System.out.println("+++++++++++++++++++++++++++++++++++++++++++++dans le try+++++++++++++++++++++++++++++++++++++");
-
-            //final String idOeuvre = input.getFormDataPart("idOeuvre", String.class, null);
-            //final String originalFileName = input.getFormDataPart("originalFileName", String.class, null);
-            //final Map<String, List<InputPart>> formParts = input.getFormDataMap();
-            //final List<InputPart> inPart = formParts.get("selectedFile");
-
-            //if (Objects.isNull(inPart) || inPart.isEmpty()) {
-            //    return Response.status(Response.Status.NOT_FOUND).entity("a file must be attached").build();
-            //}
-           /* if (Objects.isNull(uploadedInputStream)) {
-                return Response.status(Response.Status.NOT_FOUND).entity("a file must be attached").build();
-            }*/
-
-            /*if (Objects.isNull(originalFileName) || originalFileName.isEmpty()) {
-                return Response.status(Response.Status.UNAUTHORIZED).entity("Original filename must be given").build();
-            }
-            if (Objects.isNull(id)) {
-                return Response.status(Response.Status.UNAUTHORIZED).entity("idOeuvre must be given").build();
-            }*/
-            //fichier.setOriginalFileName(originalFileName);
-           // oeuvre = oeuvreFacade.find(id);
-         
-           
-
-            //if (inPart.size() > 1) {
-            //    return Response.status(Response.Status.UNAUTHORIZED).entity("You should attach one file ").build();
-            //}
-            
-           /* byte[] imageAr = new byte[40324];
-            
-            for (int i = 0; i < 40324; i++) {
-               imageAr[i] = (byte) uploadedInputStream.read();
-            }*/
-           /* BufferedImage img=ImageIO.read(new File("/Users/macbookpro/Desktop/test1.JPG"));
-            System.out.println(img+"+++++++++++++++++++++++++++++++++++++++++++++img++++++++++++++++++++++++++++++++++++");
-            ImageIO.write(img, "jpg", new File("/Users/macbookpro/Desktop/stockage/output.jpg"));
-
-            
-             byte[] bytes = IOUtils.toByteArray(uploadedInputStream);
-            //ByteArray byt = new ByteArray();
-            System.out.println(bytes+"+++++++++++++++++++++++++++++++++++++++++++++bytes+++++++++++++++++++++++++++++++++++++");
-       
-            
-            
-
-            
-            image.setPicByte(bytes);
-            //System.out.println(bytes);
-            
-            
-             imageProfilFacade.create(image);
-            
-            //InputStream stream = request.getInputStream();
-            //bytes = IOUtils.toByteArray(stream);
-            //File file = new File("myfile/1.jpg");
-           ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-          System.out.println(bis+"+++++++++++++++++++++++++++++++++++++++++++++bis++++++++++++++++++++++++++++++++++++");
-          
-            //BufferedImage img = ImageIO.read(bis);
-           
-
-            //ImageIO.write(img, "jpg", new File("/Users/macbookpro/Desktop/stockage/output.jpg") );
-            // File file = new File("/Users/macbookpro/Desktop/stockage/JEANTHEO.jpg");
-            //BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));
-           // ImageIO.write(img, "jpg", file);
-           
-           
-            // ImageInputStream sourceImage = ImageIO.createImageInputStream(bytes);
-            //ImageIO.write((RenderedImage) sourceImage, "jpg", destImageFile);
-            
-            
-
-//          for (final InputPart inputPart : inPart) {
-//                // Recuperation du nom original du fichier a partir du Header
-//                //final MultivaluedMap<String, String> headers = inputPart.getHeaders();
-//                //fileName = Utils.parseFileName(headers);
-//
-//                // Creation du fichier a partir du Stream recupere
-//                final InputStream istream = inputPart.getBody(InputStream.class, null);
-//
-//                byte[] bytes = IOUtils.toByteArray(istream);
-//                oeuvre.setImage(bytes);
-//                oeuvreFacade.edit(oeuvre);
-//            }
-            //fichier = fichierService.createFichier(fichier);
-                    System.out.println("+++++++++++++++++++++++++++++++++++++++++++++fin try+++++++++++++++++++++++++++++++++++++");
-
-        } catch (IOException e) {
-            //logger.warn("Une erreur est survenue lors de l'ajout de la piece de code ", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-        return Response.status(Response.Status.CREATED).entity("Image sauvegardée").build();
-
-    }*/
-
-    /*@GET
-    @Produces({MediaType.APPLICATION_OCTET_STREAM})
-    @Path("/load/{id}")
-    public Response findOeuvreImage(@PathParam("id") Long id) throws SignArtException {
-        try {
-            ImageProfil image = imageProfilFacade.find(id);
-            final ResponseBuilder response = Response.ok(image.getPicByte());
-            response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
-            return response.build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }*/
+ 
     
     @GET
     @Path("test")
@@ -495,12 +369,12 @@ public class ImageNumeriqueREST {
             imageNumeriqueFacade.remove(imageNum);
             oeuvreNumeriqueFacade.remove(oeuvreNum);
            
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK).entity(oeuvreNum).build();
     }
     
     @DELETE
     @Path("deleteOeuvreTest/{id}")
-    public Response remove2(@PathParam("id") Integer id) throws SignArtException {
+    public Response removee2(@PathParam("id") Integer id) throws SignArtException {
         
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
@@ -579,7 +453,7 @@ public class ImageNumeriqueREST {
               
               oeuvreNumeriqueFacade.edit(oeuvreNum);
               imageNumeriqueFacade.edit(imageNum);
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(oeuvreNum).build();
        
     }
     
