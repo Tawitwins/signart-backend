@@ -454,6 +454,7 @@ public class ImageNumeriqueREST {
               
               imageNumeriqueFacade.edit(imageNum);
               oeuvreNumeriqueFacade.edit(oeuvreNum);
+            
             return Response.status(Response.Status.OK).build();
        
     }
@@ -529,7 +530,7 @@ public class ImageNumeriqueREST {
               
               oeuvreNumeriqueFacade.edit(oeuvreNum);
               imageNumeriqueFacade.edit(imageNum);
-            return Response.status(Response.Status.CREATED).entity(oeuvreNum).build();
+             return Response.status(Response.Status.OK).entity(dto).build();
             //return Response.status(Response.Status.OK).build();
        
     }
