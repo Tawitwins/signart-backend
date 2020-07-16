@@ -451,9 +451,10 @@ public class ImageNumeriqueREST {
             
            // ImageNumerique imageNum = dtoEntityImgEdit(dto,oeuvreNum);
               
-              oeuvreNumeriqueFacade.edit(oeuvreNum);
+              
               imageNumeriqueFacade.edit(imageNum);
-            return Response.status(Response.Status.CREATED).entity(oeuvreNum).build();
+              oeuvreNumeriqueFacade.edit(oeuvreNum);
+            return Response.status(Response.Status.OK).build();
        
     }
     
@@ -473,7 +474,8 @@ public class ImageNumeriqueREST {
     @Path("updateOeuvreTest/{idOeuvre}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response editPhoto2(@PathParam("idOeuvre") Integer idOeuvre, OeuvreNumeriqueDto dto) throws SignArtException, IOException {
-            OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);
+            OeuvreNumerique oeuvreNum;
+            oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);
             System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++oeuvreNum getNom +++++++++++++++++++++++++++++++++++++");
             ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
             
@@ -527,7 +529,7 @@ public class ImageNumeriqueREST {
               
               oeuvreNumeriqueFacade.edit(oeuvreNum);
               imageNumeriqueFacade.edit(imageNum);
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(oeuvreNum).build();
             //return Response.status(Response.Status.OK).build();
        
     }

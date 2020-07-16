@@ -27,12 +27,13 @@ import sn.modelsis.signart.Abonne;
 import sn.modelsis.signart.Abonnement;
 import sn.modelsis.signart.Delai;
 import sn.modelsis.signart.Licence;
+import sn.modelsis.signart.dto.LicenceDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.AbonneFacade;
 import sn.modelsis.signart.facade.AbonnementFacade;
 import sn.modelsis.signart.facade.DelaiFacade;
 import sn.modelsis.signart.facade.LicenceFacade;
-import sn.penda.signart.dto.LicenceDto;
+
 
 /**
  *
