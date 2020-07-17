@@ -4,7 +4,6 @@ package sn.modelsis.signart.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import javax.inject.Inject;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
-import static javax.mail.Session.getDefaultInstance;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -47,13 +45,14 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
-import sn.modelsis.signart.Artiste;
+import sn.modelsis.signart.Email;
 import sn.modelsis.signart.MessagesTchats;
-import static sn.modelsis.signart.MessagesTchats_.filename;
+import sn.modelsis.signart.converter.EmailConverter;
 import sn.modelsis.signart.converter.MessagesTchatsConverter;
 import sn.modelsis.signart.dto.EmailDto;
 import sn.modelsis.signart.dto.MessagesTchatsDto;
 import sn.modelsis.signart.facade.ArtisteFacade;
+import sn.modelsis.signart.facade.EmailFacade;
 import sn.modelsis.signart.facade.MessagesTchatsFacade;
 import sn.modelsis.signart.facade.VisiteurFacade;
 
@@ -70,6 +69,8 @@ public class TchatWSFacadeREST {
 
     private @Inject MessagesTchatsFacade messagesTchatsFacade;
     private @Inject MessagesTchatsConverter messagesTchatsConverter;
+    private @Inject EmailConverter emailConverter;
+    private @Inject EmailFacade emailFacade;
     
     
     private static TchatWSFacadeREST singleton = new TchatWSFacadeREST();
@@ -148,12 +149,18 @@ public class TchatWSFacadeREST {
           mex.printStackTrace();
           return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(null).build();
       }
-      return Response.status(Response.Status.CREATED).entity(emailDto).build();
+      Email entity = new Email();
+      Calendar calendar = Calendar.getInstance();
+      java.util.Date currentDate = calendar.getTime();
+      //java.sql.Timestamp dateEnvoi = new java.sql.Timestamp(currentDate.getTime());
+      emailDto.setDateEnvoi(currentDate);
+      entity = emailConverter.dtoToEntity(emailDto);
+      emailFacade.create(entity);
+      return Response.status(Response.Status.CREATED).entity(entity).build();
     }
      /**
      *
      * @param asyncResponse
-     * @param signartFile
      * @throws IOException
      */
     @PUT

@@ -49,6 +49,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.DelaiREST.class);
         resources.add(sn.modelsis.signart.service.DeviseFacadeREST.class);
         resources.add(sn.modelsis.signart.service.DomaineFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.EmailFacadeREST.class);
         resources.add(sn.modelsis.signart.service.EtatAbonnementREST.class);
         resources.add(sn.modelsis.signart.service.EtatArtisteFacadeREST.class);
         resources.add(sn.modelsis.signart.service.EtatClientFacadeREST.class);

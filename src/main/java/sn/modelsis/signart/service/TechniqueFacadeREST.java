@@ -81,10 +81,17 @@ public class TechniqueFacadeREST extends AbstractFacade<Technique> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Technique find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public TechniqueDto find(@PathParam("id") Integer id) {
+        return EntityToDTO(super.find(id));
     }
-
+    public TechniqueDto EntityToDTO(Technique tech)
+    {
+        TechniqueDto dto = new TechniqueDto();
+        dto.setId(tech.getId());
+        dto.setLibelle(tech.getLibelle());
+        dto.setIdMenu(tech.getMenu().getId());
+        return dto;
+    }
     @GET
     @Path("by-menu/{idMenu}")
     @Produces({MediaType.APPLICATION_JSON})

@@ -120,7 +120,8 @@ public class LicenceREST {
 		//System.out.println(licence2);
                 String filename = "licence00"+username;    
                  try {
-                        FileWriter myWriter = new FileWriter("/opt/images"+filename);
+//                        FileWriter myWriter = new FileWriter("/opt/images/"+filename);
+                        FileWriter myWriter = new FileWriter("C:\\Users\\SNMBENGUEO\\Documents\\ImagesSignArt\\"+filename);
                                                 //System.out.println(LicenceREST.class.getResource("/Stockage/licences").getPath()+"++++++++++++++++++++++++++++++path++++++++++++++++++++++++++++++++++++");
 
                         //File file = new File("");

@@ -234,8 +234,10 @@ public class ImageNumeriqueREST {
 
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
-                addTextWatermarkMin("SignArt", resizeImageJpg, new File("/opt/images/min_"+nom+".jpg"));
-                // addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+nom+".jpg"));
+                //addTextWatermarkMin("SignArt", resizeImageJpg, new File("/opt/images/min_"+nom+".jpg"));
+                //addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+nom+".jpg"));
+                addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\SNMBENGUEO\\Documents\\ImagesSignArt\\min_"+nom+".jpg"));
+
                //  addTextWatermarkMin("SignArt", resizeImageJpg, new File( "../../../../../../resources/stockage/images/min_"+nom+".jpg"));
             } catch (IOException e) {
                 
@@ -416,7 +418,8 @@ public class ImageNumeriqueREST {
         //BufferedImage minImage = ImageIO.read(ImageNumeriqueREST.class.getResource("/Stockage/images/min_"+imageName+".jpg"));
         //BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+imageName+".jpg"));
 
-                BufferedImage minImage = ImageIO.read(new File("/opt/images/min_"+imageName+".jpg"));
+                //BufferedImage minImage = ImageIO.read(new File("/opt/images/min_"+imageName+".jpg"));
+                BufferedImage minImage = ImageIO.read(new File("C:\\Users\\SNMBENGUEO\\Documents\\ImagesSignArt\\min_"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
 
@@ -455,8 +458,8 @@ public class ImageNumeriqueREST {
         for(int j=0; j< dtoImgB.size(); j++){
             System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
-            //BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+dtoImgB.get(j).getNom()+".jpg"));
-            BufferedImage minImage = ImageIO.read(new File("/opt/images/min_"+dtoImgB.get(j).getNom()+".jpg"));
+            BufferedImage minImage = ImageIO.read(new File("C:\\Users\\SNMBENGUEO\\Documents\\ImagesSignArt\\min_"+dtoImgB.get(j).getNom()+".jpg"));
+            //BufferedImage minImage = ImageIO.read(new File("/opt/images/min_"+dtoImgB.get(j).getNom()+".jpg"));
 
             System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             

@@ -50,21 +50,21 @@ public class Souscription implements Serializable {
     private String ville;
     @Column(name = "email", length = 50)
     private String email;
-    @Column(name = "genre", length = 10)
+    @Column(name = "genre", length = 1)
     private String genre;
-    @Column(name = "nomGalerie", length = 100)
+    @Column(name = "nomGalerie", length = 50)
     private String nomGalerie;
     @Column(name = "siteWeb", length = 50)
     private String siteWeb;
-    @Column(name = "adresseGalerie", length = 200)
+    @Column(name = "adresseGalerie", length = 100)
     private String adrGalerie;
-    @Column(name = "specialite", length = 200)
+    @Column(name = "specialite", length = 100)
     private String specialites;
-    @Column(name = "formation", length = 2000)
+    @Column(name = "formation", length = 255)
     private String formation;
-    @Column(name = "exposition", length = 2000)
+    @Column(name = "exposition", length = 255)
     private String expositions;
-    @Column(name = "codePays", length = 100)
+    @Column(name = "codePays", length = 5)
     private String codePays;
    
    

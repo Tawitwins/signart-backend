@@ -75,7 +75,8 @@ public class OeuvreSouscriptionConverter {
         //if(dto.getIdCouleur()!= null)
         //    entity.setIdCouleur(recupCouleur(dto.getIdCouleur().getId()));
         entity.setIdTechnique(techniqueFacade.findById(dto.getIdTechnique()));
-        entity.setIdCouleur(couleurFacade.findById(dto.getIdCouleur()));
+        if(dto.getIdCouleur()!=null)
+            entity.setIdCouleur(couleurFacade.findById(dto.getIdCouleur()));
         entity.setNouveau(dto.getNouveau());
         entity.setLithographie(dto.getLithographie());
         entity.setAuteur(dto.getAuteur());

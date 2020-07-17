@@ -144,6 +144,28 @@ public class OeuvreFacadeREST {
         }
         return listDto;
     }
+    @GET
+    @Path("artiste/CouvertureImg/{id}")
+    @Produces({MediaType.APPLICATION_OCTET_STREAM})
+    public Response findCouvertureImgByArtiste(@PathParam("id") Integer idArtiste) {
+        List<OeuvreDto> listDto = new ArrayList<>();
+        List<Oeuvre> listEnt = oeuvreFacade.findByArtiste(idArtiste);
+        if (listEnt != null) {
+            listEnt.stream().map(oeuvre -> 
+                oeuvreConverter.entityToDto(oeuvre)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
+        }
+        if(listDto.size()>0)
+        {
+            final Response.ResponseBuilder response = Response.ok(listDto.get(0).getImage());
+            response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
+            return response.build();
+        }
+        else
+            return null;
+    }
 
     @GET
     @Path("nouveau")

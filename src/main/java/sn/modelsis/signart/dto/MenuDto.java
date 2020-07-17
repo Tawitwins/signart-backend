@@ -18,6 +18,7 @@ public class MenuDto implements Serializable {
     private String icon;
     private String classe;
     private Integer idParent;
+    private ImageProfilDto image;
     private List<MenuDto> children;
 
     public Integer getId() {
@@ -76,4 +77,11 @@ public class MenuDto implements Serializable {
         this.idParent = idParent;
     }
 
+    public ImageProfilDto getImage() {
+        return image;
+    }
+
+    public void setImage(ImageProfilDto image) {
+        this.image = image;
+    } 
 }

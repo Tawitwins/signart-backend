@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -42,8 +43,8 @@ public class Technique implements Serializable {
     @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false, unique = true)
     @OneToOne
     private Menu menu;
-   // @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTechnique")
-    //private Set<SousTechnique> sousTechniqueSet;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "idTechnique")
+    private Set<SousTechnique> sousTechniqueSet;
 
     public Technique() {
     }
