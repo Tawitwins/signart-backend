@@ -27,12 +27,13 @@ import sn.modelsis.signart.Abonne;
 import sn.modelsis.signart.Abonnement;
 import sn.modelsis.signart.Delai;
 import sn.modelsis.signart.Licence;
+import sn.modelsis.signart.dto.LicenceDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.AbonneFacade;
 import sn.modelsis.signart.facade.AbonnementFacade;
 import sn.modelsis.signart.facade.DelaiFacade;
 import sn.modelsis.signart.facade.LicenceFacade;
-import sn.penda.signart.dto.LicenceDto;
+
 
 /**
  *
@@ -120,8 +121,7 @@ public class LicenceREST {
 		//System.out.println(licence2);
                 String filename = "licence00"+username;    
                  try {
-//                        FileWriter myWriter = new FileWriter("/opt/images/"+filename);
-                        FileWriter myWriter = new FileWriter("C:\\Users\\SNMBENGUEO\\Documents\\ImagesSignArt\\"+filename);
+                        FileWriter myWriter = new FileWriter("/opt/images"+filename);
                                                 //System.out.println(LicenceREST.class.getResource("/Stockage/licences").getPath()+"++++++++++++++++++++++++++++++path++++++++++++++++++++++++++++++++++++");
 
                         //File file = new File("");

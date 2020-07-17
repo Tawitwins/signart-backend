@@ -81,7 +81,7 @@ public class AbonnementREST {
                 abonnement = abonnementfacade.findById(idAbonnement);
                 abonnement.setEtatAbonnement(etatAbonnementFacade.findById(idEtat));      
                 abonnementfacade.edit(abonnement);
-                return Response.status(Response.Status.OK).build();
+                return Response.status(Response.Status.OK).entity(abonnement).build();
                  
     }
     
