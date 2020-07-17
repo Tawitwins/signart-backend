@@ -369,7 +369,7 @@ public class ImageNumeriqueREST {
             imageNumeriqueFacade.remove(imageNum);
             oeuvreNumeriqueFacade.remove(oeuvreNum);
            
-        return Response.status(Response.Status.OK).entity(oeuvreNum).build();
+        return Response.status(Response.Status.OK).build();
     }
     
     @DELETE
@@ -455,7 +455,9 @@ public class ImageNumeriqueREST {
               imageNumeriqueFacade.edit(imageNum);
               oeuvreNumeriqueFacade.edit(oeuvreNum);
             
-            return Response.status(Response.Status.OK).build();
+           
+               
+             return Response.status(Response.Status.OK).entity(dto).build();
        
     }
     
@@ -528,8 +530,10 @@ public class ImageNumeriqueREST {
             
            // ImageNumerique imageNum = dtoEntityImgEdit(dto,oeuvreNum);
               
-              oeuvreNumeriqueFacade.edit(oeuvreNum);
+             
               imageNumeriqueFacade.edit(imageNum);
+              oeuvreNumeriqueFacade.edit(oeuvreNum);
+               
              return Response.status(Response.Status.OK).entity(dto).build();
             //return Response.status(Response.Status.OK).build();
        
