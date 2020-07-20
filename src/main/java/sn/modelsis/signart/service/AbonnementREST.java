@@ -28,6 +28,7 @@ import sn.modelsis.signart.Terminal;
 import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.AbonneDto;
 import sn.modelsis.signart.dto.AbonnementDto;
+import sn.modelsis.signart.dto.EtatAbonnementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.AbonneFacade;
 import sn.modelsis.signart.facade.AbonnementFacade;
@@ -75,14 +76,14 @@ public class AbonnementREST {
     
     @PUT
     @Path("editEtatAbonnement/{idAbonnement}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response editPhoto(@PathParam("idAbonnement") Integer idAbonnement, Integer idEtat) throws SignArtException{
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response editPhoto(@PathParam("idAbonnement") Integer idAbonnement, EtatAbonnementDto etatAbonnement) throws SignArtException{
         Abonnement abonnement;
                 abonnement = abonnementfacade.findById(idAbonnement);
-                abonnement.setEtatAbonnement(etatAbonnementFacade.findById(idEtat));      
+                abonnement.setEtatAbonnement(etatAbonnementFacade.findById(etatAbonnement.getId()));      
                 abonnementfacade.edit(abonnement);
-              //  AbonnementDto dto = entityToDto(abonnement);
-                return Response.status(Response.Status.OK).build();
+                AbonnementDto dto = entityToDto(abonnement);
+                return Response.status(Response.Status.OK).entity(dto).build();
                  
     }
     
