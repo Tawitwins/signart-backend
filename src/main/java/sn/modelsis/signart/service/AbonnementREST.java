@@ -75,13 +75,13 @@ public class AbonnementREST {
     
     @PUT
     @Path("editEtatAbonnement/{idAbonnement}")
-    @Consumes({MediaType.APPLICATION_JSON})
     public Response editPhoto(@PathParam("idAbonnement") Integer idAbonnement, Integer idEtat) throws SignArtException{
         Abonnement abonnement;
                 abonnement = abonnementfacade.findById(idAbonnement);
                 abonnement.setEtatAbonnement(etatAbonnementFacade.findById(idEtat));      
                 abonnementfacade.edit(abonnement);
-                return Response.status(Response.Status.OK).entity(abonnement).build();
+              //  AbonnementDto dto = entityToDto(abonnement);
+                return Response.status(Response.Status.OK).build();
                  
     }
     

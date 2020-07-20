@@ -5,6 +5,7 @@
  */
 package sn.modelsis.signart;
 
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
       @NamedQuery(name = "Abonnement.findAll", query = "SELECT a FROM Abonnement a")
     , @NamedQuery(name = "Abonnement.findById", query = "SELECT a FROM Abonnement a WHERE a.id = :id")
     , @NamedQuery(name = "Abonnement.findByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")})
-public class Abonnement {
+public class Abonnement implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
