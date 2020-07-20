@@ -5,6 +5,8 @@
  */
 package sn.modelsis.signart.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -62,14 +64,12 @@ public class ListeSelectionREST {
         return entityToDto(listeSelection);
     }
     
-    @GET
-    @Path("utilisateur/{idUtilisateur}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public ListeSelectionDto findByUtilisateur(@PathParam("idUtilisateur") Integer idUtilisateur) throws SignArtException {
+    
+   /* public ListeSelectionDto findByUtilisateur(@PathParam("idUser") Integer idUser) throws SignArtException {
        ListeSelection listeSelection = new ListeSelection();
        ListeSelectionDto listDto = new ListeSelectionDto();
         try { 
-           listeSelection = listeSelectionFacade.findByIdUtilisateur(idUtilisateur);
+           listeSelection = listeSelectionFacade.findByIdUtilisateur(idUser);
        
        } catch (final SignArtException e) {
             Logger.getLogger(ListeSelectionREST.class.getName()).log(Level.SEVERE, "findByUtilisateur/Exception", e);
@@ -77,6 +77,26 @@ public class ListeSelectionREST {
         }
        
         return entityToDto(listeSelection);
+    }*/
+    @GET
+    @Path("allUserListe/{idUser}")
+    @Produces({MediaType.APPLICATION_JSON})
+     public List<ListeSelectionDto> findAllByUtilisateur(@PathParam("idUser") Integer idUser) {
+        List<ListeSelectionDto> listDto = new ArrayList<>();
+        try {
+            List<ListeSelection> listEnt = listeSelectionFacade.findByIdUtilisateur(idUser);
+            if (listEnt != null) {
+                listEnt.stream().map(entity
+                        -> entityToDto(entity)
+                ).forEachOrdered(dto
+                        -> listDto.add(dto)
+                );
+            }
+            return listDto;
+        } catch (final SignArtException e) {
+            Logger.getLogger(FormationREST.class.getName()).log(Level.SEVERE, "findAllByUtilisateur/Exception", e);
+            return listDto;
+        }
     }
     
     @GET

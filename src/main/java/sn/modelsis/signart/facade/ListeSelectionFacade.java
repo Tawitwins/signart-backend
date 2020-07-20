@@ -71,17 +71,18 @@ public class ListeSelectionFacade extends AbstractFacade<ListeSelection> {
     
     
     
-    public ListeSelection findByIdUtilisateur(Integer idUtilisateur) throws SignArtException {
+    public List<ListeSelection> findByIdUtilisateur(Integer idUtilisateur) throws SignArtException {
         try {
             final TypedQuery<ListeSelection> query = getEntityManager().createNamedQuery("ListeSelection.findByIdUtilisateur",
                     ListeSelection.class);
             query.setParameter("idUtilisateur", idUtilisateur);
-            return query.getSingleResult();
+            return query.getResultList();
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }
 
     }
     
+   
 }
     
