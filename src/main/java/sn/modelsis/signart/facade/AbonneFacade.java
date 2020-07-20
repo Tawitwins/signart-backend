@@ -49,6 +49,18 @@ public class AbonneFacade extends AbstractFacade<Abonne> {
 
     }
     
+     public Abonne findByIdListeSelection(Integer idListeSelection) throws SignArtException {
+        try {
+            final TypedQuery<Abonne> query = getEntityManager().createNamedQuery("Abonne.findByIdListeSelection",
+                    Abonne.class);
+            query.setParameter("idListeSelection", idListeSelection);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
+    
     public Abonne findById(Integer id) throws SignArtException {
         try {
             final TypedQuery<Abonne> query = getEntityManager().createNamedQuery("Abonne.findById",

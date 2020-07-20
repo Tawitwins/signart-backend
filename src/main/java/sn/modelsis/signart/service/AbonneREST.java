@@ -20,11 +20,13 @@ import javax.ws.rs.core.Response;
 import sn.modelsis.signart.Abonne;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Delai;
+import sn.modelsis.signart.ListeSelection;
 import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.AbonneDto;
 import sn.modelsis.signart.dto.DelaiDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.AbonneFacade;
+import sn.modelsis.signart.facade.ListeSelectionFacade;
 import sn.modelsis.signart.facade.UtilisateurFacade;
 
 /**
@@ -40,6 +42,9 @@ public class AbonneREST {
     
     @Inject
     UtilisateurFacade utilisateurFacade;
+    
+    @Inject
+    ListeSelectionFacade listeSelectionFacade;
     
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -72,6 +77,21 @@ public class AbonneREST {
     }
     
     @GET
+    @Path("listeSelection/{idListeSelection}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public AbonneDto findByListe(@PathParam("idListeSelection") Integer idListeSelection) throws SignArtException {
+        AbonneDto listDto = new AbonneDto();
+        Abonne abonne = new Abonne();
+        try { 
+             abonne = abonnefacade.findByIdListeSelection(idListeSelection);
+        }catch (final SignArtException e) {
+            Logger.getLogger(AbonneREST.class.getName()).log(Level.SEVERE, "findByIdListeSelection/Exception", e);
+            return listDto;
+        }
+        return entityToDto(abonne);
+    }
+    
+    @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String test() {
         return "test abonne rest";
@@ -89,6 +109,7 @@ public class AbonneREST {
         entity.setRegion(dto.getRegion());
         entity.setVille(dto.getVille());
         entity.setAdresse(dto.getAdresse());
+        entity.setIdListeSelection(findListeSelection(dto.getIdListeSelection()));
         entity.setIdUtilisateur(findUtilisateur(dto.getIdUtilisateur()));
         return entity;
     }
@@ -104,12 +125,17 @@ public class AbonneREST {
         dto.setRegion(entity.getRegion());
         dto.setVille(entity.getVille());
         dto.setAdresse(entity.getAdresse());
+        dto.setIdListeSelection(entity.getIdListeSelection().getId());
         dto.setIdUtilisateur(entity.getIdUtilisateur().getId());
         return dto;
     }
     
     private Utilisateur findUtilisateur(Integer idUtilisateur){
         return utilisateurFacade.find(idUtilisateur);
+    }
+    
+    private ListeSelection findListeSelection(Integer idListeSelection){
+        return listeSelectionFacade.find(idListeSelection);
     }
     
     

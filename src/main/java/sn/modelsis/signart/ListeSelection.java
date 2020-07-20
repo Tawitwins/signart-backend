@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
       @NamedQuery(name = "ListeSelection.findAll", query = "SELECT l FROM ListeSelection l")
     , @NamedQuery(name = "ListeSelection.findById", query = "SELECT l FROM ListeSelection l WHERE l.id = :id")
+    , @NamedQuery(name = "ListeSelection.findName", query = "SELECT l FROM ListeSelection l WHERE l.nomListe = :nomListe")
     , @NamedQuery(name = "ListeSelection.findByIdUtilisateur", query = "SELECT l FROM ListeSelection l WHERE l.idUtilisateur.id = :idUtilisateur")})
 public class ListeSelection implements Serializable {
 
@@ -46,6 +47,8 @@ public class ListeSelection implements Serializable {
     @JoinColumn(name = "idUtilisateur", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Utilisateur idUtilisateur;
+    @Column(name = "nomListe", length = 50)
+    private String nomListe;
 
     public ListeSelection(Integer id, Utilisateur idUtilisateur) {
         this.id = id;
@@ -76,4 +79,13 @@ public class ListeSelection implements Serializable {
     public void setIdUtilisateur(Utilisateur idUtilisateur) {
         this.idUtilisateur = idUtilisateur;
     }   
+
+    public String getNomListe() {
+        return nomListe;
+    }
+
+    public void setNomListe(String nomListe) {
+        this.nomListe = nomListe;
+    }
+    
 }

@@ -22,6 +22,7 @@ public class ListeSelectionDto implements Serializable {
     
      private Integer id;
     private Integer idUtilisateur;
+    private String nomListe;
 
     public ListeSelectionDto() {
     }
@@ -49,6 +50,14 @@ public class ListeSelectionDto implements Serializable {
 
     public void setIdUtilisateur(Integer idUtilisateur) {
         this.idUtilisateur = idUtilisateur;
+    }
+
+    public String getNomListe() {
+        return nomListe;
+    }
+
+    public void setNomListe(String nomListe) {
+        this.nomListe = nomListe;
     }
     
     

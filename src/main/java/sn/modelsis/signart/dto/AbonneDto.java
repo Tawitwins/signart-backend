@@ -25,6 +25,8 @@ public class AbonneDto implements Serializable {
     private String ville;
     private String adresse;
     private Integer idUtilisateur;
+    private Integer idListeSelection;
+    
 
     public AbonneDto(Integer id, String nom, String prenom, String email, String telephone, String pays, String region, String ville, String adresse, Integer idUtilisateur) {
         this.id = id;
@@ -52,6 +54,14 @@ public class AbonneDto implements Serializable {
     }
 
     public AbonneDto() {
+    }
+
+    public Integer getIdListeSelection() {
+        return idListeSelection;
+    }
+
+    public void setIdListeSelection(Integer idListeSelection) {
+        this.idListeSelection = idListeSelection;
     }
     
     

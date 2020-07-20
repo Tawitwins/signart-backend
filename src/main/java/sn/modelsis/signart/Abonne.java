@@ -29,7 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
       @NamedQuery(name = "Abonne.findAll", query = "SELECT a FROM Abonne a")
     , @NamedQuery(name = "Abonne.findById", query = "SELECT a FROM Abonne a WHERE a.id = :id")
-    , @NamedQuery(name = "Abonne.findByIdUtilisateur", query = "SELECT a FROM Abonne a WHERE a.idUtilisateur.id = :idUtilisateur")})
+    , @NamedQuery(name = "Abonne.findByIdListeSelection", query = "SELECT a FROM Abonne a WHERE a.idListeSelection.id = :idListeSelection")    
+        , @NamedQuery(name = "Abonne.findByIdUtilisateur", query = "SELECT a FROM Abonne a WHERE a.idUtilisateur.id = :idUtilisateur")})
+
 public class Abonne implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,6 +60,9 @@ public class Abonne implements Serializable {
     @JoinColumn(name = "idUtilisateur", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Utilisateur idUtilisateur;
+    @JoinColumn(name = "idListeSelection", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private ListeSelection idListeSelection;
 
     public Abonne(Integer id, String nom, String prenom, String email, String telephone, String pays, String region, String ville, String adresse, Utilisateur idUtilisateur) {
         this.id = id;
@@ -169,6 +174,14 @@ public class Abonne implements Serializable {
 
     public void setIdUtilisateur(Utilisateur idUtilisateur) {
         this.idUtilisateur = idUtilisateur;
+    }
+
+    public ListeSelection getIdListeSelection() {
+        return idListeSelection;
+    }
+
+    public void setIdListeSelection(ListeSelection idListeSelection) {
+        this.idListeSelection = idListeSelection;
     }
     
     

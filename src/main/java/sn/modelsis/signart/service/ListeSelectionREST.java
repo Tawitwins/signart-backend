@@ -55,6 +55,14 @@ public class ListeSelectionREST {
     }
     
     @GET
+    @Path("name/{nomListe}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ListeSelectionDto find(@PathParam("nomListe") String nomListe) throws SignArtException {
+        ListeSelection listeSelection = listeSelectionFacade.findByName(nomListe);
+        return entityToDto(listeSelection);
+    }
+    
+    @GET
     @Path("utilisateur/{idUtilisateur}")
     @Produces({MediaType.APPLICATION_JSON})
     public ListeSelectionDto findByUtilisateur(@PathParam("idUtilisateur") Integer idUtilisateur) throws SignArtException {
@@ -82,12 +90,14 @@ public class ListeSelectionREST {
         ListeSelection entity = new ListeSelection();
        // entity.setId(dto.getId());
         entity.setIdUtilisateur(findUtilisateur(dto.getIdUtilisateur()));
+        entity.setNomListe(dto.getNomListe());
         return entity;
     }
     
     private ListeSelectionDto entityToDto(ListeSelection entity){
         ListeSelectionDto dto = new ListeSelectionDto();
         dto.setId(entity.getId());
+        dto.setNomListe(entity.getNomListe());
         dto.setIdUtilisateur(entity.getIdUtilisateur().getId());
         return dto;
     }

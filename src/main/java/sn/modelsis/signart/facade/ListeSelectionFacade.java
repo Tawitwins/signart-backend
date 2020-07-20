@@ -53,6 +53,24 @@ public class ListeSelectionFacade extends AbstractFacade<ListeSelection> {
         }
     }
     
+    public ListeSelection findByName(String nomListe) throws SignArtException {
+        try {
+            final TypedQuery<ListeSelection> query = getEntityManager().createNamedQuery("ListeSelection.findName",
+                    ListeSelection.class);
+            query.setParameter("nomListe", nomListe);
+            query.setMaxResults(1);
+            final List<ListeSelection> listeSelections = query.getResultList();
+            if (listeSelections.isEmpty()) {
+                return null;
+            }
+            return listeSelections.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
+    
+    
+    
     public ListeSelection findByIdUtilisateur(Integer idUtilisateur) throws SignArtException {
         try {
             final TypedQuery<ListeSelection> query = getEntityManager().createNamedQuery("ListeSelection.findByIdUtilisateur",
