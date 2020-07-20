@@ -75,6 +75,7 @@ public class AbonnementREST {
     
     @PUT
     @Path("editEtatAbonnement/{idAbonnement}")
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response editPhoto(@PathParam("idAbonnement") Integer idAbonnement, Integer idEtat) throws SignArtException{
         Abonnement abonnement;
                 abonnement = abonnementfacade.findById(idAbonnement);
