@@ -12,8 +12,10 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -74,6 +76,32 @@ public class DelaiREST {
             }
             return listDto;
         
+    }
+    
+    @PUT
+    @Path("editDelai/{idDelai}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(@PathParam("idDelai") Integer idDelai, DelaiDto dto) throws SignArtException{
+        Delai delai;
+                delai = delaiFacade.findById(idDelai);
+                delai.setLibelle(dto.getLibelle());
+                delai.setDescription(dto.getDescription());
+                delai.setNbMois(dto.getNbMois());
+                delai.setPrix(dto.getPrix());
+                delaiFacade.edit(delai);
+                return Response.status(Response.Status.OK).entity(dto).build();
+                 
+    }
+    
+    @DELETE
+    @Path("deleteDelai/{idDelai}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response remove(@PathParam("idDelai") Integer idDelai) throws SignArtException {   
+            Delai delai = delaiFacade.findById(idDelai); 
+             DelaiDto dto = entityToDto(delai);
+            delaiFacade.remove(delai);  
+           
+        return Response.status(Response.Status.OK).entity(dto).build();
     }
     
     private Delai dtoToEntity(DelaiDto dto) {

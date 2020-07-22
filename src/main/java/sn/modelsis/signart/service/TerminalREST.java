@@ -10,8 +10,10 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,6 +23,7 @@ import sn.modelsis.signart.ListeSelection;
 import sn.modelsis.signart.Terminal;
 import sn.modelsis.signart.dto.ListeSelectionDto;
 import sn.modelsis.signart.dto.TerminalDto;
+import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.TerminalFacade;
 
 /**
@@ -71,6 +74,28 @@ public class TerminalREST {
             }
             return listDto;
         
+    }
+    
+    @PUT
+    @Path("editTerminal/{idTerminal}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(@PathParam("idTerminal") Integer idTerminal, TerminalDto dto) throws SignArtException{
+        Terminal terminal;
+                terminal = terminalFacade.findById(idTerminal);
+                terminal.setLibelle(dto.getLibelle());
+                terminal.setDescription(dto.getDescription());
+                terminal.setPrix(dto.getPrix());
+                terminalFacade.edit(terminal);
+                return Response.status(Response.Status.OK).entity(dto).build();
+                 
+    }
+    
+    @DELETE
+    @Path("deleteTerminal/{idTerminal}")
+    public Response remove(@PathParam("idTerminal") Integer idTerminal) throws SignArtException {   
+             Terminal terminal = terminalFacade.findById(idTerminal);            
+             terminalFacade.remove(terminal);          
+        return Response.status(Response.Status.OK).build();
     }
     
     private Terminal dtoToEntity(TerminalDto dto) {

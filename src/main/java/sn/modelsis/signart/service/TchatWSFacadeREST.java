@@ -158,6 +158,71 @@ public class TchatWSFacadeREST {
       emailFacade.create(entity);
       return Response.status(Response.Status.CREATED).entity(entity).build();
     }
+    
+    
+    
+    @POST
+    @Path(value = "/sendMailTest")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response SendMail2(EmailDto emailDto) {
+      String to = emailDto.getTo();
+      String host = "smtp.gmail.com";//or IP address
+      //String PORT="587";
+      String PORT="465";
+      String userSMTP = "SignArtEmail2020";
+      String passwordSMTP = "Sign@rtEm@il2020";
+     //Get the session object  
+      Properties properties = System.getProperties();  
+      properties.put("mail.smtp.host", host); 
+      properties.put("mail.smtp.auth", "true");
+      properties.put("mail.smtp.port", PORT); 
+      properties.put("mail.transport.protocol", "smtp");
+      //properties.put("mail.smtp.starttls.enable", "true");
+      //properties.put("mail.smtp.startssl.enable", "true");
+      properties.put("mail.smtp.ssl.enable", "true");
+
+//      javax.mail.Authenticator authentificator= new javax.mail.Authenticator() { 
+//      @Override
+//      protected  PasswordAuthentication getPasswordAuthentication() {  
+//        return new PasswordAuthentication(userSMTP,passwordSMTP);
+//      }  };
+      javax.mail.Session session = javax.mail.Session.getInstance(properties,new javax.mail.Authenticator() {  
+        protected PasswordAuthentication getPasswordAuthentication() {  
+       return new PasswordAuthentication(userSMTP,passwordSMTP);  
+        }  
+      });  
+//      ,new javax.mail.Authenticator() {  
+//      protected PasswordAuthentication getPasswordAuthentication() {  
+//        return new PasswordAuthentication(userSMTP,passwordSMTP);  
+//      }  
+//    }
+      
+     //compose the message  
+      try{  
+         MimeMessage message = new MimeMessage(session);  
+         message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
+         message.setSubject(emailDto.getObjet()); 
+         message.setText(emailDto.getContent());  
+  
+        // Transport transport = session.getTransport("smtp");
+         // Send message 
+ //        transport.connect(host, "SignArtEmail2020@gmail.com","Sign@rtEm@il2020");
+         Transport.send(message);  
+         System.out.println("message sent successfully ....");
+  
+      }catch (MessagingException mex) {
+          mex.printStackTrace();
+          return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(null).build();
+      }
+      Email entity = new Email();
+      Calendar calendar = Calendar.getInstance();
+      java.util.Date currentDate = calendar.getTime();
+      //java.sql.Timestamp dateEnvoi = new java.sql.Timestamp(currentDate.getTime());
+      emailDto.setDateEnvoi(currentDate);
+      entity = emailConverter.dtoToEntity(emailDto);
+      emailFacade.create(entity);
+      return Response.status(Response.Status.CREATED).build();
+    }
      /**
      *
      * @param asyncResponse
