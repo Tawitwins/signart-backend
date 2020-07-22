@@ -5,6 +5,8 @@
  */
 package sn.modelsis.signart.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -24,6 +26,7 @@ import sn.modelsis.signart.ListeSelection;
 import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.AbonneDto;
 import sn.modelsis.signart.dto.DelaiDto;
+import sn.modelsis.signart.dto.ListeSelectionDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.AbonneFacade;
 import sn.modelsis.signart.facade.ListeSelectionFacade;
@@ -74,6 +77,29 @@ public class AbonneREST {
             return listDto;
         }
         return entityToDto(abonne);
+    }
+    
+  
+    
+    @GET
+    @Path("getAllAbonne/{idUser}")
+    @Produces({MediaType.APPLICATION_JSON})
+     public List<AbonneDto> findAllByUtilisateur(@PathParam("idUser") Integer idUser) {
+        List<AbonneDto> listDto = new ArrayList<>();
+        try {
+            List<Abonne> listEnt = abonnefacade.findAllByIdUtilisateur(idUser);
+            if (listEnt != null) {
+                listEnt.stream().map(entity
+                        -> entityToDto(entity)
+                ).forEachOrdered(dto
+                        -> listDto.add(dto)
+                );
+            }
+            return listDto;
+        } catch (final SignArtException e) {
+            Logger.getLogger(FormationREST.class.getName()).log(Level.SEVERE, "findAllByUtilisateur/Exception", e);
+            return listDto;
+        }
     }
     
     @GET

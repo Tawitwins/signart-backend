@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
       @NamedQuery(name = "Abonne.findAll", query = "SELECT a FROM Abonne a")
     , @NamedQuery(name = "Abonne.findById", query = "SELECT a FROM Abonne a WHERE a.id = :id")
     , @NamedQuery(name = "Abonne.findByIdListeSelection", query = "SELECT a FROM Abonne a WHERE a.idListeSelection.id = :idListeSelection")    
-        , @NamedQuery(name = "Abonne.findByIdUtilisateur", query = "SELECT a FROM Abonne a WHERE a.idUtilisateur.id = :idUtilisateur")})
+        , @NamedQuery(name = "Abonne.findByIdUtilisateur", query = "SELECT a FROM Abonne a WHERE a.idUtilisateur.id = :idUtilisateur")
+        , @NamedQuery(name = "Abonne.findAllByIdUtilisateur", query = "SELECT a FROM Abonne a WHERE a.idUtilisateur.id = :idUtilisateur")})
 
 public class Abonne implements Serializable {
 
