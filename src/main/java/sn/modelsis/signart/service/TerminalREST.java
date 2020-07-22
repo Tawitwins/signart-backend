@@ -93,9 +93,10 @@ public class TerminalREST {
     @DELETE
     @Path("deleteTerminal/{idTerminal}")
     public Response remove(@PathParam("idTerminal") Integer idTerminal) throws SignArtException {   
-             Terminal terminal = terminalFacade.findById(idTerminal);            
+             Terminal terminal = terminalFacade.findById(idTerminal);  
+             TerminalDto dto = entityToDto(terminal);
              terminalFacade.remove(terminal);          
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK).entity(dto).build();
     }
     
     private Terminal dtoToEntity(TerminalDto dto) {
