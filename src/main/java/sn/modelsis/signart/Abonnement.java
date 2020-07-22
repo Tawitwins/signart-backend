@@ -29,7 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
       @NamedQuery(name = "Abonnement.findAll", query = "SELECT a FROM Abonnement a")
     , @NamedQuery(name = "Abonnement.findById", query = "SELECT a FROM Abonnement a WHERE a.id = :id")
-    , @NamedQuery(name = "Abonnement.findByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")})
+    , @NamedQuery(name = "Abonnement.findByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")
+    , @NamedQuery(name = "Abonnement.findAllByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")})
+
 public class Abonnement implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

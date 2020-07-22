@@ -101,7 +101,7 @@ public class AbonnementREST {
     @Produces({MediaType.APPLICATION_JSON})
     public List<AbonnementDto> findByAbonne(@PathParam("idAbonne") Integer idAbonne) throws SignArtException {
          List<AbonnementDto> dtoList = new ArrayList<>();
-         List<Abonnement> entityList = abonnementfacade.findByIdAbonne(idAbonne);
+         List<Abonnement> entityList = abonnementfacade.findAllByIdAbonne(idAbonne);
             if (entityList != null) {
                 entityList.stream().map(entity
                         -> entityToDto(entity)
@@ -111,6 +111,15 @@ public class AbonnementREST {
             }
         return dtoList;
     }
+    
+    @GET
+    @Path("abonnementByAbonne/{idAbonne}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public AbonnementDto getByAbonne(@PathParam("idAbonne") Integer idAbonne) throws SignArtException {
+         Abonnement entity = abonnementfacade.findByIdAbonne(idAbonne);          
+        return entityToDto(entity);
+    }
+    
     
     @GET
     @Produces({MediaType.APPLICATION_JSON})

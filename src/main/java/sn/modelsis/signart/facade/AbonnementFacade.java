@@ -51,9 +51,25 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
         }
     }
     
-     public List<Abonnement> findByIdAbonne(Integer idAbonne) throws SignArtException {
+    public Abonnement findByIdAbonne(Integer idAbonne) throws SignArtException {
         try {
             final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findByIdAbonne",
+                    Abonnement.class);
+            query.setParameter("idAbonne", idAbonne);
+            query.setMaxResults(1);
+            final List<Abonnement> abonnements = query.getResultList();
+            if (abonnements.isEmpty()) {
+                return null;
+            }
+            return abonnements.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
+    
+     public List<Abonnement> findAllByIdAbonne(Integer idAbonne) throws SignArtException {
+        try {
+            final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findAllByIdAbonne",
                     Abonnement.class);
             query.setParameter("idAbonne", idAbonne);
             query.setMaxResults(1);
