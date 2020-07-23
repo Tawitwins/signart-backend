@@ -30,9 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "HistoriqueAbonnement", catalog = "signart", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "HistoriqueAbonnement.findAllByIdUtilisateur", query = "SELECT h FROM HistoriqueAbonnement h WHERE h.idUtilisateur = :idUtilisateur")
+      @NamedQuery(name = "HistoriqueAbonnement.findAllByIdUtilisateur", query = "SELECT h FROM HistoriqueAbonnement h WHERE h.idUtilisateur.id = :idUtilisateur")
     , @NamedQuery(name = "HistoriqueAbonnement.findById", query = "SELECT h FROM HistoriqueAbonnement h WHERE h.id = :id")
-    , @NamedQuery(name = "HistoriqueAbonnement.findByIdAbonnement", query = "SELECT h FROM HistoriqueAbonnement h WHERE h.idAbonnement = :idAbonnement")})
+    , @NamedQuery(name = "HistoriqueAbonnement.findByIdAbonnement", query = "SELECT h FROM HistoriqueAbonnement h WHERE h.idAbonnement.id = :idAbonnement")})
 public class HistoriqueAbonnement implements Serializable {
     
     private static final long serialVersionUID = 1L;
