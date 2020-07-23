@@ -56,7 +56,7 @@ public class Abonne implements Serializable {
     private String region;
     @Column(name = "ville", length = 50)
     private String ville;
-    @Column(name = "adresse", length = 200)
+    @Column(name = "adresse", length = 500)
     private String adresse;
     @JoinColumn(name = "idUtilisateur", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
