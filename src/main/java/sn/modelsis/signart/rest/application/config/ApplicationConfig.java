@@ -62,8 +62,8 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.FonctionREST.class);
         resources.add(sn.modelsis.signart.service.FormationREST.class);
         resources.add(sn.modelsis.signart.service.HistoriqueAbonnementREST.class);
+        resources.add(sn.modelsis.signart.service.ImageMiniatureREST.class);
         resources.add(sn.modelsis.signart.service.ImageNumeriqueREST.class);
-        resources.add(sn.modelsis.signart.service.ImageProfilREST.class);
         resources.add(sn.modelsis.signart.service.ImageREST.class);
         resources.add(sn.modelsis.signart.service.LicenceREST.class);
         resources.add(sn.modelsis.signart.service.LigneCommandeREST.class);

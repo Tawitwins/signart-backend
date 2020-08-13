@@ -221,7 +221,7 @@ public class TchatWSFacadeREST {
       emailDto.setDateEnvoi(currentDate);
       entity = emailConverter.dtoToEntity(emailDto);
       emailFacade.create(entity);
-      return Response.status(Response.Status.CREATED).build();
+      return Response.status(Response.Status.CREATED).entity(emailDto).build();
     }
      /**
      *
