@@ -40,6 +40,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+import sn.modelsis.signart.ImageMiniature;
 import sn.modelsis.signart.ImageNumerique;
 import sn.modelsis.signart.OeuvreNumerique;
 
@@ -47,6 +48,7 @@ import sn.modelsis.signart.dto.OeuvreNumeriqueDto;
 import sn.modelsis.signart.dto.ImageNumeriqueDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
+import sn.modelsis.signart.facade.ImageMiniatureFacade;
 import sn.modelsis.signart.facade.OeuvreNumeriqueFacade;
 import sn.modelsis.signart.facade.ImageNumeriqueFacade;
 
@@ -85,6 +87,10 @@ public class ImageNumeriqueREST {
 
     @Inject
     ArtisteFacade artisteFacade;
+    
+    @Inject
+    ImageMiniatureFacade imageMiniaturefacade;
+    
     public ImageNumeriqueREST() {
     }
     
@@ -274,16 +280,18 @@ public class ImageNumeriqueREST {
         ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
         
         //BufferedImage minImage = ImageIO.read(ImageNumeriqueREST.class.getResource("/Stockage/images/min_"+imageName+".jpg"));
-        BufferedImage minImage = ImageIO.read(new File(PATHTEST+"images\\min_"+imageName+".jpg"));
+       // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+imageName+".jpg"));
 
         //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
-        String imageBase64 = encodeToString(minImage,"jpg");
-        System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
+       // String imageBase64 = encodeToString(minImage,"jpg");
+        ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
+        String imgStr = new String(imgMn.getValeurImage()); 
+       // System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
         dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
-        dtoImg.setValue(imageBase64);
+        dtoImg.setValue(imgStr);
         dtoImgB.setAvatar(dtoImg);     
         return dtoImgB;               
     }
@@ -298,16 +306,18 @@ public class ImageNumeriqueREST {
         ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
         
         //BufferedImage minImage = ImageIO.read(ImageNumeriqueREST.class.getResource("/Stockage/images/min_"+imageName+".jpg"));
-        BufferedImage minImage = ImageIO.read(new File(PATHTEST+"images\\min_"+imageName+".jpg"));
+       // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+imageName+".jpg"));
+        ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
+        String imgStr = new String(imgMn.getValeurImage()); 
 
                // BufferedImage minImage = ImageIO.read(new File("/opt/images/"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
-        String imageBase64 = encodeToString(minImage,"jpg");
-        System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
+        //String imageBase64 = encodeToString(minImage,"jpg");
+        //System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
         dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
-        dtoImg.setValue(imageBase64);
+        dtoImg.setValue(imgStr);
         dtoImgB.setAvatar(dtoImg);     
         return dtoImgB;               
     }
@@ -328,19 +338,18 @@ public class ImageNumeriqueREST {
         }
                 
         for(int j=0; j< dtoImgB.size(); j++){
-            System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
+            //System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
-            BufferedImage minImage = ImageIO.read(new File(PATHTEST+"images\\min_"+dtoImgB.get(j).getNom()+".jpg"));
+           // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+dtoImgB.get(j).getNom()+".jpg"));
             //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+dtoImgB.get(j).getNom()+".jpg"));
-
-            System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
+            ImageMiniature imgMn = imageMiniaturefacade.findByName(dtoImgB.get(j).getNom());
+            String imgStr = new String(imgMn.getValeurImage());
+            //System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
-            String imageBase64 = encodeToString(minImage,"jpg");
+            //String imageBase64 = encodeToString(minImage,"jpg");
             
-            System.out.println(dtoImg.get(j).getValue()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
-            dtoImg.get(j).setValue(imageBase64);
-            
-            
+            //System.out.println(dtoImg.get(j).getValue()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
+            dtoImg.get(j).setValue(imgStr);      
             dtoImgB.get(j).setAvatar(dtoImg.get(j));
             
         }
