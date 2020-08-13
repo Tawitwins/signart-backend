@@ -265,8 +265,7 @@ public class ImageNumeriqueREST {
     
     @GET
     @Path("test")
-    public String getImage() {
-        
+    public String getImage() {       
         return "test image SLOM";
     }
     
@@ -285,13 +284,17 @@ public class ImageNumeriqueREST {
         //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
-       // String imageBase64 = encodeToString(minImage,"jpg");
+       
         ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
-        String imgStr = new String(imgMn.getValeurImage()); 
+        //String imgStr = new String(imgMn.getValeurImage()); 
+         byte[] imageBytes = imgMn.getValeurImage();
+         BASE64Encoder encoder = new BASE64Encoder();
+         String imageString = encoder.encode(imageBytes);
+       // String imageBase64 = encodeToString(imgStr,"jpg");
        // System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
         dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
-        dtoImg.setValue(imgStr);
+        dtoImg.setValue(imageString);
         dtoImgB.setAvatar(dtoImg);     
         return dtoImgB;               
     }
@@ -308,8 +311,11 @@ public class ImageNumeriqueREST {
         //BufferedImage minImage = ImageIO.read(ImageNumeriqueREST.class.getResource("/Stockage/images/min_"+imageName+".jpg"));
        // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+imageName+".jpg"));
         ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
-        String imgStr = new String(imgMn.getValeurImage()); 
+        //String imgStr = new String(imgMn.getValeurImage()); 
 
+         byte[] imageBytes = imgMn.getValeurImage();
+         BASE64Encoder encoder = new BASE64Encoder();
+         String imageString = encoder.encode(imageBytes);
                // BufferedImage minImage = ImageIO.read(new File("/opt/images/"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
@@ -317,7 +323,7 @@ public class ImageNumeriqueREST {
         //System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
         dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
-        dtoImg.setValue(imgStr);
+        dtoImg.setValue(imageString);
         dtoImgB.setAvatar(dtoImg);     
         return dtoImgB;               
     }
@@ -343,13 +349,16 @@ public class ImageNumeriqueREST {
            // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+dtoImgB.get(j).getNom()+".jpg"));
             //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+dtoImgB.get(j).getNom()+".jpg"));
             ImageMiniature imgMn = imageMiniaturefacade.findByName(dtoImgB.get(j).getNom());
-            String imgStr = new String(imgMn.getValeurImage());
+             byte[] imageBytes = imgMn.getValeurImage();
+             BASE64Encoder encoder = new BASE64Encoder();
+             String imageString = encoder.encode(imageBytes);
+           // String imgStr = new String(imgMn.getValeurImage());
             //System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
             //String imageBase64 = encodeToString(minImage,"jpg");
             
             //System.out.println(dtoImg.get(j).getValue()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
-            dtoImg.get(j).setValue(imgStr);      
+            dtoImg.get(j).setValue(imageString);      
             dtoImgB.get(j).setAvatar(dtoImg.get(j));
             
         }
