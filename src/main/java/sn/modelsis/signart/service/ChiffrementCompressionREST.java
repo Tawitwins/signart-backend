@@ -186,7 +186,10 @@ public class ChiffrementCompressionREST {
         
                 MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
 		messageDigest.update(codeValue.getBytes());
-		String codeSignart = bytesToHex(messageDigest.digest());
+                byte [] code = messageDigest.digest();
+                code = Arrays.copyOf(code, 16);
+		String codeSignart = bytesToHex(code);
+                
         entityCode.setCode(codeSignart);
                 
         return entityCode;
