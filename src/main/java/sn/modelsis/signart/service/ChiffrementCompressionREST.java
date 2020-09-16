@@ -184,7 +184,7 @@ public class ChiffrementCompressionREST {
         entityCode.setIdLicence(licence);
         String codeValue = licence.getValeur();
         
-                MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+                MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
 		messageDigest.update(codeValue.getBytes());
 		String codeSignart = bytesToHex(messageDigest.digest());
         entityCode.setCode(codeSignart);
