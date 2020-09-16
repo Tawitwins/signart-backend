@@ -115,12 +115,5 @@ public class AbonnementDto implements Serializable {
 
     public void setEtatAbonnement(Integer etatAbonnement) {
         this.etatAbonnement = etatAbonnement;
-    }
-
-    
-    
-    
-    
-    
-    
+    }  
 }

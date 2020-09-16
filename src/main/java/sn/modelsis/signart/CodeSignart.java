@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "CodeSignart", catalog = "signart", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "CodeSignart.findById", query = "SELECT c FROM CodeSignart c WHERE c.id = :id")})
+      @NamedQuery(name = "CodeSignart.findById", query = "SELECT c FROM CodeSignart c WHERE c.id = :id")
+     ,@NamedQuery(name = "CodeSignart.findBycode", query = "SELECT c FROM CodeSignart c WHERE c.code = :code")})
 public class CodeSignart implements Serializable{
     
     @Id
@@ -36,13 +37,14 @@ public class CodeSignart implements Serializable{
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "keyValue", length = 1000)
-    private String keyValue;
-    @Column(name = "keyAlias", length = 100)
-    private String keyAlias;
-    @JoinColumn(name = "idAbonnement", referencedColumnName = "id", nullable = false)
+    @Column(name = "code", length = 1000)
+    private String code;
+    @JoinColumn(name = "idLicence", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Abonnement idAbonnement;
+    private Licence idLicence;
+    @JoinColumn(name = "idAbonne", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Abonne idAbonne;
 
     public CodeSignart() {
     }
@@ -55,29 +57,32 @@ public class CodeSignart implements Serializable{
         this.id = id;
     }
 
-    public String getKeyValue() {
-        return keyValue;
+    public String getCode() {
+        return code;
     }
 
-    public void setKeyValue(String keyValue) {
-        this.keyValue = keyValue;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getKeyAlias() {
-        return keyAlias;
+    public Licence getIdLicence() {
+        return idLicence;
     }
 
-    public void setKeyAlias(String keyAlias) {
-        this.keyAlias = keyAlias;
+    public void setIdLicence(Licence idLicence) {
+        this.idLicence = idLicence;
     }
 
-    public Abonnement getIdAbonnement() {
-        return idAbonnement;
+    public Abonne getIdAbonne() {
+        return idAbonne;
     }
 
-    public void setIdAbonnement(Abonnement idAbonnement) {
-        this.idAbonnement = idAbonnement;
+    public void setIdAbonne(Abonne idAbonne) {
+        this.idAbonne = idAbonne;
     }
+
+  
+
     
     
     

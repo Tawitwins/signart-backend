@@ -41,11 +41,14 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.AnnonceREST.class);
         resources.add(sn.modelsis.signart.service.ArtisteREST.class);
         resources.add(sn.modelsis.signart.service.BiographieREST.class);
+        resources.add(sn.modelsis.signart.service.ChiffrementCompressionREST.class);
         resources.add(sn.modelsis.signart.service.ClientFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.CodeSignartREST.class);
         resources.add(sn.modelsis.signart.service.CommandeREST.class);
         resources.add(sn.modelsis.signart.service.CommentaireFacadeREST.class);
         resources.add(sn.modelsis.signart.service.CompteFacadeREST.class);
         resources.add(sn.modelsis.signart.service.CouleurFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.DecompressionDechiffrementREST.class);
         resources.add(sn.modelsis.signart.service.DelaiREST.class);
         resources.add(sn.modelsis.signart.service.DeviseFacadeREST.class);
         resources.add(sn.modelsis.signart.service.DomaineFacadeREST.class);

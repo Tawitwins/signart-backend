@@ -43,12 +43,11 @@ public class Licence implements Serializable {
     @JoinColumn(name = "idAbonnement", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Abonnement idAbonnement;
+    @JoinColumn(name = "idEtatLicence", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private EtatLicence idEtatLicence;
 
-    public Licence(Integer id, String valeur, Abonnement idAbonnement) {
-        this.id = id;
-        this.valeur = valeur;
-        this.idAbonnement = idAbonnement;
-    }
+    
 
     public Licence() {
     }
@@ -75,6 +74,14 @@ public class Licence implements Serializable {
 
     public void setIdAbonnement(Abonnement idAbonnement) {
         this.idAbonnement = idAbonnement;
+    }
+
+    public EtatLicence getIdEtatLicence() {
+        return idEtatLicence;
+    }
+
+    public void setIdEtatLicence(EtatLicence idEtatLicence) {
+        this.idEtatLicence = idEtatLicence;
     }
 
    

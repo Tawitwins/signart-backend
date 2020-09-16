@@ -16,9 +16,9 @@ public class CodeSignartDto implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private Integer id;
-    private String keyValue;
-    private String keyAlias;
-    private Integer idAbonnement;
+    private String code;
+    private Integer idLicence;
+    private Integer idAbonne;
 
     public CodeSignartDto() {
     }
@@ -31,30 +31,31 @@ public class CodeSignartDto implements Serializable {
         this.id = id;
     }
 
-    public String getKeyValue() {
-        return keyValue;
+    public String getCode() {
+        return code;
     }
 
-    public void setKeyValue(String keyValue) {
-        this.keyValue = keyValue;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getKeyAlias() {
-        return keyAlias;
+    public Integer getIdLicence() {
+        return idLicence;
     }
 
-    public void setKeyAlias(String keyAlias) {
-        this.keyAlias = keyAlias;
+    public void setIdLicence(Integer idLicence) {
+        this.idLicence = idLicence;
     }
 
-    public Integer getIdAbonnement() {
-        return idAbonnement;
+    public Integer getIdAbonne() {
+        return idAbonne;
     }
 
-    public void setIdAbonnement(Integer idAbonnement) {
-        this.idAbonnement = idAbonnement;
+    public void setIdAbonne(Integer idAbonne) {
+        this.idAbonne = idAbonne;
     }
-    
+
+
     
     
 }

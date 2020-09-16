@@ -9,7 +9,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import sn.modelsis.signart.CodeSignart;
+import sn.modelsis.signart.exception.SignArtException;
 
 /**
  *
@@ -30,6 +32,18 @@ public class CodeSignartFacade extends AbstractFacade<CodeSignart> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    public CodeSignart findByCode(String code) throws SignArtException {
+        try {
+            final TypedQuery<CodeSignart> query = getEntityManager().createNamedQuery("CodeSignart.findBycode",
+                    CodeSignart.class);
+            query.setParameter("code", code);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
     }
     
     

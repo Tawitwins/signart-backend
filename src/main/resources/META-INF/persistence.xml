@@ -61,6 +61,9 @@
     <class>sn.modelsis.signart.Theme</class>
     <class>sn.modelsis.signart.HistoriqueAbonnement</class>
     <class>sn.modelsis.signart.ImageMiniature</class>
+    <class>sn.modelsis.signart.ArchiveSignart</class>
+    <class>sn.modelsis.signart.CodeSignart</class>
+    <class>sn.modelsis.signart.EtatLicence</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
