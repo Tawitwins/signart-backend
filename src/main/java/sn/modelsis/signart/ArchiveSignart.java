@@ -21,35 +21,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Pendaaa
+ * @author snfayemp
  */
+
 @Entity
-@Table(name = "Licence", catalog = "signart", schema = "dbo")
+@Table(name = "ArchiveSignart", catalog = "signart", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "Licence.findById", query = "SELECT a FROM Licence a WHERE a.id = :id")
-    , @NamedQuery(name = "Licence.findByIdAbonnement", query = "SELECT a FROM Licence a WHERE a.idAbonnement.id = :idAbonnement")})
-public class Licence implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+      @NamedQuery(name = "ArchiveSignart.findById", query = "SELECT a FROM CodeSignart a WHERE a.id = :id")})
+public class ArchiveSignart implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "valeur", length = 5000)
-    private String valeur;
+    @Column(name = "nom", length = 1000)
+    private String nom;
     @JoinColumn(name = "idAbonnement", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Abonnement idAbonnement;
-    @JoinColumn(name = "idEtatLicence", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private EtatLicence idEtatLicence;
 
-    
-
-    public Licence() {
+    public ArchiveSignart() {
     }
 
     public Integer getId() {
@@ -60,12 +53,12 @@ public class Licence implements Serializable {
         this.id = id;
     }
 
-    public String getValeur() {
-        return valeur;
+    public String getNom() {
+        return nom;
     }
 
-    public void setValeur(String valeur) {
-        this.valeur = valeur;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public Abonnement getIdAbonnement() {
@@ -75,17 +68,6 @@ public class Licence implements Serializable {
     public void setIdAbonnement(Abonnement idAbonnement) {
         this.idAbonnement = idAbonnement;
     }
-
-    public EtatLicence getIdEtatLicence() {
-        return idEtatLicence;
-    }
-
-    public void setIdEtatLicence(EtatLicence idEtatLicence) {
-        this.idEtatLicence = idEtatLicence;
-    }
-
-   
-    
     
     
 }

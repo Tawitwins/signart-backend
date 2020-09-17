@@ -40,6 +40,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+import sn.modelsis.signart.ImageMiniature;
 import sn.modelsis.signart.ImageNumerique;
 import sn.modelsis.signart.OeuvreNumerique;
 
@@ -47,6 +48,7 @@ import sn.modelsis.signart.dto.OeuvreNumeriqueDto;
 import sn.modelsis.signart.dto.ImageNumeriqueDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
+import sn.modelsis.signart.facade.ImageMiniatureFacade;
 import sn.modelsis.signart.facade.OeuvreNumeriqueFacade;
 import sn.modelsis.signart.facade.ImageNumeriqueFacade;
 
@@ -74,6 +76,8 @@ public class ImageNumeriqueREST {
     @Inject
     ArtisteFacade artisteFacade;*/
    
+    public final static String PATH = "/opt/";
+    public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
     
     @Inject
     OeuvreNumeriqueFacade oeuvreNumeriqueFacade;
@@ -83,6 +87,10 @@ public class ImageNumeriqueREST {
 
     @Inject
     ArtisteFacade artisteFacade;
+    
+    @Inject
+    ImageMiniatureFacade imageMiniaturefacade;
+    
     public ImageNumeriqueREST() {
     }
     
@@ -140,10 +148,16 @@ public class ImageNumeriqueREST {
         return dto;
     }
     
+     private byte[] toByteArray(BufferedImage image, String type) throws IOException {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()){
+            ImageIO.write(image, type, out);
+            return out.toByteArray();
+        }
+    }
     
-    static void addTextWatermarkMin(String text,  BufferedImage sourceImage, File destImageFile) {
-	    try {
-	       
+    private byte[] addTextWatermarkMin(String text,  BufferedImage sourceImage) {
+	     byte[] image = null;
+        try {	                  
 	        Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();
 	        // initializes necessary graphic properties
 	        AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
@@ -157,13 +171,17 @@ public class ImageNumeriqueREST {
 	        int centerY = sourceImage.getHeight() / 2;
 	        // paints the textual watermark
 	        g2d.drawString(text, centerX, centerY);
-	        ImageIO.write(sourceImage, "jpg", destImageFile);
+                
+                image = toByteArray(sourceImage,"jpg");
+                    
+	        //ImageIO.write(sourceImage, "jpg", destImageFile);
 	        g2d.dispose();
 	        System.out.println("The tex watermark is added to the image.");
 	 
 	    } catch (IOException ex) {
 	        System.err.println(ex);
 	    }
+            return image;
 	}
     
     private static BufferedImage resizeImage(BufferedImage originalImage, int type, int width, int height){
@@ -222,24 +240,30 @@ public class ImageNumeriqueREST {
         final InputStream in = new ByteArrayInputStream(imageInByte);
                                 System.out.println(in+"+++++++++++++++++++++++++++++++++++++++++++++InputStream++++++++++++++++++++++++++++++++++++");
          BufferedImage bImageFromConvert;
-          
+         
+         byte[] imageMin = null;
+         ImageMiniature imageMiniature = new ImageMiniature();
+         imageMiniature.setNomImage(nom);
             try {
                 bImageFromConvert = ImageIO.read(in);
                 System.out.println(bImageFromConvert+"+++++++++++++++++++++++++++++++++++++++++++++bImageFromConvert++++++++++++++++++++++++++++++++++++");
-                ImageIO.write(bImageFromConvert, "jpg", new File("/opt/images/"+nom+".jpg"));
-                //URL source = ImageNumeriqueREST.class.getResource("/Stockage/images");
+               ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+nom+".jpg"));
               // System.out.println(source+"+++++++++++++++++++++++++++++++++++++++++++++source++++++++++++++++++++++++++++++++++++");
 
-             //     ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
+               //   ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
                   
 
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
-                addTextWatermarkMin("SignArt", resizeImageJpg, new File("/opt/images/min_"+nom+".jpg"));
+                //addTextWatermarkMin("SignArt", resizeImageJpg, new File(PATH+"images/min_"+nom+".jpg"));
+                imageMin = addTextWatermarkMin("SignArt", resizeImageJpg);
+                imageMiniature.setValeurImage(imageMin);
                 // addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+nom+".jpg"));
                //  addTextWatermarkMin("SignArt", resizeImageJpg, new File( "../../../../../../resources/stockage/images/min_"+nom+".jpg"));
+               
             } catch (IOException e) {               
-            }     
+            }    
+       imageMiniaturefacade.create(imageMiniature);
        imageNumeriqueFacade.create(dtoToEntityImg(imgdto,nom));
        oeuvreNumeriqueFacade.create(dtoToEntityOeuvre(dto,nom)); 
         //BufferedImage originalImage = ImageIO.read(new File("/Users/macbookpro/Desktop/art.jpg"));     
@@ -258,8 +282,7 @@ public class ImageNumeriqueREST {
     
     @GET
     @Path("test")
-    public String getImage() {
-        
+    public String getImage() {       
         return "test image SLOM";
     }
     
@@ -273,16 +296,22 @@ public class ImageNumeriqueREST {
         ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
         
         //BufferedImage minImage = ImageIO.read(ImageNumeriqueREST.class.getResource("/Stockage/images/min_"+imageName+".jpg"));
-        //BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+imageName+".jpg"));
+       // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+imageName+".jpg"));
 
-                BufferedImage minImage = ImageIO.read(new File("/opt/images/min_"+imageName+".jpg"));
+        //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
-        String imageBase64 = encodeToString(minImage,"jpg");
-        System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
+       
+        ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
+        //String imgStr = new String(imgMn.getValeurImage()); 
+         byte[] imageBytes = imgMn.getValeurImage();
+         BASE64Encoder encoder = new BASE64Encoder();
+         String imageString = encoder.encode(imageBytes);
+       // String imageBase64 = encodeToString(imgStr,"jpg");
+       // System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
         dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
-        dtoImg.setValue(imageBase64);
+        dtoImg.setValue(imageString);
         dtoImgB.setAvatar(dtoImg);     
         return dtoImgB;               
     }
@@ -297,16 +326,21 @@ public class ImageNumeriqueREST {
         ImageNumeriqueDto dtoImg = new ImageNumeriqueDto();
         
         //BufferedImage minImage = ImageIO.read(ImageNumeriqueREST.class.getResource("/Stockage/images/min_"+imageName+".jpg"));
-        //BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+imageName+".jpg"));
+       // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+imageName+".jpg"));
+        ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
+        //String imgStr = new String(imgMn.getValeurImage()); 
 
-                BufferedImage minImage = ImageIO.read(new File("/opt/images/"+imageName+".jpg"));
+         byte[] imageBytes = imgMn.getValeurImage();
+         BASE64Encoder encoder = new BASE64Encoder();
+         String imageString = encoder.encode(imageBytes);
+               // BufferedImage minImage = ImageIO.read(new File("/opt/images/"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
-        String imageBase64 = encodeToString(minImage,"jpg");
-        System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
+        //String imageBase64 = encodeToString(minImage,"jpg");
+        //System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
         dtoImg = entityToDtoImg(imageNumeriqueFacade.findByValue(imageName));     
-        dtoImg.setValue(imageBase64);
+        dtoImg.setValue(imageString);
         dtoImgB.setAvatar(dtoImg);     
         return dtoImgB;               
     }
@@ -327,19 +361,21 @@ public class ImageNumeriqueREST {
         }
                 
         for(int j=0; j< dtoImgB.size(); j++){
-            System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
+            //System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
-            //BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+dtoImgB.get(j).getNom()+".jpg"));
-            BufferedImage minImage = ImageIO.read(new File("/opt/images/min_"+dtoImgB.get(j).getNom()+".jpg"));
-
-            System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
+           // BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+dtoImgB.get(j).getNom()+".jpg"));
+            //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+dtoImgB.get(j).getNom()+".jpg"));
+            ImageMiniature imgMn = imageMiniaturefacade.findByName(dtoImgB.get(j).getNom());
+             byte[] imageBytes = imgMn.getValeurImage();
+             BASE64Encoder encoder = new BASE64Encoder();
+             String imageString = encoder.encode(imageBytes);
+           // String imgStr = new String(imgMn.getValeurImage());
+            //System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
-            String imageBase64 = encodeToString(minImage,"jpg");
+            //String imageBase64 = encodeToString(minImage,"jpg");
             
-            System.out.println(dtoImg.get(j).getValue()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
-            dtoImg.get(j).setValue(imageBase64);
-            
-            
+            //System.out.println(dtoImg.get(j).getValue()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
+            dtoImg.get(j).setValue(imageString);      
             dtoImgB.get(j).setAvatar(dtoImg.get(j));
             
         }
@@ -355,8 +391,9 @@ public class ImageNumeriqueREST {
         
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get("/opt/images/min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get("/opt/images/"+oeuvreNum.getNom()+".jpg");
+             ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
+             java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -366,6 +403,7 @@ public class ImageNumeriqueREST {
                 System.err.println("+++++++++++++++++++++++++++++++++++++++++++++Unable to delete+++++++++++++++++++++++++++++++++++++++++ ");
                 e.printStackTrace();
             }
+            imageMiniaturefacade.remove(imageMin);
             imageNumeriqueFacade.remove(imageNum);
             oeuvreNumeriqueFacade.remove(oeuvreNum);
            
@@ -378,8 +416,9 @@ public class ImageNumeriqueREST {
         
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg");
+              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
+             java.nio.file.Path minImagePath = Paths.get(PATHTEST+"images\\min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATHTEST+"images\\"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -389,6 +428,7 @@ public class ImageNumeriqueREST {
                 System.err.println("+++++++++++++++++++++++++++++++++++++++++++++Unable to delete+++++++++++++++++++++++++++++++++++++++++ ");
                 e.printStackTrace();
             }
+             imageMiniaturefacade.remove(imageMin);
             imageNumeriqueFacade.remove(imageNum);
             oeuvreNumeriqueFacade.remove(oeuvreNum);
            
@@ -402,6 +442,7 @@ public class ImageNumeriqueREST {
             OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);
             System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++oeuvreNum getNom +++++++++++++++++++++++++++++++++++++");
             ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
+            ImageMiniature imgMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
             
             ImageNumeriqueDto dto2 = dto.getAvatar();
             System.out.println(dto2+"++++++++++++++++++++++++++++++++++++++++dto2 avatar+++++++++++++++++++++++++++++++++++++");
@@ -409,8 +450,8 @@ public class ImageNumeriqueREST {
             Integer largeur = dto.getLargeur()/3; 
             Integer longueur = dto.getLongueur()/3;
             
-            java.nio.file.Path minImagePath = Paths.get("/opt/images/min_"+oeuvreNum.getNom()+".jpg");
-            java.nio.file.Path imagePath = Paths.get("/opt/images/"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
             try {
                    Files.delete((java.nio.file.Path) minImagePath);
                     Files.delete((java.nio.file.Path) imagePath);
@@ -435,28 +476,22 @@ public class ImageNumeriqueREST {
             String img = dto2.getValue();
             final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
             final InputStream in = new ByteArrayInputStream(imageInByte);
-            BufferedImage bImageFromConvert;        
+            BufferedImage bImageFromConvert;  
+            byte[] imgMinByte = null;
             try {
                 bImageFromConvert = ImageIO.read(in);
-                ImageIO.write(bImageFromConvert, "jpg", new File("/opt/images/"+oeuvreNum.getNom()+".jpg"));
+                ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+oeuvreNum.getNom()+".jpg"));
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
-                addTextWatermarkMin("SignArt", resizeImageJpg, new File("/opt/images/min_"+oeuvreNum.getNom()+".jpg"));
+                imgMinByte = addTextWatermarkMin("SignArt", resizeImageJpg);
+                imgMin.setNomImage(oeuvreNum.getNom());
+                imgMin.setValeurImage(imgMinByte);
             } catch (IOException e) {               
             }     
-            
-           
-            
-            
-            
-           // ImageNumerique imageNum = dtoEntityImgEdit(dto,oeuvreNum);
-              
-              
+ 
+              imageMiniaturefacade.edit(imgMin);
               imageNumeriqueFacade.edit(imageNum);
-              oeuvreNumeriqueFacade.edit(oeuvreNum);
-            
-           
-               
+              oeuvreNumeriqueFacade.edit(oeuvreNum);                                      
              return Response.status(Response.Status.OK).entity(dto).build();
        
     }
@@ -481,6 +516,7 @@ public class ImageNumeriqueREST {
             oeuvreNum = oeuvreNumeriqueFacade.findById(idOeuvre);
             System.out.println(oeuvreNum.getNom()+"++++++++++++++++++++++++++++++++++++++++oeuvreNum getNom +++++++++++++++++++++++++++++++++++++");
             ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
+            ImageMiniature imgMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
             
             ImageNumeriqueDto dto2 = dto.getAvatar();
             System.out.println(dto2+"++++++++++++++++++++++++++++++++++++++++dto2 avatar+++++++++++++++++++++++++++++++++++++");
@@ -489,7 +525,7 @@ public class ImageNumeriqueREST {
             Integer longueur = dto.getLongueur()/3;
             
             java.nio.file.Path minImagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg");
-            java.nio.file.Path imagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path imagePath = Paths.get(PATHTEST+"image\\"+oeuvreNum.getNom()+".jpg");
             try {
                    Files.delete((java.nio.file.Path) minImagePath);
                     Files.delete((java.nio.file.Path) imagePath);
@@ -514,23 +550,20 @@ public class ImageNumeriqueREST {
             String img = dto2.getValue();
             final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
             final InputStream in = new ByteArrayInputStream(imageInByte);
-            BufferedImage bImageFromConvert;        
+            BufferedImage bImageFromConvert;  
+            byte[] imgMinByte = null;
             try {
                 bImageFromConvert = ImageIO.read(in);
                 ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg"));
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
+                //BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
-                addTextWatermarkMin("SignArt", resizeImageJpg, new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg"));
+                imgMinByte = addTextWatermarkMin("SignArt", resizeImageJpg);
+                imgMin.setNomImage(oeuvreNum.getNom());
+                imgMin.setValeurImage(imgMinByte);
             } catch (IOException e) {               
             }     
-            
-           
-            
-            
-            
-           // ImageNumerique imageNum = dtoEntityImgEdit(dto,oeuvreNum);
-              
-             
+
               imageNumeriqueFacade.edit(imageNum);
               oeuvreNumeriqueFacade.edit(oeuvreNum);
                
