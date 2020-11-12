@@ -75,7 +75,11 @@ public class EmailFacadeREST {
     @Path("theLast/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public EmailDto findbyEmail(@PathParam("to") String to) throws SignArtException {
-        return emailConverter.entityToDto(emailFacade.findByToLast(to));
+        Email entity= emailFacade.findByToLast(to);
+        if(entity!=null)
+            return emailConverter.entityToDto(entity);
+        else
+            return null;
     }
     
     @GET

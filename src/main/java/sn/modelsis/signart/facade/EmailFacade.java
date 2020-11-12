@@ -67,7 +67,10 @@ public class EmailFacade extends AbstractFacade<Email>  {
             final TypedQuery<Email> query = getEntityManager().createNamedQuery("Email.findByTo",
                     Email.class);
             query.setParameter("to", to);
-            return query.getResultList().get(query.getResultList().size()-1);
+            if(query.getResultList().size()>0)
+                return query.getResultList().get(query.getResultList().size()-1);
+            else
+                return null;
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }

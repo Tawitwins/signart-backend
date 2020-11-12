@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,9 +39,9 @@ public class ModePaiement implements Serializable {
     private String code;
     @Column(name = "libelle", length = 50)
     private String libelle;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModePaiement")
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idModePaiement")
     private Set<Paiement> paiementSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModePaiement")
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idModePaiement")
     private Set<LignePaiement> lignePaiementSet;
 
     public ModePaiement() {
