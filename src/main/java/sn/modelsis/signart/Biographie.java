@@ -48,9 +48,9 @@ public class Biographie implements Serializable {
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Size(max = 50)
     @Column(name = "dateNaissance")
-    private String dateNaissance;
+    //@Temporal(TemporalType.DATE)
+    private Date dateNaissance;
     @Size(max = 50)
     @Column(name = "lieuNaissance")
     private String lieuNaissance;
@@ -82,11 +82,11 @@ public class Biographie implements Serializable {
         this.id = id;
     }
 
-    public String getDateNaissance() {
+    public Date getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(String dateNaissance) {
+    public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
@@ -98,6 +98,8 @@ public class Biographie implements Serializable {
         this.idArtiste = idArtiste;
     }
     
+    
+
     public String getLieuNaissance() {
         return lieuNaissance;
     }
@@ -139,6 +141,8 @@ public class Biographie implements Serializable {
         this.etatBiographie = etatBiographie;
     }
     
+    
+
     @Override
     public int hashCode() {
         int hash = 0;

@@ -4,6 +4,8 @@ package sn.modelsis.signart.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -244,7 +246,7 @@ public class TchatWSFacadeREST {
 
     private Response doPostFile(SignartFile signartFile) throws IOException {
         byte[] data = signartFile.getContent();
-        java.nio.file.Path filee = (java.nio.file.Path) Paths.get("./"+signartFile.getName());
+        java.nio.file.Path filee = (java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+signartFile.getName());
         Files.write(filee, data);
         return Response.status(Response.Status.CREATED).entity(signartFile).build();
     }
@@ -252,17 +254,17 @@ public class TchatWSFacadeREST {
     @Path("/filesRemove/{filename}")
     @Consumes({MediaType.APPLICATION_JSON})
     public boolean DeleteFile(@PathParam("filename") String filename) throws IOException {
-        return Files.deleteIfExists((java.nio.file.Path) Paths.get("./"+filename));
+        return Files.deleteIfExists((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
     }
     
     @GET
     @Path("/GetFiles/{filename}")
     @Produces(MediaType.TEXT_PLAIN)
     public String GetFile(@PathParam("filename") String filename) throws IOException {
-        byte [] myFile = Files.readAllBytes((java.nio.file.Path) Paths.get("./"+filename));
+        byte [] myFile = Files.readAllBytes((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
         String File = Base64.encodeBase64String(myFile);
         String vof = String.valueOf(myFile);
-        String mimeType = Files.probeContentType((java.nio.file.Path) Paths.get("./"+filename));
+        String mimeType = Files.probeContentType((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
         return mimeType+";"+File;
     }
     /**
@@ -283,8 +285,12 @@ public class TchatWSFacadeREST {
             ,@javax.websocket.server.PathParam("idUser") Integer idUser,@javax.websocket.server.PathParam("profilUser") String profilUser) {
         try {
             session.getUserProperties().put( "username", username );
-            session.getUserProperties().put( "idUser", idUser );
+            session.getUserProperties().put( "idUser", idUser);
             session.getUserProperties().put( "profilUser", profilUser );
+            if(profilUser.equals("VISITEUR"))
+            {
+                session.getUserProperties().put( "idUser", ByteBuffer.wrap(session.getId().getBytes()).getInt());
+            }
             sessions.put( session.getId(), session );
         
             if(messages!=null)
@@ -292,15 +298,15 @@ public class TchatWSFacadeREST {
             messages = ConvertListEntityToDto(messagesTchatsFacade.findAllMine(idUser));
             if(isAdmin==false)
             {
-                sendMessageCon( "Admin >>> Data sent to the user " + username,session);
-                sendMessageAll("Admin >>> Connection established for " + username);
+                sendMessageCon( "Admin >>> Data sent to the user " + username ,session);
+                //sendMessageAll("Admin >>> Connection established for " + username);
             }
             else
             {
                 //messages.addAll(ConvertListEntityToDto(messagesTchatsFacade.findNewMsg()));
                 messages = ConvertListEntityToDto(messagesTchatsFacade.findAll());
                 sendMessageCon( "Admin >>> Data sent to the user " + username,session);
-                sendMessageAll("Admin >>> Connection established for " + username);
+                //sendMessageAll("Admin >>> Connection established for " + username);
                 if(messagesAdmin!=null)
                     messagesAdmin.clear();
                 messagesAdmin = ConvertListEntityToDto(messagesTchatsFacade.findAllForAdmin(idUser));
@@ -320,7 +326,7 @@ public class TchatWSFacadeREST {
     public void close(Session session) {
         String username = (String) session.getUserProperties().get( "username" );
         sessions.remove( session.getId() );
-        sendMessageAll( "Admin >>> Connection closed for " + username );
+        //sendMessageAll( "Admin >>> Connection closed for " + username );
     }
 
     /**
@@ -364,7 +370,7 @@ public class TchatWSFacadeREST {
             messageTmp.setMsgStateSender("VALIDE");
             messageTmp.setMsgStateReceiver("VALIDE");
             sendMessageTmp( messageTmp, session);
-            System.out.println( "profil receiver" + messageTmp.getProfilSender() );
+            System.out.println( "profil receiver " + messageTmp.getProfilSender() );
             }catch( Exception exception ) {
                 System.out.println( "ERROR: on message " + exception );
                 } 
@@ -384,7 +390,7 @@ public class TchatWSFacadeREST {
                 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
                 String messagesJson = ow.writeValueAsString(messages);
                 sessionCon.getBasicRemote().sendObject(messagesJson);
-                sessionCon.getBasicRemote().sendText( fullMessage );
+                sessionCon.getBasicRemote().sendText( fullMessage + " "+ (Integer)sessionCon.getUserProperties().get( "idUser" ) );
             } catch( Exception exception ) {
                 System.out.println( "ERROR: cannot send message to " + sessionCon.getId() );
             }   
@@ -438,32 +444,62 @@ public class TchatWSFacadeREST {
              session.getBasicRemote().sendObject(messagesJson );
              if(messageTmp.getIdReceiver()==null)
              {
+                 System.out.println( "Envoie des messages à tous les administrateurs");
                  Stream<Session> adminsSessions = sessions.values().stream()   
                 .filter(sess ->"ADMIN".equals((String)sess.getUserProperties().get( "profilUser" )));
                 adminsSessions.forEach((sess) -> {
                 try {
                     sess.getBasicRemote().sendObject(messagesJson );
+                     System.out.println( "Terminé Envoie des messages à un administrateur");
                     } catch( IOException | EncodeException exception ) {
                     System.out.println( "ERROR: cannot send message to " + sess.getId()+"-->"+ exception );
                     }
                 }); 
              }
-             else
+             else if("VISITEUR".equals((String)session.getUserProperties().get( "profilUser" )))
              {
-                Session Reveiversession = sessions.values().stream()   
-                .filter(sess -> messageTmp.getIdReceiver().equals((Integer)sess.getUserProperties().get( "idUser" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
+                 Stream<Session> Reveiversessions= sessions.values().stream()   
+                .filter(sess -> messageTmp.getIdReceiver().equals(new String(ByteBuffer.allocate(4).putInt((Integer)sess.getUserProperties().get( "idUser" )).array(),StandardCharsets.UTF_8)));
                    //.filter(sess -> messageTmp.getUsername().equals((String)sess.getUserProperties().get( "username" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
-                   .findFirst()
-                   .orElse(null);
-            
-         
-                System.out.println(Reveiversession );
+                  System.out.println(Reveiversessions );
                 // On envoie le message au destinateur seulement.
                 try {
 
-                    Reveiversession.getBasicRemote().sendObject(messagesJson );
+                    Reveiversessions.forEach((sess) -> {
+                    try {
+                        sess.getBasicRemote().sendObject(messagesJson );
+                         System.out.println( "Terminé Envoie des messages aux destinataires");
+                        } catch( IOException | EncodeException exception ) {
+                        System.out.println( "ERROR: cannot send message to " + sess.getId()+"-->"+ exception );
+                        }
+                    }); 
+                    //Reveiversession.getBasicRemote().sendObject(messagesJson );
+                   
                 } catch( Exception exception ) {
-                    System.out.println( "ERROR: cannot send message to " + Reveiversession.getId() );
+                    System.out.println( "ERROR: cannot send message to the receivers sessions qui sont au nombre de: " + Reveiversessions.count() );
+                }
+             }
+             else
+             {
+                Stream<Session> Reveiversessions = sessions.values().stream()   
+                .filter(sess -> messageTmp.getIdReceiver().equals((Integer)sess.getUserProperties().get( "idUser" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )));
+                   //.filter(sess -> messageTmp.getUsername().equals((String)sess.getUserProperties().get( "username" ))&& messageTmp.getProfilReceiver().equals((String)sess.getUserProperties().get( "profilUser" )))
+            
+         
+                System.out.println(Reveiversessions );
+                // On envoie le message au destinateur seulement.
+                try {
+                    Reveiversessions.forEach((sess) -> {
+                    try {
+                        sess.getBasicRemote().sendObject(messagesJson );
+                         System.out.println( "Terminé Envoie des messages aux destinataires");
+                        } catch( IOException | EncodeException exception ) {
+                        System.out.println( "ERROR: cannot send message to " + sess.getId()+"-->"+ exception );
+                        }
+                    }); 
+                    //Reveiversession.getBasicRemote().sendObject(messagesJson );
+                } catch( Exception exception ) {
+                    System.out.println( "ERROR: cannot send message to the receivers sessions qui sont au nombre de: " + Reveiversessions.count() );
                 }
              }
         }catch(Exception exception){
@@ -472,7 +508,12 @@ public class TchatWSFacadeREST {
          finally{
              System.out.println(messageTmp);
              //messageTmp.setContenu(Base64.encodeBase64String(messageTmp.getContenu().getBytes()));
-             messagesTchatsFacade.create(messagesTchatsConverter.dtoToEntity(messageTmp));
+             if(messageTmp.getProfilSender().equals("VISITEUR") || messageTmp.getProfilReceiver().equals("VISITEUR"))
+             {
+                 // pas de sauvegarde dans le base de données pour le moment.
+             }
+             else
+                 messagesTchatsFacade.create(messagesTchatsConverter.dtoToEntity(messageTmp));
         }
 //        // On envoie le message à tout le monde.
 //        sessions.values().forEach((session) -> {

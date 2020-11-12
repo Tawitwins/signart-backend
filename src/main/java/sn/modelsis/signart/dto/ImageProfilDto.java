@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 package sn.modelsis.signart.dto;
-
+import java.io.Serializable;
 /**
  *
  * @author snfayemp
  */
-public class ImageProfilDto {
+public class ImageProfilDto implements Serializable {
     
+    private static final long serialVersionUID = 1L;
     private String filename;
     private String filetype;
     private String value;
