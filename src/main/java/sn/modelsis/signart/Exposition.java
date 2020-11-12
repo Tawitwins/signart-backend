@@ -57,10 +57,10 @@ public class Exposition implements Serializable {
     @Basic(optional = true)
     @Column(name = "adresse", nullable = false, length = 100)
     private String adresse;
-    @Column(name = "latitude", nullable = false, length = 100)
+    /*@Column(name = "latitude", nullable = false, length = 100)
     private String latitude;
     @Column(name = "longitude", nullable = false, length = 100)
-    private String longitude;
+    private String longitude;*/
     @Column(name = "type", nullable = false, length = 100)
     private String type;
     @Lob

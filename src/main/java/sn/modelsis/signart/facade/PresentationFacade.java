@@ -57,6 +57,17 @@ public class PresentationFacade extends AbstractFacade<Presentation>{
         }
 
     }
+      
+      public List<Presentation> findAllPresentation() throws SignArtException {
+        try {
+            final TypedQuery<Presentation> query = getEntityManager().createNamedQuery("Presentation.findAll",
+                    Presentation.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
     
     public Presentation findById(Integer id) throws SignArtException {
         try {

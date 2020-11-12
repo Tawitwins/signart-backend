@@ -49,6 +49,16 @@ public class BiographieREST {
         biographieFacade.edit(dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
+    
+    @PUT
+    @Path("valider/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response valider(@PathParam("id") Integer id, BiographieDto dto) throws SignArtException {
+        Biographie biographie = biographieFacade.findById(id);
+        biographie.setEtatBiographie(dto.getEtatBiographie());
+        biographieFacade.edit(biographie);
+        return Response.status(Response.Status.OK).entity(dto).build();
+    }
 
     @DELETE
     @Path("{id}")
@@ -64,6 +74,23 @@ public class BiographieREST {
         //Presentation dto = presentationFacade.findByArtiste(idArtiste);
          List<BiographieDto> listDto = new ArrayList<>();
          List<Biographie> listEnt = biographieFacade.findAllByArtiste(idArtiste);
+        if (listEnt != null) {
+            listEnt.stream().map(oeuvre -> 
+                entityToDto(oeuvre)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    
+    @GET
+    @Path("getAll")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<BiographieDto> findAll() throws SignArtException {
+        //Presentation dto = presentationFacade.findByArtiste(idArtiste);
+         List<BiographieDto> listDto = new ArrayList<>();
+         List<Biographie> listEnt = biographieFacade.findAllBiographie();
         if (listEnt != null) {
             listEnt.stream().map(oeuvre -> 
                 entityToDto(oeuvre)

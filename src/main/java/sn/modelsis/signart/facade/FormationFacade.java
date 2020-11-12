@@ -45,6 +45,19 @@ public class FormationFacade extends AbstractFacade<Formation> {
 
     }
     
+    public List<Formation> findAllFormations() throws SignArtException {
+        try {
+            final TypedQuery<Formation> query = getEntityManager().createNamedQuery("Formation.findAllFormations",
+                    Formation.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
+    
+   
+    
     public Formation findById(Integer id) throws SignArtException {
         try {
             final TypedQuery<Formation> query = getEntityManager().createNamedQuery("Formation.findById",

@@ -59,6 +59,16 @@ public class PresentationREST {
         presentationFacade.edit(dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
+    
+    @PUT
+    @Path("valider/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response valider(@PathParam("id") Integer id, PresentationDto dto) throws SignArtException {
+        Presentation presentation = presentationFacade.findById(id);
+        presentation.setEtatPubPresentation(dto.getEtatPubPresentation());
+        presentationFacade.edit(presentation);
+        return Response.status(Response.Status.OK).entity(dto).build();
+    }
 
     @DELETE
     @Path("{id}")
@@ -91,6 +101,24 @@ public class PresentationREST {
     }
     
     @GET
+    @Path("getAll")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<PresentationDto> findAllByArtiste() throws SignArtException {
+        //Presentation dto = presentationFacade.findByArtiste(idArtiste);
+         List<PresentationDto> listDto = new ArrayList<>();
+        List<Presentation> listEnt = presentationFacade.findAllPresentation();
+        if (listEnt != null) {
+            listEnt.stream().map(oeuvre -> 
+                entityToDto(oeuvre)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    
+    
+     @GET
     @Path("artisteAll/{idArtiste}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<PresentationDto> findAllByArtiste(@PathParam("idArtiste") Integer idArtiste) throws SignArtException {

@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class BiographieDto {
     private Integer id;
-    private Date dateNaissance;
+    private String dateNaissance;
     private String lieuNaissance;
     private String nationalite;
     private String libelle;
@@ -23,17 +23,14 @@ public class BiographieDto {
         this.id = id;
     }
 
-    /**
-     * @return the dateNaissance
-     */
-    public Date getDateNaissance() {
+    public String getDateNaissance() {
         return dateNaissance;
     }
 
     /**
-     * @param dateNaissance the dateNaissance to set
+     * @return the dateNaissance
      */
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(String dateNaissance) {  
         this.dateNaissance = dateNaissance;
     }
 

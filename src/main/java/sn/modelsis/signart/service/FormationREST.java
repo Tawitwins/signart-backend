@@ -158,6 +158,16 @@ public class FormationREST {
         formationFacade.edit(dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
+    
+    @PUT
+    @Path("valider/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response validerFormation(@PathParam("id") Integer id, FormationDto dto) throws SignArtException {
+        Formation formation = formationFacade.findById(id);
+        formation.setEtatPublication(dto.getEtatPublication());
+        formationFacade.edit(formation);
+        return Response.status(Response.Status.OK).entity(dto).build();
+    }
 
     @DELETE
     @Path("{id}")
@@ -195,6 +205,24 @@ public class FormationREST {
             return listDto;
         }
     }
+    
+    @GET
+    @Path("getAll")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<FormationDto> findAll() throws SignArtException {
+        List<FormationDto> listDto = new ArrayList<>();
+        List<Formation> listEnt = formationFacade.findAllFormations();
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    
+
 
     @GET
     @Path("count")
