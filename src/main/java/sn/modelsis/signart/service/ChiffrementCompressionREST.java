@@ -60,6 +60,7 @@ import sn.modelsis.signart.Abonnement;
 import sn.modelsis.signart.ArchiveSignart;
 import sn.modelsis.signart.CodeSignart;
 import sn.modelsis.signart.Delai;
+import sn.modelsis.signart.HistoriqueAbonnement;
 import sn.modelsis.signart.Licence;
 import sn.modelsis.signart.ListeSelection_Oeuvres;
 import sn.modelsis.signart.OeuvreNumerique;
@@ -76,6 +77,7 @@ import sn.modelsis.signart.facade.CodeSignartFacade;
 import sn.modelsis.signart.facade.DelaiFacade;
 import sn.modelsis.signart.facade.EtatAbonnementFacade;
 import sn.modelsis.signart.facade.EtatLicenceFacade;
+import sn.modelsis.signart.facade.HistoriqueAbonnementFacade;
 import sn.modelsis.signart.facade.LicenceFacade;
 import sn.modelsis.signart.facade.ListeSelectionFacade;
 import sn.modelsis.signart.facade.ListeSelection_OeuvresFacade;
@@ -126,6 +128,9 @@ public class ChiffrementCompressionREST {
     ArchiveSignartFacade archiveSignartFacade;
     
     @Inject
+    HistoriqueAbonnementFacade historiqueAbonnementFacade;
+    
+    @Inject
     ListeSelection_OeuvresFacade listeOeuvreFacade;
     
     @POST
@@ -158,6 +163,13 @@ public class ChiffrementCompressionREST {
     @javax.ws.rs.Path("identification/{code}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response identification(@PathParam("code") String code) throws SignArtException {
+        
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date currentDate = new Date();
+	Calendar c = Calendar.getInstance();
+	c.setTime(currentDate);
+         
+        
              CodeSignart codeSignart = codeSignartFacade.findByCode(code);
              Licence licence = licenceFacade.findById(codeSignart.getIdLicence().getId());
              licence.setIdEtatLicence(etatLicenceFacade.findByLibelle("ACTIF"));
@@ -165,7 +177,14 @@ public class ChiffrementCompressionREST {
              Abonne abonne = abonneFacade.findById(abonnement.getIdAbonne().getId());
              String username = (abonne.getPrenom()+""+abonne.getNom()).toLowerCase();
              String zipName = username+""+abonne.getId()+".zip";
-             
+             HistoriqueAbonnement historique = new HistoriqueAbonnement();
+             c.add(Calendar.MONTH, abonnement.getIdDelai().getNbMois());
+	     Date currentDatePlusOne = c.getTime();
+             historique.setDateDebut(currentDate);
+             historique.setDateFin(currentDatePlusOne);
+             historique.setIdAbonnement(abonnement);
+             historique.setIdUtilisateur(abonne.getIdUtilisateur());
+             historiqueAbonnementFacade.add(historique);
              //File fileDownload = new File(PATHTEST+"\\archives\\"+zipName);
              File fileDownload = new File(PATH+"/"+zipName);
              ResponseBuilder response = Response.ok((Object) fileDownload);
@@ -250,17 +269,17 @@ public class ChiffrementCompressionREST {
 		//System.out.println(dateFormat.format(currentDatePlusOne));
 		String date = dateFormat.format(currentDatePlusOne);
 		//System.out.println(date);
-		
+		String nombreMois = Integer.toString(nbMois);
 		String licence = "Application: SignArt\n" + 
 				         "Version: 1.0\n" + 
-				         "Expiration: date_expiration\n" + 
+				         "Delai_Abonnement: nombre_mois\n" + 
 				         "Utilisateur: nom_du_client";
                 
 		//System.out.println("++++++++Avant+++++++++");
 		//System.out.println(licence);
 		//String nom = "Penda_Faye_00777966116";
 		licence2 = licence.replaceAll("nom_du_client", username);
-		licence3 = licence2.replaceAll("date_expiration", date);
+		licence3 = licence2.replaceAll("nombre_mois", nombreMois );
 		//System.out.println("++++++++Après+++++++++");
 		//System.out.println(licence2);
                 String filename = "licence00"+username;    
