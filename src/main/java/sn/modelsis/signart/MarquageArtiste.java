@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "MarquageArtiste.findMarqueByClient", query = "SELECT m.idArtiste FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage and m.idClient.id = :idClient")
     , @NamedQuery(name = "MarquageArtiste.countMarqueByClient", query = "SELECT count(m) FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage")
+    , @NamedQuery(name = "MarquageArtiste.countMarqueByArtiste", query = "SELECT m FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage and m.idArtiste.id = :idArtiste")
     , @NamedQuery(name = "MarquageArtiste.findAll", query = "SELECT m FROM MarquageArtiste m")
     , @NamedQuery(name = "MarquageArtiste.findById", query = "SELECT m FROM MarquageArtiste m WHERE m.id = :id")
     , @NamedQuery(name = "MarquageArtiste.findByDateMarquage", query = "SELECT m FROM MarquageArtiste m WHERE m.dateMarquage = :dateMarquage")

@@ -70,7 +70,7 @@ public class LigneLivraisonConverter {
 
     public LigneLivraison ligneCommandeToLigneLivraison(LigneCommandeDto dto, Livraison livraison){
         LigneLivraison entity = new LigneLivraison();
-        //entity.setIdModeLivraison(livraison.getIdModeLivraison());
+        entity.setIdModeLivraison(livraison.getIdModeLivraison());
         entity.setIdEtatLivraison(livraison.getIdEtatLivraison());        
         entity.setDateLivraison(livraison.getDateLivraisonPrevue());
         entity.setIdLivraison(livraisonFacade.find(livraison.getIdCommande()));

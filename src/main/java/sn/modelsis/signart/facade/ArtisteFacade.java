@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Biographie;
+import sn.modelsis.signart.MarquageArtiste;
 
 /**
  *
@@ -77,6 +78,20 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
                     Long.class);
             query.setParameter("codeTypeMarquage", codeTypeMarquage);
             return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
+    
+    
+    public Long countMarqueArtisteFan(String codeTypeMarquage,Integer idArtiste) throws SignArtException {
+        try {
+            final TypedQuery<MarquageArtiste> query = getEntityManager().createNamedQuery("MarquageArtiste.countMarqueByArtiste",
+                    MarquageArtiste.class);
+            query.setParameter("codeTypeMarquage", codeTypeMarquage);
+            query.setParameter("idArtiste", idArtiste);
+             final List<MarquageArtiste> ma = query.getResultList();
+            return (long) ma.size();
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }

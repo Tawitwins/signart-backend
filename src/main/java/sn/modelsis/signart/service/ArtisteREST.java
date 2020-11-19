@@ -308,7 +308,7 @@ public class ArtisteREST {
         
         dto.setProfession(entity.getProfession());
         try {
-            dto.setNbFans(artisteFacade.countMarqueArtiste("SUIV"));//TODO calculer
+            dto.setNbFans(artisteFacade.countMarqueArtisteFan("SUIV",dto.getId()));//TODO calculer
             dto.setNbOeuvres(artisteFacade.countOeuvre(entity.getId()));//TODO calculer
         } catch (SignArtException ex) {
             Logger.getLogger(ArtisteREST.class.getName()).log(Level.SEVERE, null, ex);
