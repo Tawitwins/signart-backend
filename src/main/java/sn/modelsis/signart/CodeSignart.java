@@ -29,7 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
       @NamedQuery(name = "CodeSignart.findById", query = "SELECT c FROM CodeSignart c WHERE c.id = :id")
-     ,@NamedQuery(name = "CodeSignart.findBycode", query = "SELECT c FROM CodeSignart c WHERE c.code = :code")})
+     ,@NamedQuery(name = "CodeSignart.findBycode", query = "SELECT c FROM CodeSignart c WHERE c.code = :code")
+     ,@NamedQuery(name = "CodeSignart.findByIdAbonne", query = "SELECT c FROM CodeSignart c WHERE c.idAbonne.id = :idAbonne")})
 public class CodeSignart implements Serializable{
     
     @Id

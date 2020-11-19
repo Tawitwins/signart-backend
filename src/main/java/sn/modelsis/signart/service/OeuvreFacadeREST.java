@@ -21,6 +21,9 @@ import sn.modelsis.signart.converter.OeuvreConverter;
 import sn.modelsis.signart.dto.OeuvreDto;
 import sn.modelsis.signart.facade.OeuvreFacade;
 import javax.ws.rs.core.Response;
+import sn.modelsis.signart.OeuvreSouscription;
+import sn.modelsis.signart.dto.OeuvreSouscriptionDto;
+import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
 
 /**
  *
@@ -32,6 +35,9 @@ public class OeuvreFacadeREST {
 
     @Inject
     OeuvreFacade oeuvreFacade;
+    
+    @Inject
+    OeuvreSouscriptionFacade oeuvreSouscriptionFacade;
     @Inject
     OeuvreConverter oeuvreConverter;
 
@@ -43,12 +49,33 @@ public class OeuvreFacadeREST {
         OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
         return Response.status(Response.Status.CREATED).entity(dtoRes).build();
     }
+    
+    @POST
+    @Path("oeuvresous")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response valider(OeuvreSouscriptionDto dto) throws SignArtException {
+        OeuvreSouscription enti = oeuvreSouscriptionFacade.findById(dto.getId());
+        
+        Oeuvre entity = new Oeuvre();
+        
+        
+        entity = oeuvreConverter.convertOueuvreSouscription(enti);
+        oeuvreFacade.create(entity);
+       // OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
+        return Response.status(Response.Status.CREATED).entity(dto).build();
+    }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, OeuvreDto dto) throws SignArtException {
-        oeuvreFacade.edit(oeuvreConverter.dtoToEntity(dto));
+        Oeuvre oeuvre = oeuvreFacade.find(id);
+        oeuvre.setTaxes(dto.getTaxes());
+        oeuvre.setTauxremise(dto.getTauxremise());
+        oeuvre.setPrix(dto.getPrix());
+        oeuvre.setStock(dto.getStock());
+        oeuvre.setDescription(dto.getDescription());
+        oeuvreFacade.edit(oeuvre);
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
       @NamedQuery(name = "Formation.findByArtiste", query = "SELECT e FROM Formation e WHERE e.idArtiste.id = :idArtiste")
-    , @NamedQuery(name = "Formation.findAll", query = "SELECT e FROM Formation e")
+    , @NamedQuery(name = "Formation.findAllFormations", query = "SELECT e FROM Formation e")
     , @NamedQuery(name = "Formation.findById", query = "SELECT e FROM Formation e WHERE e.id = :id")
     , @NamedQuery(name = "Formation.findByLieu", query = "SELECT e FROM Formation e WHERE e.lieu = :lieu")})
 public class Formation implements Serializable {

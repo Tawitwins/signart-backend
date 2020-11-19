@@ -36,11 +36,22 @@ public class CodeSignartREST {
         return entityToDto(entity);
         
     }
+    @GET
+    @Path("findByIdAbonne/{idAbonne}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public CodeSignartDto findByIdAbonne(@PathParam("idAbonne") int idAbonne) throws SignArtException {
+        CodeSignart entity = codeSignartFacade.findByIdAbonne(idAbonne);
+        return entityToDto(entity);
+        
+    }
+    
     
     private CodeSignartDto entityToDto(CodeSignart entity) {
         CodeSignartDto dto = new CodeSignartDto();
         dto.setId(entity.getId());
         dto.setIdAbonne(entity.getIdAbonne().getId());
+        dto.setCode(entity.getCode());
+        dto.setIdLicence(entity.getIdLicence().getId());
         return dto;
     }
     

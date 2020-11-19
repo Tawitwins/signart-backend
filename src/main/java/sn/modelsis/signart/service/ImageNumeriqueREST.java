@@ -416,7 +416,7 @@ public class ImageNumeriqueREST {
         
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
-              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
+             ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
              java.nio.file.Path minImagePath = Paths.get(PATHTEST+"images\\min_"+oeuvreNum.getNom()+".jpg");
              java.nio.file.Path imagePath = Paths.get(PATHTEST+"images\\"+oeuvreNum.getNom()+".jpg");
 

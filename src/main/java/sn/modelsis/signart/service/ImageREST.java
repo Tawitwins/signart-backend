@@ -30,12 +30,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import org.apache.commons.io.IOUtils;
 import sn.modelsis.signart.Artiste;
+import sn.modelsis.signart.ImageMiniature;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 import sn.modelsis.signart.Oeuvre;
 import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.dto.ArtisteDto;
 import sn.modelsis.signart.dto.ImageDto;
+import sn.modelsis.signart.dto.ImageMiniatureDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.OeuvreFacade;
@@ -185,6 +187,25 @@ public class ImageREST {
         }
     }
     
+    @GET
+    @Path("/oeuvreSouscriptionImage/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ImageMiniatureDto find(@PathParam("id") Integer id) {
+        OeuvreSouscription oeuvreSouscription = oeuvreSouscriptionFacade.findById(id);
+        return entityToDtoImg(oeuvreSouscription);
+    }
+    
+     private ImageMiniatureDto entityToDtoImg(OeuvreSouscription entity){
+        ImageMiniatureDto dto = new ImageMiniatureDto();
+        dto.setId(entity.getId());
+        dto.setNomImage(entity.getNom());
+         byte[] imageBytes = entity.getImage();
+         BASE64Encoder encoder = new BASE64Encoder();
+         String imageString = encoder.encode(imageBytes);
+        dto.setValeurImage(imageString);
+        return dto;
+    }
+    
     static BufferedImage addTextWatermarkMin(String text,  BufferedImage sourceImage) {
 	   
 	       
@@ -208,6 +229,8 @@ public class ImageREST {
 	        System.out.println("The tex watermark is added to the image.");*/
 	 	 	    
 	}
+    
+    
     
     
     public static String encodeToString(BufferedImage image, String type) {

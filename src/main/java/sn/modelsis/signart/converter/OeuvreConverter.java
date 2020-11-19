@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Couleur;
 import sn.modelsis.signart.Oeuvre;
+import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.Technique;
 import sn.modelsis.signart.dto.OeuvreDto;
 import sn.modelsis.signart.exception.SignArtException;
@@ -99,6 +100,43 @@ public class OeuvreConverter {
         if(dto.getIdStatus() != null)
             entity.setIdStatut(statutOeuvreFacade.find(dto.getIdStatus()));
         entity.setStock(dto.getStock());
+        
+        //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
+        
+        
+        return entity;
+    }
+    
+     public Oeuvre convertOueuvreSouscription(OeuvreSouscription dto) throws SignArtException {
+        Oeuvre entity = new Oeuvre();
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentDate = calendar.getTime();
+        java.sql.Timestamp dateAjout = new java.sql.Timestamp(currentDate.getTime());
+        
+        
+        
+       // entity.setId(dto.getId());
+        entity.setNom(dto.getNom());
+        if(dto.getIdTechnique() != null)
+            entity.setIdTechnique(dto.getIdTechnique());
+        if(dto.getIdCouleur() != null)
+            entity.setIdCouleur(dto.getIdCouleur());
+        entity.setNouveau(dto.getNouveau());
+        entity.setLithographie(dto.getLithographie());
+        entity.setAuteur(dto.getAuteur());
+        entity.setDimensions(dto.getDimensions());
+        entity.setAnnee(dto.getAnnee());
+        entity.setDateAjout(dateAjout);
+        entity.setPrix(dto.getPrix());
+        entity.setTauxremise(dto.getTauxremise());
+        entity.setTaxes(dto.getTaxes());
+        entity.setImage(dto.getImage());
+        entity.setDescription(dto.getDescription());
+        if(dto.getIdArtiste() != null)
+            entity.setIdArtiste(dto.getIdArtiste());
+        entity.setFraisLivraison(BigDecimal.valueOf(1500.00));
+            entity.setIdStatut(statutOeuvreFacade.find(1));
+        entity.setStock(1);
         
         //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
         

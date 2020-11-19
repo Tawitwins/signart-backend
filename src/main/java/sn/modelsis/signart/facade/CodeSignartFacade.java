@@ -45,6 +45,18 @@ public class CodeSignartFacade extends AbstractFacade<CodeSignart> {
         }
 
     }
+    public CodeSignart findByIdAbonne(int idAbonne) throws SignArtException {
+        try {
+            final TypedQuery<CodeSignart> query = getEntityManager().createNamedQuery("CodeSignart.findByIdAbonne",
+                    CodeSignart.class);
+            query.setParameter("idAbonne", idAbonne);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
+    
     
     
 }

@@ -54,6 +54,19 @@ public class BiographieFacade extends AbstractFacade<Biographie> {
 
     }
     
+     public List<Biographie> findAllBiographie() throws SignArtException {
+        try {
+            final TypedQuery<Biographie> query = getEntityManager().createNamedQuery("Biographie.findAll",
+                    Biographie.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
+    
+    
+    
      public Biographie findById(Integer id) {
 
         final TypedQuery<Biographie> query = getEntityManager().createNamedQuery("Biographie.findById",
