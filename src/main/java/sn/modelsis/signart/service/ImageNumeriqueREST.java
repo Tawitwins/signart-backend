@@ -447,10 +447,10 @@ public class ImageNumeriqueREST {
             ImageNumeriqueDto dto2 = dto.getAvatar();
             System.out.println(dto2+"++++++++++++++++++++++++++++++++++++++++dto2 avatar+++++++++++++++++++++++++++++++++++++");
 
-            Integer largeur = dto.getLargeur()/3; 
-            Integer longueur = dto.getLongueur()/3;
+            Integer largeur = dto.getLargeur();
+            Integer longueur = dto.getLongueur();
             
-            java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
+           /* java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
             java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
             try {
                    Files.delete((java.nio.file.Path) minImagePath);
@@ -459,7 +459,7 @@ public class ImageNumeriqueREST {
             } catch (IOException e) {
                 System.err.println("Unable to delete ");
                 e.printStackTrace();
-            }
+            }*/
             
             oeuvreNum = dtoEntityEdit(dto,idOeuvre);
             System.out.println(oeuvreNum+"++++++++++++++++++++++++++++++++++++++++oeuvreNum +++++++++++++++++++++++++++++++++++++");
@@ -480,14 +480,14 @@ public class ImageNumeriqueREST {
             byte[] imgMinByte = null;
             try {
                 bImageFromConvert = ImageIO.read(in);
-                ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+oeuvreNum.getNom()+".jpg"));
+                //ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+oeuvreNum.getNom()+".jpg"));
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
                 imgMinByte = addTextWatermarkMin("SignArt", resizeImageJpg);
                 imgMin.setNomImage(oeuvreNum.getNom());
                 imgMin.setValeurImage(imgMinByte);
             } catch (IOException e) {               
-            }     
+            }    
  
               imageMiniaturefacade.edit(imgMin);
               imageNumeriqueFacade.edit(imageNum);

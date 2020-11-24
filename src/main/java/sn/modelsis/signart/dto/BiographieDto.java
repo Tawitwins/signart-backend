@@ -30,9 +30,10 @@ public class BiographieDto {
     /**
      * @return the dateNaissance
      */
-    public void setDateNaissance(Date dateNaissance) {  
+    public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
+
 
     /**
      * @return the lieuNaissance
