@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
       @NamedQuery(name = "EtatAbonnement.findAll", query = "SELECT e FROM EtatAbonnement e")
     , @NamedQuery(name = "EtatAbonnement.findById", query = "SELECT e FROM EtatAbonnement e WHERE e.id = :id")
-    , @NamedQuery(name = "EtatAbonnement.findByLibelle", query = "SELECT e FROM EtatAbonnement e WHERE e.libelle = :libelle")})
+    , @NamedQuery(name = "EtatAbonnement.findByLibelle", query = "SELECT e FROM EtatAbonnement e WHERE e.libelle = :libelle")
+    , @NamedQuery(name = "EtatAbonnement.findByCode", query = "SELECT e FROM EtatAbonnement e WHERE e.code = :code")})
 public class EtatAbonnement {
     
     @Id
@@ -37,6 +38,8 @@ public class EtatAbonnement {
     private Integer id;
     @Column(name = "libelle", nullable = false)
     private String libelle;
+    @Column(name = "code", nullable = false)
+    private String code;
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -60,6 +63,16 @@ public class EtatAbonnement {
     public String getLibelle() {
         return libelle;
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
+    
 
     public void setLibelle(String libelle) {
         this.libelle = libelle;

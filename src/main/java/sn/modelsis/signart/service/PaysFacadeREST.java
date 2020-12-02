@@ -48,6 +48,16 @@ public class PaysFacadeREST extends AbstractFacade<Pays> {
     public void create(Pays entity) {
         super.create(entity);
     }
+    @POST
+    @Path("postAll")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void create(PaysDto[] tabPays) {
+        for(int i=0;i < tabPays.length;i++){
+             super.create(paysConverter.toEntity(tabPays[i]));
+        }
+       
+    }
+    
 
     @PUT
     @Path("{id}")

@@ -57,6 +57,14 @@ public class EtatAbonnementREST {
         return entityToDto(delai);
     }
     
+     @GET
+    @Path("code/{code}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public EtatAbonnementDto findByCode(@PathParam("code") String code) throws SignArtException {
+        EtatAbonnement delai = etatAbonnementFacade.findByCode(code);
+        return entityToDto(delai);
+    }
+    
     @GET
     public String test(@PathParam("id") Integer id) {
         return "test etat abonnement rest";
@@ -84,6 +92,7 @@ public class EtatAbonnementREST {
         EtatAbonnement entity = new EtatAbonnement();
        // entity.setId(dto.getId());
         entity.setLibelle(dto.getLibelle());
+        entity.setCode(dto.getCode());
         entity.setDescription(dto.getDescription());
         return entity;
     }
@@ -92,6 +101,7 @@ public class EtatAbonnementREST {
         EtatAbonnementDto dto = new EtatAbonnementDto();
         dto.setId(entity.getId());
         dto.setLibelle(entity.getLibelle());
+        dto.setCode(entity.getCode());
         dto.setDescription(entity.getDescription());
         return dto;
     }
