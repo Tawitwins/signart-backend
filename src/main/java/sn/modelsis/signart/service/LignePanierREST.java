@@ -63,6 +63,7 @@ public class LignePanierREST {
         LignePanier entity = lignePanierConverter.dtoToEntity(dto);
         entity.setIdEtatLignePanier(etatLigneanierFacade.findByCode("NOUVEAU"));
         lignePanierFacade.edit(entity);
+        lignePanierFacade.remove(lignePanierFacade.find(id));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 

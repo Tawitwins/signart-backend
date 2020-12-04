@@ -18,7 +18,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import sn.modelsis.signart.MarquageOeuvre;
+import sn.modelsis.signart.Oeuvre;
+import sn.modelsis.signart.converter.OeuvreConverter;
 import sn.modelsis.signart.dto.MarquageOeuvreDto;
+import sn.modelsis.signart.dto.OeuvreDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ClientFacade;
 import sn.modelsis.signart.facade.MarquageOeuvreFacade;
@@ -41,6 +44,8 @@ public class MarquageOeuvreFacadeREST {
     ClientFacade clientFacade;
     @Inject
     OeuvreFacade oeuvreFacade;
+    @Inject
+    OeuvreConverter oeuvreConverter;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -76,7 +81,7 @@ public class MarquageOeuvreFacadeREST {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -85,6 +90,30 @@ public class MarquageOeuvreFacadeREST {
         return entityToDto(entity);
     }
 
+    @GET
+    @Path("client/{idClient}")
+    public List<OeuvreDto> findByClient(@PathParam("idClient") Integer idClient) throws SignArtException {
+        List<OeuvreDto> listOeuvre=new ArrayList<>();
+        List<MarquageOeuvreDto> listDto = new ArrayList<>();
+        List<MarquageOeuvre> listEnt = marquageOeuvreFacade.findMarqueByClient(idClient);
+        System.out.println(listEnt.size());
+        if (listEnt != null) {
+            listEnt.stream().map((entity) -> {
+                return entityToDto(entity);
+            }).forEachOrdered((dto) -> {
+                listDto.add(dto);
+            });
+          
+            for(int i=0;i<listDto.size();i++)
+            {
+                if(listDto.get(i)!=null)
+                    listOeuvre.add(oeuvreConverter.entityToDto(oeuvreFacade.find(listDto.get(i).getIdOeuvre())));
+            }
+        }
+        System.out.println(listOeuvre.size());
+        return listOeuvre;
+    }
+    
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<MarquageOeuvreDto> findAll() {
