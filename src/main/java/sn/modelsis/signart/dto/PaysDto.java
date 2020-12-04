@@ -5,10 +5,21 @@ public class PaysDto {
     private Integer id;
     private String code;
     private String libelle;
+    private String indicatif;
 
     public Integer getId() {
         return id;
     }
+
+    public String getIndicatif() {
+        return indicatif;
+    }
+
+    public void setIndicatif(String indicatif) {
+        this.indicatif = indicatif;
+    }
+    
+    
 
     public void setId(Integer id) {
         this.id = id;

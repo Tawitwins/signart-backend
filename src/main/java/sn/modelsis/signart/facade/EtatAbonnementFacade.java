@@ -67,6 +67,22 @@ public class EtatAbonnementFacade extends AbstractFacade<EtatAbonnement> {
             throw new SignArtException(e.getMessage(), e);
         }
     }
+     
+      public EtatAbonnement findByCode(String code) throws SignArtException {
+        try {
+            final TypedQuery<EtatAbonnement> query = getEntityManager().createNamedQuery("EtatAbonnement.findByCode",
+                    EtatAbonnement.class);
+            query.setParameter("code", code);
+            query.setMaxResults(1);
+            final List<EtatAbonnement> etats = query.getResultList();
+            if (etats.isEmpty()) {
+                return null;
+            }
+            return etats.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
     
     @Override
     public List<EtatAbonnement> findAll(){

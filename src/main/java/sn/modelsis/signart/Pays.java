@@ -37,6 +37,9 @@ public class Pays implements Serializable {
     @Basic(optional = false)
     @Column(name = "code", nullable = false, length = 20)
     private String code;
+     @Basic(optional = false)
+    @Column(name = "indicatif", nullable = false, length = 10)
+    private String indicatif;
     @Basic(optional = false)
     @Column(name = "libelle", nullable = false, length = 100)
     private String libelle;
@@ -59,6 +62,16 @@ public class Pays implements Serializable {
         this.id = id;
         this.libelle = libelle;
     }
+
+    public String getIndicatif() {
+        return indicatif;
+    }
+
+    public void setIndicatif(String indicatif) {
+        this.indicatif = indicatif;
+    }
+    
+    
 
     public Integer getId() {
         return id;

@@ -18,6 +18,7 @@ public class PaysConverter {
         PaysDto dto = new PaysDto();
         dto.setId(entity.getId());
         dto.setCode(entity.getCode());
+        dto.setIndicatif(entity.getIndicatif());
         dto.setLibelle(entity.getLibelle());
         return dto;
     }
@@ -27,6 +28,7 @@ public class PaysConverter {
 
         entity.setId(dto.getId());
         entity.setCode(dto.getCode());
+        entity.setIndicatif(dto.getIndicatif());
         entity.setLibelle(dto.getLibelle());
         return entity;
     }

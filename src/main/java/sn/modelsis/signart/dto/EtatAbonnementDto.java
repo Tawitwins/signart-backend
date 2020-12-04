@@ -16,14 +16,16 @@ public class EtatAbonnementDto implements Serializable{
 
     private Integer id;
     private String libelle;
+    private String code;
     private String description;
     
      public EtatAbonnementDto() {
     }
 
-    public EtatAbonnementDto(Integer id, String libelle, String description) {
+    public EtatAbonnementDto(Integer id, String libelle, String description, String code) {
         this.id = id;
         this.libelle = libelle;
+        this.code = code;
         this.description = description;
     }
 
@@ -42,6 +44,16 @@ public class EtatAbonnementDto implements Serializable{
     public void setLibelle(String libelle) {
         this.libelle = libelle;
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
+    
 
     public String getDescription() {
         return description;
