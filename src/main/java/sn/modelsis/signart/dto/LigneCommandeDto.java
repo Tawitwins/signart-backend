@@ -15,6 +15,38 @@ public class LigneCommandeDto {
     private BigDecimal total;
     private Integer idClient;
 
+    private Integer idEtatLigneCommande;
+
+    private String etatLigneCommande;
+    public String getEtatLigneCommande() {
+        return etatLigneCommande;
+    }
+
+    public void setEtatLigneCommande(String etatLigneCommande) {
+        this.etatLigneCommande = etatLigneCommande;
+    }
+
+
+
+
+    public Integer getIdEtatLigneCommande() {
+        return idEtatLigneCommande;
+    }
+
+    public void setIdEtatLigneCommande(Integer idEtatLigneCommande) {
+        this.idEtatLigneCommande = idEtatLigneCommande;
+    }
+
+    public Integer getIdCommande() {
+        return idCommande;
+    }
+
+    public void setIdCommande(Integer idCommande) {
+        this.idCommande = idCommande;
+    }
+
+    private Integer idCommande;
+
     public Integer getId() {
         return id;
     }

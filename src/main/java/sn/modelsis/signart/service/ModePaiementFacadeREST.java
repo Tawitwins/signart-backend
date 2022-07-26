@@ -1,5 +1,6 @@
 package sn.modelsis.signart.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,7 +14,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import sn.modelsis.signart.ModeLivraison;
 import sn.modelsis.signart.ModePaiement;
+import sn.modelsis.signart.dto.ModeLivraisonDto;
+import sn.modelsis.signart.dto.ModePaiementDto;
 
 /**
  *
@@ -58,10 +63,18 @@ public class ModePaiementFacadeREST extends AbstractFacade<ModePaiement> {
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_JSON})
-    public List<ModePaiement> findAll() {
-        return super.findAll();
+    public List<ModePaiementDto> findAllModePaiement() {
+        List<ModePaiementDto> listDto = new ArrayList<>();
+        List<ModePaiement> listEnt = super.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
     }
 
     @GET
@@ -82,5 +95,11 @@ public class ModePaiementFacadeREST extends AbstractFacade<ModePaiement> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+    private ModePaiementDto entityToDto (ModePaiement entity) {
+        ModePaiementDto dto= new ModePaiementDto();
+        dto.setId(entity.getId());
+        dto.setCode(entity.getCode());
+        dto.setLibelle(entity.getLibelle());
+        return dto;
+    }
 }

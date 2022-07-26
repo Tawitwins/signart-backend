@@ -18,21 +18,6 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.ListMultipartReader.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.ListMultipartWriter.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MapMultipartFormDataReader.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MapMultipartFormDataWriter.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MimeMultipartProvider.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartFormAnnotationReader.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartFormAnnotationWriter.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataReader.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataWriter.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartReader.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartRelatedReader.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartRelatedWriter.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.MultipartWriter.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.XopWithMultipartRelatedReader.class);
-        resources.add(org.jboss.resteasy.plugins.providers.multipart.XopWithMultipartRelatedWriter.class);
         resources.add(sn.modelsis.signart.rest.application.config.SignArtExceptionMapper.class);
         resources.add(sn.modelsis.signart.service.AbonneREST.class);
         resources.add(sn.modelsis.signart.service.AbonnementREST.class);

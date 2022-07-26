@@ -69,6 +69,7 @@ public class PaiementConverter {
         LignePaiement lignePaiement;
         for (LignePaiementDto lignePaiementDto : dto.getLignePaiements()) {
             lignePaiement = lignePaiementConverter.dtoToEntity(lignePaiementDto);
+            lignePaiement.setIdPaiement(entity);
             lignePaiementSet.add(lignePaiement);
         }
         entity.setLignePaiementSet(lignePaiementSet);

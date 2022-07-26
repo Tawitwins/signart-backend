@@ -2,11 +2,7 @@ package sn.modelsis.signart.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -20,24 +16,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import sn.modelsis.signart.Commande;
-import sn.modelsis.signart.facade.ClientFacade;
-import sn.modelsis.signart.facade.CommandeFacade;
+
+import sn.modelsis.signart.*;
+import sn.modelsis.signart.facade.*;
+
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import sn.modelsis.signart.ConfigState;
-import sn.modelsis.signart.LigneCommande;
-import sn.modelsis.signart.LignePanier;
+
 import sn.modelsis.signart.converter.CommandeConverter;
 import sn.modelsis.signart.converter.LignePanierConverter;
 import sn.modelsis.signart.dto.CommandeDto;
 import sn.modelsis.signart.dto.LignePanierDto;
 import sn.modelsis.signart.dto.PanierDto;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.facade.EtatCommandeFacade;
-import sn.modelsis.signart.facade.EtatLigneCommandeFacade;
-import sn.modelsis.signart.facade.LignePanierFacade;
-import sn.modelsis.signart.facade.ConfigStateFacade;
-import sn.modelsis.signart.facade.DeviseFacade;
 
 /**
  *
@@ -65,6 +56,12 @@ public class CommandeREST {
     ClientFacade clientFacade;
     @Inject
     DeviseFacade deviseFacade;
+    @Inject
+    PaiementFacade paiementFacade;
+    @Inject
+    EtatPaiementFacade etatPaiementFacade;
+    @Inject
+    ModePaiementFacade modePaiementFacade;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) {
@@ -197,6 +194,49 @@ public class CommandeREST {
                     .build();
         }
         
+    }
+
+   /* @POST
+    @Path("updateAprèsPaiement/{token}")
+    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
+    public String postForPaydunya(@PathParam("token") String token){
+        return "error to bad request";
+    }*/
+    @POST
+    @Path("updateAprèsPaiement")
+    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
+    public String postForPaydunya(MultivaluedMap<String, String> payDunyaInput){
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentDate = calendar.getTime();
+        java.sql.Timestamp dateAjout = new java.sql.Timestamp(currentDate.getTime());
+        Commande myCommande = commandeFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+        myCommande.getLigneCommandeSet().forEach(ligneC ->{
+         ligneC.setIdEtatLigneCommande(etatLigneCommandeFacade.findByCode("PAYEETNONLIVREE"));
+        });
+        myCommande.setEtat("PAYMENT");
+        myCommande.setIdEtatCommande(etatCommandeFacade.findByCode("PAYMENT"));
+        Paiement myPaiement = paiementFacade.find(myCommande.getId());
+        if(myPaiement == null){
+            myPaiement = new Paiement();
+            myPaiement.setId(myCommande.getId());
+            myPaiement.setCommande(myCommande);
+            myPaiement.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
+        }
+        myPaiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
+        myPaiement.setDatePaiement(dateAjout);
+        Set<LignePaiement> lignePaiementSet = new HashSet();
+        Paiement finalMyPaiement = myPaiement;
+        LignePaiement lp;
+        myCommande.getLigneCommandeSet().forEach(ligneC ->{
+            lp = new LignePaiement();
+            lp.setIdPaiement(finalMyPaiement);
+            lp.setDatePaiement(dateAjout);
+            lp.setMontant(BigDecimal.valueOf(ligneC.getPrix().intValue()*ligneC.getQuantite()));
+            lp.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
+            lignePaiementSet.add(lp);
+        });
+        myPaiement.setLignePaiementSet(lignePaiementSet);
+        return "error to bad request";
     }
     
     @PUT

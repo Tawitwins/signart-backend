@@ -61,6 +61,16 @@ public class CommandeFacade extends AbstractFacade<Commande> {
         return null;
     }
 
+    public Commande findByToken(String tokenPaiement) {
+        final TypedQuery<Commande> query = getEntityManager().createNamedQuery("Commande.findByToken", Commande.class);
+        query.setParameter("tokenPaiement", tokenPaiement);
+        List<Commande> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;

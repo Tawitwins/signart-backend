@@ -32,7 +32,6 @@
     <class>sn.modelsis.signart.Pays</class>
     <class>sn.modelsis.signart.Profil</class>
     <class>sn.modelsis.signart.Promotion</class>
-    <class>sn.modelsis.signart.SousTechnique</class>
     <class>sn.modelsis.signart.Technique</class>
     <class>sn.modelsis.signart.Theme</class>
     <class>sn.modelsis.signart.TypeCommande</class>
@@ -66,6 +65,7 @@
     <class>sn.modelsis.signart.EtatLicence</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
+      <property name="hibernate.jta.allowTransactionAccess" value="true"/>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect"/>
       <!--property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost;databaseName=signart"/>

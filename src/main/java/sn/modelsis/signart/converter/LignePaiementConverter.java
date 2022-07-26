@@ -44,10 +44,11 @@ public class LignePaiementConverter {
     public LignePaiement dtoToEntity(LignePaiementDto dto) {
         LignePaiement entity = new LignePaiement();
         entity.setId(dto.getId());
-        entity.setIdModePaiement(modePaiementFacade.find(dto.getCodeModePaiement()));
+        entity.setIdModePaiement(modePaiementFacade.findByCode(dto.getCodeModePaiement()));
         entity.setDatePaiement(dto.getDatePaiement());
         entity.setMontant(dto.getMontant());
-        entity.setIdPaiement(paiementFacade.find(dto.getIdPaiement()));
+        if(dto.getIdPaiement()!= null)
+            entity.setIdPaiement(paiementFacade.find(dto.getIdPaiement()));
         return entity;
     }
 }

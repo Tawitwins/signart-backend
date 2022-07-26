@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.LigneCommande;
 import sn.modelsis.signart.dto.LigneCommandeDto;
+import sn.modelsis.signart.facade.EtatLigneCommandeFacade;
 import sn.modelsis.signart.facade.OeuvreFacade;
 import sn.modelsis.signart.facade.CommandeFacade;
 
@@ -22,6 +23,8 @@ public class LigneCommandeConverter {
     OeuvreFacade oeuvreFacade;
     @Inject
     OeuvreConverter oeuvreConverter;
+    @Inject
+    EtatLigneCommandeFacade etatLigneCommandeFacade;
 
     /**
      * Converts an ligneCommande entity to DTO
@@ -46,7 +49,11 @@ public class LigneCommandeConverter {
     public LigneCommande dtoToEntity(LigneCommandeDto dto) {
         LigneCommande entity = new LigneCommande();
         entity.setIdOeuvre(oeuvreFacade.find(dto.getOeuvre().getId()));
-        entity.setIdCommande((Commande) commandeFacade.findByIdClient(dto.getIdClient()));
+        entity.setIdCommande(commandeFacade.find(dto.getIdCommande()));
+        if(dto.getEtatLigneCommande()!= null)
+            entity.setIdEtatLigneCommande(etatLigneCommandeFacade.findByCode(dto.getEtatLigneCommande()));
+        else
+            entity.setIdEtatLigneCommande(etatLigneCommandeFacade.find(dto.getIdEtatLigneCommande()));
         entity.setPrix(dto.getPrix());
         entity.setQuantite(dto.getQuantite());
         return entity;

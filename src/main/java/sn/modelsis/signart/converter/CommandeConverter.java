@@ -9,9 +9,7 @@ import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.LigneCommande;
 import sn.modelsis.signart.dto.CommandeDto;
 import sn.modelsis.signart.dto.LigneCommandeDto;
-import sn.modelsis.signart.facade.OeuvreFacade;
-import sn.modelsis.signart.facade.CommandeFacade;
-import sn.modelsis.signart.facade.DeviseFacade;
+import sn.modelsis.signart.facade.*;
 
 /**
  *
@@ -22,6 +20,10 @@ public class CommandeConverter {
 
     @Inject
     CommandeFacade commandeFacade;
+    @Inject
+    EtatCommandeFacade etatcommandeFacade;
+    @Inject
+    ClientFacade clientFacade;
     @Inject
     OeuvreFacade oeuvreFacade;
     @Inject
@@ -63,7 +65,7 @@ public class CommandeConverter {
             }
             dto.setLignesCommande(ligneCommandeDtoSet);
         }
-
+        dto.setToken(entity.getTokenPaiement());
         dto.setNbTotal(nb);
         dto.setNumero(entity.getNumero());
         //dto.setPaymentAdress(paymentAdress);
@@ -85,9 +87,29 @@ public class CommandeConverter {
      */
     public Commande dtoToEntity(CommandeDto dto) {
         Commande entity = new Commande();
+        entity.setId(dto.getId());
+        entity.setDateCommande(dto.getDateCreation());
+        entity.setDelaiLivraison(10);
         //entity.setIdOeuvre(oeuvreFacade.find(dto.getOeuvre().getId()));
         //entity.setIdCommande(commandeFacade.findByIdClient(dto.getIdClient()));
         entity.setMontant(dto.getTotal());
+        entity.setFraisLivraison(dto.getTotalLivraison());
+        entity.setTokenPaiement(dto.getToken());
+        //entity.setCommentaire(dto.getCommentaire);
+
+        if(dto.getIdClient() != null){
+            entity.setIdClient(clientFacade.find(dto.getIdClient()));
+        }
+        if(dto.getIdEtatCommande() != null) {
+            entity.setEtat(etatcommandeFacade.find(dto.getIdEtatCommande()).getLibelle());
+        }
+        if(dto.getIdDevise() != null) {
+            entity.setIdDevise(deviseFacade.find(dto.getIdDevise()));
+        }
+        entity.setNumero(dto.getNumero());
+        if(dto.getIdEtatCommande() != null) {
+            entity.setIdEtatCommande(etatcommandeFacade.find(dto.getIdEtatCommande()));
+        }
         //entity.setQuantite(dto.getQuantite());
         return entity;
     }

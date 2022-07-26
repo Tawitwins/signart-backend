@@ -39,9 +39,9 @@ public class ModePaiement implements Serializable {
     private String code;
     @Column(name = "libelle", length = 50)
     private String libelle;
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idModePaiement")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "idModePaiement")
     private Set<Paiement> paiementSet;
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idModePaiement")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "idModePaiement")
     private Set<LignePaiement> lignePaiementSet;
 
     public ModePaiement() {
