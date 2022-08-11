@@ -79,6 +79,15 @@ public class Commande implements Serializable {
     @JoinColumn(name = "idEtatCommande", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EtatCommande idEtatCommande;
+    @JoinColumn(name = "idMagasin", referencedColumnName = "id")
+    @ManyToOne
+    private Magasin idMagasin;
+    @JoinColumn(name = "idServiceLivraison", referencedColumnName = "id")
+    @ManyToOne
+    private ServiceLivraison idServiceLivraison;
+    @JoinColumn(name = "idTarification", referencedColumnName = "id")
+    @ManyToOne
+    private Tarification idTarification;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCommande")
     private Set<LigneCommande> ligneCommandeSet;
 
@@ -205,6 +214,29 @@ public class Commande implements Serializable {
 
     public void setIdClient(Client idClient) {
         this.idClient = idClient;
+    }
+    public Magasin getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Magasin idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
+    public ServiceLivraison getIdServiceLivraison() {
+        return idServiceLivraison;
+    }
+
+    public void setIdServiceLivraison(ServiceLivraison idServiceLivraison) {
+        this.idServiceLivraison = idServiceLivraison;
+    }
+
+    public Tarification getIdTarification() {
+        return idTarification;
+    }
+
+    public void setIdTarification(Tarification idTarification) {
+        this.idTarification = idTarification;
     }
 
     @XmlTransient

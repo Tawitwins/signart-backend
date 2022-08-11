@@ -51,15 +51,15 @@ public class OeuvreFacadeREST {
     }
     
     @POST
-    @Path("oeuvresous")
+    @Path("oeuvresous/{idMagasin}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response valider(OeuvreSouscriptionDto dto) throws SignArtException {
+    public Response valider(OeuvreSouscriptionDto dto,@PathParam("idMagasin") Integer idMagasin) throws SignArtException {
         OeuvreSouscription enti = oeuvreSouscriptionFacade.findById(dto.getId());
         
         Oeuvre entity = new Oeuvre();
         
         
-        entity = oeuvreConverter.convertOueuvreSouscription(enti);
+        entity = oeuvreConverter.convertOueuvreSouscription(enti,idMagasin);
         oeuvreFacade.create(entity);
        // OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
         return Response.status(Response.Status.CREATED).entity(dto).build();

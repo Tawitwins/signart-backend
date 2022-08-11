@@ -52,6 +52,9 @@ public class CommandeDto {
     private Date dateModification;
     private Date dateFin;
     private Integer idClient;
+    private Integer idMagasin;
+    private Integer idServiceLivraison;
+    private Integer idTarification;
     private boolean risque;
     private String token;
     private Set<AdresseDto> billAdress;
@@ -257,6 +260,30 @@ public class CommandeDto {
 
     public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
+    public Integer getIdServiceLivraison() {
+        return idServiceLivraison;
+    }
+
+    public void setIdServiceLivraison(Integer idServiceLivraison) {
+        this.idServiceLivraison = idServiceLivraison;
+    }
+
+    public Integer getIdTarification() {
+        return idTarification;
+    }
+
+    public void setIdTarification(Integer idTarification) {
+        this.idTarification = idTarification;
     }
     
 }

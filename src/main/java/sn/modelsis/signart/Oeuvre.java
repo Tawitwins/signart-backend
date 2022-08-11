@@ -1,28 +1,12 @@
 package sn.modelsis.signart;
 
+import sn.modelsis.signart.facade.MagasinFacade;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -124,7 +108,7 @@ public class Oeuvre implements Serializable {
     
     @ManyToMany(fetch = FetchType.EAGER,mappedBy = "oeuvreSet")
     private Set<Domaine> domaineSet;
-    
+    @Transient
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
     private Set<Image> imageSet;
     
@@ -136,7 +120,11 @@ public class Oeuvre implements Serializable {
     @JoinColumn(name = "idStatut", referencedColumnName = "id", nullable = true)
     @ManyToOne(optional = false)
     private StatutOeuvre idStatut;
-    
+
+    @JoinColumn(name = "idMagasin", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = false)
+    private Magasin idMagasin;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOeuvre")
     private Set<PromotionOeuvre> promotionOeuvreSet;
     
@@ -249,6 +237,12 @@ public class Oeuvre implements Serializable {
         this.miniature = miniature;
     }
 
+    public Magasin getIdMagasin() {
+        return idMagasin;
+    }
+    public void setIdMagasin(Magasin idMagasin) {
+        this.idMagasin = idMagasin;
+    }
     @XmlTransient
     public Set<MotCle> getMotCleSet() {
         return motCleSet;

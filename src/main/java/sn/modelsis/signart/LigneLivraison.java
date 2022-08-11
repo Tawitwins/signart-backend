@@ -1,5 +1,8 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -28,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "LigneLivraison.findAll", query = "SELECT l FROM LigneLivraison l")
     , @NamedQuery(name = "LigneLivraison.findById", query = "SELECT l FROM LigneLivraison l WHERE l.id = :id")
+    , @NamedQuery(name = "LigneLivraison.findByLigneCommande", query = "SELECT l FROM LigneLivraison l WHERE l.idLigneCommande = :idLC")
     , @NamedQuery(name = "LigneLivraison.findByDateLivraison", query = "SELECT l FROM LigneLivraison l WHERE l.dateLivraison = :dateLivraison")})
 public class LigneLivraison implements Serializable {
 
@@ -45,7 +49,8 @@ public class LigneLivraison implements Serializable {
     @ManyToOne(optional = false)
     private EtatLivraison idEtatLivraison;
     @JoinColumn(name = "idLigneCommande", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,targetEntity = LigneCommande.class)
+    //@NotFound(action = NotFoundAction.IGNORE)
     private LigneCommande idLigneCommande;
     @JoinColumn(name = "idLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -53,6 +58,9 @@ public class LigneLivraison implements Serializable {
     @JoinColumn(name = "idModeLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private ModeLivraison idModeLivraison;
+    @JoinColumn(name = "idAgent", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Agent idAgent;
 
     public LigneLivraison() {
     }
@@ -112,6 +120,12 @@ public class LigneLivraison implements Serializable {
 
     public void setIdModeLivraison(ModeLivraison idModeLivraison) {
         this.idModeLivraison = idModeLivraison;
+    }
+    public Agent getIdAgent() {
+        return idAgent;
+    }
+    public void setIdAgent(Agent idAgent) {
+        this.idAgent = idAgent;
     }
 
     @Override

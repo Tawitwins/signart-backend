@@ -34,6 +34,8 @@ public class LigneCommandeConverter {
     public LigneCommandeDto entityToDto(LigneCommande entity) {
         LigneCommandeDto dto = new LigneCommandeDto();
         dto.setId(entity.getId());
+        dto.setIdCommande(entity.getIdCommande().getId());
+        dto.setNumeroCommande(entity.getIdCommande().getNumero());
         dto.setOeuvre(oeuvreConverter.entityToDto(oeuvreFacade.find(entity.getIdOeuvre().getId())));
         dto.setPrix(entity.getPrix());
         dto.setQuantite(entity.getQuantite());

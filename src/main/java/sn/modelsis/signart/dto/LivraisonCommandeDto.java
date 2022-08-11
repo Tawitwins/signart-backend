@@ -10,6 +10,8 @@ public class LivraisonCommandeDto {
     private Integer idAdresseLivraison;
     private Integer idModeLivraison;
     private String codeEtatLivraison;
+    private Integer idAgent;
+
     private Set<LigneCommandeDto> lignesCommande;
 
     public Integer getId() {
@@ -66,5 +68,13 @@ public class LivraisonCommandeDto {
 
     public void setDateLivraisonPrevue(Date dateLivraisonPrevue) {
         this.dateLivraisonPrevue = dateLivraisonPrevue;
+    }
+
+    public Integer getIdAgent() {
+        return idAgent;
+    }
+
+    public void setIdAgent(Integer idAgent) {
+        this.idAgent = idAgent;
     }
 }

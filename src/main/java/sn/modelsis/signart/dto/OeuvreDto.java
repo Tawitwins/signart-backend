@@ -32,6 +32,7 @@ public class OeuvreDto implements Serializable {
     private Date dateAjout;   
     private  byte[] miniature;
     private Integer idStatus;
+    private Integer idMagasin;
     private Integer stock;
     
     
@@ -189,6 +190,14 @@ public class OeuvreDto implements Serializable {
     
     public void setArtiste(String artiste) {
         this.artiste = artiste;
+    }
+
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
     }
     
 

@@ -63,11 +63,19 @@
     <class>sn.modelsis.signart.ArchiveSignart</class>
     <class>sn.modelsis.signart.CodeSignart</class>
     <class>sn.modelsis.signart.EtatLicence</class>
+    <class>sn.modelsis.signart.Agent</class>
+    <class>sn.modelsis.signart.Magasin</class>
+    <class>sn.modelsis.signart.ServiceLivraison</class>
+    <class>sn.modelsis.signart.Tarification</class>
+    <class>sn.modelsis.signart.LigneCommande</class>
+    <class>sn.modelsis.signart.LigneLivraison</class>
+    <class>sn.modelsis.signart.LignePaiement</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.jta.allowTransactionAccess" value="true"/>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect"/>
+      <property name="hibernate.show_sql" value="true"/>
       <!--property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost;databaseName=signart"/>
       <property name="javax.persistence.jdbc.user" value="signart"/>
       <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>

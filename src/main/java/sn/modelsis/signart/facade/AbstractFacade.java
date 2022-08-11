@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -64,7 +65,12 @@ public abstract class AbstractFacade<T> {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
-
+       /* cq.select(cq.from(entityClass));
+        List<T> h;
+        TypedQuery tmp = getEntityManager().createQuery(cq);
+        Object s = tmp.getSingleResult();
+        h=tmp.getResultList();
+        return getEntityManager().createQuery(cq).getResultList();*/
     }
 
     public List<T> findRange(int[] range) {

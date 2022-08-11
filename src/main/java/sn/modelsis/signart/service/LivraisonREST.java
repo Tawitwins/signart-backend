@@ -24,6 +24,7 @@ import sn.modelsis.signart.Livraison;
 import sn.modelsis.signart.converter.LivraisonConverter;
 import sn.modelsis.signart.dto.LivraisonCommandeDto;
 import sn.modelsis.signart.dto.LivraisonDto;
+import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.LigneLivraisonFacade;
 import sn.modelsis.signart.facade.LivraisonFacade;
 
@@ -44,7 +45,7 @@ public class LivraisonREST {
 
     @POST
     @Consumes({ MediaType.APPLICATION_JSON })
-    public void create(LivraisonDto dto) {
+    public void create(LivraisonDto dto) throws SignArtException {
         livraisonFacade.create(livraisonConverter.dtoToEntity(dto));
     }
 
@@ -72,7 +73,7 @@ public class LivraisonREST {
     @PUT
     @Path("{id}")
     @Consumes({ MediaType.APPLICATION_JSON })
-    public void edit(@PathParam("id") Integer id, LivraisonDto dto) {
+    public void edit(@PathParam("id") Integer id, LivraisonDto dto) throws SignArtException {
         livraisonFacade.edit(livraisonConverter.dtoToEntity(dto));
     }
 
@@ -85,7 +86,7 @@ public class LivraisonREST {
     @GET
     @Path("{id}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public LivraisonDto find(@PathParam("id") Integer id) {
+    public LivraisonDto find(@PathParam("id") Integer id) throws SignArtException {
         return livraisonConverter.entityToDto(livraisonFacade.find(id));
     }
 
@@ -95,8 +96,8 @@ public class LivraisonREST {
         List<LivraisonDto> listDto = new ArrayList<>();
         List<Livraison> listEnt = livraisonFacade.findAll();
         if (listEnt != null) {
-            listEnt.stream().map(entity -> livraisonConverter.entityToDto(entity))
-                    .forEachOrdered(dto -> listDto.add(dto));
+            listEnt.stream().map(entity -> livraisonConverter.entityToDto(entity)
+                    ).forEachOrdered(dto -> listDto.add(dto));
         }
         return listDto;
     }

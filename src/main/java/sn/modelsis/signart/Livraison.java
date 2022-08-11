@@ -61,6 +61,7 @@ public class Livraison implements Serializable {
     @JoinColumn(name = "idModeLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private ModeLivraison idModeLivraison;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLivraison")
     private Set<LigneLivraison> ligneLivraisonSet;
 

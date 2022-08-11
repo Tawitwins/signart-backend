@@ -23,6 +23,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.AbonnementREST.class);
         resources.add(sn.modelsis.signart.service.AccountREST.class);
         resources.add(sn.modelsis.signart.service.AdresseREST.class);
+        resources.add(sn.modelsis.signart.service.AgentREST.class);
         resources.add(sn.modelsis.signart.service.AnnonceREST.class);
         resources.add(sn.modelsis.signart.service.ArtisteREST.class);
         resources.add(sn.modelsis.signart.service.BiographieREST.class);
@@ -56,10 +57,12 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.LicenceREST.class);
         resources.add(sn.modelsis.signart.service.LigneCommandeREST.class);
         resources.add(sn.modelsis.signart.service.LignePanierREST.class);
+        resources.add(sn.modelsis.signart.service.LigneLivraisonREST.class);
         resources.add(sn.modelsis.signart.service.ListeSelectionREST.class);
         resources.add(sn.modelsis.signart.service.ListeSelection_OeuvresREST.class);
         resources.add(sn.modelsis.signart.service.LivraisonREST.class);
         resources.add(sn.modelsis.signart.service.LoginREST.class);
+        resources.add(sn.modelsis.signart.service.MagasinREST.class);
         resources.add(sn.modelsis.signart.service.MarquageArtisteFacadeREST.class);
         resources.add(sn.modelsis.signart.service.MarquageOeuvreFacadeREST.class);
         resources.add(sn.modelsis.signart.service.MenuFacadeREST.class);
@@ -76,7 +79,9 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.PresentationREST.class);
         resources.add(sn.modelsis.signart.service.ProfilFacadeREST.class);
         resources.add(sn.modelsis.signart.service.PromotionREST.class);
+        resources.add(sn.modelsis.signart.service.ServiceLivraisonREST.class);
         resources.add(sn.modelsis.signart.service.SouscriptionREST.class);
+        resources.add(sn.modelsis.signart.service.TarificationREST.class);
         resources.add(sn.modelsis.signart.service.TchatWSFacadeREST.class);
         resources.add(sn.modelsis.signart.service.TechniqueFacadeREST.class);
         resources.add(sn.modelsis.signart.service.TerminalREST.class);

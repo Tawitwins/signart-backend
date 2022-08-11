@@ -15,6 +15,16 @@ public class LigneCommandeDto {
     private BigDecimal total;
     private Integer idClient;
 
+    public String getNumeroCommande() {
+        return numeroCommande;
+    }
+
+    public void setNumeroCommande(String numeroCommande) {
+        this.numeroCommande = numeroCommande;
+    }
+
+    private String numeroCommande;
+
     private Integer idEtatLigneCommande;
 
     private String etatLigneCommande;

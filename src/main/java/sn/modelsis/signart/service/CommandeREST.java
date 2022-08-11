@@ -18,16 +18,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import sn.modelsis.signart.*;
+import sn.modelsis.signart.converter.*;
+import sn.modelsis.signart.dto.*;
 import sn.modelsis.signart.facade.*;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import sn.modelsis.signart.converter.CommandeConverter;
-import sn.modelsis.signart.converter.LignePanierConverter;
-import sn.modelsis.signart.dto.CommandeDto;
-import sn.modelsis.signart.dto.LignePanierDto;
-import sn.modelsis.signart.dto.PanierDto;
 import sn.modelsis.signart.exception.SignArtException;
 
 /**
@@ -59,12 +56,16 @@ public class CommandeREST {
     @Inject
     PaiementFacade paiementFacade;
     @Inject
-    EtatPaiementFacade etatPaiementFacade;
+    PaiementConverter paiementConverter;
+    @Inject
+    LignePaiementConverter lignePaiementConverter;
+    @Inject
+    LigneCommandeConverter ligneCommandeConverter;
     @Inject
     ModePaiementFacade modePaiementFacade;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(CommandeDto dto) {
+    public Response create(CommandeDto dto) throws SignArtException {
         commandeFacade.create(commandeConverter.dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
@@ -72,7 +73,7 @@ public class CommandeREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, CommandeDto dto) {
+    public Response edit(@PathParam("id") Integer id, CommandeDto dto) throws SignArtException {
         commandeFacade.edit(commandeConverter.dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -87,7 +88,8 @@ public class CommandeREST {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public CommandeDto find(@PathParam("id") Integer id) {
-        return commandeConverter.entityToDto(commandeFacade.find(id));
+        Commande commande = commandeFacade.findById(id);
+        return commandeConverter.entityToDto(commande);
     }
     
     @GET
@@ -106,6 +108,32 @@ public class CommandeREST {
         }
         return listDto;
     }
+
+   /* @GET
+    @Path("magasin/{idMagasin}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List <LigneCommandeDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin) {
+        // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
+        List<LigneCommandeDto> listDto = new ArrayList<>();
+        List<Commande> listEntTmp = commandeFacade.findAll();
+        List<LigneCommande> listEnt = null;
+        for (Commande commande : listEntTmp) {
+            for (LigneCommande ligneCommande : commande.getLigneCommandeSet()) {
+                if(ligneCommande.getIdOeuvre().getIdMagasin().getId() == idMagasin){
+                    listEnt.add(ligneCommande);
+                }
+            }
+
+        }
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> ligneCommandeConverter.entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
+    }*/
     
     @GET
     @Path("numero/{numero}")
@@ -162,7 +190,7 @@ public class CommandeREST {
             // commande.setIdDevise(listLignePanier.get(0).getIdPanier().getIdDevise());
             commande.setIdDevise(deviseFacade.findByCode("XOF"));
             commande.setDelaiLivraison(1);
-            commande.setIdEtatCommande(etatCommandeFacade.findByCode("INITIE"));
+            commande.setIdEtatCommande(etatCommandeFacade.findByCode("NOUVEAU"));
             LigneCommande ligneCommande;
             BigDecimal montant = BigDecimal.ZERO, fraisLivraison = BigDecimal.ZERO;
             for (LignePanier lignePanier : listLignePanier) {
@@ -213,10 +241,34 @@ public class CommandeREST {
         myCommande.getLigneCommandeSet().forEach(ligneC ->{
          ligneC.setIdEtatLigneCommande(etatLigneCommandeFacade.findByCode("PAYEETNONLIVREE"));
         });
-        myCommande.setEtat("PAYMENT");
-        myCommande.setIdEtatCommande(etatCommandeFacade.findByCode("PAYMENT"));
         Paiement myPaiement = paiementFacade.find(myCommande.getId());
-        if(myPaiement == null){
+        PaiementDto myPaiementDto;
+        if(myPaiement ==null)
+        {
+            myPaiementDto = new PaiementDto();
+            myPaiementDto.setId(myCommande.getId());
+            myPaiementDto.setIdCommande(myCommande.getId());
+            myPaiementDto.setCodeModePaiement("PAYDUNYA");
+        }
+        else{
+            myPaiementDto = paiementConverter.entityToDto(myPaiement);
+        }
+        myPaiementDto.setCodeEtatPaiement("PAYE");
+        myPaiementDto.setDatePaiement(dateAjout);
+        Set<LignePaiementDto> lignePaiementDtoSet = new HashSet<>();
+        LignePaiementDto lp = new LignePaiementDto();
+        if(myPaiement != null)
+            lp.setIdPaiement(myPaiement.getId());
+        lp.setDatePaiement(dateAjout);
+        lp.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA").getId());
+        lp.setCodeModePaiement("PAYDUNYA");
+        lp.setMontant(BigDecimal.valueOf(0));
+        for (LigneCommande ligneC :  myCommande.getLigneCommandeSet()) {
+            BigDecimal montant = lp.getMontant();
+            lp.setMontant(BigDecimal.valueOf((ligneC.getPrix().intValue()*ligneC.getQuantite())+montant.intValue()));
+        }
+        lignePaiementDtoSet.add(lp);
+      /*  if(myPaiement == null){
             myPaiement = new Paiement();
             myPaiement.setId(myCommande.getId());
             myPaiement.setCommande(myCommande);
@@ -224,18 +276,20 @@ public class CommandeREST {
         }
         myPaiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
         myPaiement.setDatePaiement(dateAjout);
-        Set<LignePaiement> lignePaiementSet = new HashSet();
-        Paiement finalMyPaiement = myPaiement;
-        LignePaiement lp;
-        myCommande.getLigneCommandeSet().forEach(ligneC ->{
-            lp = new LignePaiement();
-            lp.setIdPaiement(finalMyPaiement);
+        Set<LignePaiement> lignePaiementSeet = new HashSet<>();
+        Set<LignePaiementDto> lpd = (Set<LignePaiementDto>) new ArrayList<LignePaiementDto>();
+        for (LigneCommande ligneC :  myCommande.getLigneCommandeSet()) {
+            LignePaiement lp = new LignePaiement();
+            lp.setIdPaiement(myPaiement);
             lp.setDatePaiement(dateAjout);
             lp.setMontant(BigDecimal.valueOf(ligneC.getPrix().intValue()*ligneC.getQuantite()));
             lp.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
-            lignePaiementSet.add(lp);
-        });
-        myPaiement.setLignePaiementSet(lignePaiementSet);
+            lignePaiementSeet.add(lp);
+            lpd.add(lignePaiementConverter.entityToDto(lp));
+        }*/
+        myPaiementDto.setLignePaiements(lignePaiementDtoSet);
+        myPaiement = paiementConverter.dtoToEntity(myPaiementDto);
+        //paiementFacade.save(myPaiement);
         return "error to bad request";
     }
     

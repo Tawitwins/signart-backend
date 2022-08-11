@@ -5,10 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import sn.modelsis.signart.Commande;
-import sn.modelsis.signart.LigneCommande;
+
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.dto.CommandeDto;
 import sn.modelsis.signart.dto.LigneCommandeDto;
+import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 
 /**
@@ -19,7 +20,11 @@ import sn.modelsis.signart.facade.*;
 public class CommandeConverter {
 
     @Inject
-    CommandeFacade commandeFacade;
+    TarificationFacade tarificationFacade;
+    @Inject
+    MagasinFacade magasinFacade;
+    @Inject
+    ServiceLivraisonFacade serviceLivraisonFacade;
     @Inject
     EtatCommandeFacade etatcommandeFacade;
     @Inject
@@ -46,6 +51,12 @@ public class CommandeConverter {
         dto.setTotal(entity.getMontant());
         dto.setCodeDevise(entity.getIdDevise().getCode());
         dto.setIdClient(entity.getIdClient().getId());
+        if(entity.getIdMagasin() != null)
+            dto.setIdMagasin(entity.getIdMagasin().getId());
+        if(entity.getIdTarification() != null)
+            dto.setIdTarification(entity.getIdTarification().getId());
+        if(entity.getIdServiceLivraison() != null)
+            dto.setIdServiceLivraison(entity.getIdServiceLivraison().getId());
         dto.setIdDevise(entity.getIdDevise().getId());
         dto.setIdEtatCommande(entity.getIdEtatCommande().getId());
         dto.setLibelleEtatCommande(entity.getIdEtatCommande().getLibelle());
@@ -85,7 +96,7 @@ public class CommandeConverter {
      * @param dto
      * @return
      */
-    public Commande dtoToEntity(CommandeDto dto) {
+    public Commande dtoToEntity(CommandeDto dto) throws SignArtException {
         Commande entity = new Commande();
         entity.setId(dto.getId());
         entity.setDateCommande(dto.getDateCreation());
@@ -97,6 +108,15 @@ public class CommandeConverter {
         entity.setTokenPaiement(dto.getToken());
         //entity.setCommentaire(dto.getCommentaire);
 
+        if(dto.getIdServiceLivraison() != null){
+            entity.setIdServiceLivraison(serviceLivraisonFacade.findById(dto.getIdServiceLivraison()));
+        }
+        if(dto.getIdMagasin() != null){
+            entity.setIdMagasin(magasinFacade.findById(dto.getIdMagasin()));
+        }
+        if(dto.getIdTarification() != null){
+            entity.setIdTarification(tarificationFacade.findById(dto.getIdTarification()));
+        }
         if(dto.getIdClient() != null){
             entity.setIdClient(clientFacade.find(dto.getIdClient()));
         }

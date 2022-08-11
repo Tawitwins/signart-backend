@@ -8,10 +8,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import sn.modelsis.signart.Client;
-import sn.modelsis.signart.Client_;
-import sn.modelsis.signart.Commande;
-import sn.modelsis.signart.Commande_;
+
+import sn.modelsis.signart.*;
 
 /**
  *
@@ -44,6 +42,17 @@ public class CommandeFacade extends AbstractFacade<Commande> {
 
         return null;
 
+    }
+    public Commande findById(Integer id) {
+
+        final TypedQuery<Commande> query = getEntityManager().createNamedQuery("Commande.findById",
+                Commande.class);
+        query.setParameter("id", id);
+        List<Commande> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
     }
 
     /**

@@ -16,12 +16,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.LigneCommande;
+import sn.modelsis.signart.LigneLivraison;
+import sn.modelsis.signart.Livraison;
 import sn.modelsis.signart.converter.LigneCommandeConverter;
 import sn.modelsis.signart.dto.LigneCommandeDto;
-import sn.modelsis.signart.facade.EtatLigneCommandeFacade;
-import sn.modelsis.signart.facade.LigneCommandeFacade;
-import sn.modelsis.signart.facade.CommandeFacade;
+import sn.modelsis.signart.facade.*;
 
 /**
  *
@@ -35,6 +38,8 @@ public class LigneCommandeREST {
     LigneCommandeFacade ligneCommandeFacade;
     @Inject
     CommandeFacade commandeFacade;
+    @Inject
+    LigneLivraisonFacade ligneLivraisonFacade;
     @Inject
     LigneCommandeConverter ligneCommandeConverter;
     @Inject
@@ -76,7 +81,7 @@ public class LigneCommandeREST {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public LigneCommandeDto find(@PathParam("id") Integer id) {
-        LigneCommande ligneCommande = ligneCommandeFacade.find(id);
+        LigneCommande ligneCommande = ligneCommandeFacade.findById(id);
         return ligneCommandeConverter.entityToDto(ligneCommande);
     }
 
@@ -96,11 +101,31 @@ public class LigneCommandeREST {
     }
 
     @GET
-    @Path("client/{id}")
+    //@Path("magasin/{idMagasin}/{isLivreur}")
+    @Path("magasin/{idMagasin}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<LigneCommandeDto> findByClient(@PathParam("id") Integer idClient) {
+    public List <LigneCommandeDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin/*,@PathParam("isLivreur") Boolean isLivreur*/) {
+        // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
         List<LigneCommandeDto> listDto = new ArrayList<>();
-        List<LigneCommande> listEnt = ligneCommandeFacade.findByClient(idClient);
+        List<Commande> listEntTmp = commandeFacade.findAll();
+        List<LigneCommande> listEnt = new ArrayList<>();
+        for (Commande commande : listEntTmp) {
+            for (LigneCommande ligneC : commande.getLigneCommandeSet()) {
+                if(ligneC.getIdOeuvre().getIdMagasin().getId() == idMagasin){
+                    listEnt.add(ligneC);
+                   /* if(isLivreur == true){
+                        LigneLivraison ligneLivraison = ligneLivraisonFacade.findByLigneCommande(ligneC.getId());
+                        if(ligneLivraison.getIdAgent()!=null){
+                            listEnt.add(ligneC);
+                        }
+                    }
+                    else {
+                        listEnt.add(ligneC);
+                    }*/
+                }
+            }
+
+        }
         if (listEnt != null) {
             listEnt.stream().map(entity
                     -> ligneCommandeConverter.entityToDto(entity)
