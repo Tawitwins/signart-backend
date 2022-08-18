@@ -3,6 +3,7 @@ package sn.modelsis.signart;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,6 +54,14 @@ public class LignePaiement implements Serializable {
     @JoinColumn(name = "idPaiement", referencedColumnName = "id", nullable = false)
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     private Paiement idPaiement;
+
+    @JoinColumn(name = "idLigneCommande", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private LigneCommande idLigneCommande;
+
+    @JoinColumn(name = "idEtatPaiement", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private EtatPaiement idEtatPaiement;
 
     public LignePaiement() {
     }
@@ -106,11 +115,34 @@ public class LignePaiement implements Serializable {
     public void setIdPaiement(Paiement idPaiement) {
         this.idPaiement = idPaiement;
     }
+    public LigneCommande getIdLigneCommande() {
+        return idLigneCommande;
+    }
 
-    @Override
+    public void setIdLigneCommande(LigneCommande idLigneCommande) {
+        this.idLigneCommande = idLigneCommande;
+    }
+    public EtatPaiement getIdEtatPaiement() {
+        return idEtatPaiement;
+    }
+
+    public void setIdEtatPaiement(EtatPaiement idEtatPaiement) {
+        this.idEtatPaiement = idEtatPaiement;
+    }
+   /* @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }*/
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.datePaiement);
+        hash = 79 * hash + Objects.hashCode(this.idPaiement);
+        hash = 79 * hash + Objects.hashCode(this.montant);
+        hash = 79 * hash + Objects.hashCode(this.idLigneCommande);
         return hash;
     }
 

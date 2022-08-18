@@ -9,6 +9,7 @@ import sn.modelsis.signart.Paiement;
 import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.facade.EtatPaiementFacade;
+import sn.modelsis.signart.facade.LigneCommandeFacade;
 import sn.modelsis.signart.facade.ModePaiementFacade;
 
 /**
@@ -24,6 +25,7 @@ public class PaiementConverter {
     ModePaiementFacade modePaiementFacade;
     @Inject
     LignePaiementConverter lignePaiementConverter;
+
 
     /**
      * Converts entity to Dto

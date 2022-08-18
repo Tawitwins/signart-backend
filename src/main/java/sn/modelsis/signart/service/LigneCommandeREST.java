@@ -1,5 +1,6 @@
 package sn.modelsis.signart.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,6 +25,8 @@ import sn.modelsis.signart.LigneLivraison;
 import sn.modelsis.signart.Livraison;
 import sn.modelsis.signart.converter.LigneCommandeConverter;
 import sn.modelsis.signart.dto.LigneCommandeDto;
+import sn.modelsis.signart.dto.LigneLivraisonDto;
+import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 
 /**
@@ -44,6 +47,8 @@ public class LigneCommandeREST {
     LigneCommandeConverter ligneCommandeConverter;
     @Inject
     EtatLigneCommandeFacade etatLigneanierFacade;
+    @Inject
+    AgentFacade agentFacade;
 
     public LigneCommandeREST() {
     }
@@ -107,24 +112,21 @@ public class LigneCommandeREST {
     public List <LigneCommandeDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin/*,@PathParam("isLivreur") Boolean isLivreur*/) {
         // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
         List<LigneCommandeDto> listDto = new ArrayList<>();
-        List<Commande> listEntTmp = commandeFacade.findAll();
+        List<LigneCommande> listEntTmp = ligneCommandeFacade.findAll();
         List<LigneCommande> listEnt = new ArrayList<>();
-        for (Commande commande : listEntTmp) {
-            for (LigneCommande ligneC : commande.getLigneCommandeSet()) {
-                if(ligneC.getIdOeuvre().getIdMagasin().getId() == idMagasin){
-                    listEnt.add(ligneC);
-                   /* if(isLivreur == true){
-                        LigneLivraison ligneLivraison = ligneLivraisonFacade.findByLigneCommande(ligneC.getId());
-                        if(ligneLivraison.getIdAgent()!=null){
-                            listEnt.add(ligneC);
-                        }
-                    }
-                    else {
+        for (LigneCommande ligneC : listEntTmp) {
+            if(ligneC.getIdOeuvre().getIdMagasin().getId() == idMagasin){
+                listEnt.add(ligneC);
+                /* if(isLivreur == true){
+                LigneLivraison ligneLivraison = ligneLivraisonFacade.findByLigneCommande(ligneC.getId());
+                    if(ligneLivraison.getIdAgent()!=null){
                         listEnt.add(ligneC);
-                    }*/
+                    }
                 }
+                else {
+                    listEnt.add(ligneC);
+                }*/
             }
-
         }
         if (listEnt != null) {
             listEnt.stream().map(entity
@@ -134,6 +136,19 @@ public class LigneCommandeREST {
             );
         }
         return listDto;
+    }
+
+    @PUT
+    @Path("affecterLivreur/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response validerLigneLivraison(@PathParam("id") Integer id, LigneCommandeDto dto) throws SignArtException {
+        //LignePaiement entity = lignePaiementConverter.dtoToEntity(dto);
+        LigneLivraison liv = ligneLivraisonFacade.find(dto.getLigneLivraison().getId());
+        int idAgent = dto.getLigneLivraison().getAgent().getId();
+        liv.setIdAgent(agentFacade.findById(idAgent));
+        ligneLivraisonFacade.save(liv);
+
+        return Response.status(Response.Status.OK).entity(dto).build();
     }
 
     @GET

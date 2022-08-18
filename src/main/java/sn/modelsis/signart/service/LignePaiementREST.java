@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  * @author SNLOM
  */
 @Stateless
-@Path("lignepanier")
+@Path("lignepaiement")
 public class LignePaiementREST {
 
     @Inject
@@ -34,6 +35,10 @@ public class LignePaiementREST {
     LignePaiementConverter lignePaiementConverter;
     @Inject
     PaiementConverter paiementConverter;
+    @Inject
+    EtatPaiementFacade etatPaiementFacade;
+    @Inject
+    ModePaiementFacade modePaiementFacade;
 
 
     public LignePaiementREST() {
@@ -92,31 +97,62 @@ public class LignePaiementREST {
         }
         return listDto;
     }
-    /*@GET
+    @GET
     @Path("magasin/{idMagasin}")
     @Produces({MediaType.APPLICATION_JSON})
     public List <LignePaiementDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin) {
         // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
         List<LignePaiementDto> listDto = new ArrayList<>();
-        List<Paiement> listEntTmp = paiementFacade.findAll();
+        List<LignePaiement> listEntTmp = lignePaiementFacade.findAll();
         List<LignePaiement> listEnt = new ArrayList<>();
-        for (Paiement paiement : listEntTmp) {
-            for (LignePaiement lignePaiement : paiement.getLignePaiementSet()) {
-                if(lignePaiement.getIdOeuvre().getIdMagasin().getId() == idMagasin){
-                    listEnt.add(ligneCommande);
-                }
+        for (LignePaiement lignePaiement : listEntTmp) {
+            if(lignePaiement.getIdLigneCommande().getIdOeuvre().getIdMagasin().getId() == idMagasin){
+                listEnt.add(lignePaiement);
             }
 
         }
         if (listEnt != null) {
             listEnt.stream().map(entity
-                    -> ligneCommandeConverter.entityToDto(entity)
+                    -> lignePaiementConverter.entityToDto(entity)
             ).forEachOrdered(dto
                     -> listDto.add(dto)
             );
         }
         return listDto;
-    }*/
+    }
+
+    @PUT
+    @Path("valider/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response validerLignePaiement(@PathParam("id") Integer id, LignePaiementDto dto) {
+        //LignePaiement entity = lignePaiementConverter.dtoToEntity(dto);*
+        LignePaiement lp = lignePaiementFacade.find(dto.getId());
+        lp.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
+        lp.setIdModePaiement(modePaiementFacade.find(dto.getIdModePaiement()));
+        lignePaiementFacade.save(lp);
+        //Vérifier si toutes les lignes paiement sont valider pour pas et metter a jour le paiement global
+        Paiement paiement = paiementFacade.find((dto.getIdPaiement()));
+        BigDecimal total;
+        boolean allPaid = true;
+        int cpt = 0;
+        for (LignePaiement lignePaiement : paiement.getLignePaiementSet()) {
+            if(lignePaiement.getIdEtatPaiement().getCode().equals("NOPAYE") ||
+                    lignePaiement.getIdEtatPaiement().getCode().equals("PARTIEL")){
+                allPaid = false;
+            }
+            cpt++;
+        }
+        if(cpt>0 && allPaid){
+            paiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
+        }
+        else if (cpt>0 && !allPaid){
+            paiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PARTIEL"));
+        }
+        paiementFacade.save(paiement);
+        //lignePaiementFacade.edit(entity);
+        //lignePaiementFacade.remove(lignePaiementFacade.find(id));
+        return Response.status(Response.Status.OK).entity(dto).build();
+    }
 
 
     @GET

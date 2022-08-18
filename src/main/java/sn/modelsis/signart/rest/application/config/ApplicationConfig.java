@@ -57,6 +57,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.LicenceREST.class);
         resources.add(sn.modelsis.signart.service.LigneCommandeREST.class);
         resources.add(sn.modelsis.signart.service.LignePanierREST.class);
+        resources.add(sn.modelsis.signart.service.LignePaiementREST.class);
         resources.add(sn.modelsis.signart.service.LigneLivraisonREST.class);
         resources.add(sn.modelsis.signart.service.ListeSelectionREST.class);
         resources.add(sn.modelsis.signart.service.ListeSelection_OeuvresREST.class);

@@ -6,19 +6,8 @@ import org.hibernate.annotations.NotFoundAction;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.Objects;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -49,8 +38,7 @@ public class LigneLivraison implements Serializable {
     @ManyToOne(optional = false)
     private EtatLivraison idEtatLivraison;
     @JoinColumn(name = "idLigneCommande", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false,targetEntity = LigneCommande.class)
-    //@NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
     private LigneCommande idLigneCommande;
     @JoinColumn(name = "idLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -58,8 +46,8 @@ public class LigneLivraison implements Serializable {
     @JoinColumn(name = "idModeLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private ModeLivraison idModeLivraison;
-    @JoinColumn(name = "idAgent", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "idAgent", referencedColumnName = "id")
+    @ManyToOne
     private Agent idAgent;
 
     public LigneLivraison() {
@@ -128,10 +116,20 @@ public class LigneLivraison implements Serializable {
         this.idAgent = idAgent;
     }
 
-    @Override
+   /* @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }*/
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.idLivraison);
+        hash = 79 * hash + Objects.hashCode(this.idLigneCommande);
+        hash = 79 * hash + Objects.hashCode(this.idAgent);
+        hash = 79 * hash + Objects.hashCode(this.idModeLivraison);
         return hash;
     }
 

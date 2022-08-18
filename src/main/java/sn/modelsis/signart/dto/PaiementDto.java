@@ -1,5 +1,7 @@
 package sn.modelsis.signart.dto;
 
+import sn.modelsis.signart.LigneCommande;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
@@ -124,5 +126,5 @@ public class PaiementDto {
     public void setLignePaiements(Set<LignePaiementDto> lignePaiements) {
         this.lignePaiements = lignePaiements;
     }
-    
+
 }

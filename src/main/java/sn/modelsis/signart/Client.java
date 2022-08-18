@@ -3,23 +3,7 @@ package sn.modelsis.signart;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -69,7 +53,7 @@ public class Client implements Serializable {
         @JoinColumn(name = "idTypeNewsletter", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private Set<TypeNewsletter> typeNewsletterSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient",fetch = FetchType.LAZY)
     private Set<Adresse> adresseSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
     private Set<Commentaire> commentaireSet;

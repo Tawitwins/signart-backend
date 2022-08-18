@@ -5,8 +5,7 @@ import sn.modelsis.signart.Email;
 import sn.modelsis.signart.dto.AgentDto;
 import sn.modelsis.signart.dto.EmailDto;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.facade.EmailFacade;
-import sn.modelsis.signart.facade.UtilisateurFacade;
+import sn.modelsis.signart.facade.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -20,6 +19,12 @@ public class AgentConverter {
 
     @Inject
     UtilisateurFacade utilisateurFacade;
+    @Inject
+    ProfilFacade profilFacade;
+    @Inject
+    MagasinFacade magasinFacade;
+    @Inject
+    ServiceLivraisonFacade serviceLivraisonFacade;
     public AgentDto entityToDto(Agent entity){
         AgentDto dto = new AgentDto();
         dto.setId(entity.getId());
@@ -30,6 +35,12 @@ public class AgentConverter {
         dto.setTelephone(entity.getTelephone());
         dto.setSurnom(entity.getSurnom());
         dto.setVille(entity.getVille());
+        if(entity.getIdMagasin()!=null)
+            dto.setIdMagasin(entity.getIdMagasin().getId());
+        if(entity.getIdServiceLivraison()!=null)
+            dto.setIdServiceLivraison(entity.getIdServiceLivraison().getId());
+        if(entity.getIdProfil()!=null)
+            dto.setIdProfil(entity.getIdProfil().getId());
         if(entity.getIdUser() != null)
             dto.setIdUser(entity.getIdUser().getId());
         return dto;
@@ -46,6 +57,9 @@ public class AgentConverter {
         entity.setVille(dto.getVille());
         entity.setTelephone(dto.getTelephone());
         entity.setIdUser(utilisateurFacade.findById((dto.getIdUser())));
+        entity.setIdProfil(profilFacade.find(dto.getIdProfil()));
+        entity.setIdMagasin(magasinFacade.find(dto.getIdMagasin()));
+        entity.setIdServiceDeLivraison(serviceLivraisonFacade.find(dto.getIdServiceLivraison()));
         return entity;
     }
 }

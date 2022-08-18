@@ -57,7 +57,7 @@ public class LigneCommandeConverter {
         for (LigneLivraison ligneLivraison : entity.getLigneLivraisonSet()) {
             ligneLiv = ligneLivraison;
         }
-        dto.setLigneLivraison(ligneLivraisonConverter.entityToDto(ligneLiv));
+        dto.setLigneLivraison(ligneLivraisonConverter.entityToDto(ligneLiv,false));
         return dto;
     }
 

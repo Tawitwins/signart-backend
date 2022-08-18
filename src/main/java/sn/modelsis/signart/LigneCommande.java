@@ -40,6 +40,9 @@ public class LigneCommande implements Serializable {
     private int quantite;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLigneCommande")
     private Set<LigneLivraison> ligneLivraisonSet;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLigneCommande")
+    private Set<LignePaiement> lignePaiementSet;
     @JoinColumn(name = "idCommande", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     //@NotFound(action = NotFoundAction.IGNORE)
@@ -121,14 +124,21 @@ public class LigneCommande implements Serializable {
         this.idOeuvre = idOeuvre;
     }
 
+    public Set<LignePaiement> getLignePaiementSet() {
+        return lignePaiementSet;
+    }
 
-    @Override
+    public void setLignePaiementSet(Set<LignePaiement> lignePaiementSet) {
+        this.lignePaiementSet = lignePaiementSet;
+    }
+
+ /*   @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
-    }
-/*    @Override
+    }*/
+   @Override
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.id);
@@ -136,7 +146,7 @@ public class LigneCommande implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.idEtatLigneCommande);
         hash = 79 * hash + Objects.hashCode(this.idOeuvre);
         return hash;
-    }*/
+    }
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

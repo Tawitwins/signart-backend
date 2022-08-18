@@ -64,7 +64,7 @@ public class LivraisonConverter {
             Set<LigneLivraisonDto> ligneLivraisonDtoSet = new HashSet<>();
             LigneLivraisonDto ligneLivraisonDto;
             for (LigneLivraison ligneLivraison : ligneLivraisonSet) {
-                ligneLivraisonDto = ligneLivraisonConverter.entityToDto(ligneLivraison);
+                ligneLivraisonDto = ligneLivraisonConverter.entityToDto(ligneLivraison,false);
                 ligneLivraisonDtoSet.add(ligneLivraisonDto);
             }
             dto.setLigneLivraisons(ligneLivraisonDtoSet);

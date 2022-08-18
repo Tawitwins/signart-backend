@@ -19,6 +19,7 @@ public class AgentDto implements Serializable {
     private String ville;
     private String email;
     private Integer idUser;
+
     private Integer idMagasin;
     private Integer idServiceLivraison;
     private Integer idProfil;
@@ -115,6 +116,30 @@ public class AgentDto implements Serializable {
 
     public void setVille(String ville) {
         this.ville = ville;
+    }
+
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
+    public Integer getIdServiceLivraison() {
+        return idServiceLivraison;
+    }
+
+    public void setIdServiceLivraison(Integer idServiceLivraison) {
+        this.idServiceLivraison = idServiceLivraison;
+    }
+
+    public Integer getIdProfil() {
+        return idProfil;
+    }
+
+    public void setIdProfil(Integer idProfil) {
+        this.idProfil = idProfil;
     }
 
     @Override

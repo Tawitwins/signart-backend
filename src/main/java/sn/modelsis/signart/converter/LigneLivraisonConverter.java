@@ -47,7 +47,7 @@ public class LigneLivraisonConverter {
      * @param entity
      * @return
      */
-    public LigneLivraisonDto entityToDto(LigneLivraison entity) {
+    public LigneLivraisonDto entityToDto(LigneLivraison entity,boolean setLigneCommande) {
         LigneLivraisonDto dto = new LigneLivraisonDto();
         dto.setId(entity.getId());
         dto.setIdLigneCommande(entity.getIdLigneCommande().getId());
@@ -82,7 +82,7 @@ public class LigneLivraisonConverter {
            etat.setLibelle(entity.getIdEtatLivraison().getLibelle());
            dto.setEtatLivraison(etat);
         }
-       if(entity.getIdLigneCommande() != null){
+       if(entity.getIdLigneCommande() != null && setLigneCommande){
            dto.setLigneCommande(ligneCommandeConverter.entityToDto(entity.getIdLigneCommande()));
        }
         return dto;

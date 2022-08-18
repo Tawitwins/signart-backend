@@ -69,8 +69,8 @@ public class Agent implements Serializable {
     /*@JoinColumn(name = "idUser", referencedColumnName = "id", nullable = true)
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Utilisateur idUser;*/
-    @JoinColumn(name = "idServiceLivraison", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "idServiceLivraison", referencedColumnName = "id")
+    @ManyToOne
     private ServiceLivraison idServiceLivraison;
 
     @JoinColumn(name = "idProfil", referencedColumnName = "id", nullable = false)
