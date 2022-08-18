@@ -28,6 +28,9 @@ public class LigneCommandeDto {
     private Integer idEtatLigneCommande;
 
     private String etatLigneCommande;
+
+
+    private LigneLivraisonDto ligneLivraison;
     public String getEtatLigneCommande() {
         return etatLigneCommande;
     }
@@ -103,6 +106,14 @@ public class LigneCommandeDto {
 
     public void setIdClient(Integer idClient) {
         this.idClient = idClient;
+    }
+
+    public LigneLivraisonDto getLigneLivraison() {
+        return ligneLivraison;
+    }
+
+    public void setLigneLivraison(LigneLivraisonDto ligneLivraison) {
+        this.ligneLivraison = ligneLivraison;
     }
     
 }

@@ -3,8 +3,8 @@ package sn.modelsis.signart.converter;
 import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.LigneCommande;
+import sn.modelsis.signart.LigneLivraison;
 import sn.modelsis.signart.dto.LigneCommandeDto;
 import sn.modelsis.signart.facade.EtatLigneCommandeFacade;
 import sn.modelsis.signart.facade.OeuvreFacade;
@@ -25,6 +25,8 @@ public class LigneCommandeConverter {
     OeuvreConverter oeuvreConverter;
     @Inject
     EtatLigneCommandeFacade etatLigneCommandeFacade;
+    @Inject
+    LigneLivraisonConverter ligneLivraisonConverter;
 
     /**
      * Converts an ligneCommande entity to DTO
@@ -40,6 +42,22 @@ public class LigneCommandeConverter {
         dto.setPrix(entity.getPrix());
         dto.setQuantite(entity.getQuantite());
         dto.setTotal(entity.getPrix().multiply(BigDecimal.valueOf(entity.getQuantite())));
+        return dto;
+    }
+    public LigneCommandeDto entityToDtoPlusLigneLivraison(LigneCommande entity) {
+        LigneCommandeDto dto = new LigneCommandeDto();
+        dto.setId(entity.getId());
+        dto.setIdCommande(entity.getIdCommande().getId());
+        dto.setNumeroCommande(entity.getIdCommande().getNumero());
+        dto.setOeuvre(oeuvreConverter.entityToDto(oeuvreFacade.find(entity.getIdOeuvre().getId())));
+        dto.setPrix(entity.getPrix());
+        dto.setQuantite(entity.getQuantite());
+        dto.setTotal(entity.getPrix().multiply(BigDecimal.valueOf(entity.getQuantite())));
+        LigneLivraison  ligneLiv= new LigneLivraison();
+        for (LigneLivraison ligneLivraison : entity.getLigneLivraisonSet()) {
+            ligneLiv = ligneLivraison;
+        }
+        dto.setLigneLivraison(ligneLivraisonConverter.entityToDto(ligneLiv));
         return dto;
     }
 

@@ -128,7 +128,7 @@ public class LigneCommandeREST {
         }
         if (listEnt != null) {
             listEnt.stream().map(entity
-                    -> ligneCommandeConverter.entityToDto(entity)
+                    -> ligneCommandeConverter.entityToDtoPlusLigneLivraison(entity)
             ).forEachOrdered(dto
                     -> listDto.add(dto)
             );
