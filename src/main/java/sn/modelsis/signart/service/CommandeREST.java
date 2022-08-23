@@ -263,7 +263,7 @@ public class CommandeREST {
         return "error to bad request";
     }*/
     @POST
-    @Path("updateAprèsPaiement")
+    @Path("updateApresPaiement")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
     public String postForPaydunya(MultivaluedMap<String, String> payDunyaInput){
         Calendar calendar = Calendar.getInstance();
