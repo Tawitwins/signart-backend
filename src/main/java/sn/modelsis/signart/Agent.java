@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Agent.findAll", query = "SELECT a FROM Agent a")
     , @NamedQuery(name = "Agent.findById", query = "SELECT a FROM Agent a WHERE a.id = :id")
     , @NamedQuery(name = "Agent.findByNom", query = "SELECT a FROM Agent a WHERE a.nom = :nom")
+    , @NamedQuery(name = "Agent.findByRole", query = "SELECT a FROM Agent a WHERE a.idProfil.code = :role")
     , @NamedQuery(name = "Agent.findByIdUser", query = "SELECT a FROM Agent a WHERE a.idUser.id = :idUser")})
 
 public class Agent implements Serializable {

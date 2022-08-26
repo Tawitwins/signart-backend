@@ -1,7 +1,9 @@
 package sn.modelsis.signart.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -13,9 +15,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import sn.modelsis.signart.LigneCommande;
+import sn.modelsis.signart.LignePaiement;
 import sn.modelsis.signart.Paiement;
+import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.PaiementConverter;
+import sn.modelsis.signart.dto.LigneCommandeDto;
 import sn.modelsis.signart.dto.PaiementDto;
+import sn.modelsis.signart.facade.LignePaiementFacade;
 import sn.modelsis.signart.facade.PaiementFacade;
 
 /**
@@ -29,7 +37,11 @@ public class PaiementREST {
     @Inject
     PaiementFacade paiementFacade;
     @Inject
+    LignePaiementFacade lignePaiementFacade;
+    @Inject
     PaiementConverter paiementConverter;
+    @Inject
+    LignePaiementConverter lignePaiementConverter;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -72,6 +84,29 @@ public class PaiementREST {
         return listDto;
     }
 
+    @GET
+    //@Path("magasin/{idMagasin}/{isLivreur}")
+    @Path("magasin/{idMagasin}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List <PaiementDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin/*,@PathParam("isLivreur") Boolean isLivreur*/) {
+        // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
+        List<PaiementDto> listDto = new ArrayList<>();
+        List<LignePaiement> listEntTmp = lignePaiementFacade.findAll();
+        Set<Paiement> listEnt = new HashSet<>();
+        for (LignePaiement ligneP : listEntTmp) {
+            if(ligneP.getIdLigneCommande().getIdOeuvre().getIdMagasin().getId() == idMagasin){
+                listEnt.add(ligneP.getIdPaiement());
+            }
+        }
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> paiementConverter.entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
