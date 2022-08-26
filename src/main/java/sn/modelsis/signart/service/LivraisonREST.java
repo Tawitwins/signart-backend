@@ -1,6 +1,7 @@
 package sn.modelsis.signart.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -22,6 +23,7 @@ import javax.ws.rs.core.Response;
 import sn.modelsis.signart.LigneLivraison;
 import sn.modelsis.signart.Livraison;
 import sn.modelsis.signart.converter.LivraisonConverter;
+import sn.modelsis.signart.dto.LigneLivraisonDto;
 import sn.modelsis.signart.dto.LivraisonCommandeDto;
 import sn.modelsis.signart.dto.LivraisonDto;
 import sn.modelsis.signart.exception.SignArtException;
@@ -99,6 +101,27 @@ public class LivraisonREST {
             listEnt.stream().map(entity -> livraisonConverter.entityToDto(entity)
                     ).forEachOrdered(dto -> listDto.add(dto));
         }
+        return listDto;
+    }
+    @GET
+    @Path("magasin/{idMagasin}/{idLivreur}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List <LivraisonDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin, @PathParam("idLivreur") Integer idLivreur) {
+        // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
+        List<LivraisonDto> listDto = new ArrayList<>();
+        List<LigneLivraison> listEntTmp = ligneLivraisonFacade.findAll();
+        Set<Livraison> listEnt = new HashSet<>();
+        for (LigneLivraison ligneLivraison : listEntTmp) {
+            if(ligneLivraison.getIdLigneCommande().getIdOeuvre().getIdMagasin().getId() == idMagasin &&
+                    ligneLivraison.getIdAgent() !=null && ligneLivraison.getIdAgent().getId() == idLivreur){
+                listEnt.add(ligneLivraison.getIdLivraison());
+            }
+
+        }
+        listEnt.stream().map(entity -> livraisonConverter.entityToDto(entity)
+        ).forEachOrdered(dto
+                -> listDto.add(dto)
+        );
         return listDto;
     }
 

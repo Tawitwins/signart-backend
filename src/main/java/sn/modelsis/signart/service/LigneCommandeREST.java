@@ -19,10 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
-import sn.modelsis.signart.Commande;
-import sn.modelsis.signart.LigneCommande;
-import sn.modelsis.signart.LigneLivraison;
-import sn.modelsis.signart.Livraison;
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.LigneCommandeConverter;
 import sn.modelsis.signart.dto.LigneCommandeDto;
 import sn.modelsis.signart.dto.LigneLivraisonDto;
@@ -43,6 +40,8 @@ public class LigneCommandeREST {
     CommandeFacade commandeFacade;
     @Inject
     LigneLivraisonFacade ligneLivraisonFacade;
+    @Inject
+    LignePaiementFacade lignePaiementFacade;
     @Inject
     LigneCommandeConverter ligneCommandeConverter;
     @Inject
@@ -144,9 +143,16 @@ public class LigneCommandeREST {
     public Response validerLigneLivraison(@PathParam("id") Integer id, LigneCommandeDto dto) throws SignArtException {
         //LignePaiement entity = lignePaiementConverter.dtoToEntity(dto);
         LigneLivraison liv = ligneLivraisonFacade.find(dto.getLigneLivraison().getId());
-        int idAgent = dto.getLigneLivraison().getAgent().getId();
-        liv.setIdAgent(agentFacade.findById(idAgent));
-        ligneLivraisonFacade.save(liv);
+        LignePaiement lp = lignePaiementFacade.findByLigneCommande(dto.getId());
+        if(lp.getIdEtatPaiement().getCode().equals("PAYE")){
+            int idAgent = dto.getLigneLivraison().getAgent().getId();
+            liv.setIdAgent(agentFacade.findById(idAgent));
+            ligneLivraisonFacade.save(liv);
+        }
+        else {
+            return null;
+        }
+
 
         return Response.status(Response.Status.OK).entity(dto).build();
     }

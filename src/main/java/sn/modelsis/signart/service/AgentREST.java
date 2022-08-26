@@ -82,6 +82,20 @@ public class AgentREST {
         Agent agent = agentFacade.findByUser(user.getId());
         return agentConverter.entityToDto(agent);
     }
+    @GET
+    @Path("profil/{code}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<AgentDto> findByRole(@PathParam("code") String code) throws SignArtException {
+        //Utilisateur user = utilisateurFacade.find(id);
+        List<AgentDto> response = new ArrayList<>();
+        List<Agent> agent = agentFacade.findByRole(code);
+        if (agent != null) {
+            agent.stream().map((entity) -> agentConverter.entityToDto(entity)).forEachOrdered((dto) -> {
+                response.add(dto);
+            });
+        }
+        return response;
+    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})

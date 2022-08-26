@@ -46,6 +46,8 @@ public class CommandeREST {
     @Inject
     EtatLigneCommandeFacade etatLigneCommandeFacade;
     @Inject
+    LigneCommandeFacade ligneCommandeFacade;
+    @Inject
     EtatCommandeFacade etatCommandeFacade;
     @Inject
     EtatPaiementFacade etatPaiementFacade;
@@ -115,31 +117,28 @@ public class CommandeREST {
         return listDto;
     }
 
-   /* @GET
+    @GET
+    //@Path("magasin/{idMagasin}/{isLivreur}")
     @Path("magasin/{idMagasin}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List <LigneCommandeDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin) {
-        // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
-        List<LigneCommandeDto> listDto = new ArrayList<>();
-        List<Commande> listEntTmp = commandeFacade.findAll();
-        List<LigneCommande> listEnt = null;
-        for (Commande commande : listEntTmp) {
-            for (LigneCommande ligneCommande : commande.getLigneCommandeSet()) {
-                if(ligneCommande.getIdOeuvre().getIdMagasin().getId() == idMagasin){
-                    listEnt.add(ligneCommande);
-                }
+    public List <CommandeDto> findByIdMagasin(@PathParam("idMagasin") Integer idMagasin) {
+        List<CommandeDto> listDto = new ArrayList<>();
+        List<LigneCommande> listEntTmp = ligneCommandeFacade.findAll();
+        Set<Commande> listEnt = new HashSet();
+        for (LigneCommande ligneC : listEntTmp) {
+            if(ligneC.getIdOeuvre().getIdMagasin().getId() == idMagasin){
+                listEnt.add(ligneC.getIdCommande());
             }
-
         }
         if (listEnt != null) {
             listEnt.stream().map(entity
-                    -> ligneCommandeConverter.entityToDto(entity)
+                    -> commandeConverter.entityToDto(entity)
             ).forEachOrdered(dto
                     -> listDto.add(dto)
             );
         }
         return listDto;
-    }*/
+    }
     
     @GET
     @Path("numero/{numero}")

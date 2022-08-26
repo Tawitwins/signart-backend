@@ -68,6 +68,21 @@ public class AgentFacade extends AbstractFacade<Agent> {
             throw new SignArtException(e.getMessage(), e);
         }
     }
+    public List<Agent> findByRole(String role) throws SignArtException {
+        try {
+            final TypedQuery<Agent> query = getEntityManager().createNamedQuery("Agent.findByRole",
+                    Agent.class);
+            query.setParameter("role", role);
+            query.setMaxResults(1);
+            final List<Agent> users = query.getResultList();
+            if (users.isEmpty()) {
+                return null;
+            }
+            return users;
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
 
 
 }
