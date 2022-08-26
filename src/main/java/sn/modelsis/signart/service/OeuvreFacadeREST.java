@@ -75,6 +75,7 @@ public class OeuvreFacadeREST {
         oeuvre.setPrix(dto.getPrix());
         oeuvre.setStock(dto.getStock());
         oeuvre.setDescription(dto.getDescription());
+        oeuvre.setSpecialDelivery(dto.getSpecialDelivery());
         oeuvreFacade.edit(oeuvre);
         return Response.status(Response.Status.OK).entity(dto).build();
     }

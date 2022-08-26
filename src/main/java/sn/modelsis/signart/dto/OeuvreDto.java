@@ -17,6 +17,8 @@ public class OeuvreDto implements Serializable {
     private Integer idTechnique;
     private Integer idCouleur;
     private Boolean nouveau;
+
+    private Boolean specialDelivery = false;
     private Boolean lithographie;
     private String auteur;
     private String artiste;
@@ -46,11 +48,12 @@ public class OeuvreDto implements Serializable {
    // private String technique; 
     //private String artiste;
 
-    public OeuvreDto(String nom, Integer idTechnique, Integer idCouleur, Boolean nouveau, Boolean lithographie, String auteur, String dimensions, Integer annee, BigDecimal prix, Integer tauxremise, BigDecimal taxes, byte[] image, String description, Integer idArtiste) {
+    public OeuvreDto(String nom, Integer idTechnique, Integer idCouleur, Boolean nouveau, Boolean specialDelivery,  Boolean lithographie, String auteur, String dimensions, Integer annee, BigDecimal prix, Integer tauxremise, BigDecimal taxes, byte[] image, String description, Integer idArtiste) {
         this.nom = nom;
         this.idTechnique = idTechnique;
         this.idCouleur = idCouleur;
         this.nouveau = nouveau;
+        this.specialDelivery = specialDelivery;
         this.lithographie = lithographie;
         this.auteur = auteur;
         this.dimensions = dimensions;
@@ -150,6 +153,14 @@ public class OeuvreDto implements Serializable {
 
     public void setNouveau(Boolean nouveau) {
         this.nouveau = nouveau;
+    }
+
+    public Boolean getSpecialDelivery() {
+        return specialDelivery;
+    }
+
+    public void setSpecialDelivery(Boolean specialDelivery) {
+        this.specialDelivery = specialDelivery;
     }
 
     public String getDimensions() {
