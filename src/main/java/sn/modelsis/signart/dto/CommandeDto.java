@@ -62,6 +62,8 @@ public class CommandeDto {
     private Set<LigneCommandeDto> lignesCommande;
     private Set<PaiementDto> payments;
 
+    private BigDecimal fraisLivraison;
+
     public Integer getId() {
         return id;
     }
@@ -285,5 +287,12 @@ public class CommandeDto {
     public void setIdTarification(Integer idTarification) {
         this.idTarification = idTarification;
     }
-    
+
+    public BigDecimal getFraisLivraison() {
+        return fraisLivraison;
+    }
+
+    public void setFraisLivraison(BigDecimal fraisLivraison) {
+        this.fraisLivraison = fraisLivraison;
+    }
 }

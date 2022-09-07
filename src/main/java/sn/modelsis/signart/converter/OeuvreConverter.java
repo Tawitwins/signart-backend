@@ -49,6 +49,7 @@ public class OeuvreConverter {
             dto.setIdMagasin(entity.getIdMagasin().getId());
         }
         dto.setNouveau(entity.getNouveau());
+        dto.setSpecialDelivery(entity.getSpecialDelivery());
         dto.setLithographie(entity.getLithographie());
         dto.setAuteur(entity.getAuteur());
         dto.setAnnee(entity.getAnnee());
@@ -84,6 +85,7 @@ public class OeuvreConverter {
         if(dto.getIdCouleur() != null)
             entity.setIdCouleur(recupCouleur(dto.getIdCouleur()));
         entity.setNouveau(dto.getNouveau());
+        entity.setSpecialDelivery(dto.getSpecialDelivery());
         entity.setLithographie(dto.getLithographie());
         entity.setAuteur(dto.getAuteur());
         entity.setDimensions(dto.getDimensions());
@@ -127,6 +129,7 @@ public class OeuvreConverter {
             entity.setIdCouleur(dto.getIdCouleur());
         entity.setIdMagasin(magasinFacade.findById(idMagasin));
         entity.setNouveau(dto.getNouveau());
+        //entity.setSpecialDelivery(dto.getSpecialDelivery());
         entity.setLithographie(dto.getLithographie());
         entity.setAuteur(dto.getAuteur());
         entity.setDimensions(dto.getDimensions());
