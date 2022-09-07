@@ -2,7 +2,6 @@ package sn.modelsis.signart;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.annotation.Generated;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -129,7 +128,11 @@ public class Artiste implements Serializable {
         @JoinColumn(name = "idFonction", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private Set<Fonction> fonctionSet;
-    
+
+    @JoinColumn(name = "idMagasin", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Magasin idMagasin;
+
     public Artiste() {
     }
 
@@ -143,6 +146,20 @@ public class Artiste implements Serializable {
         this.ville = ville;
         this.idPays = idPays;
     }
+
+    public Artiste(String nom, String prenom, String surnom, String telephone, String email, String adresse, String ville, Pays idPays, Magasin idMagasin) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.surnom = surnom;
+        this.telephone = telephone;
+        this.email = email;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.idPays = idPays;
+        this.idMagasin = idMagasin;
+    }
+
+
 
     public Artiste(Integer id) {
         this.id = id;
@@ -287,14 +304,19 @@ public class Artiste implements Serializable {
     }
 
 
-
-
     public String getProfession() {
         return profession;
     }
 
     public void setProfession(String profession) {
         this.profession = profession;
+    }
+
+    public Magasin getIdMagasin() {
+        return idMagasin;
+    }
+    public void setIdMagasin(Magasin idMagasin) {
+        this.idMagasin = idMagasin;
     }
 
     @XmlTransient

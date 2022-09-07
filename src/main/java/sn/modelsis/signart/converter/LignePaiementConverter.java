@@ -11,6 +11,8 @@ import sn.modelsis.signart.facade.LigneCommandeFacade;
 import sn.modelsis.signart.facade.ModePaiementFacade;
 import sn.modelsis.signart.facade.PaiementFacade;
 
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author SNLOM
@@ -28,6 +30,8 @@ public class LignePaiementConverter {
     LigneCommandeFacade ligneCommandeFacade;
     @Inject
     EtatPaiementFacade etatPaiementFacade;
+    SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
+
     /**
      * Converts an lignePaiement entity to DTO
      * @param entity
@@ -44,7 +48,9 @@ public class LignePaiementConverter {
         dto.setIdPaiement(entity.getIdPaiement().getId());
         dto.setLigneCommande(ligneCommandeConverter.entityToDto(entity.getIdLigneCommande()));
         dto.setCodeEtatPaiement(entity.getIdEtatPaiement().getCode());
+        dto.setLibelleEtatPaiement(entity.getIdEtatPaiement().getLibelle());
         dto.setIdEtatPaiement(entity.getIdEtatPaiement().getId());
+        dto.setStringPaymentDate(DateFor.format(entity.getDatePaiement()));
         return dto;
     }
 

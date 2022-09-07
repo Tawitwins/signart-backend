@@ -1,9 +1,9 @@
 package sn.modelsis.signart.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -16,6 +16,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import sn.modelsis.signart.LigneCommande;
 import sn.modelsis.signart.LignePaiement;
 import sn.modelsis.signart.Paiement;
@@ -70,6 +72,15 @@ public class PaiementREST {
     }
 
     @GET
+    @Path("paiement/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<PaiementDto> findO(@PathParam("id") Integer id) {
+        List<PaiementDto> paiementDto = new ArrayList<>();
+        paiementDto.add(paiementConverter.entityToDto(paiementFacade.find(id)));
+        return  paiementDto;
+    }
+
+    @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<PaiementDto> findAll() {
         List<PaiementDto> listDto = new ArrayList<>();
@@ -121,4 +132,28 @@ public class PaiementREST {
         return String.valueOf(paiementFacade.count());
     }
 
+    @GET
+    @Path("report/{id}/{format}")
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException {
+        String path = "D:\\Modelsis";
+        List<PaiementDto> paiementDtoList = findO(id);
+
+        File file = new File("D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\recuP.jrxml");
+        System.out.println(file);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paiementDtoList);
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("createdBy", "MODELSIS");
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        if (format.equalsIgnoreCase("html")) {
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+        }
+        if (format.equalsIgnoreCase("pdf")) {
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+        }
+        return "report generated in path : " + path;
+    }
 }

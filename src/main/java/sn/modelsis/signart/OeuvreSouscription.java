@@ -62,7 +62,9 @@ public class OeuvreSouscription implements Serializable{
         
     @Column(name = "nouveau")
     private Boolean nouveau;
-    
+
+   // @Column(name = "specialDelivery")
+   // private Boolean specialDelivery;
      @Column(name = "lithographie")
     private Boolean lithographie;
       
@@ -151,6 +153,14 @@ public class OeuvreSouscription implements Serializable{
     public void setNouveau(Boolean nouveau) {
         this.nouveau = nouveau;
     }
+
+    /**public Boolean getSpecialDelivery() {
+        return specialDelivery;
+    }
+
+    public void setSpecialDelivery(Boolean specialDelivery) {
+        this.specialDelivery = specialDelivery;
+    }**/
 
     public Boolean getLithographie() {
         return lithographie;

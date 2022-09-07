@@ -62,6 +62,8 @@ public class Magasin implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMagasin")
     private Set<Commande> CommandeSet;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMagasin")
+    private Set<Artiste> artisteSet;
 
 
 
@@ -152,7 +154,14 @@ public class Magasin implements Serializable {
         CommandeSet = commandeSet;
     }
 
+    @XmlTransient
+    public Set<Artiste> getArtisteSet() {
+        return artisteSet;
+    }
 
+    public void setArtisteSet(Set<Artiste> artisteSet) {
+        this.artisteSet = artisteSet;
+    }
 
     @Override
     public int hashCode() {

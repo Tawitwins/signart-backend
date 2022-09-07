@@ -36,6 +36,7 @@ public class ArtisteDto implements Serializable {
     private Long nbFans;
     private Long nbOeuvres;
     private Integer idBiographie;
+    private Integer idMagasin;
 
     public ArtisteDto(Integer id, String nom, String prenom, String surnom, String telephone, String adresse, String ville, String pays, String email) {
         this.id = id;
@@ -234,6 +235,14 @@ public class ArtisteDto implements Serializable {
 
     public void setPays(String pays) {
         this.pays = pays;
+    }
+
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
     }
 
     public Long getNbFans() {

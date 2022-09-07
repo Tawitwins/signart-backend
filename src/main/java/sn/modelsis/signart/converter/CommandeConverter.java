@@ -88,6 +88,7 @@ public class CommandeConverter {
         dto.setTotalTaxes(taxes);
         dto.setState(entity.getEtat());
         //dto.setTotal(entity.get.multiply(BigDecimal.valueOf(entity.getQuantite())));
+        dto.setFraisLivraison(entity.getFraisLivraison());
         return dto;
     }
 

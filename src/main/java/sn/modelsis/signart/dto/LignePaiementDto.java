@@ -24,6 +24,10 @@ public class LignePaiementDto {
 
     private String codeEtatPaiement;
 
+    private String libelleEtatPaiement;
+
+    private String stringPaymentDate;
+
 
     public Integer getId() {
         return id;
@@ -103,5 +107,19 @@ public class LignePaiementDto {
         this.codeEtatPaiement = codeEtatPaiement;
     }
 
+    public String getLibelleEtatPaiement() {
+        return libelleEtatPaiement;
+    }
 
+    public void setLibelleEtatPaiement(String libelleEtatPaiement) {
+        this.libelleEtatPaiement = libelleEtatPaiement;
+    }
+
+    public String getStringPaymentDate() {
+        return stringPaymentDate;
+    }
+
+    public void setStringPaymentDate(String stringPaymentDate) {
+        this.stringPaymentDate = stringPaymentDate;
+    }
 }

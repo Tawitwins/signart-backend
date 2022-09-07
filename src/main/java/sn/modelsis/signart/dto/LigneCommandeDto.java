@@ -29,7 +29,7 @@ public class LigneCommandeDto {
 
     private String etatLigneCommande;
 
-
+    private CommandeDto commande;
     private LigneLivraisonDto ligneLivraison;
     public String getEtatLigneCommande() {
         return etatLigneCommande;
@@ -115,5 +115,12 @@ public class LigneCommandeDto {
     public void setLigneLivraison(LigneLivraisonDto ligneLivraison) {
         this.ligneLivraison = ligneLivraison;
     }
-    
+
+    public CommandeDto getCommande() {
+        return commande;
+    }
+
+    public void setCommande(CommandeDto commande) {
+        this.commande = commande;
+    }
 }
