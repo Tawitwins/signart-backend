@@ -12,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import sn.modelsis.signart.Abonnement;
+import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.exception.SignArtException;
 
 /**
@@ -81,6 +82,15 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }
+    }
+    public Abonnement findByToken(String tokenPaiement) {
+        final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findByTokenPaiement", Abonnement.class);
+        query.setParameter("tokenPaiement", tokenPaiement);
+        List<Abonnement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
     }
     
     /**

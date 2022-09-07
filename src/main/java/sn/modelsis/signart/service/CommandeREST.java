@@ -71,6 +71,10 @@ public class CommandeREST {
     LigneCommandeConverter ligneCommandeConverter;
     @Inject
     ModePaiementFacade modePaiementFacade;
+    @Inject
+    EtatAbonnementFacade etatAbonnementFacade;
+    @Inject
+    AbonnementFacade abonnementFacade;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) throws SignArtException {
@@ -264,32 +268,39 @@ public class CommandeREST {
     @POST
     @Path("updateApresPaiement")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
-    public String postForPaydunya(MultivaluedMap<String, String> payDunyaInput){
+    public String postForPaydunya(MultivaluedMap<String, String> payDunyaInput) throws SignArtException {
         Calendar calendar = Calendar.getInstance();
         java.util.Date currentDate = calendar.getTime();
         java.sql.Timestamp dateAjout = new java.sql.Timestamp(currentDate.getTime());
         Commande myCommande = commandeFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
-        myCommande.getLigneCommandeSet().forEach(ligneC ->{
-         ligneC.setIdEtatLigneCommande(etatLigneCommandeFacade.findByCode("PAYEETNONLIVREE"));
-        });
-        commandeFacade.save(myCommande);
-        Paiement myPaiement = paiementFacade.find(myCommande.getId());
-        if(myPaiement == null){
-            myPaiement = new Paiement();
-            myPaiement.setId(myCommande.getId());
-            myPaiement.setCommande(myCommande);
-            myPaiement.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
+        if(myCommande != null){
+            myCommande.getLigneCommandeSet().forEach(ligneC ->{
+                ligneC.setIdEtatLigneCommande(etatLigneCommandeFacade.findByCode("PAYEETNONLIVREE"));
+            });
+            commandeFacade.save(myCommande);
+            Paiement myPaiement = paiementFacade.find(myCommande.getId());
+            if(myPaiement == null){
+                myPaiement = new Paiement();
+                myPaiement.setId(myCommande.getId());
+                myPaiement.setCommande(myCommande);
+                myPaiement.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
+            }
+            myPaiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
+            myPaiement.setDatePaiement(dateAjout);
+            //Set<LignePaiement> lignePaiementSet = new HashSet<>();
+            for (LignePaiement lp :  myPaiement.getLignePaiementSet()) {
+                lp.setDatePaiement(dateAjout);
+                lp.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
+                lp.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
+            }
+            //myPaiement.setLignePaiementSet(lignePaiementSet);
+            paiementFacade.save(myPaiement);
+        } else{
+            Abonnement abonnement = abonnementFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+            abonnement.setEtatAbonnement(etatAbonnementFacade.findByCode("PAYE"));
+            abonnementFacade.edit(abonnement);
         }
-        myPaiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
-        myPaiement.setDatePaiement(dateAjout);
-        //Set<LignePaiement> lignePaiementSet = new HashSet<>();
-        for (LignePaiement lp :  myPaiement.getLignePaiementSet()) {
-            lp.setDatePaiement(dateAjout);
-            lp.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
-            lp.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
-        }
-        //myPaiement.setLignePaiementSet(lignePaiementSet);
-        paiementFacade.save(myPaiement);
+
         return "Update succeeded";
     }
     @POST

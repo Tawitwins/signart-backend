@@ -20,23 +20,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import sn.modelsis.signart.Abonne;
-import sn.modelsis.signart.Abonnement;
-import sn.modelsis.signart.Delai;
-import sn.modelsis.signart.ListeSelection;
-import sn.modelsis.signart.Terminal;
-import sn.modelsis.signart.Utilisateur;
+
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.dto.AbonneDto;
 import sn.modelsis.signart.dto.AbonnementDto;
 import sn.modelsis.signart.dto.EtatAbonnementDto;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.facade.AbonneFacade;
-import sn.modelsis.signart.facade.AbonnementFacade;
-import sn.modelsis.signart.facade.DelaiFacade;
-import sn.modelsis.signart.facade.EtatAbonnementFacade;
-import sn.modelsis.signart.facade.ListeSelectionFacade;
-import sn.modelsis.signart.facade.TerminalFacade;
-import sn.modelsis.signart.facade.UtilisateurFacade;
+import sn.modelsis.signart.facade.*;
 
 /**
  *
@@ -66,6 +56,8 @@ public class AbonnementREST {
     
     @Inject
     EtatAbonnementFacade etatAbonnementFacade;
+    @Inject
+    ModePaiementFacade modePaiementFacade;
     
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -86,7 +78,14 @@ public class AbonnementREST {
                 return Response.status(Response.Status.OK).entity(dto).build();
                  
     }
-    
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(AbonnementDto dto) throws SignArtException{
+        abonnementfacade.edit(dtoToEntity(dto));
+        AbonnementDto dtoRes = entityToDto(dtoToEntity(dto));
+        return Response.status(Response.Status.OK).entity(dtoRes).build();
+
+    }
     
     @GET
     @Path("{id}")
@@ -146,7 +145,7 @@ public class AbonnementREST {
     private Abonnement dtoToEntity(AbonnementDto dto) throws SignArtException {
         
         Abonnement entity = new Abonnement();
-       // entity.setId(dto.getId());
+        entity.setId(dto.getId());
         entity.setIdDelai(delaiFacade.findById(dto.getIdDelai()));
         entity.setIdListeSelection(listeSelectionFacade.findById(dto.getIdListeSelection()));
         entity.setIdTerminal(terminalFacade.findById(dto.getIdTerminal()));
@@ -154,11 +153,15 @@ public class AbonnementREST {
         entity.setMontantPaiement(dto.getMontantPaiement());
         entity.setPrecisions(dto.getPrecisions());
         entity.setEtatAbonnement(etatAbonnementFacade.findById(dto.getEtatAbonnement()));
+        if(dto.getIdModePaiement() != null)
+            entity.setIdModePaiement(modePaiementFacade.find(dto.getIdModePaiement()));
+        entity.setTokenPaiement(dto.getToken());
         return entity;
     }
     
     private AbonnementDto entityToDto(Abonnement entity){
         AbonnementDto dto = new AbonnementDto();
+        dto.setId(entity.getId());
         dto.setIdDelai(entity.getIdDelai().getId());
         dto.setIdListeSelection(entity.getIdListeSelection().getId());
         dto.setIdTerminal(entity.getIdTerminal().getId());
@@ -167,6 +170,11 @@ public class AbonnementREST {
         dto.setPrecisions(entity.getPrecisions());
         dto.setEtatAbonnement(entity.getEtatAbonnement().getId());
         dto.setId(entity.getId());
+        if(entity.getIdModePaiement()!=null) {
+            dto.setIdModePaiement(entity.getIdModePaiement().getId());
+            dto.setCodeModePaiement(entity.getIdModePaiement().getCode());
+        }
+        dto.setToken(entity.getTokenPaiement());
         return dto;
     }
     

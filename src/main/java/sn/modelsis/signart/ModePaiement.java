@@ -39,6 +39,9 @@ public class ModePaiement implements Serializable {
     private String code;
     @Column(name = "libelle", length = 50)
     private String libelle;
+    @Column(name = "isAdminMode")
+    private Boolean isAdminMode;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "idModePaiement")
     private Set<Paiement> paiementSet;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "idModePaiement")
@@ -91,6 +94,14 @@ public class ModePaiement implements Serializable {
 
     public void setLignePaiementSet(Set<LignePaiement> lignePaiementSet) {
         this.lignePaiementSet = lignePaiementSet;
+    }
+
+    public Boolean getIsAdminMode() {
+        return isAdminMode;
+    }
+
+    public void setIsAdminMode(Boolean isAdminMode) {
+        this.isAdminMode = isAdminMode;
     }
 
     @Override

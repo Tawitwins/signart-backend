@@ -154,7 +154,7 @@ public class ChiffrementCompressionREST {
         archive.setIdAbonnement(abonnementFacade.findById(dto.getId()));
         archive.setNom(zipFolderName);
         archiveSignartFacade.create(archive);
-        abonnement.setEtatAbonnement(etatAbonnementFacade.findByLibelle("Non payé"));
+        abonnement.setEtatAbonnement(etatAbonnementFacade.findByCode("VALIDE"));
         abonnementFacade.edit(abonnement);
 
         return Response.status(Response.Status.CREATED).entity(dto).build();
@@ -480,7 +480,7 @@ public class ChiffrementCompressionREST {
      
         public byte[] getRealImage(ListeSelection_Oeuvres oeuvre) throws IOException{
             //BufferedImage image = ImageIO.read(new File(PATHTEST+"\\images\\"+oeuvre.getNomOeuvre()+".jpg"));
-            BufferedImage image = ImageIO.read(new File(PATH+"images"+oeuvre.getNomOeuvre()+".jpg"));
+            BufferedImage image = ImageIO.read(new File(PATH+"images\\"+oeuvre.getNomOeuvre()+".jpg"));
             byte[] imageByte = toByteArray(image,"jpg");          
             return imageByte;
         }

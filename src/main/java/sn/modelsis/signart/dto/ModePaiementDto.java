@@ -5,6 +5,8 @@ public class ModePaiementDto {
     private String libelle;
     private String code;
 
+    private boolean isAdminMode;
+
     public Integer getId() {
         return id;
     }
@@ -28,4 +30,12 @@ public class ModePaiementDto {
     public void setCode(String code) {
         this.code = code;
     }
+    public boolean isAdminMode() {
+        return isAdminMode;
+    }
+
+    public void setAdminMode(boolean adminMode) {
+        isAdminMode = adminMode;
+    }
+
 }

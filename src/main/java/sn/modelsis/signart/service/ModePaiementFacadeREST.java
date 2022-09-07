@@ -64,7 +64,22 @@ public class ModePaiementFacadeREST extends AbstractFacade<ModePaiement> {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<ModePaiementDto> findAllModePaiement() {
+    public List<ModePaiementDto> findAllModePaiementByDefault() {
+        List<ModePaiementDto> listDto = new ArrayList<>();
+        List<ModePaiement> listEnt = super.findAll();
+        if (listEnt != null) {
+            listEnt.stream().filter(modePaiement -> modePaiement.getIsAdminMode() == false).map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    @Path("all")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<ModePaiementDto> findAllModePaiementByBool() {
         List<ModePaiementDto> listDto = new ArrayList<>();
         List<ModePaiement> listEnt = super.findAll();
         if (listEnt != null) {
@@ -100,6 +115,7 @@ public class ModePaiementFacadeREST extends AbstractFacade<ModePaiement> {
         dto.setId(entity.getId());
         dto.setCode(entity.getCode());
         dto.setLibelle(entity.getLibelle());
+        dto.setAdminMode(entity.getIsAdminMode());
         return dto;
     }
 }
