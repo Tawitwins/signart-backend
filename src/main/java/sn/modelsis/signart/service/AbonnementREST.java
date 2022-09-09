@@ -5,11 +5,18 @@
  */
 package sn.modelsis.signart.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,12 +28,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import sn.modelsis.signart.*;
 import sn.modelsis.signart.dto.AbonneDto;
 import sn.modelsis.signart.dto.AbonnementDto;
 import sn.modelsis.signart.dto.EtatAbonnementDto;
+import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
+import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -141,7 +152,41 @@ public class AbonnementREST {
             }
             return dtoList;   
     }
-    
+    @GET
+    @Path("report/{id}/{format}/{adrGal}")
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
+        String path = "D:\\projet signart";
+        List<AbonnementDto> abonnementDtoList = new ArrayList<>();
+        abonnementDtoList.add(find(id));
+
+        File file = new File("D:\\projet signart\\referentielsignart\\src\\main\\resources\\recuAbonnement.jrxml");
+        System.out.println(file);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(abonnementDtoList);
+
+        Map<String, Object> parameters = new HashMap<>();
+        Abonne abonne = abonnementfacade.findById(id).getIdAbonne();
+        parameters.put("NomClient", abonne.getPrenom()+ " " +abonne.getNom());
+        parameters.put("abonnementID", id);
+        //Locale currentLocale = Locale.getDefault();
+        parameters.put("adressGalerie", adrGal);
+        //parameters.put("Pays", currentLocale.getCountry());
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        if (format.equalsIgnoreCase("html")) {
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+        }
+        if (format.equalsIgnoreCase("pdf")) {
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+        }
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
+        BASE64Encoder encoder = new BASE64Encoder();
+        String imageString = encoder.encode(imageByte);
+        return imageString;
+        //return "report generated in path : " + path;
+    }
+
     private Abonnement dtoToEntity(AbonnementDto dto) throws SignArtException {
         
         Abonnement entity = new Abonnement();
