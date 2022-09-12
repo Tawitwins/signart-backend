@@ -23,6 +23,9 @@ public class AbonnementDto implements Serializable {
     private Integer montantPaiement;
     private String precisions;
     private Integer etatAbonnement;
+    private Integer idModePaiement;
+    private String codeModePaiement;
+    private String token;
 
 
     public AbonnementDto() {
@@ -115,5 +118,27 @@ public class AbonnementDto implements Serializable {
 
     public void setEtatAbonnement(Integer etatAbonnement) {
         this.etatAbonnement = etatAbonnement;
-    }  
+    }
+    public Integer getIdModePaiement() {
+        return idModePaiement;
+    }
+
+    public void setIdModePaiement(Integer idModePaiement) {
+        this.idModePaiement = idModePaiement;
+    }
+
+    public String getCodeModePaiement() {
+        return codeModePaiement;
+    }
+
+    public void setCodeModePaiement(String codeModePaiement) {
+        this.codeModePaiement = codeModePaiement;
+    }
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

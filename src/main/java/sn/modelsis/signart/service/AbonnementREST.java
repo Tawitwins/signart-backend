@@ -5,11 +5,18 @@
  */
 package sn.modelsis.signart.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,23 +27,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import sn.modelsis.signart.Abonne;
-import sn.modelsis.signart.Abonnement;
-import sn.modelsis.signart.Delai;
-import sn.modelsis.signart.ListeSelection;
-import sn.modelsis.signart.Terminal;
-import sn.modelsis.signart.Utilisateur;
+
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.dto.AbonneDto;
 import sn.modelsis.signart.dto.AbonnementDto;
 import sn.modelsis.signart.dto.EtatAbonnementDto;
+import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.facade.AbonneFacade;
-import sn.modelsis.signart.facade.AbonnementFacade;
-import sn.modelsis.signart.facade.DelaiFacade;
-import sn.modelsis.signart.facade.EtatAbonnementFacade;
-import sn.modelsis.signart.facade.ListeSelectionFacade;
-import sn.modelsis.signart.facade.TerminalFacade;
-import sn.modelsis.signart.facade.UtilisateurFacade;
+import sn.modelsis.signart.facade.*;
+import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -66,6 +67,8 @@ public class AbonnementREST {
     
     @Inject
     EtatAbonnementFacade etatAbonnementFacade;
+    @Inject
+    ModePaiementFacade modePaiementFacade;
     
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -86,7 +89,14 @@ public class AbonnementREST {
                 return Response.status(Response.Status.OK).entity(dto).build();
                  
     }
-    
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(AbonnementDto dto) throws SignArtException{
+        abonnementfacade.edit(dtoToEntity(dto));
+        AbonnementDto dtoRes = entityToDto(dtoToEntity(dto));
+        return Response.status(Response.Status.OK).entity(dtoRes).build();
+
+    }
     
     @GET
     @Path("{id}")
@@ -142,11 +152,45 @@ public class AbonnementREST {
             }
             return dtoList;   
     }
-    
+    @GET
+    @Path("report/{id}/{format}/{adrGal}")
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
+        String path = "D:\\projet signart";
+        List<AbonnementDto> abonnementDtoList = new ArrayList<>();
+        abonnementDtoList.add(find(id));
+
+        File file = new File("D:\\projet signart\\referentielsignart\\src\\main\\resources\\recuAbonnement.jrxml");
+        System.out.println(file);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(abonnementDtoList);
+
+        Map<String, Object> parameters = new HashMap<>();
+        Abonne abonne = abonnementfacade.findById(id).getIdAbonne();
+        parameters.put("NomClient", abonne.getPrenom()+ " " +abonne.getNom());
+        parameters.put("abonnementID", id);
+        //Locale currentLocale = Locale.getDefault();
+        parameters.put("adressGalerie", adrGal);
+        //parameters.put("Pays", currentLocale.getCountry());
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        if (format.equalsIgnoreCase("html")) {
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+        }
+        if (format.equalsIgnoreCase("pdf")) {
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+        }
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
+        BASE64Encoder encoder = new BASE64Encoder();
+        String imageString = encoder.encode(imageByte);
+        return imageString;
+        //return "report generated in path : " + path;
+    }
+
     private Abonnement dtoToEntity(AbonnementDto dto) throws SignArtException {
         
         Abonnement entity = new Abonnement();
-       // entity.setId(dto.getId());
+        entity.setId(dto.getId());
         entity.setIdDelai(delaiFacade.findById(dto.getIdDelai()));
         entity.setIdListeSelection(listeSelectionFacade.findById(dto.getIdListeSelection()));
         entity.setIdTerminal(terminalFacade.findById(dto.getIdTerminal()));
@@ -154,11 +198,15 @@ public class AbonnementREST {
         entity.setMontantPaiement(dto.getMontantPaiement());
         entity.setPrecisions(dto.getPrecisions());
         entity.setEtatAbonnement(etatAbonnementFacade.findById(dto.getEtatAbonnement()));
+        if(dto.getIdModePaiement() != null)
+            entity.setIdModePaiement(modePaiementFacade.find(dto.getIdModePaiement()));
+        entity.setTokenPaiement(dto.getToken());
         return entity;
     }
     
     private AbonnementDto entityToDto(Abonnement entity){
         AbonnementDto dto = new AbonnementDto();
+        dto.setId(entity.getId());
         dto.setIdDelai(entity.getIdDelai().getId());
         dto.setIdListeSelection(entity.getIdListeSelection().getId());
         dto.setIdTerminal(entity.getIdTerminal().getId());
@@ -167,6 +215,11 @@ public class AbonnementREST {
         dto.setPrecisions(entity.getPrecisions());
         dto.setEtatAbonnement(entity.getEtatAbonnement().getId());
         dto.setId(entity.getId());
+        if(entity.getIdModePaiement()!=null) {
+            dto.setIdModePaiement(entity.getIdModePaiement().getId());
+            dto.setCodeModePaiement(entity.getIdModePaiement().getCode());
+        }
+        dto.setToken(entity.getTokenPaiement());
         return dto;
     }
     

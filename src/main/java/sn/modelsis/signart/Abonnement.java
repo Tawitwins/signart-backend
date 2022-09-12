@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
       @NamedQuery(name = "Abonnement.findAll", query = "SELECT a FROM Abonnement a")
     , @NamedQuery(name = "Abonnement.findById", query = "SELECT a FROM Abonnement a WHERE a.id = :id")
     , @NamedQuery(name = "Abonnement.findByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")
-    , @NamedQuery(name = "Abonnement.findAllByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")})
+    , @NamedQuery(name = "Abonnement.findAllByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")
+    , @NamedQuery(name = "Abonnement.findByTokenPaiement", query = "SELECT a FROM Abonnement a WHERE a.tokenPaiement = :tokenPaiement")})
 
 public class Abonnement implements Serializable{
     @Id
@@ -57,6 +58,11 @@ public class Abonnement implements Serializable{
     @JoinColumn(name = "etatAbonnement", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EtatAbonnement etatAbonnement;
+    @JoinColumn(name = "idModePaiement", referencedColumnName = "id")
+    @ManyToOne
+    private ModePaiement idModePaiement;
+    @Column(name = "tokenPaiement", length = 200)
+    private String tokenPaiement;
 
    
 
@@ -150,9 +156,24 @@ public class Abonnement implements Serializable{
     public void setEtatAbonnement(EtatAbonnement etatAbonnement) {
         this.etatAbonnement = etatAbonnement;
     }
+    public ModePaiement getIdModePaiement() {
+        return idModePaiement;
+    }
 
-    
-    
-    
-    
+    public void setIdModePaiement(ModePaiement idModePaiement) {
+        this.idModePaiement = idModePaiement;
+    }
+    public String getTokenPaiement() {
+        return tokenPaiement;
+    }
+
+    public void setTokenPaiement(String tokenPaiement) {
+        this.tokenPaiement = tokenPaiement;
+    }
+
+
+
+
+
+
 }
