@@ -1,23 +1,33 @@
 package sn.modelsis.signart.service;
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import sn.modelsis.signart.LignePaiement;
 import sn.modelsis.signart.Paiement;
 import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.PaiementConverter;
 import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.dto.LignePanierDto;
+import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.facade.*;
+import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
 
 /**
  *
@@ -40,6 +50,8 @@ public class LignePaiementREST {
     @Inject
     ModePaiementFacade modePaiementFacade;
 
+    @Inject
+    PaymentDetailsFacade paymentDetailsFacade;
 
     public LignePaiementREST() {
     }
@@ -160,5 +172,76 @@ public class LignePaiementREST {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(lignePaiementFacade.count());
+    }
+
+    @POST
+    @Path("upload")
+    public  String encode(String filePath)  {
+        try{
+            byte[] data = Files.readAllBytes((java.nio.file.Path) Paths.get("D:\\Modelsis\\"+filePath));
+            BASE64Encoder encoder = new BASE64Encoder();
+            String imageString = encoder.encode(data);
+            return imageString;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+    @GET
+    @Path("genere")
+
+    public byte[] decode() {
+        //return Base64.getDecoder().decode(base64String);
+        File file = new File("./recu_payment.pdf");
+        try(FileOutputStream fos = new FileOutputStream(file);){
+            String b64 = "JVBERi0xLjUKJYCBgoMKMSAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvRmlyc3QgMTQxL04gMjAvTGVuZ3==";
+            byte[] decoder = Base64.getDecoder().decode(b64);
+            fos.write(decoder);
+            System.out.println("PDF File Saved");
+            return decoder;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+//=====================
+
+    @GET
+    @Path("paiement/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<LignePaiementDto> findO(@PathParam("id") Integer id) {
+        List<LignePaiementDto> lignePaiementDtoList = new ArrayList<>();
+        lignePaiementDtoList.add(lignePaiementConverter.entityToDto(lignePaiementFacade.find(id)));
+        return  lignePaiementDtoList;
+    }
+
+    @GET
+    @Path("report/{id}/{format}")
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException {
+        String path = "D:\\Modelsis";
+        List<LignePaiementDto> paiementDtoList = findO(id);
+
+        File file = new File("D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\recuPaiement.jrxml");
+        System.out.println(file);
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paiementDtoList);
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("numeroCommande", paiementDtoList.get(0).getLigneCommande().getNumeroCommande());
+        parameters.put("nomOeuvre",paiementDtoList.get(0).getLigneCommande().getOeuvre().getNom());
+        parameters.put("montant", paiementDtoList.get(0).getMontant());
+        parameters.put("modePaiement", paiementDtoList.get(0).getLibelleModePaiement());
+        parameters.put("etat", paiementDtoList.get(0).getLibelleEtatPaiement());
+        parameters.put("date", paiementDtoList.get(0).getStringPaymentDate());
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        if (format.equalsIgnoreCase("html")) {
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+        }
+        if (format.equalsIgnoreCase("pdf")) {
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+        }
+        return "report generated in path : " + path;
     }
 }

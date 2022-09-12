@@ -1,7 +1,5 @@
 package sn.modelsis.signart.dto;
 
-import sn.modelsis.signart.EtatPaiement;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -28,7 +26,7 @@ public class LignePaiementDto {
 
     private String stringPaymentDate;
 
-
+    private Integer idPaymentDetails;
     public Integer getId() {
         return id;
     }
@@ -113,6 +111,14 @@ public class LignePaiementDto {
 
     public void setLibelleEtatPaiement(String libelleEtatPaiement) {
         this.libelleEtatPaiement = libelleEtatPaiement;
+    }
+
+    public Integer getIdPaymentDetails() {
+        return idPaymentDetails;
+    }
+
+    public void setIdPaymentDetails(Integer idPaymentDetails) {
+        this.idPaymentDetails = idPaymentDetails;
     }
 
     public String getStringPaymentDate() {

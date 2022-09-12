@@ -63,6 +63,9 @@ public class LignePaiement implements Serializable {
     @ManyToOne(optional = false)
     private EtatPaiement idEtatPaiement;
 
+    @JoinColumn(name = "idPaymentDetails", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = false)
+    private PaymentDetails idPaymentDetails;
     public LignePaiement() {
     }
 
@@ -129,12 +132,21 @@ public class LignePaiement implements Serializable {
     public void setIdEtatPaiement(EtatPaiement idEtatPaiement) {
         this.idEtatPaiement = idEtatPaiement;
     }
-   /* @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }*/
+
+    public PaymentDetails getIdPaymentDetails() {
+        return idPaymentDetails;
+    }
+
+    public void setIdPaymentDetails(PaymentDetails idPaymentDetails) {
+        this.idPaymentDetails = idPaymentDetails;
+    }
+
+    /* @Override
+        public int hashCode() {
+            int hash = 0;
+            hash += (id != null ? id.hashCode() : 0);
+            return hash;
+        }*/
     @Override
     public int hashCode() {
         int hash = 7;

@@ -6,10 +6,7 @@ import javax.inject.Inject;
 import sn.modelsis.signart.EtatPaiement;
 import sn.modelsis.signart.LignePaiement;
 import sn.modelsis.signart.dto.LignePaiementDto;
-import sn.modelsis.signart.facade.EtatPaiementFacade;
-import sn.modelsis.signart.facade.LigneCommandeFacade;
-import sn.modelsis.signart.facade.ModePaiementFacade;
-import sn.modelsis.signart.facade.PaiementFacade;
+import sn.modelsis.signart.facade.*;
 
 import java.text.SimpleDateFormat;
 
@@ -30,6 +27,9 @@ public class LignePaiementConverter {
     LigneCommandeFacade ligneCommandeFacade;
     @Inject
     EtatPaiementFacade etatPaiementFacade;
+
+    @Inject
+    PaymentDetailsFacade paymentDetailsFacade;
     SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
@@ -46,6 +46,8 @@ public class LignePaiementConverter {
         dto.setCodeModePaiement(entity.getIdModePaiement().getCode());
         dto.setLibelleModePaiement(entity.getIdModePaiement().getLibelle());
         dto.setIdPaiement(entity.getIdPaiement().getId());
+        if(entity.getIdPaymentDetails() != null)
+            dto.setIdPaymentDetails(entity.getIdPaymentDetails().getId());
         dto.setLigneCommande(ligneCommandeConverter.entityToDto(entity.getIdLigneCommande()));
         dto.setCodeEtatPaiement(entity.getIdEtatPaiement().getCode());
         dto.setLibelleEtatPaiement(entity.getIdEtatPaiement().getLibelle());
@@ -67,6 +69,8 @@ public class LignePaiementConverter {
         entity.setMontant(dto.getMontant());
         entity.setIdLigneCommande(ligneCommandeFacade.find(dto.getLigneCommande()));
         entity.setIdEtatPaiement(etatPaiementFacade.find(dto.getIdEtatPaiement()));
+        if(dto.getIdPaymentDetails() != null)
+            entity.setIdPaymentDetails(paymentDetailsFacade.find(dto.getIdPaymentDetails()));
         if(dto.getIdPaiement()!= null)
             entity.setIdPaiement(paiementFacade.find(dto.getIdPaiement()));
         return entity;
