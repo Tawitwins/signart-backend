@@ -1,7 +1,9 @@
 package sn.modelsis.signart.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -14,6 +16,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import sn.modelsis.signart.Couleur;
+import sn.modelsis.signart.dto.CouleurDto;
+import sn.modelsis.signart.facade.CouleurFacade;
 
 /**
  *
@@ -25,6 +29,9 @@ public class CouleurFacadeREST extends AbstractFacade<Couleur> {
 
     @PersistenceContext(unitName = "SignArtPU")
     private EntityManager em;
+    
+    @Inject
+    CouleurFacade couleurFacade;
 
     public CouleurFacadeREST() {
         super(Couleur.class);
@@ -48,6 +55,22 @@ public class CouleurFacadeREST extends AbstractFacade<Couleur> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+    }
+    
+    @GET
+    @Path("getAll")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<CouleurDto> findAllTechnique() {
+        List<CouleurDto> listDto = new ArrayList<>();
+        List<Couleur> listEnt = couleurFacade.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map((entity) -> {
+                return entityToDto(entity);
+            }).forEachOrdered((dto) -> {
+                listDto.add(dto);
+            });
+        }
+        return listDto;
     }
 
     @GET
@@ -76,6 +99,13 @@ public class CouleurFacadeREST extends AbstractFacade<Couleur> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+     private CouleurDto entityToDto(Couleur entity) {
+        CouleurDto dto = new CouleurDto();
+        dto.setLibelle(entity.getLibelle());
+        dto.setId(entity.getId());   
+        return dto;
     }
 
     @Override

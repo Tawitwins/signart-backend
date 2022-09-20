@@ -11,6 +11,9 @@ public class BiographieDto {
     private Date dateNaissance;
     private String lieuNaissance;
     private String nationalite;
+    private String libelle;
+    private Boolean etatBiographie;
+    private Integer idArtiste;
 
     public Integer getId() {
         return id;
@@ -20,19 +23,17 @@ public class BiographieDto {
         this.id = id;
     }
 
-    /**
-     * @return the dateNaissance
-     */
     public Date getDateNaissance() {
         return dateNaissance;
     }
 
     /**
-     * @param dateNaissance the dateNaissance to set
+     * @return the dateNaissance
      */
     public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
+
 
     /**
      * @return the lieuNaissance
@@ -48,12 +49,39 @@ public class BiographieDto {
         this.lieuNaissance = lieuNaissance;
     }
 
+    public Integer getIdArtiste() {
+        return idArtiste;
+    }
+
+    public void setIdArtiste(Integer idArtiste) {
+        this.idArtiste = idArtiste;
+    }
+    
+    
+
     /**
      * @return the nationalite
      */
     public String getNationalite() {
         return nationalite;
     }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public Boolean getEtatBiographie() {
+        return etatBiographie;
+    }
+
+    public void setEtatBiographie(Boolean etatBiographie) {
+        this.etatBiographie = etatBiographie;
+    }
+    
 
     /**
      * @param nationalite the nationalite to set

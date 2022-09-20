@@ -11,7 +11,11 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -33,18 +37,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Biographie.findAll", query = "SELECT b FROM Biographie b"),
     @NamedQuery(name = "Biographie.findById", query = "SELECT b FROM Biographie b WHERE b.id = :id"),
+    @NamedQuery(name = "Biographie.findByIdArtiste", query = "SELECT b FROM Biographie b WHERE b.idArtiste.id = :idArtiste"),
     @NamedQuery(name = "Biographie.findByDateNaissance", query = "SELECT b FROM Biographie b WHERE b.dateNaissance = :dateNaissance"),
     @NamedQuery(name = "Biographie.findByLieuNaissance", query = "SELECT b FROM Biographie b WHERE b.lieuNaissance = :lieuNaissance"),
     @NamedQuery(name = "Biographie.findByNationalite", query = "SELECT b FROM Biographie b WHERE b.nationalite = :nationalite")})
 public class Biographie implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "dateNaissance")
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     private Date dateNaissance;
     @Size(max = 50)
     @Column(name = "lieuNaissance")
@@ -52,6 +57,13 @@ public class Biographie implements Serializable {
     @Size(max = 50)
     @Column(name = "nationalite")
     private String nationalite;
+    @Column(name = "libelle")
+    private String libelle;
+    @Column(name = "etatBiographie")
+    private Boolean etatBiographie;
+    @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Artiste idArtiste;
     @OneToMany(mappedBy = "idBiographie")
     private Set<Artiste> artisteSet;
 
@@ -78,6 +90,16 @@ public class Biographie implements Serializable {
         this.dateNaissance = dateNaissance;
     }
 
+    public Artiste getIdArtiste() {
+        return idArtiste;
+    }
+
+    public void setIdArtiste(Artiste idArtiste) {
+        this.idArtiste = idArtiste;
+    }
+    
+    
+
     public String getLieuNaissance() {
         return lieuNaissance;
     }
@@ -102,6 +124,24 @@ public class Biographie implements Serializable {
     public void setArtisteSet(Set<Artiste> artisteSet) {
         this.artisteSet = artisteSet;
     }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public Boolean getEtatBiographie() {
+        return etatBiographie;
+    }
+
+    public void setEtatBiographie(Boolean etatBiographie) {
+        this.etatBiographie = etatBiographie;
+    }
+    
+    
 
     @Override
     public int hashCode() {

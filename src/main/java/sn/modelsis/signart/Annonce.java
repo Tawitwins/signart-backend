@@ -61,6 +61,8 @@ public class Annonce implements Serializable {
     @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Artiste idArtiste;
+    @Column(name = "etatPublication")
+    private Boolean etatPublication;
 
     public Annonce() {
     }
@@ -83,6 +85,16 @@ public class Annonce implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Boolean getEtatPublication() {
+        return etatPublication;
+    }
+
+    public void setEtatPublication(Boolean etatPublication) {
+        this.etatPublication = etatPublication;
+    }
+    
+    
 
     public String getDescription() {
         return description;

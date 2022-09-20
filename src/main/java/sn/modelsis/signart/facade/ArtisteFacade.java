@@ -3,11 +3,13 @@ package sn.modelsis.signart.facade;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Biographie;
+import sn.modelsis.signart.MarquageArtiste;
 
 /**
  *
@@ -18,6 +20,8 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
 
     @PersistenceContext(unitName = "SignArtPU")
     private EntityManager em;
+    
+    EntityTransaction tx;
 
     public ArtisteFacade() {
         super(Artiste.class);
@@ -49,6 +53,18 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
         }
 
     }
+    
+     public Artiste findById(Integer idArtiste) throws SignArtException {
+        try {
+            final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.findById",
+                    Artiste.class);
+            query.setParameter("id", idArtiste);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
 
     /**
      *
@@ -65,6 +81,32 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }
+    }
+    
+    
+    public Long countMarqueArtisteFan(String codeTypeMarquage,Integer idArtiste) throws SignArtException {
+        try {
+            final TypedQuery<MarquageArtiste> query = getEntityManager().createNamedQuery("MarquageArtiste.countMarqueByArtiste",
+                    MarquageArtiste.class);
+            query.setParameter("codeTypeMarquage", codeTypeMarquage);
+            query.setParameter("idArtiste", idArtiste);
+             final List<MarquageArtiste> ma = query.getResultList();
+            return (long) ma.size();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
+    
+    public Artiste findByIdentite(String identite) throws SignArtException {
+        try {
+            final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.findByIdentite",
+                    Artiste.class);
+            query.setParameter("identite", identite);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
     }
 
     /**
@@ -106,6 +148,46 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
             throw new SignArtException(e.getMessage(), e);
         }
     }
+    
+   /* public Artiste updateProfil(Artiste artiste) throws SignArtException {
+        try {
+            final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.updateProfil",
+                    Artiste.class);
+            query.setParameter("nom", artiste.getNom());
+            query.setParameter("prenom", artiste.getPrenom());
+            query.setParameter("surnom", artiste.getSurnom());
+            query.setParameter("telephone", artiste.getTelephone());
+            query.setParameter("email", artiste.getEmail());
+            query.setParameter("adresse", artiste.getAdresse());
+            query.setParameter("ville", artiste.getVille());
+            query.setParameter("pays", artiste.getIdPays());
+            query.setParameter("id", artiste.getId());
+            query.setMaxResults(1);
+            final List<Artiste> users = query.getResultList();
+            if (users.isEmpty()) {
+                return null;
+            }
+            return users.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }*/
+    
+    public void updateNom(Artiste artiste) throws SignArtException {
+       
+            final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.findById",
+                    Artiste.class);
+            query.setParameter("id", artiste.getId());
+            Artiste art = query.getSingleResult();
+            art.setNom(artiste.getNom());
+            tx = em.getTransaction();
+            tx.begin();
+            em.merge(art);
+            tx.commit();
+             
+        
+    }
+    
     
      public Biographie findBiographieByArtiste(Integer id) throws SignArtException {
         try {

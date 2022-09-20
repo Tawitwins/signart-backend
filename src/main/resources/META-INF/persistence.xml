@@ -17,6 +17,8 @@
     <class>sn.modelsis.signart.EtatLivraison</class>
     <class>sn.modelsis.signart.EtatPaiement</class>
     <class>sn.modelsis.signart.EtatPanier</class>
+    <class>sn.modelsis.signart.Exposition</class>
+    <class>sn.modelsis.signart.ImageProfil</class>
     <class>sn.modelsis.signart.LignePanier</class>
     <class>sn.modelsis.signart.Livraison</class>
     <class>sn.modelsis.signart.Menu</class>
@@ -24,6 +26,7 @@
     <class>sn.modelsis.signart.ModePaiement</class>
     <class>sn.modelsis.signart.MotCle</class>
     <class>sn.modelsis.signart.Oeuvre</class>
+    <class>sn.modelsis.signart.OeuvreSouscription</class>
     <class>sn.modelsis.signart.Paiement</class>
     <class>sn.modelsis.signart.Panier</class>
     <class>sn.modelsis.signart.Pays</class>
@@ -41,6 +44,26 @@
     <class>sn.modelsis.signart.ArtisteFonction</class>
     <class>sn.modelsis.signart.Formation</class>
     <class>sn.modelsis.signart.ArtisteFormation</class>
+    <class>sn.modelsis.signart.Visiteur</class>
+    <class>sn.modelsis.signart.Souscription</class>
+    <class>sn.modelsis.signart.MessagesTchats</class>
+    <class>sn.modelsis.signart.Abonne</class>
+    <class>sn.modelsis.signart.Abonnement</class>
+    <class>sn.modelsis.signart.Delai</class>
+    <class>sn.modelsis.signart.EtatAbonnement</class>
+    <class>sn.modelsis.signart.Terminal</class>
+    <class>sn.modelsis.signart.ImageNumerique</class>
+    <class>sn.modelsis.signart.ListeSelection</class>
+    <class>sn.modelsis.signart.ListeSelection_Oeuvres</class>
+    <class>sn.modelsis.signart.Licence</class>
+    <class>sn.modelsis.signart.OeuvreNumerique</class>
+    <class>sn.modelsis.signart.AdminsTable</class>
+    <class>sn.modelsis.signart.Theme</class>
+    <class>sn.modelsis.signart.HistoriqueAbonnement</class>
+    <class>sn.modelsis.signart.ImageMiniature</class>
+    <class>sn.modelsis.signart.ArchiveSignart</class>
+    <class>sn.modelsis.signart.CodeSignart</class>
+    <class>sn.modelsis.signart.EtatLicence</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>

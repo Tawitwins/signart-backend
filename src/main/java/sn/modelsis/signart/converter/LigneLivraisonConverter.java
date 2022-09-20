@@ -42,9 +42,9 @@ public class LigneLivraisonConverter {
         dto.setIdLivraison(entity.getIdLivraison().getIdCommande());
         dto.setDateLivraison(entity.getDateLivraison());
         
-        dto.setIdModeLivraison(entity.getIdModeLivraison().getId());
-        dto.setCodeModeLivraison(entity.getIdModeLivraison().getCode());
-        dto.setLibelleModeLivraison(entity.getIdModeLivraison().getLibelle());
+        //dto.setIdModeLivraison(entity.getIdModeLivraison().getId());
+        //dto.setCodeModeLivraison(entity.getIdModeLivraison().getCode());
+        //dto.setLibelleModeLivraison(entity.getIdModeLivraison().getLibelle());
         
         dto.setIdEtatLivraison(entity.getIdEtatLivraison().getId());
         dto.setCodeEtatLivraison(entity.getIdEtatLivraison().getCode());
@@ -60,7 +60,7 @@ public class LigneLivraisonConverter {
     public LigneLivraison dtoToEntity(LigneLivraisonDto dto) {
         LigneLivraison entity = new LigneLivraison();
         entity.setId(dto.getId());
-        entity.setIdModeLivraison(modeLivraisonFacade.findByCode(dto.getCodeModeLivraison()));
+        //entity.setIdModeLivraison(modeLivraisonFacade.findByCode(dto.getCodeModeLivraison()));
         entity.setIdEtatLivraison(etatLivraisonFacade.findByCode(dto.getCodeEtatLivraison()));
         entity.setDateLivraison(dto.getDateLivraison());
         entity.setIdLivraison(livraisonFacade.find(dto.getIdLivraison()));

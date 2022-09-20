@@ -12,7 +12,9 @@ public class AccountDto {
     private String email;
     private String password;
     private String mobile;
+    private String adresse;
     private Character gender;
+    private Integer idAdmin;
     private Integer idUser;
     private Integer idClient;
     private Integer idArtiste;
@@ -73,6 +75,14 @@ public class AccountDto {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
     /**
@@ -138,7 +148,14 @@ public class AccountDto {
     public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
+    public Integer getIdAdmin() {
+        return idAdmin;
+    }
 
+    public void setIdAdmin(Integer idAdmin) {
+        this.idAdmin = idAdmin;
+    }
+    
     public Integer getIdClient() {
         return idClient;
     }

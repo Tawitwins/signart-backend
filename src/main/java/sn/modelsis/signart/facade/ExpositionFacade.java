@@ -15,7 +15,7 @@ import sn.modelsis.signart.exception.SignArtException;
 @Stateless
 public class ExpositionFacade extends AbstractFacade<Exposition> {
 
-    @PersistenceContext(unitName = "SignArtPU")
+    @PersistenceContext(unitName = "SignArtPU") 
     private EntityManager em;
 
     public ExpositionFacade() {

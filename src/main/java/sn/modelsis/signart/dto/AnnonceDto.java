@@ -13,6 +13,8 @@ public class AnnonceDto {
     private Date dateDebut;
     private Date dateFin;
     private String description;
+    private Integer idArtiste;
+    private Boolean etatPublication;
 
     public Integer getId() {
         return id;
@@ -21,6 +23,16 @@ public class AnnonceDto {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Boolean getEtatPublication() {
+        return etatPublication;
+    }
+
+    public void setEtatPublication(Boolean etatPublication) {
+        this.etatPublication = etatPublication;
+    }
+    
+    
 
     public String getTitre() {
         return titre;
@@ -61,5 +73,15 @@ public class AnnonceDto {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Integer getIdArtiste() {
+        return idArtiste;
+    }
+
+    public void setIdArtiste(Integer idArtiste) {
+        this.idArtiste = idArtiste;
+    }
+    
+    
     
 }

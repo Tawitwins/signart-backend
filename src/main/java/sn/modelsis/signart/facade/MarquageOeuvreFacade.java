@@ -22,6 +22,21 @@ public class MarquageOeuvreFacade extends AbstractFacade<MarquageOeuvre> {
         super(MarquageOeuvre.class);
     }
 
+     public List<MarquageOeuvre> findMarqueByClient(Integer idClient) throws SignArtException {
+        try {
+            final TypedQuery<MarquageOeuvre> query = getEntityManager().createNamedQuery("MarquageOeuvre.findMarqueByIdClient",
+                    MarquageOeuvre.class);
+            query.setParameter("idClient", idClient);
+            final List<MarquageOeuvre> list = query.getResultList();
+            if (list.isEmpty()) {
+                return null;
+            }
+            return list;
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
 
     @Override
     protected EntityManager getEntityManager() {

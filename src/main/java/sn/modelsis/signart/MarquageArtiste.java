@@ -27,10 +27,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "MarquageArtiste.findMarqueByClient", query = "SELECT m.idArtiste FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage and m.idClient.id = :idClient")
     , @NamedQuery(name = "MarquageArtiste.countMarqueByClient", query = "SELECT count(m) FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage")
+    , @NamedQuery(name = "MarquageArtiste.countMarqueByArtiste", query = "SELECT m FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage and m.idArtiste.id = :idArtiste")
     , @NamedQuery(name = "MarquageArtiste.findAll", query = "SELECT m FROM MarquageArtiste m")
     , @NamedQuery(name = "MarquageArtiste.findById", query = "SELECT m FROM MarquageArtiste m WHERE m.id = :id")
     , @NamedQuery(name = "MarquageArtiste.findByDateMarquage", query = "SELECT m FROM MarquageArtiste m WHERE m.dateMarquage = :dateMarquage")
-    , @NamedQuery(name = "MarquageArtiste.findMarqueByClientAndArtiste", query = "SELECT m FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage and m.idClient.id = :idClient and m.idArtiste.id =:idArtiste")})
+    , @NamedQuery(name = "MarquageArtiste.findMarqueByClientAndArtiste", query = "SELECT m FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage and m.idClient.id = :idClient and m.idArtiste.id =:idArtiste")
+    , @NamedQuery(name = "MarquageArtiste.findMarqueByVisiteurAndArtiste", query = "SELECT m FROM MarquageArtiste m where m.idTypeMarquage.code = :codeTypeMarquage and m.idVisiteur.id = :idVisiteur and m.idArtiste.id =:idArtiste")})
+
 public class MarquageArtiste implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,12 +49,16 @@ public class MarquageArtiste implements Serializable {
     @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Artiste idArtiste;
-    @JoinColumn(name = "idClient", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "idClient", referencedColumnName = "id", nullable = true)
     @ManyToOne(optional = false)
     private Client idClient;
     @JoinColumn(name = "idTypeMarquage", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private TypeMarquage idTypeMarquage;
+    
+    @JoinColumn(name = "idVisiteur", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = false)
+    private Visiteur idVisiteur;
 
     public MarquageArtiste() {
     }
@@ -101,6 +108,13 @@ public class MarquageArtiste implements Serializable {
         return idTypeMarquage;
     }
 
+    public Visiteur getIdVisiteur() {
+        return idVisiteur;
+    }
+
+    public void setIdVisiteur(Visiteur idVisiteur) {
+        this.idVisiteur = idVisiteur;
+    }
     public void setIdTypeMarquage(TypeMarquage idTypeMarquage) {
         this.idTypeMarquage = idTypeMarquage;
     }

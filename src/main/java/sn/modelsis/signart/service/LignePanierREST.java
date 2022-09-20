@@ -60,7 +60,10 @@ public class LignePanierREST {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, LignePanierDto dto) {
-        lignePanierFacade.edit(lignePanierConverter.dtoToEntity(dto));
+        LignePanier entity = lignePanierConverter.dtoToEntity(dto);
+        entity.setIdEtatLignePanier(etatLigneanierFacade.findByCode("NOUVEAU"));
+        lignePanierFacade.edit(entity);
+        lignePanierFacade.remove(lignePanierFacade.find(id));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 

@@ -21,6 +21,9 @@ import sn.modelsis.signart.converter.OeuvreConverter;
 import sn.modelsis.signart.dto.OeuvreDto;
 import sn.modelsis.signart.facade.OeuvreFacade;
 import javax.ws.rs.core.Response;
+import sn.modelsis.signart.OeuvreSouscription;
+import sn.modelsis.signart.dto.OeuvreSouscriptionDto;
+import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
 
 /**
  *
@@ -32,21 +35,47 @@ public class OeuvreFacadeREST {
 
     @Inject
     OeuvreFacade oeuvreFacade;
+    
+    @Inject
+    OeuvreSouscriptionFacade oeuvreSouscriptionFacade;
     @Inject
     OeuvreConverter oeuvreConverter;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(OeuvreDto dto) {
-        oeuvreFacade.create(oeuvreConverter.dtoToEntity(dto));
+    public Response create(OeuvreDto dto) throws SignArtException {
+        Oeuvre entity = oeuvreConverter.dtoToEntity(dto);
+        oeuvreFacade.create(entity);
+        OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
+        return Response.status(Response.Status.CREATED).entity(dtoRes).build();
+    }
+    
+    @POST
+    @Path("oeuvresous")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response valider(OeuvreSouscriptionDto dto) throws SignArtException {
+        OeuvreSouscription enti = oeuvreSouscriptionFacade.findById(dto.getId());
+        
+        Oeuvre entity = new Oeuvre();
+        
+        
+        entity = oeuvreConverter.convertOueuvreSouscription(enti);
+        oeuvreFacade.create(entity);
+       // OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, OeuvreDto dto) {
-        oeuvreFacade.edit(oeuvreConverter.dtoToEntity(dto));
+    public Response edit(@PathParam("id") Integer id, OeuvreDto dto) throws SignArtException {
+        Oeuvre oeuvre = oeuvreFacade.find(id);
+        oeuvre.setTaxes(dto.getTaxes());
+        oeuvre.setTauxremise(dto.getTauxremise());
+        oeuvre.setPrix(dto.getPrix());
+        oeuvre.setStock(dto.getStock());
+        oeuvre.setDescription(dto.getDescription());
+        oeuvreFacade.edit(oeuvre);
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 
@@ -111,12 +140,12 @@ public class OeuvreFacadeREST {
         return listDto;
     }
 
-    @GET
-    @Path("soustechnique/{id}")
+    /*@GET
+    @Path("technique/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<OeuvreDto> findBySousTechnique(@PathParam("id") Integer idSousTechnique) {
+    public List<OeuvreDto> findBySousTechnique(@PathParam("id") Integer idTechnique) {
         List<OeuvreDto> listDto = new ArrayList<>();
-        List<Oeuvre> listEnt = oeuvreFacade.findBySousTechnique(idSousTechnique);
+        List<Oeuvre> listEnt = oeuvreFacade.findByTechnique(idTechnique);
         if (listEnt != null) {
             listEnt.stream().map(oeuvre -> 
                 oeuvreConverter.entityToDto(oeuvre)
@@ -125,7 +154,7 @@ public class OeuvreFacadeREST {
             );
         }
         return listDto;
-    }
+    }*/
 
     @GET
     @Path("artiste/{id}")
@@ -141,6 +170,28 @@ public class OeuvreFacadeREST {
             );
         }
         return listDto;
+    }
+    @GET
+    @Path("artiste/CouvertureImg/{id}")
+    @Produces({MediaType.APPLICATION_OCTET_STREAM})
+    public Response findCouvertureImgByArtiste(@PathParam("id") Integer idArtiste) {
+        List<OeuvreDto> listDto = new ArrayList<>();
+        List<Oeuvre> listEnt = oeuvreFacade.findByArtiste(idArtiste);
+        if (listEnt != null) {
+            listEnt.stream().map(oeuvre -> 
+                oeuvreConverter.entityToDto(oeuvre)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
+        }
+        if(listDto.size()>0)
+        {
+            final Response.ResponseBuilder response = Response.ok(listDto.get(0).getImage());
+            response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
+            return response.build();
+        }
+        else
+            return null;
     }
 
     @GET

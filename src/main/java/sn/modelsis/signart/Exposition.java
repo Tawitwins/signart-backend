@@ -9,8 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -27,8 +29,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "Exposition", catalog = "signart", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Exposition.findByArtiste", query = "SELECT e FROM Exposition e Join e.artisteSet a where a.id = :idArtiste")
-    , @NamedQuery(name = "Exposition.findAll", query = "SELECT e FROM Exposition e")
+    //@NamedQuery(name = "Exposition.findByArtiste", query = "SELECT e FROM Exposition e Join e.artisteSet a where a.id = :idArtiste")
+      @NamedQuery(name = "Exposition.findByArtiste", query = "SELECT e FROM Exposition e WHERE e.idArtiste.id = :idArtiste")
+    , @NamedQuery(name = "ExpExposition.findByArtisteosition.findAll", query = "SELECT e FROM Exposition e")
     , @NamedQuery(name = "Exposition.findById", query = "SELECT e FROM Exposition e WHERE e.id = :id")
     , @NamedQuery(name = "Exposition.findByDateDebut", query = "SELECT e FROM Exposition e WHERE e.dateDebut = :dateDebut")
     , @NamedQuery(name = "Exposition.findByDateFin", query = "SELECT e FROM Exposition e WHERE e.dateFin = :dateFin")
@@ -44,26 +47,35 @@ public class Exposition implements Serializable {
     @Column(name = "titre", nullable = false, length = 100)
     private String titre;
     @Basic(optional = false)
-    @Column(name = "dateDebut", nullable = false)
+    @Column(name = "dateDebut")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDebut;
     @Basic(optional = false)
-    @Column(name = "dateFin", nullable = false)
+    @Column(name = "dateFin")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateFin;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "adresse", nullable = false, length = 100)
     private String adresse;
+    /*@Column(name = "latitude", nullable = false, length = 100)
+    private String latitude;
+    @Column(name = "longitude", nullable = false, length = 100)
+    private String longitude;*/
     @Column(name = "type", nullable = false, length = 100)
     private String type;
     @Lob
     @Column(name = "description", length = 2147483647)
     private String description;
-    @Lob
-    @Column(name = "photo")
-    private byte[] photo;
+   // @Lob
+   // @Column(name = "photo")
+  //  private byte[] photo;
     @ManyToMany(mappedBy = "expositionSet")
     private Set<Artiste> artisteSet;
+    @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = false)
+    private Artiste idArtiste;
+    @Column(name = "etatExposition")
+    private Boolean etatExposition;
 
     public Exposition() {
     }
@@ -87,6 +99,28 @@ public class Exposition implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Boolean getEtatExposition() {
+        return etatExposition;
+    }
+
+    public void setEtatExposition(Boolean etatExposition) {
+        this.etatExposition = etatExposition;
+    }
+    
+    
+    
+    
+
+    public Artiste getIdArtiste() {
+        return idArtiste;
+    }
+
+    public void setIdArtiste(Artiste idArtiste) {
+        this.idArtiste = idArtiste;
+    }
+    
+    
 
     public Date getDateDebut() {
         return dateDebut;
@@ -112,13 +146,13 @@ public class Exposition implements Serializable {
         this.titre = titre;
     }
 
-    public byte[] getPhoto() {
+    /*public byte[] getPhoto() {
         return photo;
     }
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
-    }
+    }*/
 
     public String getAdresse() {
         return adresse;

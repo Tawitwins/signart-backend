@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  *
  * @author SNLOM
- */
+*/
 @Entity
 @Table(name = "SousTechnique", catalog = "signart", schema = "dbo")
 @NamedQueries({
@@ -42,8 +42,8 @@ public class SousTechnique implements Serializable {
     @JoinColumn(name = "idTechnique", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Technique idTechnique;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSousTechnique")
-    private Set<Oeuvre> oeuvreSet;
+   // @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSousTechnique")
+    //private Set<Oeuvre> oeuvreSet;
 
     public SousTechnique() {
     }
@@ -81,7 +81,7 @@ public class SousTechnique implements Serializable {
         this.idTechnique = idTechnique;
     }
 
-    @XmlTransient
+   /* @XmlTransient
     public Set<Oeuvre> getOeuvreSet() {
         return oeuvreSet;
     }
@@ -113,6 +113,6 @@ public class SousTechnique implements Serializable {
     @Override
     public String toString() {
         return "sn.modelsis.signart.SousTechnique[ id=" + id + " ]";
-    }
+    }*/
     
-}
+} 

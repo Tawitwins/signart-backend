@@ -6,8 +6,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import sn.modelsis.signart.Artiste;
 
 import sn.modelsis.signart.Technique;
+import sn.modelsis.signart.exception.SignArtException;
 
 /**
  *
@@ -15,7 +17,7 @@ import sn.modelsis.signart.Technique;
  */
 @Stateless
 public class TechniqueFacade extends AbstractFacade<Technique> {
-
+      
     @PersistenceContext(unitName = "SignArtPU")
     private EntityManager em;
 
@@ -37,5 +39,18 @@ public class TechniqueFacade extends AbstractFacade<Technique> {
     protected EntityManager getEntityManager() {
         return em;
     }
+
+    public Technique findById(Integer idTech) throws SignArtException {
+        try {
+            final TypedQuery<Technique> query = getEntityManager().createNamedQuery("Technique.findById",
+                    Technique.class);
+            query.setParameter("id", idTech);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+
+    }
+
     
 }

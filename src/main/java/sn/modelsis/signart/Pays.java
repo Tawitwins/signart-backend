@@ -37,6 +37,9 @@ public class Pays implements Serializable {
     @Basic(optional = false)
     @Column(name = "code", nullable = false, length = 20)
     private String code;
+     @Basic(optional = false)
+    @Column(name = "indicatif", nullable = false, length = 10)
+    private String indicatif;
     @Basic(optional = false)
     @Column(name = "libelle", nullable = false, length = 100)
     private String libelle;
@@ -44,6 +47,9 @@ public class Pays implements Serializable {
     private Set<Artiste> artisteSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPays")
     private Set<Client> clientSet;
+    //fetch = FetchType.EAGER
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "Pays")
+    private Set<Visiteur> VisiteurSet;
 
     public Pays() {
     }
@@ -56,6 +62,16 @@ public class Pays implements Serializable {
         this.id = id;
         this.libelle = libelle;
     }
+
+    public String getIndicatif() {
+        return indicatif;
+    }
+
+    public void setIndicatif(String indicatif) {
+        this.indicatif = indicatif;
+    }
+    
+    
 
     public Integer getId() {
         return id;
@@ -81,7 +97,6 @@ public class Pays implements Serializable {
     public void setArtisteSet(Set<Artiste> artisteSet) {
         this.artisteSet = artisteSet;
     }
-
     @XmlTransient
     public Set<Client> getClientSet() {
         return clientSet;
@@ -89,6 +104,15 @@ public class Pays implements Serializable {
 
     public void setClientSet(Set<Client> clientSet) {
         this.clientSet = clientSet;
+    }
+    
+    @XmlTransient
+    public Set<Visiteur> getVisiteurSet() {
+        return VisiteurSet;
+    }
+
+    public void setVisiteurSet(Set<Visiteur> VisiteurSet) {
+        this.VisiteurSet = VisiteurSet;
     }
 
     @Override

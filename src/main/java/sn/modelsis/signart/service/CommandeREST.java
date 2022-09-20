@@ -96,8 +96,18 @@ public class CommandeREST {
     @GET
     @Path("client/{idClient}")
     @Produces({MediaType.APPLICATION_JSON})
-    public CommandeDto findByIdClient(@PathParam("idClient") Integer idClient) {
-        return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
+    public List <CommandeDto> findByIdClient(@PathParam("idClient") Integer idClient) {
+       // return commandeConverter.entityToDto(commandeFacade.findByIdClient(idClient));
+       List<CommandeDto> listDto = new ArrayList<>();
+        List<Commande> listEnt = commandeFacade.findByIdClient(idClient);
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> commandeConverter.entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
     }
     
     @GET

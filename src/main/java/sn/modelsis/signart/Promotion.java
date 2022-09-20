@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Promotion", catalog = "signart", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Promotion.findByOeuvre", query = "SELECT p FROM Promotion p Join p.idSousTechnique.oeuvreSet o where o.id = :idOeuvre")
+    @NamedQuery(name = "Promotion.findByOeuvre", query = "SELECT p FROM Promotion p Join p.idTechnique o where o.id = :idOeuvre")
     ,
     @NamedQuery(name = "Promotion.findAll", query = "SELECT p FROM Promotion p")
     , @NamedQuery(name = "Promotion.findById", query = "SELECT p FROM Promotion p WHERE p.id = :id")
@@ -51,9 +51,9 @@ public class Promotion implements Serializable {
     private Integer tauxReduction;
     @Column(name = "montantReduction", precision = 19, scale = 4)
     private BigDecimal montantReduction;
-    @JoinColumn(name = "idSousTechnique", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "Technique", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private SousTechnique idSousTechnique;
+    private Technique idTechnique;
 
     public Promotion() {
     }
@@ -108,12 +108,12 @@ public class Promotion implements Serializable {
         this.montantReduction = montantReduction;
     }
 
-    public SousTechnique getIdSousTechnique() {
-        return idSousTechnique;
+    public Technique getIdTechnique() {
+        return idTechnique;
     }
 
-    public void setIdSousTechnique(SousTechnique idSousTechnique) {
-        this.idSousTechnique = idSousTechnique;
+    public void setIdTechnique(Technique idTechnique) {
+        this.idTechnique = idTechnique;
     }
 
     @Override

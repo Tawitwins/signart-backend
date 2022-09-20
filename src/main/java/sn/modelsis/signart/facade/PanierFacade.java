@@ -2,6 +2,7 @@ package sn.modelsis.signart.facade;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -20,6 +21,12 @@ import sn.modelsis.signart.Panier_;
 @Stateless
 public class PanierFacade extends AbstractFacade<Panier> {
 
+    @Inject
+    EtatPanierFacade etatpanierFacade;
+    @Inject
+    ClientFacade clientFacade;
+    @Inject
+    DeviseFacade deviseFacade;
     @PersistenceContext(unitName = "SignArtPU")
     private EntityManager em;
 
@@ -41,8 +48,12 @@ public class PanierFacade extends AbstractFacade<Panier> {
         if (list != null && !list.isEmpty()) {
             return list.get(0);
         }
-
-        return null;
+        Panier panier = new Panier();
+        panier.setIdClient(clientFacade.find(id));
+        panier.setIdEtatPanier(etatpanierFacade.findByCode("VIDE"));
+        panier.setIdDevise(deviseFacade.findByCode("XOF"));
+        this.add(panier);
+        return panier;
 
     }
 

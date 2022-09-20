@@ -6,11 +6,13 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,6 +49,9 @@ public class Menu implements Serializable {
     private String icon;
     @Column(name = "classe", length = 50)
     private String classe;
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
     // @OneToOne(cascade = CascadeType.ALL, mappedBy = "menu")
     // private Technique technique;
     @Column(name = "idParent", nullable = true)
@@ -54,7 +59,7 @@ public class Menu implements Serializable {
     @JoinTable(name = "Menu_Profil", joinColumns = {
         @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idProfil", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Profil> profilSet;
 
     public Menu() {
@@ -109,6 +114,13 @@ public class Menu implements Serializable {
         this.classe = classe;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
     @XmlTransient
     public Set<Profil> getProfilSet() {
         return profilSet;

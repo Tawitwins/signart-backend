@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,8 +33,10 @@ public class Utilisateur implements Serializable {
         
     public static final String CODE_USER_TYPE_CLIENT = "CLIENT";
     public static final String CODE_USER_TYPE_ARTISTE = "ARTISTE";
+    public static final String CODE_USER_TYPE_ADMIN = "ADMIN";
     
     public static final String FIND_BY_MAIL = "Utilisateur.findByMail";
+    public static final String FIND_BY_ID = "Utilisateur.findById";
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,6 +61,9 @@ public class Utilisateur implements Serializable {
     private Set<Artiste> artisteSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private Set<Client> clientSet;
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idUser")
+    private Set<AdminsTable> adminsTableSet;
+    
     @JoinColumn(name = "idProfil", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Profil idProfil;
@@ -70,7 +76,7 @@ public class Utilisateur implements Serializable {
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -116,6 +122,14 @@ public class Utilisateur implements Serializable {
 
     public void setArtisteSet(Set<Artiste> artisteSet) {
         this.artisteSet = artisteSet;
+    }
+    @XmlTransient
+    public Set<AdminsTable> getAdminsTableSet() {
+        return this.adminsTableSet;
+    }
+
+    public void setAdminsTableSet(Set<AdminsTable> adminsTableSet) {
+        this.adminsTableSet = adminsTableSet;
     }
 
     @XmlTransient

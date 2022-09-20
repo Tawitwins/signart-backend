@@ -1,5 +1,7 @@
 package sn.modelsis.signart.dto;
 
+import sn.modelsis.signart.Menu;
+
 public class TechniqueDto {
 
     private Integer id;
@@ -28,5 +30,9 @@ public class TechniqueDto {
 
     public void setIdMenu(Integer idMenu) {
         this.idMenu = idMenu;
+    }
+
+    public void setMenu(Menu menu) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

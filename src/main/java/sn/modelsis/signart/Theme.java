@@ -44,6 +44,16 @@ public class Theme implements Serializable {
     public Theme() {
     }
 
+  
+
+    public Theme(Integer id, String libelle, String description) {
+        this.id = id;
+        this.libelle = libelle;
+        this.description = description;
+    }
+    
+    
+
     public Theme(Integer id) {
         this.id = id;
     }

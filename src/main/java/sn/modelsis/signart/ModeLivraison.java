@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +41,9 @@ public class ModeLivraison implements Serializable {
     private String libelle;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModeLivraison")
     private Set<Livraison> livraisonSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idModeLivraison")
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "idModeLivraison")
     private Set<LigneLivraison> ligneLivraisonSet;
-
+*/
     public ModeLivraison() {
     }
 
@@ -83,14 +84,14 @@ public class ModeLivraison implements Serializable {
         this.livraisonSet = livraisonSet;
     }
 
-    @XmlTransient
+    /*@XmlTransient
     public Set<LigneLivraison> getLigneLivraisonSet() {
         return ligneLivraisonSet;
     }
 
     public void setLigneLivraisonSet(Set<LigneLivraison> ligneLivraisonSet) {
         this.ligneLivraisonSet = ligneLivraisonSet;
-    }
+    }*/
 
     @Override
     public int hashCode() {

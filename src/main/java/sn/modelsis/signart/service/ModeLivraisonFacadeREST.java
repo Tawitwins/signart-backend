@@ -1,6 +1,10 @@
 package sn.modelsis.signart.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +18,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import sn.modelsis.signart.ModeLivraison;
+import sn.modelsis.signart.dto.ModeLivraisonDto;
+import sn.modelsis.signart.exception.SignArtException;
 
 /**
  *
@@ -58,10 +64,21 @@ public class ModeLivraisonFacadeREST extends AbstractFacade<ModeLivraison> {
     }
 
     @GET
-    @Override
+    @Path("allMode")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<ModeLivraison> findAll() {
-        return super.findAll();
+    public List<ModeLivraisonDto> findAlll() {
+        //return clientFacade.findByArtiste(idArtiste);
+        List<ModeLivraisonDto> listDto = new ArrayList<>();
+        List<ModeLivraison> listEnt = super.findAll();
+        if (listEnt != null) {
+            listEnt.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> listDto.add(dto)
+            );
+        }
+        return listDto;
+        //return super.findAll();
     }
 
     @GET
@@ -81,6 +98,14 @@ public class ModeLivraisonFacadeREST extends AbstractFacade<ModeLivraison> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    private ModeLivraisonDto entityToDto (ModeLivraison entity) {
+        ModeLivraisonDto dto= new ModeLivraisonDto();
+        dto.setId(entity.getId());
+        dto.setCode(entity.getCode());
+        dto.setLibelle(entity.getLibelle());
+       return dto;
     }
     
 }

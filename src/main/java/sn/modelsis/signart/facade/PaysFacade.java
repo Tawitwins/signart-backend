@@ -43,5 +43,18 @@ public class PaysFacade extends AbstractFacade<Pays> {
         }
         return null;
     }
+    
+    public Pays findByLibelle(String libelle) {
+
+        final TypedQuery<Pays> query = getEntityManager().createNamedQuery("Pays.findByLibelle",
+                Pays.class);
+        query.setParameter("libelle", libelle);
+        List<Pays> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
 
 }
+

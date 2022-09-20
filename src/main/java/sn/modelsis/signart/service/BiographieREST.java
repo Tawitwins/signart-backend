@@ -2,7 +2,6 @@ package sn.modelsis.signart.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import sn.modelsis.signart.Biographie;
 import sn.modelsis.signart.dto.BiographieDto;
+import sn.modelsis.signart.exception.SignArtException;
+import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.BiographieFacade;
 
 /**
@@ -30,10 +31,13 @@ public class BiographieREST {
 
     @Inject
     BiographieFacade biographieFacade;
+    
+    @Inject
+    ArtisteFacade artisteFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(BiographieDto dto) {
+    public Response create(BiographieDto dto) throws SignArtException {
         biographieFacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
@@ -41,24 +45,76 @@ public class BiographieREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, BiographieDto dto) {
+    public Response edit(@PathParam("id") Integer id, BiographieDto dto) throws SignArtException {
         biographieFacade.edit(dtoToEntity(dto));
+        return Response.status(Response.Status.OK).entity(dto).build();
+    }
+    
+    @PUT
+    @Path("valider/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response valider(@PathParam("id") Integer id, BiographieDto dto) throws SignArtException {
+        Biographie biographie = biographieFacade.findById(id);
+        biographie.setEtatBiographie(dto.getEtatBiographie());
+        biographieFacade.edit(biographie);
         return Response.status(Response.Status.OK).entity(dto).build();
     }
 
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") Integer id) {
-        biographieFacade.remove(biographieFacade.find(id));
+        biographieFacade.remove(biographieFacade.find(id)); 
         return Response.status(Response.Status.OK).build();
     }
 
+    @GET
+    @Path("artisteAll/{idArtiste}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<BiographieDto> findAllByArtiste(@PathParam("idArtiste") Integer idArtiste) throws SignArtException {
+        //Presentation dto = presentationFacade.findByArtiste(idArtiste);
+         List<BiographieDto> listDto = new ArrayList<>();
+         List<Biographie> listEnt = biographieFacade.findAllByArtiste(idArtiste);
+        if (listEnt != null) {
+            listEnt.stream().map(oeuvre -> 
+                entityToDto(oeuvre)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    
+    @GET
+    @Path("getAll")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<BiographieDto> findAll() throws SignArtException {
+        //Presentation dto = presentationFacade.findByArtiste(idArtiste);
+         List<BiographieDto> listDto = new ArrayList<>();
+         List<Biographie> listEnt = biographieFacade.findAllBiographie();
+        if (listEnt != null) {
+            listEnt.stream().map(oeuvre -> 
+                entityToDto(oeuvre)
+            ).forEachOrdered(dto -> 
+                listDto.add(dto)
+            );
+        }
+        return listDto;
+    }
+    
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(biographieFacade.count());
+    }
+    
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public BiographieDto find(@PathParam("id") Integer id) {
+         Biographie biographie = biographieFacade.findById(id);
+        return entityToDto(biographie);
     }
 
     /**
@@ -73,6 +129,9 @@ public class BiographieREST {
         dto.setDateNaissance(entity.getDateNaissance());
         dto.setLieuNaissance(entity.getLieuNaissance());
         dto.setNationalite(entity.getNationalite());
+        dto.setLibelle(entity.getLibelle());
+        dto.setEtatBiographie(entity.getEtatBiographie());
+        dto.setIdArtiste(entity.getIdArtiste().getId());
         
         return dto;
     }
@@ -82,13 +141,16 @@ public class BiographieREST {
      * @param dto
      * @return
      */
-    private Biographie dtoToEntity(BiographieDto dto) {
+    private Biographie dtoToEntity(BiographieDto dto) throws SignArtException {
         
         Biographie entity = new Biographie();
-        entity.setId(dto.getId());
         entity.setDateNaissance(dto.getDateNaissance());
         entity.setLieuNaissance(dto.getLieuNaissance());
         entity.setNationalite(dto.getNationalite());
+        // entity.setId(dto.getId());
+        entity.setLibelle(dto.getLibelle());
+        entity.setEtatBiographie(dto.getEtatBiographie());
+        entity.setIdArtiste(artisteFacade.findById(dto.getIdArtiste()));
         return entity;
     }
 }

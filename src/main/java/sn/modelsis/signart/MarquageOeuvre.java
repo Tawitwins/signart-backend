@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "MarquageOeuvre.findAll", query = "SELECT m FROM MarquageOeuvre m")
     , @NamedQuery(name = "MarquageOeuvre.findById", query = "SELECT m FROM MarquageOeuvre m WHERE m.id = :id")
     , @NamedQuery(name = "MarquageOeuvre.findByDateMarquage", query = "SELECT m FROM MarquageOeuvre m WHERE m.dateMarquage = :dateMarquage")
+    , @NamedQuery(name = "MarquageOeuvre.findMarqueByIdClient", query = "SELECT m FROM MarquageOeuvre m where m.idClient.id = :idClient")
     , @NamedQuery(name = "MarquageOeuvre.findMarqueByClientAndOeuvre", query = "SELECT m FROM MarquageOeuvre m where m.idTypeMarquage.code = :codeTypeMarquage and m.idClient.id = :idClient and m.idOeuvre.id =:idOeuvre")})
 public class MarquageOeuvre implements Serializable {
 

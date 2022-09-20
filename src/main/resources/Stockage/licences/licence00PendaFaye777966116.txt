@@ -1,0 +1,4 @@
+Application: SignArt
+Version: 1.0
+Expiration: 30/12/2020 10:35:28
+Utilisateur: PendaFaye777966116

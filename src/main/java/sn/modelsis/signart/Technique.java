@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -42,7 +43,7 @@ public class Technique implements Serializable {
     @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false, unique = true)
     @OneToOne
     private Menu menu;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTechnique")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "idTechnique")
     private Set<SousTechnique> sousTechniqueSet;
 
     public Technique() {
@@ -73,14 +74,14 @@ public class Technique implements Serializable {
         this.libelle = libelle;
     }
 
-    @XmlTransient
+    /*@XmlTransient
     public Set<SousTechnique> getSousTechniqueSet() {
         return sousTechniqueSet;
     }
 
     public void setSousTechniqueSet(Set<SousTechnique> sousTechniqueSet) {
         this.sousTechniqueSet = sousTechniqueSet;
-    }
+    }*/
 
     @Override
     public int hashCode() {
