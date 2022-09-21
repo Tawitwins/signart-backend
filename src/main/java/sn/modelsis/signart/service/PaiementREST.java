@@ -2,7 +2,10 @@ package sn.modelsis.signart.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,6 +30,7 @@ import sn.modelsis.signart.dto.LigneCommandeDto;
 import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.facade.LignePaiementFacade;
 import sn.modelsis.signart.facade.PaiementFacade;
+import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -134,11 +138,11 @@ public class PaiementREST {
 
     @GET
     @Path("report/{id}/{format}")
-    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException {
-        String path = "D:\\Modelsis";
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException, IOException {
+        String path = "D:\\projet signart";
         List<PaiementDto> paiementDtoList = findO(id);
 
-        File file = new File("D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\recuP.jrxml");
+        File file = new File("D:\\projet signart\\referentielsignart\\src\\main\\resources\\recuP.jrxml");
         System.out.println(file);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
@@ -149,11 +153,15 @@ public class PaiementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçu_paiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçu_paiement.pdf");
         }
-        return "report generated in path : " + path;
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
+        BASE64Encoder encoder = new BASE64Encoder();
+        String imageString = encoder.encode(imageByte);
+        return imageString;
+        //return "report generated in path : " + path;
     }
 }

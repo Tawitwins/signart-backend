@@ -30,6 +30,7 @@ public class LigneLivraisonDto {
     private String libelleModeLivraison;
     private Integer idAgent;
     private AgentDto agent;
+    private String preuvePourLivraison;
 
     public Integer getId() {
         return id;
@@ -154,6 +155,14 @@ public class LigneLivraisonDto {
 
     public void setLivraison(LivraisonDto livraison) {
         this.livraison = livraison;
+    }
+
+    public String getPreuvePourLivraison() {
+        return preuvePourLivraison;
+    }
+
+    public void setPreuvePourLivraison(String preuvePourLivraison) {
+        this.preuvePourLivraison = preuvePourLivraison;
     }
 
 }

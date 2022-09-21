@@ -10,6 +10,7 @@ import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.dto.LignePanierDto;
 import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.facade.*;
+import org.apache.commons.codec.binary.Base64;
 import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
@@ -175,19 +176,20 @@ public class LignePaiementREST {
     }
 
     @POST
-    @Path("upload")
-    public  String encode(String filePath)  {
+    @Path("upload/{filename}")
+    public  String encode(@PathParam("filename") String filename,String fileContent) throws IOException {
+        fileContent = fileContent.split("base64,")[1];
         try{
-            byte[] data = Files.readAllBytes((java.nio.file.Path) Paths.get("D:\\Modelsis\\"+filePath));
-            BASE64Encoder encoder = new BASE64Encoder();
-            String imageString = encoder.encode(data);
-            return imageString;
+        byte[]  content = Base64.decodeBase64(fileContent);
+        java.nio.file.Path filee = (java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename);
+        Files.write(filee, content);
+            return "uploaded";
         }catch (Exception e) {
             e.printStackTrace();
         }
         return  null;
     }
-    @GET
+   /* @GET
     @Path("genere")
 
     public byte[] decode() {
@@ -203,7 +205,7 @@ public class LignePaiementREST {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 //=====================
 
     @GET
@@ -217,11 +219,11 @@ public class LignePaiementREST {
 
     @GET
     @Path("report/{id}/{format}")
-    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException {
-        String path = "D:\\Modelsis";
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException, IOException {
+        String path = "D:\\projet signart\\";
         List<LignePaiementDto> paiementDtoList = findO(id);
 
-        File file = new File("D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\recuPaiement.jrxml");
+        File file = new File("D:\\projet signart\\referentielsignart\\src\\main\\resources\\recuPaiement.jrxml");
         System.out.println(file);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
@@ -237,11 +239,15 @@ public class LignePaiementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_Lpaiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçu_Lpaiement.pdf");
         }
-        return "report generated in path : " + path;
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçu_Lpaiement.pdf"));
+        BASE64Encoder encoder = new BASE64Encoder();
+        String imageString = encoder.encode(imageByte);
+        return imageString;
+        //return "report generated in path : " + path;
     }
 }

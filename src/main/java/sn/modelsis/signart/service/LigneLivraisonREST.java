@@ -1,5 +1,6 @@
 package sn.modelsis.signart.service;
 
+import org.apache.commons.codec.binary.Base64;
 import sn.modelsis.signart.LigneLivraison;
 import sn.modelsis.signart.LignePaiement;
 import sn.modelsis.signart.Livraison;
@@ -18,7 +19,10 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -129,6 +133,7 @@ public class LigneLivraisonREST {
         LigneLivraison lp = ligneLivraisonFacade.find(dto.getId());
         lp.setIdEtatLivraison(etatLivraisonFacade.findByCode("TERMINEE"));
         lp.setIdModeLivraison(modeLivraisonFacade.find(dto.getModeLivraison().getId()));
+        lp.setPreuvePourLivraison(dto.getPreuvePourLivraison());
         ligneLivraisonFacade.save(lp);
         //Vérifier si toutes les lignes paiement sont valider pour pas et metter a jour le paiement global
         Livraison livraison = livraisonFacade.find((dto.getIdLivraison()));
@@ -150,7 +155,19 @@ public class LigneLivraisonREST {
         //lignePaiementFacade.remove(lignePaiementFacade.find(id));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
-
+    @POST
+    @Path("upload/{filename}")
+    public  String encode(@PathParam("filename") String filename,String fileContent) throws IOException {
+        try{
+            byte[]  content = Base64.decodeBase64(fileContent);
+            java.nio.file.Path filee = (java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename);
+            Files.write(filee, content);
+            return "C:\\Users\\SNMBENGUEO\\Desktop\\"+filename;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)

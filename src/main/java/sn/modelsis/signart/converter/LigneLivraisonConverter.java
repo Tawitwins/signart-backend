@@ -53,6 +53,7 @@ public class LigneLivraisonConverter {
         dto.setIdLigneCommande(entity.getIdLigneCommande().getId());
         dto.setIdLivraison(entity.getIdLivraison().getIdCommande());
         dto.setDateLivraison(entity.getDateLivraison());
+        dto.setPreuvePourLivraison(entity.getPreuvePourLivraison());
         if(entity.getIdAgent() != null) {
             dto.setIdAgent(entity.getIdAgent().getId());
             dto.setAgent(agentConverter.entityToDto(entity.getIdAgent()));

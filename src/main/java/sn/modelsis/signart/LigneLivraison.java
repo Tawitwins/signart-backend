@@ -4,6 +4,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -49,6 +50,9 @@ public class LigneLivraison implements Serializable {
     @JoinColumn(name = "idAgent", referencedColumnName = "id")
     @ManyToOne
     private Agent idAgent;
+
+    @Column(name = "preuvePourLivraison")
+    private String preuvePourLivraison;
 
     public LigneLivraison() {
     }
@@ -114,6 +118,14 @@ public class LigneLivraison implements Serializable {
     }
     public void setIdAgent(Agent idAgent) {
         this.idAgent = idAgent;
+    }
+
+    public String getPreuvePourLivraison() {
+        return preuvePourLivraison;
+    }
+
+    public void setPreuvePourLivraison(String preuvePourLivraison) {
+        this.preuvePourLivraison = preuvePourLivraison;
     }
 
    /* @Override

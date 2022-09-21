@@ -27,7 +27,7 @@
         <band height="199" splitType="Stretch">
             <image>
                 <reportElement x="100" y="40" width="150" height="40" uuid="1c003177-754c-448f-8ce1-16868856f545"/>
-                <imageExpression><![CDATA["D:/Modelsis/SignArt/referentielsignart/src/main/resources/assets/logo_signart.png"]]></imageExpression>
+                <imageExpression><![CDATA["D:/projet signart/referentielsignart/src/main/resources/assets/images/logo_signart.png"]]></imageExpression>
             </image>
             <staticText>
                 <reportElement style="SubTitle" x="590" y="20" width="170" height="22" uuid="f6a78448-8260-4445-a9e0-e3fb53b080d9"/>
