@@ -38,7 +38,7 @@ public class OeuvreFacade extends AbstractFacade<Oeuvre> {
     /**
      * Retourne la liste des oeuvres pour une sous technique donnée
      *
-     * @param idSousTechnique
+     * @param //idSousTechnique
      * @return
      */
    /* public List<Oeuvre> findBySousTechnique(Integer idSousTechnique) {

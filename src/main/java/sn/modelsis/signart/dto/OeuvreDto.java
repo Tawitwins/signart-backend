@@ -20,6 +20,7 @@ public class OeuvreDto implements Serializable {
 
     private Boolean specialDelivery = false;
     private Boolean lithographie;
+    private Boolean isPaid;
     private String auteur;
     private String artiste;
     private String dimensions;
@@ -275,10 +276,15 @@ public class OeuvreDto implements Serializable {
     public void setAnnee(Integer annee) {
         this.annee = annee;
     }
-    
-    
 
-    
+    public Boolean getPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(Boolean paid) {
+        isPaid = paid;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

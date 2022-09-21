@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Oeuvre.findByDateAjout", query = "SELECT o FROM Oeuvre o WHERE o.dateAjout = :dateAjout")
     , @NamedQuery(name = "Oeuvre.findByNouveau", query = "SELECT o FROM Oeuvre o WHERE o.nouveau = :nouveau")
         , @NamedQuery(name = "Oeuvre.findBySpecialDelivery", query = "SELECT o FROM Oeuvre o WHERE o.specialDelivery = :specialDelivery")
+        , @NamedQuery(name = "Oeuvre.findByIsPaid", query = "SELECT o FROM Oeuvre o WHERE o.isPaid = :isPaid")
         , @NamedQuery(name = "Oeuvre.findByDimensions", query = "SELECT o FROM Oeuvre o WHERE o.dimensions = :dimensions")})
 public class Oeuvre implements Serializable {
 
@@ -56,6 +57,9 @@ public class Oeuvre implements Serializable {
     private Boolean specialDelivery;
      @Column(name = "lithographie")
     private Boolean lithographie;
+
+    @Column(name = "isPaid")
+    private Boolean isPaid;
 
       @Column(name = "auteur", length = 50)
     private String auteur;
@@ -234,6 +238,14 @@ public class Oeuvre implements Serializable {
 
     public String getDimensions() {
         return dimensions;
+    }
+
+    public Boolean getPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(Boolean paid) {
+        isPaid = paid;
     }
 
     public void setDimensions(String dimensions) {

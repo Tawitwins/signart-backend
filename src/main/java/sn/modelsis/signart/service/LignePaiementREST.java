@@ -3,6 +3,7 @@ package sn.modelsis.signart.service;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import sn.modelsis.signart.LignePaiement;
+import sn.modelsis.signart.Oeuvre;
 import sn.modelsis.signart.Paiement;
 import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.PaiementConverter;
@@ -11,6 +12,7 @@ import sn.modelsis.signart.dto.LignePanierDto;
 import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.facade.*;
 import org.apache.commons.codec.binary.Base64;
+import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
@@ -53,6 +55,9 @@ public class LignePaiementREST {
 
     @Inject
     PaymentDetailsFacade paymentDetailsFacade;
+
+    @Inject
+    OeuvreFacade oeuvreFacade;
 
     public LignePaiementREST() {
     }
@@ -142,7 +147,13 @@ public class LignePaiementREST {
         LignePaiement lp = lignePaiementFacade.find(dto.getId());
         lp.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
         lp.setIdModePaiement(modePaiementFacade.find(dto.getIdModePaiement()));
+        lp.setIdPaymentDetails(paymentDetailsFacade.find(dto.getIdPaymentDetails()));
         lignePaiementFacade.save(lp);
+
+        Oeuvre oeuvre = oeuvreFacade.find(lp.getIdLigneCommande().getIdOeuvre().getId());
+        oeuvre.setPaid(true);
+        oeuvreFacade.save(oeuvre);
+
         //Vérifier si toutes les lignes paiement sont valider pour pas et metter a jour le paiement global
         Paiement paiement = paiementFacade.find((dto.getIdPaiement()));
         BigDecimal total;
@@ -189,23 +200,23 @@ public class LignePaiementREST {
         }
         return  null;
     }
-   /* @GET
-    @Path("genere")
 
-    public byte[] decode() {
-        //return Base64.getDecoder().decode(base64String);
-        File file = new File("./recu_payment.pdf");
-        try(FileOutputStream fos = new FileOutputStream(file);){
-            String b64 = "JVBERi0xLjUKJYCBgoMKMSAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvRmlyc3QgMTQxL04gMjAvTGVuZ3==";
-            byte[] decoder = Base64.getDecoder().decode(b64);
-            fos.write(decoder);
-            System.out.println("PDF File Saved");
-            return decoder;
-        }catch (Exception e){
+    @POST
+    @Path("upload/{filename}")
+    public  String encode(@PathParam("filename") String filename,String fileContent) throws IOException {
+        fileContent = fileContent.split("base64,")[1];
+        String path = "D:\\Modelsis\\"+filename;
+        try{
+            byte[]  content = Base64.getDecoder().decode(fileContent);
+            java.nio.file.Path filee = (java.nio.file.Path) Paths.get(path);
+            Files.write(filee, content);
+            return path;
+        }catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }*/
+        return  null;
+    }
+
 //=====================
 
     @GET
@@ -244,10 +255,9 @@ public class LignePaiementREST {
         if (format.equalsIgnoreCase("pdf")) {
             JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçu_Lpaiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçu_Lpaiement.pdf"));
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
         BASE64Encoder encoder = new BASE64Encoder();
         String imageString = encoder.encode(imageByte);
         return imageString;
-        //return "report generated in path : " + path;
     }
 }

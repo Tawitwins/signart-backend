@@ -51,6 +51,7 @@ public class OeuvreConverter {
         dto.setNouveau(entity.getNouveau());
         dto.setSpecialDelivery(entity.getSpecialDelivery());
         dto.setLithographie(entity.getLithographie());
+        dto.setPaid(entity.getPaid());
         dto.setAuteur(entity.getAuteur());
         dto.setAnnee(entity.getAnnee());
         dto.setDimensions(entity.getDimensions());
@@ -87,6 +88,7 @@ public class OeuvreConverter {
         entity.setNouveau(dto.getNouveau());
         entity.setSpecialDelivery(dto.getSpecialDelivery());
         entity.setLithographie(dto.getLithographie());
+        entity.setPaid(dto.getPaid());
         entity.setAuteur(dto.getAuteur());
         entity.setDimensions(dto.getDimensions());
         entity.setAnnee(dto.getAnnee());

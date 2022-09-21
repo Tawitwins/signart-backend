@@ -151,6 +151,10 @@ public class LigneLivraisonREST {
             livraison.setIdEtatLivraison(etatLivraisonFacade.findByCode("TERMINEE"));
             livraisonFacade.save(livraison);
         }
+        if(cpt>0 && !allDelivered){
+            livraison.setIdEtatLivraison(etatLivraisonFacade.findByCode("TRAITEMENT"));
+            livraisonFacade.save(livraison);
+        }
         //lignePaiementFacade.edit(entity);
         //lignePaiementFacade.remove(lignePaiementFacade.find(id));
         return Response.status(Response.Status.OK).entity(dto).build();

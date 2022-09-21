@@ -35,19 +35,9 @@ public class PaymentDetailsREST extends AbstractFacade<PaymentDetails> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(PaymentDetails entity) {
-        super.create(entity);
-    }
-
-    @POST
-    @Path("postAll")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void create(PaymentDetailsDto[] tabPaymentDetails) {
-        for(int i=0;i < tabPaymentDetails.length;i++){
-            super.create(paymentDetailsConverter.dtoToEntity(tabPaymentDetails[i]));
-        }
+    public void add(PaymentDetailsDto dto) {
+        super.create(paymentDetailsConverter.dtoToEntity(dto));
     }
 
     @POST
