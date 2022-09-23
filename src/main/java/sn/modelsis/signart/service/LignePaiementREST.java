@@ -8,10 +8,8 @@ import sn.modelsis.signart.Paiement;
 import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.PaiementConverter;
 import sn.modelsis.signart.dto.LignePaiementDto;
-import sn.modelsis.signart.dto.LignePanierDto;
-import sn.modelsis.signart.dto.PaiementDto;
+import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
-import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
@@ -57,7 +55,6 @@ public class LignePaiementREST {
 
     @Inject
     OeuvreFacade oeuvreFacade;
-
     public LignePaiementREST() {
     }
 
@@ -136,6 +133,14 @@ public class LignePaiementREST {
             );
         }
         return listDto;
+    }
+
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(LignePaiementDto dto) throws SignArtException {
+        lignePaiementFacade.edit(lignePaiementConverter.dtoToEntity(dto));
+        LignePaiementDto dtoRes = lignePaiementConverter.entityToDto(lignePaiementConverter.dtoToEntity(dto));
+        return Response.status(Response.Status.OK).entity(dtoRes).build();
     }
 
     @PUT

@@ -75,6 +75,8 @@ public class CommandeREST {
     EtatAbonnementFacade etatAbonnementFacade;
     @Inject
     AbonnementFacade abonnementFacade;
+    @Inject
+    LignePaiementFacade lignePaiementFacade;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) throws SignArtException {
@@ -272,7 +274,11 @@ public class CommandeREST {
         Calendar calendar = Calendar.getInstance();
         java.util.Date currentDate = calendar.getTime();
         java.sql.Timestamp dateAjout = new java.sql.Timestamp(currentDate.getTime());
+
         Commande myCommande = commandeFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+        Abonnement abonnement = abonnementFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+        LignePaiement lignePaiement = lignePaiementFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+
         if(myCommande != null){
             myCommande.getLigneCommandeSet().forEach(ligneC ->{
                 ligneC.setIdEtatLigneCommande(etatLigneCommandeFacade.findByCode("PAYEETNONLIVREE"));
@@ -295,13 +301,16 @@ public class CommandeREST {
             }
             //myPaiement.setLignePaiementSet(lignePaiementSet);
             paiementFacade.save(myPaiement);
-        } else{
-            Abonnement abonnement = abonnementFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+        } else if(abonnement != null){
             abonnement.setEtatAbonnement(etatAbonnementFacade.findByCode("PAYE"));
             abonnementFacade.edit(abonnement);
+        } else{
+            lignePaiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
+            lignePaiement.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
+            lignePaiementFacade.edit(lignePaiement);
         }
 
-        return "Update succeeded";
+        return "Update succeeded ";
     }
     @POST
     @Path("updateApresPaiementOrange")

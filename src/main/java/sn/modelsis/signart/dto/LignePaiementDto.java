@@ -27,6 +27,8 @@ public class LignePaiementDto {
     private String stringPaymentDate;
 
     private Integer idPaymentDetails;
+
+    private String token;
     public Integer getId() {
         return id;
     }
@@ -127,5 +129,13 @@ public class LignePaiementDto {
 
     public void setStringPaymentDate(String stringPaymentDate) {
         this.stringPaymentDate = stringPaymentDate;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

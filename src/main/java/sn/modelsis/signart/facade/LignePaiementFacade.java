@@ -49,5 +49,15 @@ public class LignePaiementFacade extends AbstractFacade<LignePaiement> {
     protected EntityManager getEntityManager() {
         return em;
     }
+
+    public LignePaiement findByToken(String tokenPaiement) {
+        final TypedQuery<LignePaiement> query = getEntityManager().createNamedQuery("LignePaiement.findByTokenPaiement", LignePaiement.class);
+        query.setParameter("tokenPaiement", tokenPaiement);
+        List<LignePaiement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return  null;
+    }
     
 }

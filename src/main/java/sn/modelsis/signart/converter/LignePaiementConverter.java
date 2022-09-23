@@ -46,6 +46,7 @@ public class LignePaiementConverter {
         dto.setCodeModePaiement(entity.getIdModePaiement().getCode());
         dto.setLibelleModePaiement(entity.getIdModePaiement().getLibelle());
         dto.setIdPaiement(entity.getIdPaiement().getId());
+        dto.setToken(entity.getTokenPaiement());
         if(entity.getIdPaymentDetails() != null)
             dto.setIdPaymentDetails(entity.getIdPaymentDetails().getId());
         dto.setLigneCommande(ligneCommandeConverter.entityToDto(entity.getIdLigneCommande()));
@@ -67,8 +68,9 @@ public class LignePaiementConverter {
         entity.setIdModePaiement(modePaiementFacade.findByCode(dto.getCodeModePaiement()));
         entity.setDatePaiement(dto.getDatePaiement());
         entity.setMontant(dto.getMontant());
-        entity.setIdLigneCommande(ligneCommandeFacade.find(dto.getLigneCommande()));
+        entity.setIdLigneCommande(ligneCommandeFacade.find(dto.getLigneCommande().getId()));
         entity.setIdEtatPaiement(etatPaiementFacade.find(dto.getIdEtatPaiement()));
+        entity.setTokenPaiement((dto.getToken()));
         if(dto.getIdPaymentDetails() != null)
             entity.setIdPaymentDetails(paymentDetailsFacade.find(dto.getIdPaymentDetails()));
         if(dto.getIdPaiement()!= null)
