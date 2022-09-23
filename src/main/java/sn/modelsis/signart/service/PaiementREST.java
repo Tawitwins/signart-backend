@@ -2,7 +2,10 @@ package sn.modelsis.signart.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,6 +30,7 @@ import sn.modelsis.signart.dto.LigneCommandeDto;
 import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.facade.LignePaiementFacade;
 import sn.modelsis.signart.facade.PaiementFacade;
+import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -134,7 +138,7 @@ public class PaiementREST {
 
     @GET
     @Path("report/{id}/{format}")
-    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException {
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException, IOException {
         String path = "D:\\Modelsis";
         List<PaiementDto> paiementDtoList = findO(id);
 
@@ -154,6 +158,9 @@ public class PaiementREST {
         if (format.equalsIgnoreCase("pdf")) {
             JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
         }
-        return "report generated in path : " + path;
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
+        BASE64Encoder encoder = new BASE64Encoder();
+        String imageString = encoder.encode(imageByte);
+        return imageString;
     }
 }

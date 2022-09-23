@@ -5,9 +5,11 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import sn.modelsis.signart.LignePaiement;
 import sn.modelsis.signart.Oeuvre;
 import sn.modelsis.signart.Paiement;
+import sn.modelsis.signart.PaymentDetails;
 import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.PaiementConverter;
 import sn.modelsis.signart.dto.LignePaiementDto;
+import sn.modelsis.signart.dto.PaymentDetailsDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import sun.misc.BASE64Encoder;
@@ -209,6 +211,7 @@ public class LignePaiementREST {
     public  String encode(@PathParam("filename") String filename,String fileContent) throws IOException {
         fileContent = fileContent.split("base64,")[1];
         String path = "D:\\Modelsis\\"+filename;
+        String path1 = "src/main/resources/"+filename;
         try{
             byte[]  content = Base64.getDecoder().decode(fileContent);
             java.nio.file.Path filee = (java.nio.file.Path) Paths.get(path);
@@ -262,5 +265,19 @@ public class LignePaiementREST {
         BASE64Encoder encoder = new BASE64Encoder();
         String imageString = encoder.encode(imageByte);
         return imageString;
+    }
+    @GET
+    @Path("{id}/preuve")
+    public String downloadPreuve(@PathParam("id") Integer id)  {
+        LignePaiement lignePaiement = lignePaiementFacade.find(id);
+       try{
+           PaymentDetails paymentDetails = paymentDetailsFacade.find(lignePaiement.getIdPaymentDetails().getId());
+           byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(paymentDetails.getPreuve()));
+           BASE64Encoder encoder = new BASE64Encoder();
+           String imageString = encoder.encode(imageByte);
+           return  imageString;
+       } catch (Exception e) {
+           return  "Veuillez vérifier l'id du ligne de paiement";
+       }
     }
 }

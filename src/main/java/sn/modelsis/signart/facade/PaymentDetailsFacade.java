@@ -30,6 +30,18 @@ public class PaymentDetailsFacade extends AbstractFacade<PaymentDetails> {
         return null;
     }
 
+    public PaymentDetails findById(Integer id) {
+
+        final TypedQuery<PaymentDetails> query = getEntityManager().createNamedQuery("PaymentDetails.findById",
+                PaymentDetails.class);
+        query.setParameter("id", id);
+        List<PaymentDetails> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
     public PaymentDetails findByDestinataire(String destinataire) {
 
         final TypedQuery<PaymentDetails> query = getEntityManager().createNamedQuery("PaymentDetails.findByDestinataire",
