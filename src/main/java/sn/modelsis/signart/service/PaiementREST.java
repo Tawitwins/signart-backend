@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -21,15 +22,15 @@ import javax.ws.rs.core.MediaType;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import sn.modelsis.signart.LigneCommande;
-import sn.modelsis.signart.LignePaiement;
-import sn.modelsis.signart.Paiement;
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.PaiementConverter;
 import sn.modelsis.signart.dto.LigneCommandeDto;
+import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.dto.PaiementDto;
-import sn.modelsis.signart.facade.LignePaiementFacade;
-import sn.modelsis.signart.facade.PaiementFacade;
+import sn.modelsis.signart.exception.SignArtException;
+import sn.modelsis.signart.facade.*;
+import sn.modelsis.signart.utils.Utils;
 import sun.misc.BASE64Encoder;
 
 /**
@@ -48,7 +49,13 @@ public class PaiementREST {
     PaiementConverter paiementConverter;
     @Inject
     LignePaiementConverter lignePaiementConverter;
-
+    @Inject
+    ParametrageFacade parametrageFacade;
+    @Inject
+    CommandeFacade commandeFacade;
+    @Inject
+    ClientFacade clientFacade;
+    Utils utils = new Utils();
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(PaiementDto dto) {
@@ -137,30 +144,70 @@ public class PaiementREST {
     }
 
     @GET
-    @Path("report/{id}/{format}")
-    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException, IOException {
+    @Path("report/{id}/{format}/{lieu}")
+    public String generateReport(@PathParam("id") Integer id,
+                                 @PathParam("format") String format,
+                                 @PathParam("lieu") String lieu)
+            throws JRException, IOException {
+
         String path = "D:\\Modelsis";
-        List<PaiementDto> paiementDtoList = findO(id);
+        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
+        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
+        String pathLogo = "D:/Modelsis/SignArt/referentielsignart/src/main/resources/assets/logo_signart.png";
 
-        File file = new File("D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\recuP.jrxml");
-        System.out.println(file);
+        Client client = null;
+        List<PaiementDto> paiementDtoList = new ArrayList<>();
+        paiementDtoList.add(find(id));
+        PaiementDto paiementDto = paiementDtoList.get(0);
+        Set<LignePaiementDto> lignePaiementDtoSet = paiementDto.getLignePaiements();
+        BigDecimal montantTotal = new BigDecimal("0");
 
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paiementDtoList);
+        if (!lignePaiementDtoSet.isEmpty()) {
+             for(LignePaiementDto lpaie: lignePaiementDtoSet){
+               montantTotal = montantTotal.add(lpaie.getMontant());
+             }
+         }
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("createdBy", "MODELSIS");
+        if (!lignePaiementDtoSet.isEmpty()) {
+            LignePaiementDto lignePaiementDto = lignePaiementDtoSet.iterator().next();
+            try {
+                client = clientFacade.findById(commandeFacade.find(lignePaiementDto.getLigneCommande().getIdCommande()).getIdClient().getId());
+            } catch (SignArtException e) {
+                throw new RuntimeException(e);
+            }
+            String ninea = parametrageFacade.findByParamName("NINEA").getValue();
+            String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
+            String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
+            File file = new File(kPath + "recuPaiement.jrxml");
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-        if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+            JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paiementDtoList);
+
+            Map<String, Object> parameters = new HashMap<>();
+
+            parameters.put("nomClient", client.getPrenom()+ " " +client.getNom());
+            parameters.put("paimentID", id);
+            parameters.put("montantPaiement", montantTotal);
+            parameters.put("montantEnLettre", utils.convertToLetter(montantTotal.longValue()));
+            parameters.put("numeroCommande", commandeFacade.find(lignePaiementDto.getLigneCommande().getIdCommande()).getNumero());
+            parameters.put("ninea", ninea);
+            parameters.put("adresseSignArt", adresseSignArt);
+            parameters.put("telephoneSignArt", telephoneSignArt);
+            parameters.put("pathLogo", pathLogo);
+            parameters.put("lieu", lieu);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+            if (format.equalsIgnoreCase("html")) {
+                JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+            }
+            if (format.equalsIgnoreCase("pdf")) {
+                JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+            }
+            byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
+            BASE64Encoder encoder = new BASE64Encoder();
+            String imageString = encoder.encode(imageByte);
+            return imageString;
         }
-        if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
-        }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
-        BASE64Encoder encoder = new BASE64Encoder();
-        String imageString = encoder.encode(imageByte);
-        return imageString;
+        return null;
     }
 }

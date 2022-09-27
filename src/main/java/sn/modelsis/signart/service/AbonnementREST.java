@@ -37,6 +37,7 @@ import sn.modelsis.signart.dto.EtatAbonnementDto;
 import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
+import sn.modelsis.signart.utils.Utils;
 import sun.misc.BASE64Encoder;
 
 /**
@@ -69,7 +70,10 @@ public class AbonnementREST {
     EtatAbonnementFacade etatAbonnementFacade;
     @Inject
     ModePaiementFacade modePaiementFacade;
-    
+
+    @Inject
+    ParametrageFacade parametrageFacade;
+    Utils utils = new Utils();
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(AbonnementDto dto) throws SignArtException {
@@ -155,11 +159,16 @@ public class AbonnementREST {
     @GET
     @Path("report/{id}/{format}/{adrGal}")
     public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
-        String path = "D:\\projet signart";
+        String path1 = "D:\\projet signart";
+        String path = "D:\\Modelsis";
+
+        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
+        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
+
         List<AbonnementDto> abonnementDtoList = new ArrayList<>();
         abonnementDtoList.add(find(id));
 
-        File file = new File("D:\\projet signart\\referentielsignart\\src\\main\\resources\\recuAbonnement.jrxml");
+        File file = new File(kPath+"recuAbonnement.jrxml");
         System.out.println(file);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
@@ -167,11 +176,23 @@ public class AbonnementREST {
 
         Map<String, Object> parameters = new HashMap<>();
         Abonne abonne = abonnementfacade.findById(id).getIdAbonne();
+        Abonnement abonnement = abonnementfacade.findById(id);
+        String ninea = parametrageFacade.findByParamName("NINEA").getValue();
+        String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
+        String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
+        Long montantTotal = new Long(abonnement.getMontantPaiement());
+        String pathLogo = "D:/Modelsis/SignArt/referentielsignart/src/main/resources/assets/logo_signart.png";
+
         parameters.put("NomClient", abonne.getPrenom()+ " " +abonne.getNom());
         parameters.put("abonnementID", id);
         //Locale currentLocale = Locale.getDefault();
         parameters.put("adressGalerie", adrGal);
         //parameters.put("Pays", currentLocale.getCountry());
+        parameters.put("montantEnLettre", utils.convertToLetter(montantTotal));
+        parameters.put("ninea", ninea);
+        parameters.put("adresseSignArt", adresseSignArt);
+        parameters.put("telephoneSignArt", telephoneSignArt);
+        parameters.put("pathLogo", pathLogo);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
