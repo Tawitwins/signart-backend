@@ -85,6 +85,7 @@ public class TerminalREST {
                 terminal.setLibelle(dto.getLibelle());
                 terminal.setDescription(dto.getDescription());
                 terminal.setPrix(dto.getPrix());
+                terminal.setCode(dto.getCode());
                 terminalFacade.edit(terminal);
                 return Response.status(Response.Status.OK).entity(dto).build();
                  
@@ -106,6 +107,7 @@ public class TerminalREST {
         entity.setLibelle(dto.getLibelle());
         entity.setDescription(dto.getDescription());
         entity.setPrix(dto.getPrix());
+        entity.setCode(dto.getCode());
         return entity;
     }
     
@@ -115,6 +117,7 @@ public class TerminalREST {
         dto.setLibelle(entity.getLibelle());
         dto.setDescription(entity.getDescription());
         dto.setPrix(entity.getPrix());
+        dto.setCode(entity.getCode());
         return dto;
     }
     

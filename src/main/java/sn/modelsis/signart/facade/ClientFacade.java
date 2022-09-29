@@ -69,4 +69,19 @@ public class ClientFacade extends AbstractFacade<Client> {
         }
     }
 
+    public Client findById(Integer id) throws SignArtException{
+        try {
+            final TypedQuery<Client> query = getEntityManager().createNamedQuery("Client.findById",
+                    Client.class);
+            query.setParameter("id", id);
+            query.setMaxResults(1);
+            final List<Client> users = query.getResultList();
+            if (users.isEmpty()) {
+                return null;
+            }
+            return users.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
 }

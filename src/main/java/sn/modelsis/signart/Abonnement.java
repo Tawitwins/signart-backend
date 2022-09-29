@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Abonnement.findById", query = "SELECT a FROM Abonnement a WHERE a.id = :id")
     , @NamedQuery(name = "Abonnement.findByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")
     , @NamedQuery(name = "Abonnement.findAllByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")
-    , @NamedQuery(name = "Abonnement.findByTokenPaiement", query = "SELECT a FROM Abonnement a WHERE a.tokenPaiement = :tokenPaiement")})
+    , @NamedQuery(name = "Abonnement.findByTokenPaiement", query = "SELECT a FROM Abonnement a WHERE a.tokenPaiement = :tokenPaiement")
+        , @NamedQuery(name = "Abonnement.findByReabonne", query = "SELECT a FROM Abonnement a WHERE a.reabonne = :reabonne")
+})
 
 public class Abonnement implements Serializable{
     @Id
@@ -80,6 +82,8 @@ public class Abonnement implements Serializable{
     private PaymentDetails idDetailPayment;
 
    
+    @Column(name = "reabonne")
+    private Boolean reabonne;
 
     public Abonnement() {
     }
@@ -207,10 +211,11 @@ public class Abonnement implements Serializable{
 
     public void setIdDetailPayment(PaymentDetails idDetailPayment) {
         this.idDetailPayment = idDetailPayment;
+    public Boolean getReabonne() {
+        return reabonne;
     }
 
-
-
-
-
+    public void setReabonne(Boolean reabonne) {
+        this.reabonne = reabonne;
+    }
 }

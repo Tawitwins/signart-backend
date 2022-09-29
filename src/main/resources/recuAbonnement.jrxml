@@ -14,6 +14,12 @@
 	<parameter name="NomClient" class="java.lang.String"/>
 	<parameter name="abonnementID" class="java.lang.Integer"/>
 	<parameter name="adressGalerie" class="java.lang.String"/>
+	<parameter name="montantEnLettre" class="java.lang.String"/>
+	<parameter name="ninea" class="java.lang.String"/>
+	<parameter name="referenceSignArt" class="java.lang.String"/>
+	<parameter name="adresseSignArt" class="java.lang.String"/>
+	<parameter name="telephoneSignArt" class="java.lang.String"/>
+	<parameter name="pathLogo" class="java.lang.String"/>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="idAbonne" class="java.lang.Integer"/>
 	<field name="idModePaiement" class="java.lang.Integer"/>
@@ -23,23 +29,32 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="150" splitType="Stretch">
+		<band height="172" splitType="Stretch">
 			<image>
 				<reportElement x="-1" y="0" width="150" height="67" uuid="1c003177-754c-448f-8ce1-16868856f545"/>
-				<imageExpression><![CDATA["D:/projet signart/referentielsignart/src/main/resources/assets/images/logo_signart.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{pathLogo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement style="SubTitle" x="143" y="60" width="200" height="39" uuid="f6a78448-8260-4445-a9e0-e3fb53b080d9"/>
+				<reportElement x="25" y="80" width="190" height="30" forecolor="#9C7316" uuid="e67deaab-7459-4429-9fed-96b4f2ec6b77"/>
 				<textElement>
-					<font fontName="Times New Roman" size="26"/>
+					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Reçu de paiement]]></text>
 			</staticText>
 			<textField textAdjust="StretchHeight">
-				<reportElement style="Detail" x="20" y="110" width="380" height="40" uuid="dac08888-904b-4526-a971-c9fe1278fb62">
+				<reportElement style="Detail" x="300" y="0" width="162" height="40" uuid="dac08888-904b-4526-a971-c9fe1278fb62">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4474f3f-b5df-412c-a126-96ea475d910c"/>
 				</reportElement>
-				<textFieldExpression><![CDATA["Reçu la somme de: "+ $F{montantPaiement}+" \nDe l'abonné : "+ $P{NomClient}+" \nReprésentant: Paiement de l'abonnnement "+$P{abonnementID}+" sur signArt"]]></textFieldExpression>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NINEA: "+$P{ninea}+"\nNumero: "+$P{telephoneSignArt}+"\nAdresse: "+$P{adresseSignArt}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement style="Detail" x="25" y="115" width="380" height="40" uuid="db5a6af2-caf9-4fb3-9e8a-a8547c6f1e8a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4474f3f-b5df-412c-a126-96ea475d910c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Reçu la somme de: "+$P{montantEnLettre}+" FCFA ("+$F{montantPaiement}+" FCFA)"+" \nDe l'abonné : "+ $P{NomClient}+" \nReprésentant: Paiement de l'abonnnement "+$P{abonnementID}+" sur signArt\n"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

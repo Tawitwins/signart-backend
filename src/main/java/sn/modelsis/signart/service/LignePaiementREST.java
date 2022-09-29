@@ -2,17 +2,15 @@ package sn.modelsis.signart.service;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import sn.modelsis.signart.LignePaiement;
-import sn.modelsis.signart.Oeuvre;
-import sn.modelsis.signart.Paiement;
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.PaiementConverter;
 import sn.modelsis.signart.dto.LignePaiementDto;
-import sn.modelsis.signart.dto.LignePanierDto;
-import sn.modelsis.signart.dto.PaiementDto;
+import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import org.apache.commons.codec.binary.Base64;
 import sun.misc.BASE64Decoder;
+import sn.modelsis.signart.utils.Utils;
 import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
@@ -21,7 +19,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -58,7 +55,13 @@ public class LignePaiementREST {
 
     @Inject
     OeuvreFacade oeuvreFacade;
-
+    @Inject
+    ClientFacade clientFacade;
+    @Inject
+    ParametrageFacade parametrageFacade;
+    @Inject
+    CommandeFacade commandeFacade;
+    Utils utils = new Utils();
     public LignePaiementREST() {
     }
 
@@ -140,6 +143,14 @@ public class LignePaiementREST {
     }
 
     @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(LignePaiementDto dto) throws SignArtException {
+        lignePaiementFacade.edit(lignePaiementConverter.dtoToEntity(dto));
+        LignePaiementDto dtoRes = lignePaiementConverter.entityToDto(lignePaiementConverter.dtoToEntity(dto));
+        return Response.status(Response.Status.OK).entity(dtoRes).build();
+    }
+
+    @PUT
     @Path("valider/{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response validerLignePaiement(@PathParam("id") Integer id, LignePaiementDto dto) {
@@ -206,33 +217,39 @@ public class LignePaiementREST {
 //=====================
 
     @GET
-    @Path("paiement/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<LignePaiementDto> findO(@PathParam("id") Integer id) {
-        List<LignePaiementDto> lignePaiementDtoList = new ArrayList<>();
-        lignePaiementDtoList.add(lignePaiementConverter.entityToDto(lignePaiementFacade.find(id)));
-        return  lignePaiementDtoList;
-    }
+    @Path("report/{id}/{format}/{lieu}")
+    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("lieu") String lieu) throws JRException, IOException {
 
-    @GET
-    @Path("report/{id}/{format}")
-    public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format) throws JRException, IOException {
-        String path = "D:\\projet signart\\";
-        List<LignePaiementDto> paiementDtoList = findO(id);
+        List<LignePaiementDto> lignePaiementDtoList =  new ArrayList<>();
+        lignePaiementDtoList.add(find(id));
 
-        File file = new File("D:\\projet signart\\referentielsignart\\src\\main\\resources\\recuPaiement.jrxml");
-        System.out.println(file);
+        String path = "D:\\Modelsis";
+        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
+        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
+        String pathLogo = "D:/projet signart/referentielsignart/src/main/resources/assets/logo_signart.png";
+
+        String ninea = parametrageFacade.findByParamName("NINEA").getValue();
+        String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
+        String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
+        Client client = clientFacade.find(commandeFacade.find(lignePaiementDtoList.get(0).getLigneCommande().getIdCommande()).getIdClient().getId());
+
+        File file = new File(oPath+ "recuLignePaiement.jrxml");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paiementDtoList);
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(lignePaiementDtoList);
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("numeroCommande", paiementDtoList.get(0).getLigneCommande().getNumeroCommande());
-        parameters.put("nomOeuvre",paiementDtoList.get(0).getLigneCommande().getOeuvre().getNom());
-        parameters.put("montant", paiementDtoList.get(0).getMontant());
-        parameters.put("modePaiement", paiementDtoList.get(0).getLibelleModePaiement());
-        parameters.put("etat", paiementDtoList.get(0).getLibelleEtatPaiement());
-        parameters.put("date", paiementDtoList.get(0).getStringPaymentDate());
+
+        parameters.put("nomClient", client.getPrenom()+ " " +client.getNom());
+        parameters.put("lignePaimentID", id);
+        parameters.put("montantPaiement", lignePaiementDtoList.get(0).getMontant());
+        parameters.put("montantEnLettre", utils.convertToLetter(lignePaiementDtoList.get(0).getMontant().longValue()));
+        parameters.put("numeroCommande", lignePaiementDtoList.get(0).getLigneCommande().getNumeroCommande());
+        parameters.put("ninea", ninea);
+        parameters.put("adresseSignArt", adresseSignArt);
+        parameters.put("telephoneSignArt", telephoneSignArt);
+        parameters.put("pathLogo", pathLogo);
+        parameters.put("lieu", lieu);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
@@ -245,5 +262,25 @@ public class LignePaiementREST {
         BASE64Encoder encoder = new BASE64Encoder();
         String imageString = encoder.encode(imageByte);
         return imageString;
+    }
+    @GET
+    @Path("{id}/preuve")
+    public String downloadPreuve(@PathParam("id") Integer id)  {
+        LignePaiement lignePaiement = lignePaiementFacade.find(id);
+       try{
+           PaymentDetails paymentDetails = paymentDetailsFacade.find(lignePaiement.getIdPaymentDetails().getId());
+           byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(paymentDetails.getPreuve()));
+           BASE64Encoder encoder = new BASE64Encoder();
+           String imageString = encoder.encode(imageByte);
+           return  imageString;
+       } catch (Exception e) {
+           return  "Veuillez vérifier l'id du ligne de paiement";
+       }
+    }
+
+    @GET
+    @Path("FrenchNumberToWords/{number}")
+    public String convertToLetter(@PathParam("number") long number){
+        return utils.convertToLetter(number);
     }
 }

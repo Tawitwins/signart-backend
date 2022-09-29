@@ -16,9 +16,11 @@
     <parameter name="lieu" class="java.lang.String"/>
     <parameter name="montantEnLettre" class="java.lang.String"/>
     <parameter name="ninea" class="java.lang.String"/>
+    <parameter name="referenceSignArt" class="java.lang.String"/>
     <parameter name="adresseSignArt" class="java.lang.String"/>
     <parameter name="telephoneSignArt" class="java.lang.String"/>
     <parameter name="pathLogo" class="java.lang.String"/>
+    <parameter name="lignePaimentID" class="java.lang.Integer"/>
     <parameter name="montantPaiement" class="java.math.BigDecimal"/>
     <background>
         <band splitType="Stretch"/>
@@ -42,7 +44,7 @@
                 <reportElement style="Detail" x="25" y="115" width="380" height="40" uuid="db5a6af2-caf9-4fb3-9e8a-a8547c6f1e8a">
                     <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4474f3f-b5df-412c-a126-96ea475d910c"/>
                 </reportElement>
-                <textFieldExpression><![CDATA["Reçu la somme de: "+$P{montantEnLettre}+" FCFA ("+$P{montantPaiement}+" FCFA)"+" \nDe  : "+ $P{nomClient}+" \nReprésentant: Paiement de la commande "+$P{numeroCommande}+" sur signArt\n"]]></textFieldExpression>
+                <textFieldExpression><![CDATA["Reçu la somme de: "+$P{montantEnLettre}+" FCFA ("+$P{montantPaiement}+" FCFA)"+" \nDe  : "+ $P{nomClient}+" \nReprésentant: Paiement de la commande "+$P{numeroCommande}+" du ligne de paiement "+$P{lignePaimentID}+" sur signArt\n"]]></textFieldExpression>
             </textField>
             <staticText>
                 <reportElement x="25" y="80" width="190" height="30" forecolor="#9C7316" uuid="e67deaab-7459-4429-9fed-96b4f2ec6b77"/>

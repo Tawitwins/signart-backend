@@ -31,7 +31,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "LignePaiement.findAll", query = "SELECT l FROM LignePaiement l")
     , @NamedQuery(name = "LignePaiement.findById", query = "SELECT l FROM LignePaiement l WHERE l.id = :id")
     , @NamedQuery(name = "LignePaiement.findByDatePaiement", query = "SELECT l FROM LignePaiement l WHERE l.datePaiement = :datePaiement")
-    , @NamedQuery(name = "LignePaiement.findByMontant", query = "SELECT l FROM LignePaiement l WHERE l.montant = :montant")})
+    , @NamedQuery(name = "LignePaiement.findByMontant", query = "SELECT l FROM LignePaiement l WHERE l.montant = :montant")
+    , @NamedQuery(name = "LignePaiement.findByTokenPaiement", query = "SELECT l FROM LignePaiement l WHERE l.tokenPaiement = :tokenPaiement")
+})
+
 public class LignePaiement implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +69,10 @@ public class LignePaiement implements Serializable {
     @JoinColumn(name = "idPaymentDetails", referencedColumnName = "id", nullable = true)
     @ManyToOne
     private PaymentDetails idPaymentDetails;
+
+    @Column(name = "tokenPaiement", length = 200)
+    private String tokenPaiement;
+
     public LignePaiement() {
     }
 
@@ -141,12 +148,20 @@ public class LignePaiement implements Serializable {
         this.idPaymentDetails = idPaymentDetails;
     }
 
+    public String getTokenPaiement() {
+        return tokenPaiement;
+    }
+
+    public void setTokenPaiement(String tokenPaiement) {
+        this.tokenPaiement = tokenPaiement;
+    }
+
     /* @Override
-        public int hashCode() {
-            int hash = 0;
-            hash += (id != null ? id.hashCode() : 0);
-            return hash;
-        }*/
+            public int hashCode() {
+                int hash = 0;
+                hash += (id != null ? id.hashCode() : 0);
+                return hash;
+            }*/
     @Override
     public int hashCode() {
         int hash = 7;

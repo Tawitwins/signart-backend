@@ -34,6 +34,7 @@ public class AbonnementDto implements Serializable {
 
     private Integer idDetailPayment;
 
+    private Boolean reabonne;
 
 
     public AbonnementDto() {
@@ -172,4 +173,12 @@ public class AbonnementDto implements Serializable {
         this.idDetailPayment = idDetailPayment;
     }
 
+
+    public Boolean getReabonne() {
+        return reabonne;
+    }
+
+    public void setReabonne(Boolean reabonne) {
+        this.reabonne = reabonne;
+    }
 }

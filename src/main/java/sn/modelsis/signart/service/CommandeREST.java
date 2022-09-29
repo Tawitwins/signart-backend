@@ -75,6 +75,10 @@ public class CommandeREST {
     EtatAbonnementFacade etatAbonnementFacade;
     @Inject
     AbonnementFacade abonnementFacade;
+    @Inject
+    LignePaiementFacade lignePaiementFacade;
+    @Inject
+    ClientConverter clientConverter;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) throws SignArtException {
@@ -200,7 +204,7 @@ public class CommandeREST {
             commande.setIdDevise(deviseFacade.findByCode("XOF"));
             commande.setDelaiLivraison(1);
             commande.setIdEtatCommande(etatCommandeFacade.findByCode("NOUVEAU"));
-            LigneCommande ligneCommande;
+            LigneCommande ligneCommande = null;
             BigDecimal montant = BigDecimal.ZERO, fraisLivraison = BigDecimal.ZERO;
             for (LignePanier lignePanier : listLignePanier) {
                 ligneCommande = new LigneCommande();
@@ -272,7 +276,11 @@ public class CommandeREST {
         Calendar calendar = Calendar.getInstance();
         java.util.Date currentDate = calendar.getTime();
         java.sql.Timestamp dateAjout = new java.sql.Timestamp(currentDate.getTime());
+
         Commande myCommande = commandeFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+        Abonnement abonnement = abonnementFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+        LignePaiement lignePaiement = lignePaiementFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+
         if(myCommande != null){
             myCommande.getLigneCommandeSet().forEach(ligneC ->{
                 ligneC.setIdEtatLigneCommande(etatLigneCommandeFacade.findByCode("PAYEETNONLIVREE"));
@@ -295,13 +303,16 @@ public class CommandeREST {
             }
             //myPaiement.setLignePaiementSet(lignePaiementSet);
             paiementFacade.save(myPaiement);
-        } else{
-            Abonnement abonnement = abonnementFacade.findByToken(payDunyaInput.get("data[invoice][token]").get(0));
+        } else if(abonnement != null){
             abonnement.setEtatAbonnement(etatAbonnementFacade.findByCode("PAYE"));
             abonnementFacade.edit(abonnement);
+        } else{
+            lignePaiement.setIdEtatPaiement(etatPaiementFacade.findByCode("PAYE"));
+            lignePaiement.setIdModePaiement(modePaiementFacade.findByCode("PAYDUNYA"));
+            lignePaiementFacade.edit(lignePaiement);
         }
 
-        return "Update succeeded";
+        return "Update succeeded ";
     }
     @POST
     @Path("updateApresPaiementOrange")
@@ -351,5 +362,13 @@ public class CommandeREST {
         }
         CommandeDto commandeDto = commandeConverter.entityToDto(commande);
         return Response.status(Response.Status.OK).entity(commandeDto).build();
+    }
+
+    @GET
+    @Path("{idCommande}/client")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public  ClientDto findClientByIdCommande(@PathParam("idCommande") Integer idCommande){
+        Client client = clientFacade.find(commandeFacade.find(idCommande).getIdClient().getId());
+        return clientConverter.entityToDto(client);
     }
 }

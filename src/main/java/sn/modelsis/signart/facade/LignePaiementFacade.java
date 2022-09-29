@@ -1,6 +1,8 @@
 package sn.modelsis.signart.facade;
 
 import sn.modelsis.signart.*;
+import sn.modelsis.signart.dto.LignePaiementDto;
+import sn.modelsis.signart.exception.SignArtException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -49,5 +51,26 @@ public class LignePaiementFacade extends AbstractFacade<LignePaiement> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
+    public LignePaiement findByToken(String tokenPaiement) {
+        final TypedQuery<LignePaiement> query = getEntityManager().createNamedQuery("LignePaiement.findByTokenPaiement", LignePaiement.class);
+        query.setParameter("tokenPaiement", tokenPaiement);
+        List<LignePaiement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return  null;
+    }
+
+    public LignePaiement findById(Integer id) {
+        final TypedQuery<LignePaiement> query = getEntityManager().createNamedQuery("LignePaiement.findById", LignePaiement.class);
+        query.setParameter("id", id);
+        List<LignePaiement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return  null;
+    }
+
+
 }

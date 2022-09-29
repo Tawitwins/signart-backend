@@ -93,8 +93,14 @@ public class ClientFacadeREST {
     
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Client> findAll() {
-        return clientFacade.findAll();
+    public List<ClientDto> findAll() {
+        List<ClientDto> listDto = new ArrayList<>();
+        List<Client> client = clientFacade.findAll();
+        if(client != null){
+            client.stream().map(entity->clientConverter.entityToDto(entity))
+                    .forEachOrdered(clientDto -> listDto.add(clientDto));
+        }
+        return listDto;
     }
 
     @GET
