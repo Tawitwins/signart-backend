@@ -69,14 +69,45 @@ public class AbonnementREST {
     EtatAbonnementFacade etatAbonnementFacade;
     @Inject
     ModePaiementFacade modePaiementFacade;
+    @Inject
+    PaymentDetailsFacade paymentDetailsFacade;
     
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(AbonnementDto dto) throws SignArtException {
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentDate = calendar.getTime();
+        java.sql.Timestamp dateAjout = new java.sql.Timestamp(currentDate.getTime());
+        dto.setDateCreation(dateAjout);
         abonnementfacade.create(dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
-    
+    @POST
+    @Path("reabonnement/{response}/{idTerminal}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response Reabonnement(AbonnementDto oldAbonnementdto, @PathParam("response") Boolean response, @PathParam("idTerminal") Integer idTerminal) throws SignArtException {
+        //Abonnement oldAbonnement = abonnementfacade.find(idOldAbonnement);
+        Abonnement oldAbonnement = dtoToEntity(oldAbonnementdto);
+        Terminal newTerminal = findTerminal(idTerminal);
+        Abonnement newAbonnement = oldAbonnement;
+        if(response == true ){
+            newAbonnement =createSameAbonnement(oldAbonnement);
+        }
+        else{
+            int newMontant = oldAbonnement.getMontantPaiement()-oldAbonnement.getIdTerminal().getPrix()+newTerminal.getPrix();
+            newAbonnement.setMontantPaiement(newMontant);
+            newAbonnement.setIdTerminal(newTerminal);
+            newAbonnement.setEtatAbonnement(etatAbonnementFacade.findByCode("NON_PAYE"));
+            newAbonnement.setId(null);
+            newAbonnement.setTokenPaiement(null);
+            newAbonnement.setDateDebut(null);
+            newAbonnement.setIdModePaiement(null);
+        }
+        abonnementfacade.add(newAbonnement);
+        return Response.status(Response.Status.CREATED).entity(entityToDto(newAbonnement)).build();
+    }
+
     @PUT
     @Path("editEtatAbonnement/{idAbonnement}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -92,8 +123,9 @@ public class AbonnementREST {
     @PUT
     @Produces({MediaType.APPLICATION_JSON})
     public Response update(AbonnementDto dto) throws SignArtException{
-        abonnementfacade.edit(dtoToEntity(dto));
-        AbonnementDto dtoRes = entityToDto(dtoToEntity(dto));
+        Abonnement entity =dtoToEntity(dto);
+        entity = abonnementfacade.save(entity);
+        AbonnementDto dtoRes = entityToDto(entity);
         return Response.status(Response.Status.OK).entity(dtoRes).build();
 
     }
@@ -125,9 +157,17 @@ public class AbonnementREST {
     @GET
     @Path("abonnementByAbonne/{idAbonne}")
     @Produces({MediaType.APPLICATION_JSON})
-    public AbonnementDto getByAbonne(@PathParam("idAbonne") Integer idAbonne) throws SignArtException {
-         Abonnement entity = abonnementfacade.findByIdAbonne(idAbonne);          
-        return entityToDto(entity);
+    public List<AbonnementDto> getByAbonne(@PathParam("idAbonne") Integer idAbonne) throws SignArtException {
+        List<AbonnementDto> dtoList = new ArrayList<>();
+         List<Abonnement> listEntity = abonnementfacade.findByIdAbonne(idAbonne);
+        if (listEntity != null) {
+            listEntity.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> dtoList.add(dto)
+            );
+        }
+        return dtoList;
     }
     
     
@@ -187,6 +227,12 @@ public class AbonnementREST {
         //return "report generated in path : " + path;
     }
 
+    private Abonnement createSameAbonnement( Abonnement oldAbonnement){
+        Abonnement newAbonnement = oldAbonnement;
+        newAbonnement.setId(null);
+        //abonnementfacade.add(newAbonnement);
+        return newAbonnement;
+    }
     private Abonnement dtoToEntity(AbonnementDto dto) throws SignArtException {
         
         Abonnement entity = new Abonnement();
@@ -200,6 +246,10 @@ public class AbonnementREST {
         entity.setEtatAbonnement(etatAbonnementFacade.findById(dto.getEtatAbonnement()));
         if(dto.getIdModePaiement() != null)
             entity.setIdModePaiement(modePaiementFacade.find(dto.getIdModePaiement()));
+        if(dto.getIdDetailPayment() != null)
+            entity.setIdDetailPayment(paymentDetailsFacade.find(dto.getIdDetailPayment()));
+        entity.setDateCréation(dto.getDateCreation());
+        entity.setDateDebut(entity.getDateDebut());
         entity.setTokenPaiement(dto.getToken());
         return entity;
     }
@@ -219,6 +269,10 @@ public class AbonnementREST {
             dto.setIdModePaiement(entity.getIdModePaiement().getId());
             dto.setCodeModePaiement(entity.getIdModePaiement().getCode());
         }
+        if(entity.getIdDetailPayment() != null)
+            dto.setIdDetailPayment(entity.getIdDetailPayment().getId());
+        dto.setDateCreation(entity.getDateCréation());
+        dto.setDateDebut(entity.getDateDebut());
         dto.setToken(entity.getTokenPaiement());
         return dto;
     }

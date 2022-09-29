@@ -51,10 +51,11 @@ public class PaiementConverter {
         if (lignePaiementSet != null && !lignePaiementSet.isEmpty()) {
             Set<LignePaiementDto> lignePaiementDtoSet = new HashSet<>();
             LignePaiementDto lignePaiementDto;
+            dto.setMontantTotal(BigDecimal.valueOf(0));
             for (LignePaiement lignePaiement : lignePaiementSet) {
                 lignePaiementDto = lignePaiementConverter.entityToDto(lignePaiement);
                 lignePaiementDtoSet.add(lignePaiementDto);
-                //dto.setMontantTotal(lignePaiement.getMontant());
+                dto.setMontantTotal(dto.getMontantTotal().add(lignePaiement.getMontant()));
 
             }
             dto.setLignePaiements(lignePaiementDtoSet);

@@ -192,30 +192,16 @@ public class LignePaiementREST {
         fileContent = fileContent.split("base64,")[1];
         try{
         byte[]  content = Base64.decodeBase64(fileContent);
-        java.nio.file.Path filee = (java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename);
+        String path = "C:\\Users\\SNMBENGUEO\\Desktop\\"+filename;
+        java.nio.file.Path filee = (java.nio.file.Path) Paths.get(path);
         Files.write(filee, content);
-            return "uploaded";
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return  null;
-    }
-
-    @POST
-    @Path("upload/{filename}")
-    public  String encode(@PathParam("filename") String filename,String fileContent) throws IOException {
-        fileContent = fileContent.split("base64,")[1];
-        String path = "D:\\Modelsis\\"+filename;
-        try{
-            byte[]  content = Base64.getDecoder().decode(fileContent);
-            java.nio.file.Path filee = (java.nio.file.Path) Paths.get(path);
-            Files.write(filee, content);
             return path;
         }catch (Exception e) {
             e.printStackTrace();
         }
         return  null;
     }
+
 
 //=====================
 

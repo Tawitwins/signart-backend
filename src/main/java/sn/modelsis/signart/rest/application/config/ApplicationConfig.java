@@ -56,9 +56,9 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.ImageREST.class);
         resources.add(sn.modelsis.signart.service.LicenceREST.class);
         resources.add(sn.modelsis.signart.service.LigneCommandeREST.class);
-        resources.add(sn.modelsis.signart.service.LignePanierREST.class);
-        resources.add(sn.modelsis.signart.service.LignePaiementREST.class);
         resources.add(sn.modelsis.signart.service.LigneLivraisonREST.class);
+        resources.add(sn.modelsis.signart.service.LignePaiementREST.class);
+        resources.add(sn.modelsis.signart.service.LignePanierREST.class);
         resources.add(sn.modelsis.signart.service.ListeSelectionREST.class);
         resources.add(sn.modelsis.signart.service.ListeSelection_OeuvresREST.class);
         resources.add(sn.modelsis.signart.service.LivraisonREST.class);
@@ -76,6 +76,8 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.OeuvreSouscriptionREST.class);
         resources.add(sn.modelsis.signart.service.PaiementREST.class);
         resources.add(sn.modelsis.signart.service.PanierREST.class);
+        resources.add(sn.modelsis.signart.service.ParametrageREST.class);
+        resources.add(sn.modelsis.signart.service.PaymentDetailsREST.class);
         resources.add(sn.modelsis.signart.service.PaysFacadeREST.class);
         resources.add(sn.modelsis.signart.service.PresentationREST.class);
         resources.add(sn.modelsis.signart.service.ProfilFacadeREST.class);
@@ -91,8 +93,6 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.TypeCompteFacadeREST.class);
         resources.add(sn.modelsis.signart.service.UserFacadeREST.class);
         resources.add(sn.modelsis.signart.service.VisiteurFacadeREST.class);
-        resources.add(sn.modelsis.signart.service.ParametrageREST.class);
-        resources.add(sn.modelsis.signart.service.PaymentDetailsREST.class);
 
     }
 }

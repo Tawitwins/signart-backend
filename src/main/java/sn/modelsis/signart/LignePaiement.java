@@ -64,7 +64,7 @@ public class LignePaiement implements Serializable {
     private EtatPaiement idEtatPaiement;
 
     @JoinColumn(name = "idPaymentDetails", referencedColumnName = "id", nullable = true)
-    @ManyToOne(optional = false)
+    @ManyToOne
     private PaymentDetails idPaymentDetails;
     public LignePaiement() {
     }

@@ -23,6 +23,7 @@ import sn.modelsis.signart.converter.ClientConverter;
 import sn.modelsis.signart.dto.ClientDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ClientFacade;
+import sn.modelsis.signart.facade.CommandeFacade;
 import sn.modelsis.signart.facade.MarquageArtisteFacade;
 
 /**
@@ -39,7 +40,8 @@ public class ClientFacadeREST {
     MarquageArtisteFacade marquageArtiste;
     @Inject
     ClientConverter clientConverter;
-
+    @Inject
+    CommandeFacade commandeFacade;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(ClientDto dto) {
@@ -77,6 +79,16 @@ public class ClientFacadeREST {
             throw new SignArtException("Utilisateur invalide!");
         }
         return clientConverter.entityToDto(clientFacade.findByUser(idUser));
+    }
+    @GET
+    @Path("commande/{idCommande}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ClientDto findByCommande(@PathParam("idCommande") Integer idCommande) throws SignArtException {
+        if (idCommande == null || idCommande == 0) {
+            throw new SignArtException("Commandes invalide!");
+        }
+
+        return clientConverter.entityToDto(commandeFacade.findById(idCommande).getIdClient());
     }
     
     @GET

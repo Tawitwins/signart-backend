@@ -5,7 +5,11 @@
  */
 package sn.modelsis.signart;
 
+import org.apache.james.mime4j.field.datetime.DateTime;
+
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,6 +67,17 @@ public class Abonnement implements Serializable{
     private ModePaiement idModePaiement;
     @Column(name = "tokenPaiement", length = 200)
     private String tokenPaiement;
+
+
+    @Basic(optional = false)
+    @Column(name = "dateCreation", nullable = false)
+    private Date dateCreation;
+    @Column(name = "dateDebut", nullable = false)
+    private Date dateDebut;
+
+    @JoinColumn(name = "idDetailPayment", referencedColumnName = "id")
+    @ManyToOne
+    private PaymentDetails idDetailPayment;
 
    
 
@@ -171,6 +186,28 @@ public class Abonnement implements Serializable{
         this.tokenPaiement = tokenPaiement;
     }
 
+    public Date getDateCréation() {
+        return dateCreation;
+    }
+
+    public void setDateCréation(Date dateCréation) {
+        this.dateCreation = dateCréation;
+    }
+
+    public Date getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+    public PaymentDetails getIdDetailPayment() {
+        return idDetailPayment;
+    }
+
+    public void setIdDetailPayment(PaymentDetails idDetailPayment) {
+        this.idDetailPayment = idDetailPayment;
+    }
 
 
 

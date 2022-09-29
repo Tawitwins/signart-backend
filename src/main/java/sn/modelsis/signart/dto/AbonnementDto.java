@@ -6,6 +6,8 @@
 package sn.modelsis.signart.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -26,6 +28,12 @@ public class AbonnementDto implements Serializable {
     private Integer idModePaiement;
     private String codeModePaiement;
     private String token;
+
+    private Date dateCreation;
+    private Date dateDebut;
+
+    private Integer idDetailPayment;
+
 
 
     public AbonnementDto() {
@@ -141,4 +149,27 @@ public class AbonnementDto implements Serializable {
     public void setToken(String token) {
         this.token = token;
     }
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Date getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+    public Integer getIdDetailPayment() {
+        return idDetailPayment;
+    }
+
+    public void setIdDetailPayment(Integer idDetailPayment) {
+        this.idDetailPayment = idDetailPayment;
+    }
+
 }
