@@ -92,6 +92,21 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
         }
         return null;
     }
+
+    /**
+     *
+     * @param reabonne
+     * @return
+     */
+    public Abonnement findByReabonne(Boolean reabonne) {
+        final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findByReabonne", Abonnement.class);
+        query.setParameter("reabonne", reabonne);
+        List<Abonnement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
     
     /**
      *

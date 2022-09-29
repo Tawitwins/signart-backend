@@ -19,6 +19,7 @@ public class TerminalDto implements Serializable{
     private String description;
     private Integer prix;
 
+    private String code;
     public TerminalDto() {
     }
 
@@ -67,7 +68,12 @@ public class TerminalDto implements Serializable{
     public void setPrix(Integer prix) {
         this.prix = prix;
     }
-    
-    
-    
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

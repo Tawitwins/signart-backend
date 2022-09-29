@@ -27,6 +27,8 @@ public class AbonnementDto implements Serializable {
     private String codeModePaiement;
     private String token;
 
+    private Boolean reabonne;
+
 
     public AbonnementDto() {
     }
@@ -140,5 +142,13 @@ public class AbonnementDto implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Boolean getReabonne() {
+        return reabonne;
+    }
+
+    public void setReabonne(Boolean reabonne) {
+        this.reabonne = reabonne;
     }
 }

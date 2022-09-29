@@ -77,6 +77,8 @@ public class CommandeREST {
     AbonnementFacade abonnementFacade;
     @Inject
     LignePaiementFacade lignePaiementFacade;
+    @Inject
+    ClientConverter clientConverter;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) throws SignArtException {
@@ -202,7 +204,7 @@ public class CommandeREST {
             commande.setIdDevise(deviseFacade.findByCode("XOF"));
             commande.setDelaiLivraison(1);
             commande.setIdEtatCommande(etatCommandeFacade.findByCode("NOUVEAU"));
-            LigneCommande ligneCommande;
+            LigneCommande ligneCommande = null;
             BigDecimal montant = BigDecimal.ZERO, fraisLivraison = BigDecimal.ZERO;
             for (LignePanier lignePanier : listLignePanier) {
                 ligneCommande = new LigneCommande();
@@ -360,5 +362,13 @@ public class CommandeREST {
         }
         CommandeDto commandeDto = commandeConverter.entityToDto(commande);
         return Response.status(Response.Status.OK).entity(commandeDto).build();
+    }
+
+    @GET
+    @Path("{idCommande}/client")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public  ClientDto findClientByIdCommande(@PathParam("idCommande") Integer idCommande){
+        Client client = clientFacade.find(commandeFacade.find(idCommande).getIdClient().getId());
+        return clientConverter.entityToDto(client);
     }
 }

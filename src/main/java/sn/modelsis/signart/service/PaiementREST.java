@@ -166,6 +166,8 @@ public class PaiementREST {
              for(LignePaiementDto lpaie: lignePaiementDtoSet){
                montantTotal = montantTotal.add(lpaie.getMontant());
              }
+             paiementDto.setMontant(montantTotal);
+             paiementFacade.save(paiementConverter.dtoToEntity(paiementDto));
          }
 
         if (!lignePaiementDtoSet.isEmpty()) {

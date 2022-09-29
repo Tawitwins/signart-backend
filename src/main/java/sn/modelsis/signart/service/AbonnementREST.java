@@ -219,6 +219,7 @@ public class AbonnementREST {
         entity.setMontantPaiement(dto.getMontantPaiement());
         entity.setPrecisions(dto.getPrecisions());
         entity.setEtatAbonnement(etatAbonnementFacade.findById(dto.getEtatAbonnement()));
+        entity.setReabonne(dto.getReabonne());
         if(dto.getIdModePaiement() != null)
             entity.setIdModePaiement(modePaiementFacade.find(dto.getIdModePaiement()));
         entity.setTokenPaiement(dto.getToken());
@@ -235,6 +236,7 @@ public class AbonnementREST {
         dto.setMontantPaiement(entity.getMontantPaiement());
         dto.setPrecisions(entity.getPrecisions());
         dto.setEtatAbonnement(entity.getEtatAbonnement().getId());
+        dto.setReabonne(entity.getReabonne());
         dto.setId(entity.getId());
         if(entity.getIdModePaiement()!=null) {
             dto.setIdModePaiement(entity.getIdModePaiement().getId());
