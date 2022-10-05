@@ -105,6 +105,7 @@ public class PaiementREST {
                     -> listDto.add(dto)
             );
         }
+        Collections.reverse(listDto);
         return listDto;
     }
 
@@ -129,6 +130,7 @@ public class PaiementREST {
                     -> listDto.add(dto)
             );
         }
+        Collections.reverse(listDto);
         return listDto;
     }
     @GET

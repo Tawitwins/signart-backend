@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,6 +103,7 @@ public class LigneLivraisonREST {
                     -> listDto.add(dto)
             );
         }
+        Collections.reverse(listDto);
         return listDto;
     }
     @GET
