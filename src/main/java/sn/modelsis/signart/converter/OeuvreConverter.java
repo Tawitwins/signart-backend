@@ -62,6 +62,7 @@ public class OeuvreConverter {
         dto.setMiniature(entity.getMiniature());
         dto.setDateAjout(entity.getDateAjout());
         dto.setDescription(entity.getDescription());
+        dto.setReference(entity.getReference());
         if(entity.getIdStatut() != null)
             dto.setIdStatus(entity.getIdStatut().getId());
         dto.setStock(entity.getStock());
@@ -98,6 +99,7 @@ public class OeuvreConverter {
         entity.setTaxes(dto.getTaxes());
         entity.setImage(dto.getImage());
         entity.setDescription(dto.getDescription());
+        entity.setReference(dto.getReference());
         if(dto.getIdArtiste() != null)
             entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
         if(dto.getIdMagasin() != null){

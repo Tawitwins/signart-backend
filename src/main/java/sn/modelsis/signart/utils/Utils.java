@@ -2,6 +2,7 @@ package sn.modelsis.signart.utils;
 
 import javax.ws.rs.core.MultivaluedMap;
 import java.text.*;
+import java.util.Random;
 
 public class Utils {
 
@@ -255,5 +256,10 @@ public class Utils {
         resultat =  resultat + tradMille;
 
         return resultat;
+    }
+
+    public String generateReference(){
+        return  new DecimalFormat("000000")
+                .format(new Random().nextInt(999999));
     }
 }

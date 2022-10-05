@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Oeuvre.findByNouveau", query = "SELECT o FROM Oeuvre o WHERE o.nouveau = :nouveau")
         , @NamedQuery(name = "Oeuvre.findBySpecialDelivery", query = "SELECT o FROM Oeuvre o WHERE o.specialDelivery = :specialDelivery")
         , @NamedQuery(name = "Oeuvre.findByIsPaid", query = "SELECT o FROM Oeuvre o WHERE o.isPaid = :isPaid")
+        , @NamedQuery(name = "Oeuvre.findByReference", query = "SELECT o FROM Oeuvre o WHERE o.reference = :reference")
         , @NamedQuery(name = "Oeuvre.findByDimensions", query = "SELECT o FROM Oeuvre o WHERE o.dimensions = :dimensions")})
 public class Oeuvre implements Serializable {
 
@@ -88,6 +89,9 @@ public class Oeuvre implements Serializable {
 
     @Column(name = "description", length = 1000)
     private String description;
+
+    @Column(name = "reference", length = 1000)
+    private String reference;
 
       @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -402,6 +406,15 @@ public class Oeuvre implements Serializable {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

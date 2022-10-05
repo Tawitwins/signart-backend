@@ -37,6 +37,8 @@ public class OeuvreDto implements Serializable {
     private Integer idStatus;
     private Integer idMagasin;
     private Integer stock;
+
+    private String reference;
     
     
     
@@ -283,6 +285,14 @@ public class OeuvreDto implements Serializable {
 
     public void setPaid(Boolean paid) {
         isPaid = paid;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     @Override

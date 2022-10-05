@@ -10,16 +10,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.Artiste;
-import sn.modelsis.signart.Artiste_;
-import sn.modelsis.signart.Oeuvre;
-import sn.modelsis.signart.Oeuvre_;
 //import sn.modelsis.signart.SousTechnique_;
-import sn.modelsis.signart.Technique;
-import sn.modelsis.signart.Technique_;
-import sn.modelsis.signart.Theme;
-import sn.modelsis.signart.Theme_;
+
 
 /**
  *
@@ -182,6 +176,16 @@ public class OeuvreFacade extends AbstractFacade<Oeuvre> {
 
         return null;
 
+    }
+
+    public Oeuvre findByReference(String reference) {
+        final TypedQuery<Oeuvre> query = getEntityManager().createNamedQuery("Oeuvre.findByReference", Oeuvre.class);
+        query.setParameter("reference", reference);
+        List<Oeuvre> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return  null;
     }
 
     @Override
