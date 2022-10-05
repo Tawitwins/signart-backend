@@ -133,7 +133,10 @@ public class LigneCommandeREST {
             listEnt.stream().map(entity
                     -> ligneCommandeConverter.entityToDtoPlusLigneLivraison(entity)
             ).forEachOrdered(dto
-                    -> listDto.add(dto)
+                    ->{ if(dto!=null){
+                            listDto.add(dto);
+                        }
+                }
             );
         }
         Collections.reverse(listDto);

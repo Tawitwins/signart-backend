@@ -210,7 +210,8 @@ public class Abonnement implements Serializable{
     }
 
     public void setIdDetailPayment(PaymentDetails idDetailPayment) {
-        this.idDetailPayment = idDetailPayment;}
+        this.idDetailPayment = idDetailPayment;
+    }
     public Boolean getReabonne() {
         return reabonne;
     }

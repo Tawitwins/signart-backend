@@ -155,6 +155,7 @@ public class ChiffrementCompressionREST {
         archive.setNom(zipFolderName);
         archiveSignartFacade.create(archive);
         abonnement.setEtatAbonnement(etatAbonnementFacade.findByCode("VALIDE"));
+        abonnement.setDateDebut(new Date());
         abonnementFacade.edit(abonnement);
 
         return Response.status(Response.Status.CREATED).entity(dto).build();
