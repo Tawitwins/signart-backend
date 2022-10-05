@@ -209,7 +209,7 @@ public class AbonnementREST {
         List<AbonnementDto> abonnementDtoList = new ArrayList<>();
         abonnementDtoList.add(find(id));
 
-        File file = new File(kPath+"recuAbonnement.jrxml");
+        File file = new File(oPath+"recuAbonnement.jrxml");
         System.out.println(file);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
@@ -222,7 +222,7 @@ public class AbonnementREST {
         String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
         String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
         Long montantTotal = new Long(abonnement.getMontantPaiement());
-        String pathLogo = "D:/Modelsis/SignArt/referentielsignart/src/main/resources/assets/logo_signart.png";
+        String pathLogo = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
 
         parameters.put("NomClient", abonne.getPrenom()+ " " +abonne.getNom());
         parameters.put("abonnementID", id);
@@ -237,12 +237,12 @@ public class AbonnementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, path + "\\reçue_paiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, path1 + "\\reçue_paiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\reçue_paiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path1 + "\\reçue_paiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path + "\\reçue_paiement.pdf"));
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path1 + "\\reçue_paiement.pdf"));
         BASE64Encoder encoder = new BASE64Encoder();
         String imageString = encoder.encode(imageByte);
         return imageString;

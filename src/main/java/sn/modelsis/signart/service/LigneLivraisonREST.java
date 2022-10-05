@@ -1,10 +1,7 @@
 package sn.modelsis.signart.service;
 
 import org.apache.commons.codec.binary.Base64;
-import sn.modelsis.signart.LigneLivraison;
-import sn.modelsis.signart.LignePaiement;
-import sn.modelsis.signart.Livraison;
-import sn.modelsis.signart.Paiement;
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.LigneLivraisonConverter;
 import sn.modelsis.signart.converter.LignePaiementConverter;
 import sn.modelsis.signart.converter.LivraisonConverter;
@@ -13,6 +10,7 @@ import sn.modelsis.signart.dto.LigneLivraisonDto;
 import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
+import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -171,6 +169,15 @@ public class LigneLivraisonREST {
             e.printStackTrace();
         }
         return  null;
+    }
+    @GET
+    @Path("{id}/preuve")
+    public String downloadPreuve(@PathParam("id") Integer id) throws IOException {
+        LigneLivraison ligneLivraison = ligneLivraisonFacade.find(id);
+            byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(ligneLivraison.getPreuvePourLivraison().trim()));
+            BASE64Encoder encoder = new BASE64Encoder();
+            String imageString = encoder.encode(imageByte);
+            return  imageString;
     }
     @GET
     @Path("count")
