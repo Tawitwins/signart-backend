@@ -156,6 +156,7 @@ public class AbonnementREST {
                         -> dtoList.add(dto)
                 );
             }
+        Collections.reverse(dtoList);
         return dtoList;
     }
     
@@ -172,6 +173,7 @@ public class AbonnementREST {
                     -> dtoList.add(dto)
             );
         }
+        Collections.reverse(dtoList);
         return dtoList;
     }
     
@@ -195,6 +197,7 @@ public class AbonnementREST {
                         -> dtoList.add(dto)
                 );
             }
+            Collections.reverse(dtoList);
             return dtoList;   
     }
     @GET

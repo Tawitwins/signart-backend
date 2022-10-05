@@ -167,6 +167,7 @@ public class CommandeREST {
                     -> listDto.add(dto)
             );
         }
+        Collections.reverse(listDto);
         return listDto;
     }
     
