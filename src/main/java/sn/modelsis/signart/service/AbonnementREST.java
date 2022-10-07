@@ -31,10 +31,7 @@ import javax.ws.rs.core.Response;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import sn.modelsis.signart.*;
-import sn.modelsis.signart.dto.AbonneDto;
-import sn.modelsis.signart.dto.AbonnementDto;
-import sn.modelsis.signart.dto.EtatAbonnementDto;
-import sn.modelsis.signart.dto.PaiementDto;
+import sn.modelsis.signart.dto.*;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import sn.modelsis.signart.utils.Utils;
@@ -47,32 +44,36 @@ import sun.misc.BASE64Encoder;
 @Stateless
 @Path("abonnement")
 public class AbonnementREST {
-    
+
     @Inject
     AbonnementFacade abonnementfacade;
-    
+
     @Inject
     TerminalFacade terminalFacade;
-    
+
     @Inject
     DelaiFacade delaiFacade;
-    
+
     @Inject
     ListeSelectionFacade listeSelectionFacade;
-    
+
     @Inject
     UtilisateurFacade utilisateurFacade;
-    
+
     @Inject
     AbonneFacade abonneFacade;
-    
+
     @Inject
     EtatAbonnementFacade etatAbonnementFacade;
     @Inject
     ModePaiementFacade modePaiementFacade;
     @Inject
     PaymentDetailsFacade paymentDetailsFacade;
-    
+    @Inject
+    ListeSelection_OeuvresFacade listeOeuvreFacade;
+    @Inject
+    OeuvreNumeriqueFacade oeuvreNumeriqueFacade;
+
 
     @Inject
     ParametrageFacade parametrageFacade;
@@ -118,12 +119,12 @@ public class AbonnementREST {
     @Produces({MediaType.APPLICATION_JSON})
     public Response editPhoto(@PathParam("idAbonnement") Integer idAbonnement, EtatAbonnementDto etatAbonnement) throws SignArtException{
         Abonnement abonnement;
-                abonnement = abonnementfacade.findById(idAbonnement);
-                abonnement.setEtatAbonnement(etatAbonnementFacade.findById(etatAbonnement.getId()));      
-                abonnementfacade.edit(abonnement);
-                AbonnementDto dto = entityToDto(abonnement);
-                return Response.status(Response.Status.OK).entity(dto).build();
-                 
+        abonnement = abonnementfacade.findById(idAbonnement);
+        abonnement.setEtatAbonnement(etatAbonnementFacade.findById(etatAbonnement.getId()));
+        abonnementfacade.edit(abonnement);
+        AbonnementDto dto = entityToDto(abonnement);
+        return Response.status(Response.Status.OK).entity(dto).build();
+
     }
     @PUT
     @Produces({MediaType.APPLICATION_JSON})
@@ -134,7 +135,7 @@ public class AbonnementREST {
         return Response.status(Response.Status.OK).entity(dtoRes).build();
 
     }
-    
+
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -142,30 +143,30 @@ public class AbonnementREST {
         Abonnement abonnement = abonnementfacade.find(id);
         return entityToDto(abonnement);
     }
-    
+
     @GET
     @Path("abonne/{idAbonne}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<AbonnementDto> findByAbonne(@PathParam("idAbonne") Integer idAbonne) throws SignArtException {
-         List<AbonnementDto> dtoList = new ArrayList<>();
-         List<Abonnement> entityList = abonnementfacade.findAllByIdAbonne(idAbonne);
-            if (entityList != null) {
-                entityList.stream().map(entity
-                        -> entityToDto(entity)
-                ).forEachOrdered(dto
-                        -> dtoList.add(dto)
-                );
-            }
+        List<AbonnementDto> dtoList = new ArrayList<>();
+        List<Abonnement> entityList = abonnementfacade.findAllByIdAbonne(idAbonne);
+        if (entityList != null) {
+            entityList.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> dtoList.add(dto)
+            );
+        }
         Collections.reverse(dtoList);
         return dtoList;
     }
-    
+
     @GET
     @Path("abonnementByAbonne/{idAbonne}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<AbonnementDto> getByAbonne(@PathParam("idAbonne") Integer idAbonne) throws SignArtException {
         List<AbonnementDto> dtoList = new ArrayList<>();
-         List<Abonnement> listEntity = abonnementfacade.findByIdAbonne(idAbonne);
+        List<Abonnement> listEntity = abonnementfacade.findByIdAbonne(idAbonne);
         if (listEntity != null) {
             listEntity.stream().map(entity
                     -> entityToDto(entity)
@@ -176,30 +177,42 @@ public class AbonnementREST {
         Collections.reverse(dtoList);
         return dtoList;
     }
-    
-    
+
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String test() {
         return "test abonnement rest";
     }
-    
+
     @GET
     @Path("loadAll")
     @Produces({MediaType.APPLICATION_JSON})
     public List<AbonnementDto> findAll(){
-            List<AbonnementDto> dtoList = new ArrayList<>();
-            List<Abonnement> entityList = abonnementfacade.findAll();
-            if (entityList != null) {
-                entityList.stream().map(entity
-                        -> entityToDto(entity)
-                ).forEachOrdered(dto
-                        -> dtoList.add(dto)
-                );
-            }
-            Collections.reverse(dtoList);
-            return dtoList;   
+        List<AbonnementDto> dtoList = new ArrayList<>();
+        List<Abonnement> entityList = abonnementfacade.findAll();
+        if (entityList != null) {
+            entityList.stream().map(entity
+                    -> entityToDto(entity)
+            ).forEachOrdered(dto
+                    -> dtoList.add(dto)
+            );
+        }
+        Collections.reverse(dtoList);
+        return dtoList;
     }
+
+    @GET
+    @Path("getMontant/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public AbonnementDto calculMontantAbonnement(@PathParam("id") Integer id) throws SignArtException {
+        Abonnement abonnement = abonnementfacade.find(id);
+        float prixOeuvre = getPrixActuelOeuvre(abonnement);
+        float prixAbonné = getPrixAbonne(abonnement);
+        //float Total =
+        return entityToDto(abonnement);
+    }
+
     @GET
     @Path("report/{id}/{format}/{adrGal}")
     public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
@@ -259,7 +272,7 @@ public class AbonnementREST {
         return newAbonnement;
     }
     private Abonnement dtoToEntity(AbonnementDto dto) throws SignArtException {
-        
+
         Abonnement entity = new Abonnement();
         entity.setId(dto.getId());
         entity.setIdDelai(delaiFacade.findById(dto.getIdDelai()));
@@ -279,7 +292,7 @@ public class AbonnementREST {
         entity.setTokenPaiement(dto.getToken());
         return entity;
     }
-    
+
     private AbonnementDto entityToDto(Abonnement entity){
         AbonnementDto dto = new AbonnementDto();
         dto.setId(entity.getId());
@@ -303,27 +316,76 @@ public class AbonnementREST {
         dto.setToken(entity.getTokenPaiement());
         return dto;
     }
-    
+
     private Utilisateur findUtilisateur(Integer idUtilisateur){
         return utilisateurFacade.find(idUtilisateur);
     }
-    
+
     private Abonne findAbonne(Integer idAbonne){
         return abonneFacade.find(idAbonne);
     }
-    
+
     private Delai findDelai(Integer idDelai){
         return delaiFacade.find(idDelai);
     }
-    
+
     private Terminal findTerminal(Integer idTerminal){
         return terminalFacade.find(idTerminal);
     }
-    
+
     private ListeSelection findListe(Integer idList) throws SignArtException{
-        
+
         return listeSelectionFacade.findById(idList);
     }
-    
-    
+
+    private float getPrixActuelOeuvre(Abonnement abonnement) throws SignArtException {
+        List<ListeSelection_Oeuvres> listOeuvre = listeOeuvreFacade.findByIdListe(abonnement.getIdListeSelection().getId());
+        listOeuvre.forEach(oeuvre -> {
+            OeuvreNumerique currentOeuvre;
+            try {
+                currentOeuvre = oeuvreNumeriqueFacade.findByName(oeuvre.getNomOeuvre());
+            } catch (SignArtException e) {
+                throw new RuntimeException(e);
+            }
+            List<ParametreAlgo> listParamByElement = new ArrayList<>();
+            List<ParametreAlgo> listParamByArtiste = new ArrayList<>();
+            List<ParametreAlgo> listParamByOeuvre = new ArrayList<>();
+            listParamByArtiste = recupérationParamArtiste(currentOeuvre.getIdentiteAuteur());
+            listParamByOeuvre = récuperationParamOeuvre(currentOeuvre);
+            listParamByElement = listParamByOeuvre;
+            listParamByElement.addAll(listParamByArtiste) ;
+        });
+
+        return 0;
+    }
+    private float getPrixAbonne(Abonnement abonnement){
+        return 0;
+    }
+    private  List<ParametreAlgo> récuperationParamOeuvre(OeuvreNumerique oeuvre) {
+        List<ParametreAlgo> listParamArtiste = new ArrayList<>();
+        return listParamArtiste;
+    }
+
+    private  List<ParametreAlgo> recupérationParamArtiste(Artiste artiste) {
+        List<ParametreAlgo> listParamArtiste = new ArrayList<>();
+        return listParamArtiste;
+    }
+    private OeuvreNumeriqueDto entityToDtoOeuvre(OeuvreNumerique entity) {
+
+        OeuvreNumeriqueDto dto = new OeuvreNumeriqueDto();
+        dto.setId(entity.getId());
+        dto.setAnnee(entity.getAnnee());
+        dto.setIdentiteAuteur(entity.getIdentiteAuteur().getId());
+        dto.setTitre(entity.getTitre());
+        dto.setLargeur(entity.getLargeur());
+        dto.setLongueur(entity.getLongueur());
+        dto.setMotscles(entity.getMotscles());
+        dto.setTarif(entity.getTarif());
+        dto.setDescription(entity.getDescription());
+        dto.setTechnique(entity.getTechnique());
+        dto.setNom(entity.getNom());
+        return dto;
+    }
+
+
 }

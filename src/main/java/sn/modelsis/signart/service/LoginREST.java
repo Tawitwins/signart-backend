@@ -64,15 +64,18 @@ public class LoginREST {
         if (!foundUser.getActif()) {
             throw new SignArtException("Compte utilisateur n'est pas encore activé");
         }
-
-        try {
-            final String token = jwtService.createJWT(foundUser);
-            return Response.status(Response.Status.CREATED).entity(token).build();
-        } catch (IllegalArgumentException | JWTCreationException | UnsupportedEncodingException | JsonProcessingException e) {
-            throw new SignArtException("Erreur de generation du token jwt, contacter l'administrateur" + e.getMessage());
+        if(foundUser.getUserType().equals("CLIENT") ||foundUser.getUserType().equals("ARTISTE")) {
+            try {
+                final String token = jwtService.createJWT(foundUser);
+                return Response.status(Response.Status.CREATED).entity(token).build();
+            } catch (IllegalArgumentException | JWTCreationException | UnsupportedEncodingException | JsonProcessingException e) {
+                throw new SignArtException("Erreur de generation du token jwt, contacter l'administrateur" + e.getMessage());
+            }
+        } else {
+            throw new SignArtException("Compte utilisateur ne peut pas se connecter cette plateforme admin");
         }
     }
-    
+
     @GET
     @Path("adminInfos/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -80,29 +83,38 @@ public class LoginREST {
         return adminsTableConverter.entityToDto(adminsTableFacade.findByIdUser(idUser));
     }
 
-    
+
     @POST
     @Path("adminLogin")
     @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response login(final AccountInformation account) throws SignArtException, NoSuchAlgorithmException {
         if (account == null || !account.isValid()) {
             throw new SignArtException("Nom d'utilisateur ou mot de passe invalide");
         }
-        
+
         final Utilisateur foundUser = userFacade.findByMail(account.getUserName());
         final String passwordEncoded = passwordEncoder.encodePassword(account.getPassword(), account.getUserName());
         System.out.println("passwordEncoded " + passwordEncoded);
-        
+
         if (foundUser == null || !StringUtils.equals(foundUser.getPassword(), passwordEncoded)) {
             throw new SignArtException("Nom d'utilisateur ou mot de passe invalide");
         }
         if (!foundUser.getActif()) {
             throw new SignArtException("Compte utilisateur n'est pas encore activé");
         }
-        return Response.status(Response.Status.OK).entity(foundUser).build();
+        if(foundUser.getUserType().equals("CLIENT") ||foundUser.getUserType().equals("ARTISTE")) {
+            throw new SignArtException("Compte utilisateur ne peut pas se connecter cette plateforme admin");
+        }
+        try {
+            final String token = jwtService.createJWT(foundUser);
+            return Response.status(Response.Status.CREATED).entity(token).build();
+        } catch (IllegalArgumentException | JWTCreationException | UnsupportedEncodingException | JsonProcessingException e) {
+            throw new SignArtException("Erreur de generation du token jwt, contacter l'administrateur" + e.getMessage());
+        }
+        //return Response.status(Response.Status.OK).entity(foundUser).build();
     }
-    
+
     @POST
     @Path("passwordFind")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -114,16 +126,16 @@ public class LoginREST {
         }
         return null;
     }
-    
+
     private AccountDto entityToDtoAccount(Utilisateur entity){
         AccountDto dto = new AccountDto();
         dto.setIdUser(entity.getId());
         dto.setEmail(entity.getMail());
-       
-        return dto;  
+
+        return dto;
     }
-    
-    
-    
-    
+
+
+
+
 }

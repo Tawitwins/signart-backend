@@ -77,6 +77,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.PaiementREST.class);
         resources.add(sn.modelsis.signart.service.PanierREST.class);
         resources.add(sn.modelsis.signart.service.ParametrageREST.class);
+        resources.add(sn.modelsis.signart.service.ParametreAlgoREST.class);
         resources.add(sn.modelsis.signart.service.PaymentDetailsREST.class);
         resources.add(sn.modelsis.signart.service.PaysFacadeREST.class);
         resources.add(sn.modelsis.signart.service.PresentationREST.class);
