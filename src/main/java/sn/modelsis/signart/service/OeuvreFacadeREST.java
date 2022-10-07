@@ -253,4 +253,10 @@ public class OeuvreFacadeREST {
         return String.valueOf(oeuvreFacade.count());
     }
 
+    @GET
+    @Path("reference")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String genereReference(){
+        return utils.generateReference();
+    }
 }

@@ -70,6 +70,7 @@
     <class>sn.modelsis.signart.LigneCommande</class>
     <class>sn.modelsis.signart.LigneLivraison</class>
     <class>sn.modelsis.signart.LignePaiement</class>
+    <class>sn.modelsis.signart.CoefficientParametrage</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.jta.allowTransactionAccess" value="true"/>
