@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recuP" pageWidth="500" pageHeight="330" orientation="Landscape" columnWidth="460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
+    <style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
+    <style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+    <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+    <style name="Detail" fontName="Arial" fontSize="12"/>
+    <style name="Row" mode="Transparent">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+            <style backcolor="#E6DAC3"/>
+        </conditionalStyle>
+    </style>
+    <parameter name="nomClient" class="java.lang.String"/>
+    <parameter name="numeroCommande" class="java.lang.String"/>
+    <parameter name="lieu" class="java.lang.String"/>
+    <parameter name="montantEnLettre" class="java.lang.String"/>
+    <parameter name="ninea" class="java.lang.String"/>
+    <parameter name="referenceSignArt" class="java.lang.String"/>
+    <parameter name="adresseSignArt" class="java.lang.String"/>
+    <parameter name="telephoneSignArt" class="java.lang.String"/>
+    <parameter name="pathLogo" class="java.lang.String"/>
+    <parameter name="lignePaimentID" class="java.lang.Integer"/>
+    <parameter name="montantPaiement" class="java.math.BigDecimal"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="172" splitType="Stretch">
+            <image>
+                <reportElement x="-1" y="0" width="150" height="67" uuid="1c003177-754c-448f-8ce1-16868856f545"/>
+                <imageExpression><![CDATA[$P{pathLogo}]]></imageExpression>
+            </image>
+            <textField textAdjust="StretchHeight">
+                <reportElement style="Detail" x="300" y="0" width="162" height="40" uuid="dac08888-904b-4526-a971-c9fe1278fb62">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4474f3f-b5df-412c-a126-96ea475d910c"/>
+                </reportElement>
+                <textElement>
+                    <font fontName="SansSerif" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA["NINEA: "+$P{ninea}+"\nNumero: "+$P{telephoneSignArt}+"\nAdresse: "+$P{adresseSignArt}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight">
+                <reportElement style="Detail" x="25" y="115" width="380" height="40" uuid="db5a6af2-caf9-4fb3-9e8a-a8547c6f1e8a">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4474f3f-b5df-412c-a126-96ea475d910c"/>
+                </reportElement>
+                <textFieldExpression><![CDATA["Reçu la somme de: "+$P{montantEnLettre}+" FCFA ("+$P{montantPaiement}+" FCFA)"+" \nDu client  : "+ $P{nomClient}+" \nReprésentant: Paiement de la commande "+$P{numeroCommande}+" du ligne de paiement "+$P{lignePaimentID}+" sur signArt\n"]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="25" y="80" width="190" height="30" forecolor="#9C7316" uuid="e67deaab-7459-4429-9fed-96b4f2ec6b77"/>
+                <textElement>
+                    <font size="16" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Reçu de paiement]]></text>
+            </staticText>
+        </band>
+    </title>
+    <columnFooter>
+        <band height="12" splitType="Stretch">
+            <line>
+                <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="460" height="2" uuid="fa5e88d5-a011-4e32-8f12-ce923f903111"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#999999"/>
+                </graphicElement>
+            </line>
+        </band>
+    </columnFooter>
+    <pageFooter>
+        <band height="103" splitType="Stretch">
+            <frame>
+                <reportElement mode="Opaque" x="0" y="-5" width="462" height="95" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
+                <textField pattern="EEEEE dd MMMMM yyyy">
+                    <reportElement style="Column header" x="10" y="10" width="160" height="20" forecolor="#736343" uuid="fbce24bb-3cb1-44a3-8eec-8c067ddbe5b5"/>
+                    <textElement verticalAlignment="Middle">
+                        <font size="10" isBold="false"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["Fait à "+$P{lieu}+", le "+DateFormat.getDateInstance().format(new java.util.Date())]]></textFieldExpression>
+                </textField>
+                <textField pattern="EEEEE dd MMMMM yyyy">
+                    <reportElement style="Column header" x="320" y="10" width="130" height="20" forecolor="#736343" uuid="aba89f3b-9e08-4d0d-9718-9719b5c7f41f"/>
+                    <textElement verticalAlignment="Middle">
+                        <font size="10" isBold="false"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["Cachet et Signature"]]></textFieldExpression>
+                </textField>
+            </frame>
+        </band>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

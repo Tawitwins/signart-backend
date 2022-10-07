@@ -43,8 +43,7 @@ public class Technique implements Serializable {
     @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false, unique = true)
     @OneToOne
     private Menu menu;
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "idTechnique")
-    private Set<SousTechnique> sousTechniqueSet;
+
 
     public Technique() {
     }

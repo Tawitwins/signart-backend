@@ -45,6 +45,9 @@ public class EtatPaiement implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEtatPaiement")
     private Set<Paiement> paiementSet;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEtatPaiement")
+    private Set<LignePaiement> lignePaiement;
+
     public EtatPaiement() {
     }
 
@@ -99,6 +102,13 @@ public class EtatPaiement implements Serializable {
         this.lignePaiementSet = lignePaiementSet;
     }
 
+    public Set<LignePaiement> getLignePaiement() {
+        return lignePaiement;
+    }
+
+    public void setLignePaiement(Set<LignePaiement> lignePaiement) {
+        this.lignePaiement = lignePaiement;
+    }
     @Override
     public int hashCode() {
         int hash = 0;

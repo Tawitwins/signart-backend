@@ -66,6 +66,7 @@ public class EtatAbonnementREST {
     }
     
     @GET
+    @Path("{id}")
     public String test(@PathParam("id") Integer id) {
         return "test etat abonnement rest";
     }

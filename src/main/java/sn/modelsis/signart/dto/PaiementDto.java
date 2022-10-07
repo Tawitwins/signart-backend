@@ -1,5 +1,7 @@
 package sn.modelsis.signart.dto;
 
+import sn.modelsis.signart.LigneCommande;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
@@ -22,6 +24,16 @@ public class PaiementDto {
     private Date dateCreation;
     private Date dateModification;
     private Set<LignePaiementDto> lignePaiements;
+
+    private String stringPaymentDate;
+
+    private String stringCreationDate;
+
+    private String stringModificationDate;
+
+    private BigDecimal montantTotal;
+
+    private CommandeDto commande;
 
     public Integer getId() {
         return id;
@@ -117,6 +129,38 @@ public class PaiementDto {
         this.dateModification = dateModification;
     }
 
+    public String getStringPaymentDate() {
+        return stringPaymentDate;
+    }
+
+    public void setStringPaymentDate(String stringPaymentDate) {
+        this.stringPaymentDate = stringPaymentDate;
+    }
+
+    public String getStringCreationDate() {
+        return stringCreationDate;
+    }
+
+    public void setStringCreationDate(String stringCreationDate) {
+        this.stringCreationDate = stringCreationDate;
+    }
+
+    public String getStringModificationDate() {
+        return stringModificationDate;
+    }
+
+    public void setStringModificationDate(String stringModificationDate) {
+        this.stringModificationDate = stringModificationDate;
+    }
+
+    public BigDecimal getMontantTotal() {
+        return montantTotal;
+    }
+
+    public void setMontantTotal(BigDecimal montantTotal) {
+        this.montantTotal = montantTotal;
+    }
+
     public Set<LignePaiementDto> getLignePaiements() {
         return lignePaiements;
     }
@@ -124,5 +168,12 @@ public class PaiementDto {
     public void setLignePaiements(Set<LignePaiementDto> lignePaiements) {
         this.lignePaiements = lignePaiements;
     }
-    
+
+    public CommandeDto getCommande() {
+        return commande;
+    }
+
+    public void setCommande(CommandeDto commande) {
+        this.commande = commande;
+    }
 }

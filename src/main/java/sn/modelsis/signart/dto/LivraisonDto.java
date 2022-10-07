@@ -126,5 +126,4 @@ public class LivraisonDto {
     public void setLigneLivraisons(Set<LigneLivraisonDto> ligneLivraisons) {
         this.ligneLivraisons = ligneLivraisons;
     }
- 
 }

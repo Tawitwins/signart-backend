@@ -15,6 +15,51 @@ public class LigneCommandeDto {
     private BigDecimal total;
     private Integer idClient;
 
+    public String getNumeroCommande() {
+        return numeroCommande;
+    }
+
+    public void setNumeroCommande(String numeroCommande) {
+        this.numeroCommande = numeroCommande;
+    }
+
+    private String numeroCommande;
+
+    private Integer idEtatLigneCommande;
+
+    private String etatLigneCommande;
+
+    private CommandeDto commande;
+    private LigneLivraisonDto ligneLivraison;
+    public String getEtatLigneCommande() {
+        return etatLigneCommande;
+    }
+
+    public void setEtatLigneCommande(String etatLigneCommande) {
+        this.etatLigneCommande = etatLigneCommande;
+    }
+
+
+
+
+    public Integer getIdEtatLigneCommande() {
+        return idEtatLigneCommande;
+    }
+
+    public void setIdEtatLigneCommande(Integer idEtatLigneCommande) {
+        this.idEtatLigneCommande = idEtatLigneCommande;
+    }
+
+    public Integer getIdCommande() {
+        return idCommande;
+    }
+
+    public void setIdCommande(Integer idCommande) {
+        this.idCommande = idCommande;
+    }
+
+    private Integer idCommande;
+
     public Integer getId() {
         return id;
     }
@@ -62,5 +107,20 @@ public class LigneCommandeDto {
     public void setIdClient(Integer idClient) {
         this.idClient = idClient;
     }
-    
+
+    public LigneLivraisonDto getLigneLivraison() {
+        return ligneLivraison;
+    }
+
+    public void setLigneLivraison(LigneLivraisonDto ligneLivraison) {
+        this.ligneLivraison = ligneLivraison;
+    }
+
+    public CommandeDto getCommande() {
+        return commande;
+    }
+
+    public void setCommande(CommandeDto commande) {
+        this.commande = commande;
+    }
 }

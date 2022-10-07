@@ -12,14 +12,13 @@ import javax.inject.Inject;
 import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.LigneLivraison;
 import sn.modelsis.signart.Livraison;
+import sn.modelsis.signart.Parametrage;
 import sn.modelsis.signart.dto.LigneCommandeDto;
 import sn.modelsis.signart.dto.LigneLivraisonDto;
 import sn.modelsis.signart.dto.LivraisonCommandeDto;
 import sn.modelsis.signart.dto.LivraisonDto;
-import sn.modelsis.signart.facade.AdresseFacade;
-import sn.modelsis.signart.facade.CommandeFacade;
-import sn.modelsis.signart.facade.EtatLivraisonFacade;
-import sn.modelsis.signart.facade.ModeLivraisonFacade;
+import sn.modelsis.signart.exception.SignArtException;
+import sn.modelsis.signart.facade.*;
 
 /**
  *
@@ -40,13 +39,15 @@ public class LivraisonConverter {
     AdresseConverter adresseConverter;
     @Inject
     CommandeFacade commandeFacade;
+    @Inject
+    ParametrageFacade parametrageFacade;
     /**
      * Converts entity to Dto
      *
      * @param entity
      * @return
      */
-    public LivraisonDto entityToDto(Livraison entity) {
+    public LivraisonDto entityToDto(Livraison entity)  {
         LivraisonDto dto = new LivraisonDto();
         dto.setDateLivraison(entity.getDateLivraisonPrevue());
         dto.setId(entity.getIdCommande());
@@ -63,7 +64,7 @@ public class LivraisonConverter {
             Set<LigneLivraisonDto> ligneLivraisonDtoSet = new HashSet<>();
             LigneLivraisonDto ligneLivraisonDto;
             for (LigneLivraison ligneLivraison : ligneLivraisonSet) {
-                ligneLivraisonDto = ligneLivraisonConverter.entityToDto(ligneLivraison);
+                ligneLivraisonDto = ligneLivraisonConverter.entityToDto(ligneLivraison,false);
                 ligneLivraisonDtoSet.add(ligneLivraisonDto);
             }
             dto.setLigneLivraisons(ligneLivraisonDtoSet);
@@ -76,7 +77,7 @@ public class LivraisonConverter {
      * @param dto
      * @return
      */
-    public Livraison dtoToEntity(LivraisonDto dto) {
+    public Livraison dtoToEntity(LivraisonDto dto) throws SignArtException {
         Livraison entity = new Livraison();
         entity.setIdCommande(dto.getId());
         entity.setIdEtatLivraison(etatLivraisonFacade.findByCode(dto.getCodeEtatLivraison()));
@@ -96,7 +97,7 @@ public class LivraisonConverter {
         return entity;
     }
 
-    public Livraison livraisonCommandeDtoToEntity(LivraisonCommandeDto dto){
+    public Livraison livraisonCommandeDtoToEntity(LivraisonCommandeDto dto) throws SignArtException {
 
         Livraison entity = new Livraison();
         entity.setIdCommande(dto.getId());
@@ -105,8 +106,9 @@ public class LivraisonConverter {
         entity.setIdAdresseFacturation(adresseFacade.find(dto.getIdAdresseLivraison()));
         entity.setIdAdresseLivraison(adresseFacade.find(dto.getIdAdresseLivraison()));
         Commande commande = commandeFacade.find(dto.getId());
-
-        LocalDate dateLivraisonPrevue = commande.getDateCommande().plusDays(commande.getDelaiLivraison());
+        Parametrage delaiLivraison = parametrageFacade.findByParamName("DelaiLivraison");
+        LocalDate dateLivraisonPrevue = LocalDate.now().plusDays(Long.parseLong(delaiLivraison.getValue()));
+        //commande.getDateCommande().plusDays(commande.getDelaiLivraison());
         
         entity.setDateLivraisonPrevue(dateLivraisonPrevue);
         

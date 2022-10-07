@@ -46,7 +46,9 @@ import sun.misc.BASE64Encoder;
 @Stateless
 @Path("imageMiniature")
 public class ImageMiniatureREST {
-    
+
+    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+
     @Inject
     ImageMiniatureFacade imageMiniaturefacade;
     
@@ -87,7 +89,7 @@ public class ImageMiniatureREST {
         
         //OeuvreNumerique oeuvre = oeuvreNumeriqueFacade.findByName(nameImage);
         ImageMiniature image = new ImageMiniature();
-            BufferedImage minImage = ImageIO.read(new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\images\\min_"+nameImage+".jpg"));
+            BufferedImage minImage = ImageIO.read(new File(PATH + "images\\min_"+nameImage+".jpg"));
             byte[] minImageByte = toByteArray(minImage, "jpg");           
             image.setNomImage(nameImage);         
             image.setValeurImage(minImageByte);

@@ -1,21 +1,14 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.Objects;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "LigneLivraison.findAll", query = "SELECT l FROM LigneLivraison l")
     , @NamedQuery(name = "LigneLivraison.findById", query = "SELECT l FROM LigneLivraison l WHERE l.id = :id")
+    , @NamedQuery(name = "LigneLivraison.findByLigneCommande", query = "SELECT l FROM LigneLivraison l WHERE l.idLigneCommande = :idLC")
     , @NamedQuery(name = "LigneLivraison.findByDateLivraison", query = "SELECT l FROM LigneLivraison l WHERE l.dateLivraison = :dateLivraison")})
 public class LigneLivraison implements Serializable {
 
@@ -45,7 +39,7 @@ public class LigneLivraison implements Serializable {
     @ManyToOne(optional = false)
     private EtatLivraison idEtatLivraison;
     @JoinColumn(name = "idLigneCommande", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
     private LigneCommande idLigneCommande;
     @JoinColumn(name = "idLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -53,6 +47,12 @@ public class LigneLivraison implements Serializable {
     @JoinColumn(name = "idModeLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private ModeLivraison idModeLivraison;
+    @JoinColumn(name = "idAgent", referencedColumnName = "id")
+    @ManyToOne
+    private Agent idAgent;
+
+    @Column(name = "preuvePourLivraison")
+    private String preuvePourLivraison;
 
     public LigneLivraison() {
     }
@@ -113,11 +113,35 @@ public class LigneLivraison implements Serializable {
     public void setIdModeLivraison(ModeLivraison idModeLivraison) {
         this.idModeLivraison = idModeLivraison;
     }
+    public Agent getIdAgent() {
+        return idAgent;
+    }
+    public void setIdAgent(Agent idAgent) {
+        this.idAgent = idAgent;
+    }
 
-    @Override
+    public String getPreuvePourLivraison() {
+        return preuvePourLivraison;
+    }
+
+    public void setPreuvePourLivraison(String preuvePourLivraison) {
+        this.preuvePourLivraison = preuvePourLivraison;
+    }
+
+   /* @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }*/
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.idLivraison);
+        hash = 79 * hash + Objects.hashCode(this.idLigneCommande);
+        hash = 79 * hash + Objects.hashCode(this.idAgent);
+        hash = 79 * hash + Objects.hashCode(this.idModeLivraison);
         return hash;
     }
 

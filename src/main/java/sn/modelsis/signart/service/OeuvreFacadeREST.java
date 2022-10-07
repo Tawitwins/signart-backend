@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response;
 import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.dto.OeuvreSouscriptionDto;
 import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
+import sn.modelsis.signart.utils.Utils;
 
 /**
  *
@@ -40,10 +41,12 @@ public class OeuvreFacadeREST {
     OeuvreSouscriptionFacade oeuvreSouscriptionFacade;
     @Inject
     OeuvreConverter oeuvreConverter;
+    Utils utils = new Utils();
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(OeuvreDto dto) throws SignArtException {
+        dto.setReference("Ref:"+utils.generateReference());
         Oeuvre entity = oeuvreConverter.dtoToEntity(dto);
         oeuvreFacade.create(entity);
         OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
@@ -51,15 +54,15 @@ public class OeuvreFacadeREST {
     }
     
     @POST
-    @Path("oeuvresous")
+    @Path("oeuvresous/{idMagasin}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response valider(OeuvreSouscriptionDto dto) throws SignArtException {
+    public Response valider(OeuvreSouscriptionDto dto,@PathParam("idMagasin") Integer idMagasin) throws SignArtException {
         OeuvreSouscription enti = oeuvreSouscriptionFacade.findById(dto.getId());
         
         Oeuvre entity = new Oeuvre();
         
         
-        entity = oeuvreConverter.convertOueuvreSouscription(enti);
+        entity = oeuvreConverter.convertOueuvreSouscription(enti,idMagasin);
         oeuvreFacade.create(entity);
        // OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
         return Response.status(Response.Status.CREATED).entity(dto).build();
@@ -75,6 +78,8 @@ public class OeuvreFacadeREST {
         oeuvre.setPrix(dto.getPrix());
         oeuvre.setStock(dto.getStock());
         oeuvre.setDescription(dto.getDescription());
+        oeuvre.setSpecialDelivery(dto.getSpecialDelivery());
+        oeuvre.setPaid(dto.getPaid());
         oeuvreFacade.edit(oeuvre);
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -248,4 +253,10 @@ public class OeuvreFacadeREST {
         return String.valueOf(oeuvreFacade.count());
     }
 
+    @GET
+    @Path("reference")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String genereReference(){
+        return utils.generateReference();
+    }
 }

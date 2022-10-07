@@ -76,7 +76,8 @@ public class ImageNumeriqueREST {
     @Inject
     ArtisteFacade artisteFacade;*/
    
-    public final static String PATH = "/opt/";
+    public final static String GOODPATH = "/opt/";
+    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
     public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
     
     @Inject
@@ -247,7 +248,7 @@ public class ImageNumeriqueREST {
             try {
                 bImageFromConvert = ImageIO.read(in);
                 System.out.println(bImageFromConvert+"+++++++++++++++++++++++++++++++++++++++++++++bImageFromConvert++++++++++++++++++++++++++++++++++++");
-               ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+nom+".jpg"));
+               ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images"+nom+".jpg"));
               // System.out.println(source+"+++++++++++++++++++++++++++++++++++++++++++++source++++++++++++++++++++++++++++++++++++");
 
                //   ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
@@ -392,8 +393,8 @@ public class ImageNumeriqueREST {
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path minImagePath = Paths.get(PATH+"images\\min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATH+"images\\"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -417,8 +418,8 @@ public class ImageNumeriqueREST {
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get(PATHTEST+"images\\min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get(PATHTEST+"images\\"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path minImagePath = Paths.get(PATH+"images\\min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATH+"images\\"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -524,8 +525,8 @@ public class ImageNumeriqueREST {
             Integer largeur = dto.getLargeur()/3; 
             Integer longueur = dto.getLongueur()/3;
             
-            java.nio.file.Path minImagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg");
-            java.nio.file.Path imagePath = Paths.get(PATHTEST+"image\\"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path minImagePath = Paths.get(PATH + "min_"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path imagePath = Paths.get(PATH+"image\\"+oeuvreNum.getNom()+".jpg");
             try {
                    Files.delete((java.nio.file.Path) minImagePath);
                     Files.delete((java.nio.file.Path) imagePath);
@@ -554,7 +555,7 @@ public class ImageNumeriqueREST {
             byte[] imgMinByte = null;
             try {
                 bImageFromConvert = ImageIO.read(in);
-                ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg"));
+                ImageIO.write(bImageFromConvert, "jpg", new File(PATH + oeuvreNum.getNom()+".jpg"));
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 //BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);

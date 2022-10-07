@@ -6,6 +6,8 @@
 package sn.modelsis.signart.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -23,6 +25,16 @@ public class AbonnementDto implements Serializable {
     private Integer montantPaiement;
     private String precisions;
     private Integer etatAbonnement;
+    private Integer idModePaiement;
+    private String codeModePaiement;
+    private String token;
+
+    private Date dateCreation;
+    private Date dateDebut;
+
+    private Integer idDetailPayment;
+
+    private Boolean reabonne;
 
 
     public AbonnementDto() {
@@ -115,5 +127,58 @@ public class AbonnementDto implements Serializable {
 
     public void setEtatAbonnement(Integer etatAbonnement) {
         this.etatAbonnement = etatAbonnement;
-    }  
+    }
+    public Integer getIdModePaiement() {
+        return idModePaiement;
+    }
+
+    public void setIdModePaiement(Integer idModePaiement) {
+        this.idModePaiement = idModePaiement;
+    }
+
+    public String getCodeModePaiement() {
+        return codeModePaiement;
+    }
+
+    public void setCodeModePaiement(String codeModePaiement) {
+        this.codeModePaiement = codeModePaiement;
+    }
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Date getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+    public Integer getIdDetailPayment() {
+        return idDetailPayment;
+    }
+
+    public void setIdDetailPayment(Integer idDetailPayment) {
+        this.idDetailPayment = idDetailPayment;
+    }
+
+
+    public Boolean getReabonne() {
+        return reabonne;
+    }
+
+    public void setReabonne(Boolean reabonne) {
+        this.reabonne = reabonne;
+    }
 }

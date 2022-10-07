@@ -91,8 +91,9 @@ import sn.modelsis.signart.facade.UtilisateurFacade;
 @javax.ws.rs.Path("chiffrementCompression")
 public class ChiffrementCompressionREST {
     
-    public final static String PATH = "/opt/images";
-    public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
+    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+    public final static String GOODPATH = "/opt/images";
+    //public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
     
     @Inject
     AbonneFacade abonnefacade;
@@ -153,7 +154,8 @@ public class ChiffrementCompressionREST {
         archive.setIdAbonnement(abonnementFacade.findById(dto.getId()));
         archive.setNom(zipFolderName);
         archiveSignartFacade.create(archive);
-        abonnement.setEtatAbonnement(etatAbonnementFacade.findByLibelle("en_attente_paiement"));
+        abonnement.setEtatAbonnement(etatAbonnementFacade.findByCode("VALIDE"));
+        abonnement.setDateDebut(new Date());
         abonnementFacade.edit(abonnement);
 
         return Response.status(Response.Status.CREATED).entity(dto).build();
@@ -284,7 +286,7 @@ public class ChiffrementCompressionREST {
 		//System.out.println(licence2);
                 String filename = "licence00"+username;    
                  try {
-                        FileWriter myWriter = new FileWriter("/opt/images"+filename);
+                        FileWriter myWriter = new FileWriter( PATH + "images" + filename);
                                                 //System.out.println(LicenceREST.class.getResource("/Stockage/licences").getPath()+"++++++++++++++++++++++++++++++path++++++++++++++++++++++++++++++++++++");
 
                         //File file = new File("");
@@ -479,7 +481,7 @@ public class ChiffrementCompressionREST {
      
         public byte[] getRealImage(ListeSelection_Oeuvres oeuvre) throws IOException{
             //BufferedImage image = ImageIO.read(new File(PATHTEST+"\\images\\"+oeuvre.getNomOeuvre()+".jpg"));
-            BufferedImage image = ImageIO.read(new File(PATH+"/"+oeuvre.getNomOeuvre()+".jpg"));
+            BufferedImage image = ImageIO.read(new File(PATH+"images\\"+oeuvre.getNomOeuvre()+".jpg"));
             byte[] imageByte = toByteArray(image,"jpg");          
             return imageByte;
         }

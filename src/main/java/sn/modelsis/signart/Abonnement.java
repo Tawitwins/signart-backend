@@ -5,7 +5,11 @@
  */
 package sn.modelsis.signart;
 
+import org.apache.james.mime4j.field.datetime.DateTime;
+
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
       @NamedQuery(name = "Abonnement.findAll", query = "SELECT a FROM Abonnement a")
     , @NamedQuery(name = "Abonnement.findById", query = "SELECT a FROM Abonnement a WHERE a.id = :id")
     , @NamedQuery(name = "Abonnement.findByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")
-    , @NamedQuery(name = "Abonnement.findAllByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")})
+    , @NamedQuery(name = "Abonnement.findAllByIdAbonne", query = "SELECT a FROM Abonnement a WHERE a.idAbonne.id = :idAbonne")
+    , @NamedQuery(name = "Abonnement.findByTokenPaiement", query = "SELECT a FROM Abonnement a WHERE a.tokenPaiement = :tokenPaiement")
+        , @NamedQuery(name = "Abonnement.findByReabonne", query = "SELECT a FROM Abonnement a WHERE a.reabonne = :reabonne")
+})
 
 public class Abonnement implements Serializable{
     @Id
@@ -57,8 +64,26 @@ public class Abonnement implements Serializable{
     @JoinColumn(name = "etatAbonnement", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EtatAbonnement etatAbonnement;
+    @JoinColumn(name = "idModePaiement", referencedColumnName = "id")
+    @ManyToOne
+    private ModePaiement idModePaiement;
+    @Column(name = "tokenPaiement", length = 200)
+    private String tokenPaiement;
+
+
+    @Basic(optional = false)
+    @Column(name = "dateCreation", nullable = false)
+    private Date dateCreation;
+    @Column(name = "dateDebut", nullable = false)
+    private Date dateDebut;
+
+    @JoinColumn(name = "idDetailPayment", referencedColumnName = "id")
+    @ManyToOne
+    private PaymentDetails idDetailPayment;
 
    
+    @Column(name = "reabonne")
+    private Boolean reabonne;
 
     public Abonnement() {
     }
@@ -150,9 +175,48 @@ public class Abonnement implements Serializable{
     public void setEtatAbonnement(EtatAbonnement etatAbonnement) {
         this.etatAbonnement = etatAbonnement;
     }
+    public ModePaiement getIdModePaiement() {
+        return idModePaiement;
+    }
 
-    
-    
-    
-    
+    public void setIdModePaiement(ModePaiement idModePaiement) {
+        this.idModePaiement = idModePaiement;
+    }
+    public String getTokenPaiement() {
+        return tokenPaiement;
+    }
+
+    public void setTokenPaiement(String tokenPaiement) {
+        this.tokenPaiement = tokenPaiement;
+    }
+
+    public Date getDateCréation() {
+        return dateCreation;
+    }
+
+    public void setDateCréation(Date dateCréation) {
+        this.dateCreation = dateCréation;
+    }
+
+    public Date getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+    public PaymentDetails getIdDetailPayment() {
+        return idDetailPayment;
+    }
+
+    public void setIdDetailPayment(PaymentDetails idDetailPayment) {
+        this.idDetailPayment = idDetailPayment;
+    }
+    public Boolean getReabonne() {
+        return reabonne;
+    }
+
+    public void setReabonne(Boolean reabonne) {
+        this.reabonne = reabonne;
+    }
 }

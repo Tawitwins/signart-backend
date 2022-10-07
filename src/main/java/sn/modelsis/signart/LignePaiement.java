@@ -3,6 +3,7 @@ package sn.modelsis.signart;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +31,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "LignePaiement.findAll", query = "SELECT l FROM LignePaiement l")
     , @NamedQuery(name = "LignePaiement.findById", query = "SELECT l FROM LignePaiement l WHERE l.id = :id")
     , @NamedQuery(name = "LignePaiement.findByDatePaiement", query = "SELECT l FROM LignePaiement l WHERE l.datePaiement = :datePaiement")
-    , @NamedQuery(name = "LignePaiement.findByMontant", query = "SELECT l FROM LignePaiement l WHERE l.montant = :montant")})
+    , @NamedQuery(name = "LignePaiement.findByMontant", query = "SELECT l FROM LignePaiement l WHERE l.montant = :montant")
+    , @NamedQuery(name = "LignePaiement.findByTokenPaiement", query = "SELECT l FROM LignePaiement l WHERE l.tokenPaiement = :tokenPaiement")
+})
+
 public class LignePaiement implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,6 +57,21 @@ public class LignePaiement implements Serializable {
     @JoinColumn(name = "idPaiement", referencedColumnName = "id", nullable = false)
     @ManyToOne(fetch = FetchType.EAGER,optional = false)
     private Paiement idPaiement;
+
+    @JoinColumn(name = "idLigneCommande", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private LigneCommande idLigneCommande;
+
+    @JoinColumn(name = "idEtatPaiement", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private EtatPaiement idEtatPaiement;
+
+    @JoinColumn(name = "idPaymentDetails", referencedColumnName = "id", nullable = true)
+    @ManyToOne
+    private PaymentDetails idPaymentDetails;
+
+    @Column(name = "tokenPaiement", length = 200)
+    private String tokenPaiement;
 
     public LignePaiement() {
     }
@@ -106,11 +125,51 @@ public class LignePaiement implements Serializable {
     public void setIdPaiement(Paiement idPaiement) {
         this.idPaiement = idPaiement;
     }
+    public LigneCommande getIdLigneCommande() {
+        return idLigneCommande;
+    }
 
+    public void setIdLigneCommande(LigneCommande idLigneCommande) {
+        this.idLigneCommande = idLigneCommande;
+    }
+    public EtatPaiement getIdEtatPaiement() {
+        return idEtatPaiement;
+    }
+
+    public void setIdEtatPaiement(EtatPaiement idEtatPaiement) {
+        this.idEtatPaiement = idEtatPaiement;
+    }
+
+    public PaymentDetails getIdPaymentDetails() {
+        return idPaymentDetails;
+    }
+
+    public void setIdPaymentDetails(PaymentDetails idPaymentDetails) {
+        this.idPaymentDetails = idPaymentDetails;
+    }
+
+    public String getTokenPaiement() {
+        return tokenPaiement;
+    }
+
+    public void setTokenPaiement(String tokenPaiement) {
+        this.tokenPaiement = tokenPaiement;
+    }
+
+    /* @Override
+            public int hashCode() {
+                int hash = 0;
+                hash += (id != null ? id.hashCode() : 0);
+                return hash;
+            }*/
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.datePaiement);
+        hash = 79 * hash + Objects.hashCode(this.idPaiement);
+        hash = 79 * hash + Objects.hashCode(this.montant);
+        hash = 79 * hash + Objects.hashCode(this.idLigneCommande);
         return hash;
     }
 

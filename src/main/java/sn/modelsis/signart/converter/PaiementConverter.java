@@ -1,5 +1,7 @@
 package sn.modelsis.signart.converter;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -9,6 +11,7 @@ import sn.modelsis.signart.Paiement;
 import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.dto.PaiementDto;
 import sn.modelsis.signart.facade.EtatPaiementFacade;
+import sn.modelsis.signart.facade.LigneCommandeFacade;
 import sn.modelsis.signart.facade.ModePaiementFacade;
 
 /**
@@ -25,6 +28,8 @@ public class PaiementConverter {
     @Inject
     LignePaiementConverter lignePaiementConverter;
 
+    SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
+
     /**
      * Converts entity to Dto
      *
@@ -33,6 +38,7 @@ public class PaiementConverter {
      */
     public PaiementDto entityToDto(Paiement entity) {
         PaiementDto dto = new PaiementDto();
+        BigDecimal montantTotal = null;
         dto.setDatePaiement(entity.getDatePaiement());
         dto.setId(entity.getId());
         dto.setIdEtatPaiement(entity.getIdEtatPaiement().getId());
@@ -45,11 +51,16 @@ public class PaiementConverter {
         if (lignePaiementSet != null && !lignePaiementSet.isEmpty()) {
             Set<LignePaiementDto> lignePaiementDtoSet = new HashSet<>();
             LignePaiementDto lignePaiementDto;
+            dto.setMontantTotal(BigDecimal.valueOf(0));
             for (LignePaiement lignePaiement : lignePaiementSet) {
                 lignePaiementDto = lignePaiementConverter.entityToDto(lignePaiement);
                 lignePaiementDtoSet.add(lignePaiementDto);
+                dto.setMontantTotal(dto.getMontantTotal().add(lignePaiement.getMontant()));
+
             }
             dto.setLignePaiements(lignePaiementDtoSet);
+            dto.setStringPaymentDate(DateFor.format(entity.getDatePaiement()));
+            //dto.getStringCreationDate(DateFor.format(entity.get));
         }
         return dto;
     }
@@ -69,6 +80,7 @@ public class PaiementConverter {
         LignePaiement lignePaiement;
         for (LignePaiementDto lignePaiementDto : dto.getLignePaiements()) {
             lignePaiement = lignePaiementConverter.dtoToEntity(lignePaiementDto);
+            lignePaiement.setIdPaiement(entity);
             lignePaiementSet.add(lignePaiement);
         }
         entity.setLignePaiementSet(lignePaiementSet);

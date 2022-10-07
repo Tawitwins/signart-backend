@@ -2,10 +2,13 @@ package sn.modelsis.signart.converter;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+
+import sn.modelsis.signart.EtatPaiement;
 import sn.modelsis.signart.LignePaiement;
 import sn.modelsis.signart.dto.LignePaiementDto;
-import sn.modelsis.signart.facade.ModePaiementFacade;
-import sn.modelsis.signart.facade.PaiementFacade;
+import sn.modelsis.signart.facade.*;
+
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -18,6 +21,16 @@ public class LignePaiementConverter {
     PaiementFacade paiementFacade;
     @Inject
     ModePaiementFacade modePaiementFacade;
+    @Inject
+    LigneCommandeConverter ligneCommandeConverter;
+    @Inject
+    LigneCommandeFacade ligneCommandeFacade;
+    @Inject
+    EtatPaiementFacade etatPaiementFacade;
+
+    @Inject
+    PaymentDetailsFacade paymentDetailsFacade;
+    SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Converts an lignePaiement entity to DTO
@@ -33,6 +46,14 @@ public class LignePaiementConverter {
         dto.setCodeModePaiement(entity.getIdModePaiement().getCode());
         dto.setLibelleModePaiement(entity.getIdModePaiement().getLibelle());
         dto.setIdPaiement(entity.getIdPaiement().getId());
+        dto.setToken(entity.getTokenPaiement());
+        if(entity.getIdPaymentDetails() != null)
+            dto.setIdPaymentDetails(entity.getIdPaymentDetails().getId());
+        dto.setLigneCommande(ligneCommandeConverter.entityToDto(entity.getIdLigneCommande()));
+        dto.setCodeEtatPaiement(entity.getIdEtatPaiement().getCode());
+        dto.setLibelleEtatPaiement(entity.getIdEtatPaiement().getLibelle());
+        dto.setIdEtatPaiement(entity.getIdEtatPaiement().getId());
+        dto.setStringPaymentDate(DateFor.format(entity.getDatePaiement()));
         return dto;
     }
 
@@ -44,10 +65,16 @@ public class LignePaiementConverter {
     public LignePaiement dtoToEntity(LignePaiementDto dto) {
         LignePaiement entity = new LignePaiement();
         entity.setId(dto.getId());
-        entity.setIdModePaiement(modePaiementFacade.find(dto.getCodeModePaiement()));
+        entity.setIdModePaiement(modePaiementFacade.findByCode(dto.getCodeModePaiement()));
         entity.setDatePaiement(dto.getDatePaiement());
         entity.setMontant(dto.getMontant());
-        entity.setIdPaiement(paiementFacade.find(dto.getIdPaiement()));
+        entity.setIdLigneCommande(ligneCommandeFacade.find(dto.getLigneCommande().getId()));
+        entity.setIdEtatPaiement(etatPaiementFacade.find(dto.getIdEtatPaiement()));
+        entity.setTokenPaiement((dto.getToken()));
+        if(dto.getIdPaymentDetails() != null)
+            entity.setIdPaymentDetails(paymentDetailsFacade.find(dto.getIdPaymentDetails()));
+        if(dto.getIdPaiement()!= null)
+            entity.setIdPaiement(paiementFacade.find(dto.getIdPaiement()));
         return entity;
     }
 }

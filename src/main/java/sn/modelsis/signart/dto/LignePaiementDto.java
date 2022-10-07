@@ -16,7 +16,19 @@ public class LignePaiementDto {
     private String codeModePaiement;
     private String libelleModePaiement;
     private Integer idPaiement;
+    private LigneCommandeDto ligneCommande;
 
+    private Integer idEtatPaiement;
+
+    private String codeEtatPaiement;
+
+    private String libelleEtatPaiement;
+
+    private String stringPaymentDate;
+
+    private Integer idPaymentDetails;
+
+    private String token;
     public Integer getId() {
         return id;
     }
@@ -71,5 +83,59 @@ public class LignePaiementDto {
 
     public void setIdPaiement(Integer idPaiement) {
         this.idPaiement = idPaiement;
+    }
+    public LigneCommandeDto getLigneCommande() {
+        return ligneCommande;
+    }
+
+    public void setLigneCommande(LigneCommandeDto ligneCommande) {
+        this.ligneCommande = ligneCommande;
+    }
+    public Integer getIdEtatPaiement() {
+        return idEtatPaiement;
+    }
+
+    public void setIdEtatPaiement(Integer idEtatPaiement) {
+        this.idEtatPaiement = idEtatPaiement;
+    }
+
+    public String getCodeEtatPaiement() {
+        return codeEtatPaiement;
+    }
+
+    public void setCodeEtatPaiement(String codeEtatPaiement) {
+        this.codeEtatPaiement = codeEtatPaiement;
+    }
+
+    public String getLibelleEtatPaiement() {
+        return libelleEtatPaiement;
+    }
+
+    public void setLibelleEtatPaiement(String libelleEtatPaiement) {
+        this.libelleEtatPaiement = libelleEtatPaiement;
+    }
+
+    public Integer getIdPaymentDetails() {
+        return idPaymentDetails;
+    }
+
+    public void setIdPaymentDetails(Integer idPaymentDetails) {
+        this.idPaymentDetails = idPaymentDetails;
+    }
+
+    public String getStringPaymentDate() {
+        return stringPaymentDate;
+    }
+
+    public void setStringPaymentDate(String stringPaymentDate) {
+        this.stringPaymentDate = stringPaymentDate;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
