@@ -24,9 +24,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ParametreAlgo", catalog = "signart", schema = "dbo")
 @NamedQueries({
-    @NamedQuery(name = "ParametreAlgo.findAll", query = "SELECT p FROM Panier p")
-    , @NamedQuery(name = "ParametreAlgo.findById", query = "SELECT p FROM Panier p WHERE p.id = :id")
-    , @NamedQuery(name = "ParametreAlgo.findByNiveau", query = "SELECT p FROM ParametreAlgo p WHERE p.niveau = :niveau")})
+        @NamedQuery(name = "ParametreAlgo.findAll", query = "SELECT p FROM Panier p")
+        , @NamedQuery(name = "ParametreAlgo.findById", query = "SELECT p FROM Panier p WHERE p.id = :id")
+        , @NamedQuery(name = "ParametreAlgo.findByNiveau", query = "SELECT p FROM ParametreAlgo p WHERE p.niveau = :niveau")})
 public class ParametreAlgo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +44,10 @@ public class ParametreAlgo implements Serializable {
     private Integer baseNote;
     @Column(name = "pourcentReduction")
     private Integer pourcentReduction;
+
+    @JoinColumn(name = "idCoefficientParam", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private  CoefficientParametrage coefficientParam;
 
     public Integer getId() {
         return id;
@@ -96,6 +100,13 @@ public class ParametreAlgo implements Serializable {
     public ParametreAlgo() {
     }
 
+    public CoefficientParametrage getCoefficientParam() {
+        return coefficientParam;
+    }
+
+    public void setCoefficientParam(CoefficientParametrage coefficientParam) {
+        this.coefficientParam = coefficientParam;
+    }
 
 
 
@@ -120,5 +131,5 @@ public class ParametreAlgo implements Serializable {
     public String toString() {
         return "sn.modelsis.signart.ParametreAlgo[ id=" + id + " ]";
     }
-    
+
 }
