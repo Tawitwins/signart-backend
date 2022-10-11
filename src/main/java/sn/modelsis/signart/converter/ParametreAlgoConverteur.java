@@ -27,6 +27,8 @@ public class ParametreAlgoConverteur {
         dto.setNote(entity.getNote());
         dto.setBaseNote(entity.getBaseNote());
         dto.setPourcentReduction(entity.getPourcentReduction());
+        dto.setBorneInf(entity.getBorneInf());
+        dto.setBorneSup(entity.getBorneSup());
         return dto;
     }
 
@@ -38,6 +40,8 @@ public class ParametreAlgoConverteur {
         entity.setNote(dto.getNote());
         entity.setBaseNote(dto.getBaseNote());
         entity.setPourcentReduction(dto.getPourcentReduction());
+        entity.setBorneInf(dto.getBorneInf());
+        entity.setBorneSup(dto.getBorneSup());
         return entity;
     }
 }

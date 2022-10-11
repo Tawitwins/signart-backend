@@ -1,5 +1,6 @@
 package sn.modelsis.signart.dto;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
 /**
@@ -37,7 +38,9 @@ public class ArtisteDto implements Serializable {
     private Long nbOeuvres;
     private Integer idBiographie;
     private Integer idMagasin;
+    private String qualificationLevel;
 
+    private Integer anneeDebutCarrier;
     public ArtisteDto(Integer id, String nom, String prenom, String surnom, String telephone, String adresse, String ville, String pays, String email) {
         this.id = id;
         this.nom = nom;
@@ -259,6 +262,21 @@ public class ArtisteDto implements Serializable {
 
     public void setNbOeuvres(Long nbOeuvres) {
         this.nbOeuvres = nbOeuvres;
+    }
+    public String getQualificationLevel() {
+        return qualificationLevel;
+    }
+
+    public void setQualificationLevel(String qualificationLevel) {
+        this.qualificationLevel = qualificationLevel;
+    }
+
+    public Integer getAnneeDebutCarrier() {
+        return anneeDebutCarrier;
+    }
+
+    public void setAnneeDebutCarrier(Integer anneeDebutCarrier) {
+        this.anneeDebutCarrier = anneeDebutCarrier;
     }
 
     @Override

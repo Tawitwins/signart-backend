@@ -39,11 +39,16 @@ public class ParametreAlgo implements Serializable {
     @Column(name = "libelle")
     private String libelle;
     @Column(name = "note")
-    private String note;
+    private Integer note;
     @Column(name = "baseNote")
     private Integer baseNote;
     @Column(name = "pourcentReduction")
     private Integer pourcentReduction;
+    @Column(name = "borneSup")
+    private Float borneSup;
+    @Column(name = "borneInf")
+    private Float borneInf;
+
 
     @JoinColumn(name = "idCoefficientParam", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -73,11 +78,11 @@ public class ParametreAlgo implements Serializable {
         this.libelle = libelle;
     }
 
-    public String getNote() {
+    public Integer getNote() {
         return note;
     }
 
-    public void setNote(String note) {
+    public void setNote(Integer note) {
         this.note = note;
     }
 
@@ -95,6 +100,22 @@ public class ParametreAlgo implements Serializable {
 
     public void setPourcentReduction(Integer pourcentReduction) {
         this.pourcentReduction = pourcentReduction;
+    }
+
+    public Float getBorneSup() {
+        return borneSup;
+    }
+
+    public void setBorneSup(Float borneSup) {
+        this.borneSup = borneSup;
+    }
+
+    public Float getBorneInf() {
+        return borneInf;
+    }
+
+    public void setBorneInf(Float borneInf) {
+        this.borneInf = borneInf;
     }
 
     public ParametreAlgo() {

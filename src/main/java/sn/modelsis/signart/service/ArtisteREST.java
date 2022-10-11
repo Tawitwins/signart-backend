@@ -280,6 +280,8 @@ public class ArtisteREST {
         String surnom = "artiste00"+dto.getTelephone();
         String identite = nom+"_"+prenom+"_"+surnom;
         entity.setIdentite(identite);
+        entity.setAnneeDebutCarrier(dto.getAnneeDebutCarrier());
+        entity.setQualificationLevel(dto.getQualificationLevel());
         return entity;
     }
             
@@ -308,6 +310,8 @@ public class ArtisteREST {
         dto.setFormation(entity.getFormation());
         dto.setExpositions(entity.getExpositions());
         dto.setIdentite(entity.getIdentite());
+        dto.setAnneeDebutCarrier(entity.getAnneeDebutCarrier());
+        dto.setQualificationLevel(entity.getQualificationLevel());
         
         
         dto.setProfession(entity.getProfession());

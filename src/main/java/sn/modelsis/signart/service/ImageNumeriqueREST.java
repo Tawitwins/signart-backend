@@ -109,6 +109,9 @@ public class ImageNumeriqueREST {
         entity.setDescription(dto.getDescription());
         entity.setTechnique(dto.getTechnique());
         entity.setNom(nom);
+        entity.setDimensionLevel(dto.getDimensionLevel());
+        entity.setPoids(dto.getPoids());
+        entity.setNiveauPoids(dto.getNiveauPoids());
         return entity;
     }
     
@@ -126,6 +129,9 @@ public class ImageNumeriqueREST {
         dto.setDescription(entity.getDescription());
         dto.setTechnique(entity.getTechnique());
         dto.setNom(entity.getNom());
+        dto.setPoids(entity.getPoids());
+        dto.setDimensionLevel(entity.getDimensionLevel());
+        dto.setNiveauPoids(entity.getNiveauPoids());
         return dto;
     }
     

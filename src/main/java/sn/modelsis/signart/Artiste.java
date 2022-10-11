@@ -132,6 +132,11 @@ public class Artiste implements Serializable {
     @JoinColumn(name = "idMagasin", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Magasin idMagasin;
+    @Column(name = "qualificationLevel",nullable = false)
+    private String qualificationLevel;
+
+    @Column(name = "anneeDebutCarrier",nullable = false)
+    private Integer anneeDebutCarrier;
 
     public Artiste() {
     }
@@ -378,6 +383,22 @@ public class Artiste implements Serializable {
     public void setExpositionSet(Set<Exposition> expositionSet) {
         this.expositionSet = expositionSet;
     }
+    public String getQualificationLevel() {
+        return qualificationLevel;
+    }
+
+    public void setQualificationLevel(String qualificationLevel) {
+        this.qualificationLevel = qualificationLevel;
+    }
+
+    public Integer getAnneeDebutCarrier() {
+        return anneeDebutCarrier;
+    }
+
+    public void setAnneeDebutCarrier(Integer anneeDebutCarrier) {
+        this.anneeDebutCarrier = anneeDebutCarrier;
+    }
+
 
     @Override
     public int hashCode() {
