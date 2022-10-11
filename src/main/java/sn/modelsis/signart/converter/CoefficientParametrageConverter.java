@@ -12,16 +12,13 @@ import javax.inject.Inject;
 @Stateless
 public class CoefficientParametrageConverter {
 
-    @Inject
-    CoefficientParametrageFacade coefficientParametrageFacade;
-
     public CoefficientParametrageDto entityToDto(CoefficientParametrage entity){
         CoefficientParametrageDto dto = new CoefficientParametrageDto();
         dto.setId(entity.getId());
         dto.setCodeParametre(entity.getCodeParametre());
         dto.setValeurParametre(entity.getValeurParametre());
         dto.setStatut(entity.getStatut());
-        dto.setEnumTypeParam(entity.getEnumTypeParam().toString());
+        dto.setEnumTypeParam(entity.getEnumTypeParam());
         return dto;
     }
 
@@ -36,7 +33,7 @@ public class CoefficientParametrageConverter {
         entity.setEnumTypeParam(getEnumParam(dto.getEnumTypeParam()));
         return entity;
     }
-    public EnumTypeParam getEnumParam(String typeParam){
+    public String getEnumParam(String typeParam){
 
         EnumTypeParam param = null;
 
@@ -56,6 +53,6 @@ public class CoefficientParametrageConverter {
             default:
                 break;
         }
-        return param;
+        return param.toString();
     }
 }

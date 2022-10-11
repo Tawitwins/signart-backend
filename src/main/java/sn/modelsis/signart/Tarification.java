@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Tarification.findAll", query = "SELECT t FROM Tarification t")
     , @NamedQuery(name = "Tarification.findById", query = "SELECT t FROM Tarification t WHERE t.id = :id")
     , @NamedQuery(name = "Tarification.findByZone", query = "SELECT t FROM Tarification t WHERE t.zone = :zone")
+        , @NamedQuery(name = "Tarification.findByDistance", query = "SELECT t FROM Tarification t WHERE t.distance = :distance")
+
 })
 
 public class Tarification implements Serializable {
@@ -50,6 +52,12 @@ public class Tarification implements Serializable {
     @Column(name = "zone", length = 200)
     private String zone;
 
+    @Column(name = "accessibiliteZone", length = 200)
+    private String accessibiliteZone;
+    @Column(name = "distance", length = 50)
+    private Integer distance;
+    @Column(name = "categorieDistance", length = 200)
+    private String categorieDistance;
     @JoinColumn(name = "idServiceLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private ServiceLivraison idServiceLivraison;
@@ -126,8 +134,29 @@ public class Tarification implements Serializable {
         this.idServiceLivraison = idServiceLivraison;
     }
 
+    public Integer getDistance() {
+        return distance;
+    }
 
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
 
+    public String getAccessibiliteZone() {
+        return accessibiliteZone;
+    }
+
+    public void setAccessibiliteZone(String accessibiliteZone) {
+        this.accessibiliteZone = accessibiliteZone;
+    }
+
+    public String getCategorieDistance() {
+        return categorieDistance;
+    }
+
+    public void setCategorieDistance(String categorieDistance) {
+        this.categorieDistance = categorieDistance;
+    }
 
     @Override
     public int hashCode() {

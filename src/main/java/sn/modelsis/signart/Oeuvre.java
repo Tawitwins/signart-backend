@@ -100,6 +100,10 @@ public class Oeuvre implements Serializable {
     @Column(name = "fraisLivraison", precision = 19, scale = 4)
     private BigDecimal fraisLivraison;
 
+    @Column(name = "poids")
+    private Integer poids;
+    @Column(name = "libellePoids", length = 1000)
+    private String libellePoids;
     @Column(name = "dateAjout")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAjout;
@@ -413,6 +417,22 @@ public class Oeuvre implements Serializable {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public Integer getPoids() {
+        return poids;
+    }
+
+    public void setPoids(Integer poids) {
+        this.poids = poids;
+    }
+
+    public String getLibellePoids() {
+        return libellePoids;
+    }
+
+    public void setLibellePoids(String libellePoids) {
+        this.libellePoids = libellePoids;
     }
 
     @Override

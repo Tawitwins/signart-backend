@@ -12,6 +12,8 @@ public class ParametreAlgoDto {
     private Integer baseNote;
     private Integer pourcentReduction;
 
+    private Integer idCoefficientParametrage;
+
     public Integer getId() {
         return id;
     }
@@ -60,6 +62,13 @@ public class ParametreAlgoDto {
         this.pourcentReduction = pourcentReduction;
     }
 
+    public Integer getIdCoefficientParametrage() {
+        return idCoefficientParametrage;
+    }
+
+    public void setIdCoefficientParametrage(Integer idCoefficientParametrage) {
+        this.idCoefficientParametrage = idCoefficientParametrage;
+    }
 
     public ParametreAlgoDto() {
     }

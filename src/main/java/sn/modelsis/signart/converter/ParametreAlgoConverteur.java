@@ -26,6 +26,7 @@ public class ParametreAlgoConverteur {
         dto.setNiveau(entity.getNiveau());
         dto.setNote(entity.getNote());
         dto.setBaseNote(entity.getBaseNote());
+        dto.setIdCoefficientParametrage(entity.getCoefficientParam().getId());
         dto.setPourcentReduction(entity.getPourcentReduction());
         return dto;
     }

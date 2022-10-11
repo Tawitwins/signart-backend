@@ -79,6 +79,20 @@ public class CommandeREST {
     LignePaiementFacade lignePaiementFacade;
     @Inject
     ClientConverter clientConverter;
+    @Inject
+    ParametrageFacade parametrageFacade;
+    @Inject
+    ParametreAlgoFacade parametreAlgoFacade;
+    @Inject
+    ParametreAlgoREST parametreAlgoREST;
+    @Inject
+    ParametreAlgoConverteur parametreAlgoConverteur;
+    @Inject
+    CoefficientParametrageFacade coefficientParametrageFacade;
+    @Inject
+    CoefficientParametrageConverter coefficientParametrageConverter;
+    @Inject
+    OeuvreConverter oeuvreConverter;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) throws SignArtException {
@@ -371,5 +385,97 @@ public class CommandeREST {
     public  ClientDto findClientByIdCommande(@PathParam("idCommande") Integer idCommande){
         Client client = clientFacade.find(commandeFacade.find(idCommande).getIdClient().getId());
         return clientConverter.entityToDto(client);
+    }
+
+
+    @GET
+    @Path("getFraisLivraison/{commandeId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public BigDecimal calculFraisLivraison(@PathParam("commandeId") Integer commandeId){
+        getPrixBase(commandeId, "OEUVRE");
+
+        BigDecimal fraisLiv = getPrixBase(commandeId, "OEUVRE").add(getPrixBase(commandeId, "TARIFICATION"));
+        return fraisLiv.divide(new BigDecimal(2));
+    }
+    public BigDecimal getPrixBase(Integer id, String type){
+
+        BigDecimal prixBaseOeuvres = BigDecimal.ZERO;
+        BigDecimal prixOeuvre = BigDecimal.ZERO;
+        BigDecimal prixBaseOeuvre = BigDecimal.ZERO;
+        BigDecimal prixBaseTarification = BigDecimal.ONE; // quel est le prix de base de la tarification
+        BigDecimal quotient = BigDecimal.ONE;
+        BigDecimal coeffParamZone = BigDecimal.ZERO;
+        BigDecimal coeffParamDistance = BigDecimal.ZERO;
+        BigDecimal coeffParamPoids = BigDecimal.ZERO;
+        BigDecimal coeffParamDim = BigDecimal.ZERO;
+
+        Commande commande = commandeFacade.find(id);
+        commande = commande;
+        Set<LigneCommande> ligneCommandeSet = commande.getLigneCommandeSet();
+        BigDecimal nombreTotalOeuvre = BigDecimal.valueOf(ligneCommandeSet.size());
+
+        if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
+            switch (type){
+                case "OEUVRE":
+                    for (LigneCommande ligneCommande : ligneCommandeSet) {
+                        Oeuvre oeuvre = ligneCommande.getIdOeuvre();
+                        ligneParam(oeuvre,null, "POIDS");
+                        coeffParamPoids = BigDecimal.valueOf(ligneParam(oeuvre,null, "POIDS").getCoefficientParam().getValeurParametre());
+                        coeffParamDim = BigDecimal.valueOf(ligneParam(oeuvre, null,"DIMENSIONS").getCoefficientParam().getValeurParametre());
+                        BigDecimal baseNote = BigDecimal.valueOf(ligneParam(oeuvre, null,"DIMENSIONS").getBaseNote());
+                        BigDecimal notePoids = BigDecimal.valueOf(ligneParam(oeuvre,null, "POIDS").getBaseNote()); //getNote()
+                        BigDecimal noteDim = BigDecimal.valueOf(ligneParam(oeuvre, null,"DIMENSIONS").getBaseNote()); //getNote()
+
+                        BigDecimal prixPoids = coeffParamPoids.multiply(notePoids);
+                        BigDecimal prixDim = coeffParamDim.multiply(noteDim);
+                        prixBaseOeuvre = ligneCommande.getIdOeuvre().getPrix();
+                        quotient = (coeffParamPoids.add(coeffParamDim)).multiply(baseNote);
+
+                        prixOeuvre = (prixOeuvre.add(prixPoids).add(prixDim)).multiply(prixBaseOeuvre).divide(quotient);
+                    }
+                    prixBaseOeuvres = prixBaseOeuvres.add(prixOeuvre).divide(nombreTotalOeuvre);
+
+                    prixBaseOeuvres = prixBaseOeuvres.divide(nombreTotalOeuvre.multiply(prixOeuvre)); //REVIEW
+                    break;
+                case "TARIFICATION":
+                    Tarification tarification = commande.getIdTarification();
+
+                    coeffParamZone = BigDecimal.valueOf(ligneParam(null, tarification,"ZONE").getCoefficientParam().getValeurParametre());
+                    coeffParamDistance = BigDecimal.valueOf(ligneParam(null,tarification, "DISTANCE").getCoefficientParam().getValeurParametre());
+                    BigDecimal baseNote = BigDecimal.valueOf(ligneParam(null,tarification, "DISTANCE").getBaseNote());
+                    BigDecimal noteZone = BigDecimal.valueOf(ligneParam(null, tarification,"ZONE").getBaseNote()); //getNote()
+                    BigDecimal noteDistance = BigDecimal.valueOf(ligneParam(null,tarification, "DISTANCE").getBaseNote()); //getNote()
+
+                    BigDecimal prixZone = coeffParamZone.multiply(noteZone);
+                    BigDecimal prixDistance = coeffParamDistance.multiply(noteDistance);
+                    prixBaseTarification = BigDecimal.valueOf(tarification.getFraisAssurance()+tarification.getFraisAssurance());
+                    BigDecimal prixBaseTarif = prixDistance.add(prixZone).multiply(prixBaseTarification);
+                    BigDecimal qotient = (coeffParamZone.add(coeffParamDistance)).multiply(baseNote);
+
+                    return prixBaseTarif.divide(qotient);
+            }
+        }
+        return prixBaseOeuvres;
+    }
+
+    public ParametreAlgo ligneParam(Oeuvre oeuvre,Tarification tarification, String type) {
+        ParametreAlgo paramAlgo = null;
+        switch (type){
+            case "DIMENSIONS":
+                paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getDimensions());
+                break;
+            case "POIDS":
+                paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getLibellePoids());
+                break;
+            case "ZONE_LIVRAISON":
+                paramAlgo = parametreAlgoFacade.findByNiveau(tarification.getAccessibiliteZone());
+                break;
+            case "DISTANCE":
+                paramAlgo = parametreAlgoFacade.findByNiveau(tarification.getCategorieDistance());
+                break;
+            default:
+                break;
+        }
+        return paramAlgo;
     }
 }
