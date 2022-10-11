@@ -1,5 +1,6 @@
 package sn.modelsis.signart.dto;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
 /**
@@ -16,7 +17,9 @@ public class TarificationDto implements Serializable {
     private Integer fraisAssurance;
     private String zone;
     private Integer idServiceLivraison;
-
+    private Integer distance;
+    private String accessibiliteZone;
+    private String categorieDistance;
 
     public TarificationDto(Integer id, Integer delaiLivraison, Integer fraisAssurance, Integer fraisLivraison, String zone) {
         this.id = id;
@@ -80,6 +83,30 @@ public class TarificationDto implements Serializable {
 
     public void setIdServiceLivraison(Integer idServiceLivraison) {
         this.idServiceLivraison = idServiceLivraison;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    public String getAccessibiliteZone() {
+        return accessibiliteZone;
+    }
+
+    public void setAccessibiliteZone(String accessibiliteZone) {
+        this.accessibiliteZone = accessibiliteZone;
+    }
+
+    public String getCategorieDistance() {
+        return categorieDistance;
+    }
+
+    public void setCategorieDistance(String categorieDistance) {
+        this.categorieDistance = categorieDistance;
     }
 
     @Override

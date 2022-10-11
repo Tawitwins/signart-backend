@@ -39,7 +39,8 @@ public class OeuvreDto implements Serializable {
     private Integer stock;
 
     private String reference;
-    
+    private Integer poids;
+    private String libellePoids;
     
     
     //private Collection<MotCle> motCleCollection;
@@ -293,6 +294,22 @@ public class OeuvreDto implements Serializable {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public Integer getPoids() {
+        return poids;
+    }
+
+    public void setPoids(Integer poids) {
+        this.poids = poids;
+    }
+
+    public String getLibellePoids() {
+        return libellePoids;
+    }
+
+    public void setLibellePoids(String libellePoids) {
+        this.libellePoids = libellePoids;
     }
 
     @Override

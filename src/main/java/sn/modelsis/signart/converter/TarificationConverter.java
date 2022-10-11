@@ -28,6 +28,9 @@ public class TarificationConverter {
         dto.setFraisAssurance(entity.getFraisAssurance());
         dto.setFraisLivraison(entity.getFraisLivraison());
         dto.setZone(entity.getZone());
+        dto.setDistance(entity.getDistance());
+        dto.setAccessibiliteZone(entity.getAccessibiliteZone());
+        dto.setCategorieDistance(entity.getCategorieDistance());
         if(entity.getIdServiceLivraison() != null)
             dto.setIdServiceLivraison(entity.getIdServiceLivraison().getId());
         return dto;
@@ -40,6 +43,9 @@ public class TarificationConverter {
         entity.setFraisAssurance(dto.getFraisAssurance());
         entity.setFraisLivraison(dto.getFraisLivraison());
         entity.setZone(dto.getZone());
+        entity.setDistance(dto.getDistance());
+        entity.setAccessibiliteZone(dto.getAccessibiliteZone());
+        entity.setCategorieDistance(dto.getCategorieDistance());
         entity.setIdServiceLivraison(serviceLivraisonFacade.findById(dto.getIdServiceLivraison()));
         return entity;
     }

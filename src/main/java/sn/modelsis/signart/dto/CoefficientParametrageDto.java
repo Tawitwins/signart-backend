@@ -5,7 +5,7 @@ public class CoefficientParametrageDto {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String codeParametre;
-    private String valeurParametre;
+    private Integer valeurParametre;
     private String statut;
     private String enumTypeParam;
 
@@ -26,11 +26,11 @@ public class CoefficientParametrageDto {
         this.codeParametre = codeParametre;
     }
 
-    public String getValeurParametre() {
+    public Integer getValeurParametre() {
         return valeurParametre;
     }
 
-    public void setValeurParametre(String valeurParametre) {
+    public void setValeurParametre(Integer valeurParametre) {
         this.valeurParametre = valeurParametre;
     }
 
