@@ -77,6 +77,7 @@ public class ParametreAlgoDto {
 
     public void setBorneInf(float borneInf) {
         this.borneInf = borneInf;
+    }
     public Integer getIdCoefficientParametrage() {
         return idCoefficientParametrage;
     }

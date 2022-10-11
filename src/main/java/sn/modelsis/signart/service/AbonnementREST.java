@@ -363,8 +363,8 @@ public class AbonnementREST {
             int totalProduit = 0;
             totalCoef = 0;
             for (ParametreAlgo parametreAlgo : listParamByElement) {
-                totalProduit += parametreAlgo.getNote() * Integer.parseInt(parametreAlgo.getCoefficientParam().getValeurParametre()) * parametreAlgo.getPourcentReduction();
-                totalCoef += Integer.parseInt(parametreAlgo.getCoefficientParam().getValeurParametre());
+                totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+                totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
             }
             totalProduit = totalProduit / listParamByElement.get(0).getBaseNote();
             totalProduit = totalProduit * Integer.parseInt(prixBaseOeuvre.getValue()) / totalCoef;
@@ -383,8 +383,8 @@ public class AbonnementREST {
         float totalProduit = 0;
         float totalCoef = 0;
         for (ParametreAlgo parametreAlgo : listParamByAbonnement) {
-            totalProduit += parametreAlgo.getNote() * Integer.parseInt(parametreAlgo.getCoefficientParam().getValeurParametre()) * parametreAlgo.getPourcentReduction();
-            totalCoef += Integer.parseInt(parametreAlgo.getCoefficientParam().getValeurParametre());
+            totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+            totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
         }
         totalProduit = totalProduit/listParamByAbonnement.get(0).getBaseNote();
         totalProduit = totalProduit * prixOeuvre / totalCoef;
