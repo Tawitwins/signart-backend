@@ -49,6 +49,14 @@ public class ParametreAlgoREST {
         parametreAlgo.setPourcentReduction(parametreAlgoDto.getPourcentReduction());
         return parametreAlgo;
     }
+    @DELETE
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public boolean  delete(@PathParam("id") Integer id){
+        ParametreAlgo entity = parametreAlgoFacade.find(id);
+        parametreAlgoFacade.remove(entity);
+        return true;
+    }
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
