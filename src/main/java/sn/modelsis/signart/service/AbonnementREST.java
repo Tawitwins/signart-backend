@@ -213,7 +213,21 @@ public class AbonnementREST {
         List<Float> resultPrixAbonne = getPrixAbonne(abonnement,resultPrixOeuvre.get(0));
 
         float Total = (resultPrixOeuvre.get(0)*resultPrixOeuvre.get(1) + resultPrixAbonne.get(0)*resultPrixAbonne.get(1))/ resultPrixOeuvre.get(1)+resultPrixAbonne.get(1);
+        abonnement.setMontantPaiement((int)Total);
         return entityToDto(abonnement);
+    }
+    @POST
+    @Path("getMontantByAbonnementDto")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Float calculMontantAbonnementDto(AbonnementDto abonnementDto) throws SignArtException {
+        Abonnement abonnement = dtoToEntity(abonnementDto);//abonnementfacade.find(id);
+        List<Float> resultPrixOeuvre = getPrixActuelOeuvre(abonnement);
+        List<Float> resultPrixAbonne = getPrixAbonne(abonnement,resultPrixOeuvre.get(0));
+
+        float Total = (resultPrixOeuvre.get(0)*resultPrixOeuvre.get(1) + resultPrixAbonne.get(0)*resultPrixAbonne.get(1))/ resultPrixOeuvre.get(1)+resultPrixAbonne.get(1);
+        abonnement.setMontantPaiement((int)Total);
+        return Total;
     }
 
     @GET
@@ -399,9 +413,19 @@ public class AbonnementREST {
         List<ParametreAlgo> allListParam = new ArrayList<>();
         allListParam = parametreAlgoFacade.findAll();
         // Dimension oeuvre
-        listParamOeuvre.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getNiveau().equals(oeuvre.getDimensionLevel())).get());
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(oeuvre.getDimensionLevel())){
+                listParamOeuvre.add(parametreAlgo);
+            }
+        }
+        //listParamOeuvre.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getNiveau().equals(oeuvre.getDimensionLevel())).get());
         // poids oeuvre
-        listParamOeuvre.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getNiveau().equals(oeuvre.getPoids())).get());
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(oeuvre.getNiveauPoids())){
+                listParamOeuvre.add(parametreAlgo);
+            }
+        }
+        //listParamOeuvre.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getNiveau().equals(oeuvre.getPoids())).get());
         return listParamOeuvre;
     }
 
@@ -410,14 +434,35 @@ public class AbonnementREST {
         List<ParametreAlgo> allListParam = new ArrayList<>();
         allListParam = parametreAlgoFacade.findAll();
         // Qalification Artiste
-        listParamArtiste.add(allListParam.stream().findAny().filter(parametreAlgo ->parametreAlgo.getNiveau().equals(artiste.getQualificationLevel())).get());
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(artiste.getQualificationLevel())){
+                listParamArtiste.add(parametreAlgo);
+            }
+        }
+        //listParamArtiste.add(allListParam.stream().filter(parametreAlgo ->parametreAlgo.getNiveau().equals(artiste.getQualificationLevel())).findFirst().get());
         // Nombre Exposition
         int nbrExpo = expositionFacade.findByArtiste(artiste.getId()).size();
-        listParamArtiste.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= nbrExpo && parametreAlgo.getBorneSup()>nbrExpo).get());
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if(parametreAlgo.getBorneInf() != null && parametreAlgo.getBorneSup() != null)
+            {
+                if (parametreAlgo.getBorneInf() <= nbrExpo && parametreAlgo.getBorneSup()>nbrExpo){
+                    listParamArtiste.add(parametreAlgo);
+                }
+            }
+        }
+        //listParamArtiste.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= nbrExpo && parametreAlgo.getBorneSup()>nbrExpo).get());
         // Nombre année expérience
         Date currentDate = new Date();
         int anneeXp = currentDate.getYear() - artiste.getAnneeDebutCarrier();
-        listParamArtiste.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= anneeXp && parametreAlgo.getBorneSup()>anneeXp).get());
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if(parametreAlgo.getBorneInf() != null && parametreAlgo.getBorneSup() != null)
+            {
+                if ( parametreAlgo.getBorneInf() <= anneeXp && parametreAlgo.getBorneSup()>anneeXp){
+                    listParamArtiste.add(parametreAlgo);
+                }
+            }
+        }
+        //listParamArtiste.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= anneeXp && parametreAlgo.getBorneSup()>anneeXp).get());
         return listParamArtiste;
     }
     private  List<ParametreAlgo> recupérationParamAbonnement(Abonnement abonnement) throws SignArtException {
@@ -426,9 +471,22 @@ public class AbonnementREST {
         List<ParametreAlgo> allListParam = new ArrayList<>();
         allListParam = parametreAlgoFacade.findAll();
         // Nombre oeuvre dans abonnement
-        listParamAbonnement.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= listOeuvre.size() && parametreAlgo.getBorneSup()>listOeuvre.size()).get());
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if(parametreAlgo.getBorneInf() != null && parametreAlgo.getBorneSup() != null)
+            {
+                if (parametreAlgo.getBorneInf() <= listOeuvre.size() && parametreAlgo.getBorneSup()>listOeuvre.size()){
+                    listParamAbonnement.add(parametreAlgo);
+                }
+            }
+        }
+        //listParamAbonnement.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= listOeuvre.size() && parametreAlgo.getBorneSup()>listOeuvre.size()).get());
         // Durée abonnement
-        listParamAbonnement.add(allListParam.stream().findAny().filter(parametreAlgo ->parametreAlgo.getNiveau().equals(abonnement.getIdDelai().getDelaiLevel())).get());
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(abonnement.getIdDelai().getDelaiLevel())){
+                listParamAbonnement.add(parametreAlgo);
+            }
+        }
+        //listParamAbonnement.add(allListParam.stream().findAny().filter(parametreAlgo ->parametreAlgo.getNiveau().equals(abonnement.getIdDelai().getDelaiLevel())).get());
         return listParamAbonnement;
     }
 }

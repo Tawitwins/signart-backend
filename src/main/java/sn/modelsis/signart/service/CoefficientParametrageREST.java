@@ -103,8 +103,10 @@ public class CoefficientParametrageREST {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public void  delete(@PathParam("id") Integer id){
-        coefficientParametrageFacade.remove(coefficientParametrageFacade.find(id));
+    public Boolean  delete(@PathParam("id") Integer id) throws SignArtException {
+        CoefficientParametrage entity =coefficientParametrageFacade.findById(id);
+        coefficientParametrageFacade.remove(entity);
+        return true;
     }
 
     @GET
