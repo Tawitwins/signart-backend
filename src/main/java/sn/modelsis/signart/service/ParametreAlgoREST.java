@@ -47,6 +47,10 @@ public class ParametreAlgoREST {
         parametreAlgo.setNote(parametreAlgoDto.getNote());
         parametreAlgo.setBaseNote(parametreAlgoDto.getBaseNote());
         parametreAlgo.setPourcentReduction(parametreAlgoDto.getPourcentReduction());
+        if(parametreAlgoDto.getBorneInf() != 0)
+            parametreAlgo.setBorneInf(parametreAlgoDto.getBorneInf());
+        if(parametreAlgoDto.getBorneSup() != 0)
+            parametreAlgo.setBorneSup(parametreAlgoDto.getBorneSup());
         return parametreAlgo;
     }
     @DELETE
@@ -82,5 +86,41 @@ public class ParametreAlgoREST {
                     parametreAlgoDtoList.add(dto));
         }
         return parametreAlgoDtoList;
+    }
+    @POST
+    @Path("prixOeuvreByListParam/{prixDeBase}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public float getPrix(@PathParam("prixDeBase") Float prixBase,List<ParametreAlgo> listParams) throws SignArtException {
+        //ParametreAlgo parametreAlgo = parametreAlgoFacade.find(id);
+        float totalCoef = 0;
+        float totalProduit = 0;
+        for (ParametreAlgo parametreAlgo : listParams) {
+            totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+            totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
+        }
+        totalProduit = totalProduit / listParams.get(0).getBaseNote();
+        totalProduit = totalProduit * prixBase / totalCoef;
+        return totalProduit;
+    }
+    @POST
+    @Path("prixMoyenneByListParam/{prixDeBase}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public float getPrixMoyen(@PathParam("prixDeBase") Float prixBase,List<List<ParametreAlgo>> listParams) throws SignArtException {
+        //ParametreAlgo parametreAlgo = parametreAlgoFacade.find(id);
+        float totalCoef = 0;
+        float totalProduit = 0;
+        float prixMoyenne = 0;
+        for (List<ParametreAlgo> parametreAlgoList : listParams) {
+            totalCoef = 0;
+            totalProduit = 0;
+            for (ParametreAlgo parametreAlgo : parametreAlgoList) {
+                totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+                totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
+            }
+            totalProduit = totalProduit / parametreAlgoList.get(0).getBaseNote();
+            totalProduit = totalProduit * prixBase / totalCoef;
+            prixMoyenne += totalProduit;
+        }
+        return prixMoyenne/listParams.size();
     }
 }
