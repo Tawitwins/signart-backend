@@ -411,7 +411,7 @@ public class CommandeREST {
         Commande commande = commandeFacade.find(commandeId);
         Set<LigneCommande> ligneCommandeSet = commande.getLigneCommandeSet();
         BigDecimal nombreTotalOeuvre = BigDecimal.valueOf(ligneCommandeSet.size());
-        Parametrage parametrage = parametrageFacade.findByParamName("prixBase");
+        Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
         BigDecimal prixBase = BigDecimal.valueOf(Integer.valueOf(parametrage.getValue()));
 
         try{
