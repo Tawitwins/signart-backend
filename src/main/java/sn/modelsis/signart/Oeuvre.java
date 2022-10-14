@@ -92,7 +92,8 @@ public class Oeuvre implements Serializable {
 
     @Column(name = "reference", length = 1000)
     private String reference;
-
+    @Column(name = "libelleDimension", length = 1000)
+    private String libelleDimension;
       @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Artiste idArtiste;
@@ -274,6 +275,15 @@ public class Oeuvre implements Serializable {
     public void setIdMagasin(Magasin idMagasin) {
         this.idMagasin = idMagasin;
     }
+
+    public String getLibelleDimension() {
+        return libelleDimension;
+    }
+
+    public void setLibelleDimension(String libelleDimension) {
+        this.libelleDimension = libelleDimension;
+    }
+
     @XmlTransient
     public Set<MotCle> getMotCleSet() {
         return motCleSet;

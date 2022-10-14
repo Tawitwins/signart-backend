@@ -24,6 +24,7 @@ public class OeuvreDto implements Serializable {
     private String auteur;
     private String artiste;
     private String dimensions;
+    private String libelleDimension;
     private Integer annee;
     private BigDecimal prix;
     private Integer tauxremise;
@@ -214,9 +215,15 @@ public class OeuvreDto implements Serializable {
     public void setIdMagasin(Integer idMagasin) {
         this.idMagasin = idMagasin;
     }
-    
 
-   /* public Integer getIdSousTechnique() {
+    public String getLibelleDimension() {
+        return libelleDimension;
+    }
+
+    public void setLibelleDimension(String libelleDimension) {
+        this.libelleDimension = libelleDimension;
+    }
+    /* public Integer getIdSousTechnique() {
         return idSousTechnique;
     }
 

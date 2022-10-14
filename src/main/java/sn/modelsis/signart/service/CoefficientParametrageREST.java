@@ -2,9 +2,11 @@ package sn.modelsis.signart.service;
 
 import sn.modelsis.signart.Abonnement;
 import sn.modelsis.signart.CoefficientParametrage;
+import sn.modelsis.signart.ParametreAlgo;
 import sn.modelsis.signart.converter.CoefficientParametrageConverter;
 import sn.modelsis.signart.dto.AbonnementDto;
 import sn.modelsis.signart.dto.CoefficientParametrageDto;
+import sn.modelsis.signart.dto.ParametreAlgoDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.CoefficientParametrageFacade;
 
@@ -70,11 +72,18 @@ public class CoefficientParametrageREST {
     @GET
     @Path("findByCodeParametre/{codeParametre}")
     @Produces({MediaType.APPLICATION_JSON})
-    public CoefficientParametrageDto findByCodeParametre(@PathParam("codeParametre") String codeParametre) throws SignArtException {
-        CoefficientParametrage entity = coefficientParametrageFacade.findByCodeParametre(codeParametre);
-        return coefficientParametrageConverter.entityToDto(entity);
-    }
+    public List<CoefficientParametrageDto> findByCodeParametre(@PathParam("codeParametre") String codeParametre)  {
+        List<CoefficientParametrageDto> parametreAlgoDtoList = new ArrayList<>();
+        List<CoefficientParametrage> parametreAlgoList = coefficientParametrageFacade.findByCodeParametre(codeParametre);
 
+        if(parametreAlgoList != null){
+            parametreAlgoList.stream().map(parametrage -> {
+                return coefficientParametrageConverter.entityToDto(parametrage);
+            }).forEachOrdered(dto ->
+                    parametreAlgoDtoList.add(dto));
+        }
+        return parametreAlgoDtoList;
+    }
     @GET
     @Path("findByValeurParametre/{valeurParametre}")
     @Produces({MediaType.APPLICATION_JSON})

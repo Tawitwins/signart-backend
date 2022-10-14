@@ -1,6 +1,7 @@
 package sn.modelsis.signart.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
@@ -19,8 +20,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.*;
 import sn.modelsis.signart.dto.*;
@@ -387,82 +386,107 @@ public class CommandeREST {
         return clientConverter.entityToDto(client);
     }
 
+    BigDecimal somCoeffOeuvre = BigDecimal.ZERO;
+    BigDecimal somCoeffTarif = BigDecimal.ZERO;
 
     @GET
     @Path("getFraisLivraison/{commandeId}")
     @Produces({MediaType.APPLICATION_JSON})
     public BigDecimal calculFraisLivraison(@PathParam("commandeId") Integer commandeId){
-        getPrixBase(commandeId, "OEUVRE");
-
-        BigDecimal fraisLiv = getPrixBase(commandeId, "OEUVRE").add(getPrixBase(commandeId, "TARIFICATION"));
-        return fraisLiv.divide(new BigDecimal(2));
+        BigDecimal fraisLiv = (moyennePrixOeuvre(commandeId).multiply(somCoeffOeuvre)).add(getPrixTarification(commandeId).multiply(somCoeffTarif));
+        return fraisLiv.divide((somCoeffTarif.add(somCoeffOeuvre)),2, RoundingMode.HALF_EVEN);
     }
-    public BigDecimal getPrixBase(Integer id, String type){
-
-        BigDecimal prixBaseOeuvres = BigDecimal.ZERO;
+    @GET
+    @Path("moyennePrixOeuvre/{commandeId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public BigDecimal moyennePrixOeuvre(@PathParam("commandeId")  Integer commandeId){
         BigDecimal prixOeuvre = BigDecimal.ZERO;
-        BigDecimal prixBaseOeuvre = BigDecimal.ZERO;
-        BigDecimal prixBaseTarification = BigDecimal.ONE; // quel est le prix de base de la tarification
+        BigDecimal prixOeuvres = BigDecimal.ZERO;
+        BigDecimal moyennePrixOeuvre = BigDecimal.ZERO;
         BigDecimal quotient = BigDecimal.ONE;
-        BigDecimal coeffParamZone = BigDecimal.ZERO;
-        BigDecimal coeffParamDistance = BigDecimal.ZERO;
         BigDecimal coeffParamPoids = BigDecimal.ZERO;
         BigDecimal coeffParamDim = BigDecimal.ZERO;
+        BigDecimal coeffTotal = BigDecimal.ZERO;
 
-        Commande commande = commandeFacade.find(id);
-        commande = commande;
+        Commande commande = commandeFacade.find(commandeId);
         Set<LigneCommande> ligneCommandeSet = commande.getLigneCommandeSet();
         BigDecimal nombreTotalOeuvre = BigDecimal.valueOf(ligneCommandeSet.size());
+        Parametrage parametrage = parametrageFacade.findByParamName("prixBase");
+        BigDecimal prixBase = BigDecimal.valueOf(Integer.valueOf(parametrage.getValue()));
 
-        if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
-            switch (type){
-                case "OEUVRE":
-                    for (LigneCommande ligneCommande : ligneCommandeSet) {
-                        Oeuvre oeuvre = ligneCommande.getIdOeuvre();
-                        ligneParam(oeuvre,null, "POIDS");
-                        coeffParamPoids = BigDecimal.valueOf(ligneParam(oeuvre,null, "POIDS").getCoefficientParam().getValeurParametre());
-                        coeffParamDim = BigDecimal.valueOf(ligneParam(oeuvre, null,"DIMENSIONS").getCoefficientParam().getValeurParametre());
-                        BigDecimal baseNote = BigDecimal.valueOf(ligneParam(oeuvre, null,"DIMENSIONS").getBaseNote());
-                        BigDecimal notePoids = BigDecimal.valueOf(ligneParam(oeuvre,null, "POIDS").getBaseNote()); //getNote()
-                        BigDecimal noteDim = BigDecimal.valueOf(ligneParam(oeuvre, null,"DIMENSIONS").getBaseNote()); //getNote()
+        try{
+            if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
+                for (LigneCommande ligneCommande : ligneCommandeSet) {
 
-                        BigDecimal prixPoids = coeffParamPoids.multiply(notePoids);
-                        BigDecimal prixDim = coeffParamDim.multiply(noteDim);
-                        prixBaseOeuvre = ligneCommande.getIdOeuvre().getPrix();
-                        quotient = (coeffParamPoids.add(coeffParamDim)).multiply(baseNote);
+                    Oeuvre oeuvre = ligneCommande.getIdOeuvre();
+                    ParametreAlgo paramAlgoPoids = ligneParam(oeuvre,null, "POIDS");
+                    ParametreAlgo paramAlgoDim = ligneParam(oeuvre,null, "DIMENSIONS");
 
-                        prixOeuvre = (prixOeuvre.add(prixPoids).add(prixDim)).multiply(prixBaseOeuvre).divide(quotient);
-                    }
-                    prixBaseOeuvres = prixBaseOeuvres.add(prixOeuvre).divide(nombreTotalOeuvre);
+                    coeffParamPoids = BigDecimal.valueOf(paramAlgoPoids.getCoefficientParam().getValeurParametre());
+                    coeffParamDim = BigDecimal.valueOf(paramAlgoDim.getCoefficientParam().getValeurParametre());
+                    BigDecimal baseNote = BigDecimal.valueOf(paramAlgoDim.getBaseNote());
+                    BigDecimal notePoids = BigDecimal.valueOf(paramAlgoPoids.getNote());
+                    BigDecimal noteDim = BigDecimal.valueOf(paramAlgoDim.getNote());
+                    BigDecimal pourcentageReduction = BigDecimal.valueOf(paramAlgoDim.getPourcentReduction());
 
-                    prixBaseOeuvres = prixBaseOeuvres.divide(nombreTotalOeuvre.multiply(prixOeuvre)); //REVIEW
-                    break;
-                case "TARIFICATION":
-                    Tarification tarification = commande.getIdTarification();
+                    BigDecimal noteCoefPoids = coeffParamPoids.multiply(notePoids);
+                    BigDecimal noteCoefDim = coeffParamDim.multiply(noteDim);
+                     //ligneCommande.getIdOeuvre().getPrix()
+                    quotient = (coeffParamPoids.add(coeffParamDim)).multiply(baseNote);
 
-                    coeffParamZone = BigDecimal.valueOf(ligneParam(null, tarification,"ZONE").getCoefficientParam().getValeurParametre());
-                    coeffParamDistance = BigDecimal.valueOf(ligneParam(null,tarification, "DISTANCE").getCoefficientParam().getValeurParametre());
-                    BigDecimal baseNote = BigDecimal.valueOf(ligneParam(null,tarification, "DISTANCE").getBaseNote());
-                    BigDecimal noteZone = BigDecimal.valueOf(ligneParam(null, tarification,"ZONE").getBaseNote()); //getNote()
-                    BigDecimal noteDistance = BigDecimal.valueOf(ligneParam(null,tarification, "DISTANCE").getBaseNote()); //getNote()
+                    coeffTotal = coeffTotal.add(coeffParamPoids.add(coeffParamDim));
 
-                    BigDecimal prixZone = coeffParamZone.multiply(noteZone);
-                    BigDecimal prixDistance = coeffParamDistance.multiply(noteDistance);
-                    prixBaseTarification = BigDecimal.valueOf(tarification.getFraisAssurance()+tarification.getFraisAssurance());
-                    BigDecimal prixBaseTarif = prixDistance.add(prixZone).multiply(prixBaseTarification);
-                    BigDecimal qotient = (coeffParamZone.add(coeffParamDistance)).multiply(baseNote);
+                    prixOeuvre = (prixBase.multiply(noteCoefPoids.add(noteCoefDim)).multiply(pourcentageReduction).divide(quotient,2, RoundingMode.HALF_EVEN));
 
-                    return prixBaseTarif.divide(qotient);
+                    prixOeuvres = prixOeuvres.add(prixOeuvre);
+                    somCoeffOeuvre = somCoeffOeuvre.add(coeffTotal);
+
+                }
             }
+            return  prixOeuvres.divide(nombreTotalOeuvre,2, RoundingMode.HALF_EVEN);
+        }catch (Exception e){
+            System.out.println("Something went wrong.");
         }
-        return prixBaseOeuvres;
+        return null;
+    }
+    @GET
+    @Path("getPrixTarification/{commandeId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public BigDecimal getPrixTarification(@PathParam("commandeId")  Integer commandeId){
+
+        BigDecimal coeffParamZone = BigDecimal.ZERO;
+        BigDecimal coeffParamDistance = BigDecimal.ZERO;
+        BigDecimal prixTarification = BigDecimal.ZERO;
+
+        Commande commande = commandeFacade.find(commandeId);
+        Tarification tarification = commande.getIdTarification();
+        ParametreAlgo paramAlgoZone = ligneParam(null, tarification,"ZONE_LIVRAISON");
+        ParametreAlgo paramAlgoDistance = ligneParam(null, tarification,"DISTANCE");
+        try{
+            coeffParamZone = BigDecimal.valueOf(paramAlgoZone.getCoefficientParam().getValeurParametre());
+            coeffParamDistance = BigDecimal.valueOf(paramAlgoDistance.getCoefficientParam().getValeurParametre());
+            BigDecimal baseNote = BigDecimal.valueOf(paramAlgoDistance.getBaseNote());
+            BigDecimal noteZone = BigDecimal.valueOf(paramAlgoZone.getNote());
+            BigDecimal noteDistance = BigDecimal.valueOf(paramAlgoDistance.getNote());
+            BigDecimal pourcentageReduction = BigDecimal.valueOf(paramAlgoZone.getPourcentReduction());
+
+            BigDecimal prixZone = coeffParamZone.multiply(noteZone);
+            BigDecimal prixDistance = coeffParamDistance.multiply(noteDistance);
+            BigDecimal somNoteCoeffZD = prixZone.add(prixDistance);
+            somCoeffTarif = somCoeffTarif.add(coeffParamDistance.add(coeffParamZone));
+
+            return moyennePrixOeuvre(commandeId).multiply(somNoteCoeffZD.multiply(pourcentageReduction)).divide(((coeffParamDistance.add(coeffParamZone)).multiply(baseNote)),2, RoundingMode.HALF_EVEN);
+        }catch (Exception e){
+            System.out.println("Something went wrong.");
+        }
+      return null;
     }
 
     public ParametreAlgo ligneParam(Oeuvre oeuvre,Tarification tarification, String type) {
         ParametreAlgo paramAlgo = null;
         switch (type){
             case "DIMENSIONS":
-                paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getDimensions());
+                paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getLibelleDimension());
                 break;
             case "POIDS":
                 paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getLibellePoids());

@@ -42,20 +42,16 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
         }
     }
 
-    public CoefficientParametrage findByCodeParametre(String codeParametre) throws SignArtException {
-        try {
+    public List<CoefficientParametrage> findByCodeParametre(String codeParametre) {
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByCodeParametre",
                     CoefficientParametrage.class);
             query.setParameter("codeParametre", codeParametre);
-            query.setMaxResults(1);
-            final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
-            if (coefficientParametrageList.isEmpty()) {
-                return null;
+            List<CoefficientParametrage> list = query.getResultList();
+            if (!list.isEmpty() && list != null) {
+                return list;
             }
-            return coefficientParametrageList.get(0);
-        } catch (Exception e) {
-            throw new SignArtException(e.getMessage(), e);
-        }
+            return null;
+
     }
 
     public CoefficientParametrage findByValeurParametre(String valeurParametre) throws SignArtException {

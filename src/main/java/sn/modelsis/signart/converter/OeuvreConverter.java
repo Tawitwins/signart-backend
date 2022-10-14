@@ -65,6 +65,7 @@ public class OeuvreConverter {
         dto.setReference(entity.getReference());
         dto.setPoids(entity.getPoids());
         dto.setLibellePoids(entity.getLibellePoids());
+        dto.setLibelleDimension(entity.getLibelleDimension());
         if(entity.getIdStatut() != null)
             dto.setIdStatus(entity.getIdStatut().getId());
         dto.setStock(entity.getStock());
@@ -104,6 +105,7 @@ public class OeuvreConverter {
         entity.setReference(dto.getReference());
         entity.setPoids(dto.getPoids());
         entity.setLibellePoids(dto.getLibellePoids());
+        entity.setLibelleDimension(dto.getLibelleDimension());
         if(dto.getIdArtiste() != null)
             entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
         if(dto.getIdMagasin() != null){
