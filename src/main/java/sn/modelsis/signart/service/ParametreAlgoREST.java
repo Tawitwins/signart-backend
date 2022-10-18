@@ -70,6 +70,24 @@ public class ParametreAlgoREST {
     }
 
     @GET
+    @Path("byCodeParamCoef/{code}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<ParametreAlgoDto> findByCode(@PathParam("code") String code) {
+        List<ParametreAlgoDto> parametreAlgoDtoList = new ArrayList<>();
+        List<ParametreAlgo> parametreAlgoList = parametreAlgoFacade.findByCode(code);
+
+        if(parametreAlgoList != null){
+            parametreAlgoList.stream().map(parametrage -> {
+                try {
+                    return parametreAlgoConverteur.entityToDto(parametrage);
+                } catch (SignArtException e) {
+                    throw new RuntimeException(e);
+                }
+            }).forEachOrdered(dto ->
+                    parametreAlgoDtoList.add(dto));
+        }
+        return parametreAlgoDtoList;
+    }@GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<ParametreAlgoDto> findAll() {
         List<ParametreAlgoDto> parametreAlgoDtoList = new ArrayList<>();

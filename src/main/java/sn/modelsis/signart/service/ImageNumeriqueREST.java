@@ -594,6 +594,8 @@ public class ImageNumeriqueREST {
         oeuvreNum.setDescription(dto.getDescription());
         oeuvreNum.setTechnique(dto.getTechnique());
         oeuvreNum.setNom(nom);
+        oeuvreNum.setNiveauPoids(dto.getNiveauPoids());
+        oeuvreNum.setDimensionLevel(dto.getDimensionLevel());
         return oeuvreNum;
     }
      
