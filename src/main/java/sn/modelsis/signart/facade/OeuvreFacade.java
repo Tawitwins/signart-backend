@@ -188,6 +188,16 @@ public class OeuvreFacade extends AbstractFacade<Oeuvre> {
         return  null;
     }
 
+    public Oeuvre findByUsure(String niveauUsure) {
+        final TypedQuery<Oeuvre> query = getEntityManager().createNamedQuery("Oeuvre.findByUsure", Oeuvre.class);
+        query.setParameter("usure", niveauUsure);
+        List<Oeuvre> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return  null;
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;

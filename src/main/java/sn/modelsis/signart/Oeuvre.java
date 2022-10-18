@@ -30,7 +30,9 @@ import javax.xml.bind.annotation.XmlTransient;
         , @NamedQuery(name = "Oeuvre.findBySpecialDelivery", query = "SELECT o FROM Oeuvre o WHERE o.specialDelivery = :specialDelivery")
         , @NamedQuery(name = "Oeuvre.findByIsPaid", query = "SELECT o FROM Oeuvre o WHERE o.isPaid = :isPaid")
         , @NamedQuery(name = "Oeuvre.findByReference", query = "SELECT o FROM Oeuvre o WHERE o.reference = :reference")
-        , @NamedQuery(name = "Oeuvre.findByDimensions", query = "SELECT o FROM Oeuvre o WHERE o.dimensions = :dimensions")})
+        , @NamedQuery(name = "Oeuvre.findByDimensions", query = "SELECT o FROM Oeuvre o WHERE o.dimensions = :dimensions")
+        , @NamedQuery(name = "Oeuvre.findByUsure", query = "SELECT o FROM Oeuvre o WHERE o.usure = :usure")
+})
 public class Oeuvre implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -108,6 +110,9 @@ public class Oeuvre implements Serializable {
     @Column(name = "dateAjout")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAjout;
+
+    @Column(name = "usure", length = 100)
+    private String usure;
 
     @Lob
     @Column(name = "miniature")
@@ -443,6 +448,14 @@ public class Oeuvre implements Serializable {
 
     public void setLibellePoids(String libellePoids) {
         this.libellePoids = libellePoids;
+    }
+
+    public String getUsure() {
+        return usure;
+    }
+
+    public void setUsure(String usure) {
+        this.usure = usure;
     }
 
     @Override

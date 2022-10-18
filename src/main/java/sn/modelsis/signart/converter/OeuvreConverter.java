@@ -69,6 +69,10 @@ public class OeuvreConverter {
         if(entity.getIdStatut() != null)
             dto.setIdStatus(entity.getIdStatut().getId());
         dto.setStock(entity.getStock());
+
+        if(entity.getUsure() != null){
+            dto.setUsure(entity.getUsure());
+        }
         //dto.setIdSousTechnique(entity.getIdSousTechnique().getId());
         //dto.setTechnique(entity.getIdSousTechnique().getIdTechnique().getLibelle());
        // dto.setSousTechnique(entity.getIdSousTechnique().getLibelle());
@@ -116,7 +120,9 @@ public class OeuvreConverter {
         if(dto.getIdStatus() != null)
             entity.setIdStatut(statutOeuvreFacade.find(dto.getIdStatus()));
         entity.setStock(dto.getStock());
-        
+
+        if(dto.getUsure() != null)
+            entity.setUsure(dto.getUsure());
         //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
         
         

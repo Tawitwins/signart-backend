@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import sn.modelsis.signart.Artiste;
 
+import javax.persistence.Column;
+
 /**
  *
  * @author SNLOM
@@ -42,7 +44,8 @@ public class OeuvreDto implements Serializable {
     private String reference;
     private Integer poids;
     private String libellePoids;
-    
+
+    private String usure;
     
     //private Collection<MotCle> motCleCollection;
     //private Collection<Theme> themeCollection;
@@ -222,6 +225,14 @@ public class OeuvreDto implements Serializable {
 
     public void setLibelleDimension(String libelleDimension) {
         this.libelleDimension = libelleDimension;
+    }
+
+    public String getUsure() {
+        return usure;
+    }
+
+    public void setUsure(String usure) {
+        this.usure = usure;
     }
     /* public Integer getIdSousTechnique() {
         return idSousTechnique;

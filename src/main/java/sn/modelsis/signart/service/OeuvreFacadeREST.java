@@ -46,7 +46,7 @@ public class OeuvreFacadeREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(OeuvreDto dto) throws SignArtException {
-        dto.setReference("Ref:"+utils.generateReference());
+        dto.setReference("Ref-"+utils.generateReference());
         Oeuvre entity = oeuvreConverter.dtoToEntity(dto);
         oeuvreFacade.create(entity);
         OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
@@ -215,6 +215,17 @@ public class OeuvreFacadeREST {
         return listDto;
     }
 
+    @GET
+    @Path("usure/{niveauUsure}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public OeuvreDto findByUsure(@PathParam("niveauUsure") String niveauUsure) {
+        List<OeuvreDto> listDto = new ArrayList<>();
+        Oeuvre oeuvre = oeuvreFacade.findByUsure(niveauUsure);
+        if (oeuvre != null) {
+            listDto.add(oeuvreConverter.entityToDto(oeuvre));
+        }
+        return listDto.get(0);
+    }
     @GET
     @Path("marque/{codeTypeMarquage}/{idClient}")
     @Produces({MediaType.APPLICATION_JSON})

@@ -393,6 +393,8 @@ public class CommandeREST {
     @Path("getFraisLivraison/{commandeId}")
     @Produces({MediaType.APPLICATION_JSON})
     public BigDecimal calculFraisLivraison(@PathParam("commandeId") Integer commandeId){
+        somCoeffOeuvre = BigDecimal.ZERO;
+        somCoeffTarif = BigDecimal.ZERO;
         BigDecimal fraisLiv = (moyennePrixOeuvre(commandeId).multiply(somCoeffOeuvre)).add(getPrixTarification(commandeId).multiply(somCoeffTarif));
         return fraisLiv.divide((somCoeffTarif.add(somCoeffOeuvre)),2, RoundingMode.HALF_EVEN);
     }
@@ -462,6 +464,7 @@ public class CommandeREST {
         Tarification tarification = commande.getIdTarification();
         ParametreAlgo paramAlgoZone = ligneParam(null, tarification,"ZONE_LIVRAISON");
         ParametreAlgo paramAlgoDistance = ligneParam(null, tarification,"DISTANCE");
+
         try{
             coeffParamZone = BigDecimal.valueOf(paramAlgoZone.getCoefficientParam().getValeurParametre());
             coeffParamDistance = BigDecimal.valueOf(paramAlgoDistance.getCoefficientParam().getValeurParametre());
