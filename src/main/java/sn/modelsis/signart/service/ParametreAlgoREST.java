@@ -24,6 +24,8 @@ public class ParametreAlgoREST {
     ParametreAlgoFacade parametreAlgoFacade;
     @Inject
     ParametreAlgoConverteur parametreAlgoConverteur;
+    @Inject
+    ParametrageFacade parametrageFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -105,10 +107,15 @@ public class ParametreAlgoREST {
         }
         return parametreAlgoDtoList;
     }
+
+
     @POST
-    @Path("prixOeuvreByListParam/{prixDeBase}")
+    @Path("prixOeuvreByListParam")
     @Produces({MediaType.APPLICATION_JSON})
-    public float getPrix(@PathParam("prixDeBase") Float prixBase,List<ParametreAlgo> listParams) throws SignArtException {
+    public float getPrix(List<ParametreAlgo> listParams) throws SignArtException {
+        Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
+        Float prixBase = Float.parseFloat(parametrage.getValue());
+
         //ParametreAlgo parametreAlgo = parametreAlgoFacade.find(id);
         float totalCoef = 0;
         float totalProduit = 0;
@@ -121,10 +128,14 @@ public class ParametreAlgoREST {
         return totalProduit;
     }
     @POST
-    @Path("prixMoyenneByListParam/{prixDeBase}")
+    @Path("prixMoyenneByListParam")
     @Produces({MediaType.APPLICATION_JSON})
-    public float getPrixMoyen(@PathParam("prixDeBase") Float prixBase,List<List<ParametreAlgo>> listParams) throws SignArtException {
+    public float getPrixMoyen(List<List<ParametreAlgo>> listParams) throws SignArtException {
+        Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
+        Float prixBase = Float.parseFloat(parametrage.getValue());
+
         //ParametreAlgo parametreAlgo = parametreAlgoFacade.find(id);
+
         float totalCoef = 0;
         float totalProduit = 0;
         float prixMoyenne = 0;
