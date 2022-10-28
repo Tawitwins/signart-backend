@@ -47,8 +47,8 @@ public class Artiste implements Serializable {
     @Lob
     @Column(name = "photo")
     private byte[] photo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artiste")
-    private Set<ArtisteFonction> artisteFonctionSet;
+ /*   @OneToMany(cascade = CascadeType.ALL, mappedBy = "artiste")
+    private Set<ArtisteFonction> artisteFonctionSet;*/
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,8 +93,8 @@ public class Artiste implements Serializable {
     
     @Column(name = "profession", length = 200)
     private String profession;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
-    private Set<Compte> compteSet;
+  /*  @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
+    private Set<Compte> compteSet;*/
     @JoinColumn(name = "idEtatArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EtatArtiste idEtatArtiste;
@@ -106,8 +106,8 @@ public class Artiste implements Serializable {
     private Utilisateur idUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
     private Set<Oeuvre> oeuvreSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
-    private Set<Annonce> annonceSet;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
+    //private Set<Annonce> annonceSet;
     @JoinTable(name = "Artiste_Exposition", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idExposition", referencedColumnName = "id", nullable = false)})
@@ -123,11 +123,11 @@ public class Artiste implements Serializable {
     @JoinColumn(name = "idBiographie", referencedColumnName = "id")
     @ManyToOne
     private Biographie idBiographie;
-    @JoinTable(name = "Artiste_Fonction", joinColumns = {
+   /* @JoinTable(name = "Artiste_Fonction", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idFonction", referencedColumnName = "id", nullable = false)})
     @ManyToMany
-    private Set<Fonction> fonctionSet;
+    private Set<Fonction> fonctionSet;*/
 
     @JoinColumn(name = "idMagasin", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -324,14 +324,14 @@ public class Artiste implements Serializable {
         this.idMagasin = idMagasin;
     }
 
-    @XmlTransient
+  /*  @XmlTransient
     public Set<Compte> getCompteSet() {
         return compteSet;
     }
 
     public void setCompteSet(Set<Compte> compteSet) {
         this.compteSet = compteSet;
-    }
+    }*/
 
     public EtatArtiste getIdEtatArtiste() {
         return idEtatArtiste;
@@ -366,7 +366,7 @@ public class Artiste implements Serializable {
         this.oeuvreSet = oeuvreSet;
     }
 
-    @XmlTransient
+   /* @XmlTransient
     public Set<Annonce> getAnnonceSet() {
         return annonceSet;
     }
@@ -374,7 +374,7 @@ public class Artiste implements Serializable {
     public void setAnnonceSet(Set<Annonce> annonceSet) {
         this.annonceSet = annonceSet;
     }
-
+*/
     @XmlTransient
     public Set<Exposition> getExpositionSet() {
         return expositionSet;
@@ -461,16 +461,12 @@ public class Artiste implements Serializable {
     /**
      * @return the fonctionSet
      */
-    public Set<Fonction> getFonctionSet() {
+/*    public Set<Fonction> getFonctionSet() {
         return fonctionSet;
     }
-
-    /**
-     * @param fonctionSet the fonctionSet to set
-     */
     public void setFonctionSet(Set<Fonction> fonctionSet) {
         this.fonctionSet = fonctionSet;
-    }
+    }*/
 
     public byte[] getPhoto() {
         return photo;
@@ -483,16 +479,12 @@ public class Artiste implements Serializable {
     /**
      * @return the artisteFonctionSet
      */
-    @XmlTransient
+ /*   @XmlTransient
     public Set<ArtisteFonction> getArtisteFonctionSet() {
         return artisteFonctionSet;
     }
-
-    /**
-     * @param artisteFonctionSet the artisteFonctionSet to set
-     */
     public void setArtisteFonctionSet(Set<ArtisteFonction> artisteFonctionSet) {
         this.artisteFonctionSet = artisteFonctionSet;
-    }
+    }*/
 
 }

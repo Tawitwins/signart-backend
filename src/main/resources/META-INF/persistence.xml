@@ -73,6 +73,8 @@
     <class>sn.modelsis.signart.CoefficientParametrage</class>
     <class>sn.modelsis.signart.ParametreAlgo</class>
     <class>sn.modelsis.signart.Parametrage</class>
+    <class>sn.modelsis.signart.EvenementSignart</class>
+    <class>sn.modelsis.signart.CodeEventSignart</class>
 
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
