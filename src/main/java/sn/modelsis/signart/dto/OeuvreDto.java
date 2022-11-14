@@ -46,6 +46,7 @@ public class OeuvreDto implements Serializable {
     private String libellePoids;
 
     private String usure;
+    private Float pourcentageOeuvre;
     
     //private Collection<MotCle> motCleCollection;
     //private Collection<Theme> themeCollection;
@@ -328,6 +329,14 @@ public class OeuvreDto implements Serializable {
 
     public void setLibellePoids(String libellePoids) {
         this.libellePoids = libellePoids;
+    }
+
+    public Float getPourcentageOeuvre() {
+        return pourcentageOeuvre;
+    }
+
+    public void setPourcentageOeuvre(Float pourcentageOeuvre) {
+        this.pourcentageOeuvre = pourcentageOeuvre;
     }
 
     @Override

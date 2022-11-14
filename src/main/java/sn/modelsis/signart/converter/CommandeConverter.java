@@ -84,11 +84,14 @@ public class CommandeConverter {
         //dto.setPayments(payments);
         dto.setRisque(false);
         dto.setTotal(montant);
-        dto.setTotalLivraison(livraison);
+        dto.setTotalLivraison(entity.getFraisLivraison());
         dto.setTotalTaxes(taxes);
         dto.setState(entity.getEtat());
         //dto.setTotal(entity.get.multiply(BigDecimal.valueOf(entity.getQuantite())));
         dto.setFraisLivraison(entity.getFraisLivraison());
+        if(entity.getMontant() != null){
+            dto.setMontant(entity.getMontant());
+        }
         return dto;
     }
 
@@ -131,6 +134,7 @@ public class CommandeConverter {
         if(dto.getIdEtatCommande() != null) {
             entity.setIdEtatCommande(etatcommandeFacade.find(dto.getIdEtatCommande()));
         }
+
         //entity.setQuantite(dto.getQuantite());
         return entity;
     }

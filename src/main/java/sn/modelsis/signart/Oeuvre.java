@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
         , @NamedQuery(name = "Oeuvre.findByIsPaid", query = "SELECT o FROM Oeuvre o WHERE o.isPaid = :isPaid")
         , @NamedQuery(name = "Oeuvre.findByReference", query = "SELECT o FROM Oeuvre o WHERE o.reference = :reference")
         , @NamedQuery(name = "Oeuvre.findByDimensions", query = "SELECT o FROM Oeuvre o WHERE o.dimensions = :dimensions")
+        , @NamedQuery(name = "Oeuvre.findByPourcentageOeuvre", query = "SELECT o FROM Oeuvre o WHERE o.pourcentageOeuvre = :pourcentageOeuvre")
         , @NamedQuery(name = "Oeuvre.findByUsure", query = "SELECT o FROM Oeuvre o WHERE o.usure = :usure")
 })
 public class Oeuvre implements Serializable {
@@ -113,6 +114,9 @@ public class Oeuvre implements Serializable {
 
     @Column(name = "usure", length = 100)
     private String usure;
+
+    @Column(name = "pourcentageOeuvre")
+    private Float pourcentageOeuvre;
 
     @Lob
     @Column(name = "miniature")
@@ -287,6 +291,14 @@ public class Oeuvre implements Serializable {
 
     public void setLibelleDimension(String libelleDimension) {
         this.libelleDimension = libelleDimension;
+    }
+
+    public Float getPourcentageOeuvre() {
+        return pourcentageOeuvre;
+    }
+
+    public void setPourcentageOeuvre(Float pourcentageOeuvre) {
+        this.pourcentageOeuvre = pourcentageOeuvre;
     }
 
     @XmlTransient

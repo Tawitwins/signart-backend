@@ -103,6 +103,7 @@ public class CommandeREST {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, CommandeDto dto) throws SignArtException {
+
         commandeFacade.edit(commandeConverter.dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -395,8 +396,14 @@ public class CommandeREST {
     public BigDecimal calculFraisLivraison(@PathParam("commandeId") Integer commandeId){
         somCoeffOeuvre = BigDecimal.ZERO;
         somCoeffTarif = BigDecimal.ZERO;
-        BigDecimal fraisLiv = (moyennePrixOeuvre(commandeId).multiply(somCoeffOeuvre)).add(getPrixTarification(commandeId).multiply(somCoeffTarif));
-        return fraisLiv.divide((somCoeffTarif.add(somCoeffOeuvre)),2, RoundingMode.HALF_EVEN);
+        BigDecimal fraisLiv = BigDecimal.ZERO;
+        try{
+            fraisLiv = (moyennePrixOeuvre(commandeId).multiply(somCoeffOeuvre)).add(getPrixTarification(commandeId).multiply(somCoeffTarif));
+            return fraisLiv.divide((somCoeffTarif.add(somCoeffOeuvre)),2, RoundingMode.HALF_EVEN);
+        } catch (Exception e){
+            System.out.println("Something went wrong.");
+        }
+        return fraisLiv;
     }
     @GET
     @Path("moyennePrixOeuvre/{commandeId}")
@@ -410,13 +417,13 @@ public class CommandeREST {
         BigDecimal coeffParamDim = BigDecimal.ZERO;
         BigDecimal coeffTotal = BigDecimal.ZERO;
 
-        Commande commande = commandeFacade.find(commandeId);
-        Set<LigneCommande> ligneCommandeSet = commande.getLigneCommandeSet();
-        BigDecimal nombreTotalOeuvre = BigDecimal.valueOf(ligneCommandeSet.size());
-        Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
-        BigDecimal prixBase = BigDecimal.valueOf(Integer.valueOf(parametrage.getValue()));
-
         try{
+            Commande commande = commandeFacade.find(commandeId);
+            Set<LigneCommande> ligneCommandeSet = commande.getLigneCommandeSet();
+            BigDecimal nombreTotalOeuvre = BigDecimal.valueOf(ligneCommandeSet.size());
+            Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
+            BigDecimal prixBase = BigDecimal.valueOf(Integer.valueOf(parametrage.getValue()));
+
             if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
                 for (LigneCommande ligneCommande : ligneCommandeSet) {
 
@@ -449,7 +456,7 @@ public class CommandeREST {
         }catch (Exception e){
             System.out.println("Something went wrong.");
         }
-        return null;
+        return BigDecimal.ZERO;
     }
     @GET
     @Path("getPrixTarification/{commandeId}")
@@ -461,11 +468,12 @@ public class CommandeREST {
         BigDecimal prixTarification = BigDecimal.ZERO;
 
         Commande commande = commandeFacade.find(commandeId);
-        Tarification tarification = commande.getIdTarification();
-        ParametreAlgo paramAlgoZone = ligneParam(null, tarification,"ZONE_LIVRAISON");
-        ParametreAlgo paramAlgoDistance = ligneParam(null, tarification,"DISTANCE");
 
         try{
+            Tarification tarification = commande.getIdTarification();
+            ParametreAlgo paramAlgoZone = ligneParam(null, tarification,"ZONE_LIVRAISON");
+            ParametreAlgo paramAlgoDistance = ligneParam(null, tarification,"DISTANCE");
+
             coeffParamZone = BigDecimal.valueOf(paramAlgoZone.getCoefficientParam().getValeurParametre());
             coeffParamDistance = BigDecimal.valueOf(paramAlgoDistance.getCoefficientParam().getValeurParametre());
             BigDecimal baseNote = BigDecimal.valueOf(paramAlgoDistance.getBaseNote());
@@ -482,11 +490,11 @@ public class CommandeREST {
         }catch (Exception e){
             System.out.println("Something went wrong.");
         }
-      return null;
+      return BigDecimal.ZERO;
     }
 
     public ParametreAlgo ligneParam(Oeuvre oeuvre,Tarification tarification, String type) {
-        ParametreAlgo paramAlgo = null;
+        ParametreAlgo paramAlgo = new ParametreAlgo();
         switch (type){
             case "DIMENSIONS":
                 paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getLibelleDimension());

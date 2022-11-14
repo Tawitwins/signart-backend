@@ -225,10 +225,8 @@ public class LignePaiementREST {
         List<LignePaiementDto> lignePaiementDtoList =  new ArrayList<>();
         lignePaiementDtoList.add(find(id));
 
-        String basicPathK = "D:\\Modelsis";
-        String basicPathO = "D:\\projet signart";
-        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
-        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
+        String basicPath = "D:\\projet signart";
+        String path = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
         String pathLogo =  "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
 
         String ninea = parametrageFacade.findByParamName("NINEA").getValue();
@@ -236,7 +234,7 @@ public class LignePaiementREST {
         String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
         Client client = clientFacade.find(commandeFacade.find(lignePaiementDtoList.get(0).getLigneCommande().getIdCommande()).getIdClient().getId());
 
-        File file = new File(oPath+ "recuLignePaiement.jrxml");
+        File file = new File(path+ "recuLignePaiement.jrxml");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(lignePaiementDtoList);
@@ -256,12 +254,12 @@ public class LignePaiementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, basicPathO + "\\reçue_Lpaiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, basicPath + "\\reçue_Lpaiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, basicPathO + "\\reçu_Lpaiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, basicPath + "\\reçu_Lpaiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(basicPathO + "\\reçue_Lpaiement.pdf"));
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(basicPath + "\\reçue_Lpaiement.pdf"));
         BASE64Encoder encoder = new BASE64Encoder();
         String imageString = encoder.encode(imageByte);
         return imageString;

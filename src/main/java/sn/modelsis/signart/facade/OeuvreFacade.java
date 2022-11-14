@@ -198,6 +198,17 @@ public class OeuvreFacade extends AbstractFacade<Oeuvre> {
         return  null;
     }
 
+    public Oeuvre findByPourcentageOeuvre(Double pourcentageOeuvre) {
+        final TypedQuery<Oeuvre> query = getEntityManager().createNamedQuery("Oeuvre.findByPourcentageOeuvre", Oeuvre.class);
+        query.setParameter("pourcentageOeuvre", pourcentageOeuvre);
+        List<Oeuvre> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return  null;
+    }
+
+
     @Override
     protected EntityManager getEntityManager() {
         return em;

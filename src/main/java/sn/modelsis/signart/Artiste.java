@@ -83,7 +83,7 @@ public class Artiste implements Serializable {
     private String adrGalerie;
     @Column(name = "villeGalerie", length = 50)
     private String villeGalerie;
-    @Column(name = "spécialités", length = 200)
+    @Column(name = "spécialités", length = 2000)
     private String specialites;
     @Column(name = "formations", length = 2000)
     private String formation;

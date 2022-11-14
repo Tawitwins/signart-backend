@@ -89,7 +89,11 @@ public class LivraisonREST {
     @Path("{id}")
     @Produces({ MediaType.APPLICATION_JSON })
     public LivraisonDto find(@PathParam("id") Integer id) throws SignArtException {
-        return livraisonConverter.entityToDto(livraisonFacade.find(id));
+        Livraison entity = livraisonFacade.find(id);
+        LivraisonDto dto = new LivraisonDto();
+        if(entity != null)
+            dto = livraisonConverter.entityToDto(entity);
+        return dto;
     }
 
     @GET

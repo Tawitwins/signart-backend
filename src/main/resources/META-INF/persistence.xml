@@ -78,6 +78,7 @@
 
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
+
       <property name="hibernate.jta.allowTransactionAccess" value="true"/>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect"/>
@@ -86,6 +87,17 @@
       <property name="javax.persistence.jdbc.user" value="signart"/>
       <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="javax.persistence.jdbc.password" value="signart"/-->
+
+
+      <!-- connexion JDBC>
+       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL81Dialect" />
+      <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/signart" />
+      <property name="hibernate.connection.username" value="postgres" />
+      <property name="hibernate.connection.password" value="passer123" />
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
+      <property name="hibernate.show_sql" value="true"/-->
+
     </properties>
   </persistence-unit>
 </persistence>

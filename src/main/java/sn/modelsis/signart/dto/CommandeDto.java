@@ -36,6 +36,8 @@ public class CommandeDto {
     private Integer id;
     private String numero;
     private BigDecimal total;
+    private BigDecimal montant;
+
     private Integer nbTotal;
     private BigDecimal totalLivraison;
     private BigDecimal totalTaxes;
@@ -294,5 +296,13 @@ public class CommandeDto {
 
     public void setFraisLivraison(BigDecimal fraisLivraison) {
         this.fraisLivraison = fraisLivraison;
+    }
+
+    public BigDecimal getMontant() {
+        return montant;
+    }
+
+    public void setMontant(BigDecimal montant) {
+        this.montant = montant;
     }
 }

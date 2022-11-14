@@ -58,7 +58,15 @@ public class OeuvreFacadeREST {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response valider(OeuvreSouscriptionDto dto,@PathParam("idMagasin") Integer idMagasin) throws SignArtException {
         OeuvreSouscription enti = oeuvreSouscriptionFacade.findById(dto.getId());
-        
+        if(dto.getLibellePoids() != null)
+            enti.setLibellePoids(dto.getLibellePoids());
+        if(dto.getPourcentageOeuvre() != null)
+            enti.setPourcentageOeuvre(dto.getPourcentageOeuvre());
+        if(dto.getLibelleDimension() != null)
+            enti.setLibelleDimension(dto.getLibelleDimension());
+        enti.setSpecialDelivery(dto.isSpecialDelivery());
+        if(dto.getPrix() != null)
+            enti.setPrix(dto.getPrix());
         Oeuvre entity = new Oeuvre();
         
         
@@ -73,13 +81,34 @@ public class OeuvreFacadeREST {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, OeuvreDto dto) throws SignArtException {
         Oeuvre oeuvre = oeuvreFacade.find(id);
-        oeuvre.setTaxes(dto.getTaxes());
-        oeuvre.setTauxremise(dto.getTauxremise());
-        oeuvre.setPrix(dto.getPrix());
-        oeuvre.setStock(dto.getStock());
-        oeuvre.setDescription(dto.getDescription());
-        oeuvre.setSpecialDelivery(dto.getSpecialDelivery());
-        oeuvre.setPaid(dto.getPaid());
+        if(dto.getTaxes() != null)
+            oeuvre.setTaxes(dto.getTaxes());
+        if(dto.getTauxremise() != null)
+            oeuvre.setTauxremise(dto.getTauxremise());
+        if(dto.getPrix() != null)
+            oeuvre.setPrix(dto.getPrix());
+        if(dto.getStock() != null)
+            oeuvre.setStock(dto.getStock());
+        if(dto.getDescription() != null)
+            oeuvre.setDescription(dto.getDescription());
+        if(dto.getSpecialDelivery() != null)
+            oeuvre.setSpecialDelivery(dto.getSpecialDelivery());
+        if(dto.getPaid() != null)
+            oeuvre.setPaid(dto.getPaid());
+        if(dto.getDimensions() != null)
+            oeuvre.setDimensions(dto.getDimensions());
+        if(dto.getTauxremise() != null)
+            oeuvre.setTauxremise(dto.getTauxremise());
+        if(dto.getAuteur() != null)
+            oeuvre.setAuteur(dto.getAuteur());
+        if(dto.getLibelleDimension() != null)
+            oeuvre.setLibelleDimension(dto.getLibelleDimension());
+        if(dto.getLibellePoids() != null )
+            oeuvre.setLibellePoids(dto.getLibellePoids());
+        if(dto.getUsure() !=  null)
+            oeuvre.setUsure(dto.getUsure());
+        if(dto.getPourcentageOeuvre() != null)
+            oeuvre.setPourcentageOeuvre(dto.getPourcentageOeuvre());
         oeuvreFacade.edit(oeuvre);
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -102,6 +131,7 @@ public class OeuvreFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<OeuvreDto> findAll() {
+
         List<OeuvreDto> listDto = new ArrayList<>();
         List<Oeuvre> listEnt = oeuvreFacade.findAll();
         if (listEnt != null) {

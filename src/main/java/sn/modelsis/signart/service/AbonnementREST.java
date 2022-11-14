@@ -234,15 +234,12 @@ public class AbonnementREST {
     @Path("report/{id}/{format}/{adrGal}")
     public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
         String path1 = "D:\\projet signart";
-        String path = "D:\\Modelsis";
-
-        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
-        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
+        String path = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
 
         List<AbonnementDto> abonnementDtoList = new ArrayList<>();
         abonnementDtoList.add(find(id));
 
-        File file = new File(oPath+"recuAbonnement.jrxml");
+        File file = new File(path+"recuAbonnement.jrxml");
         System.out.println(file);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());

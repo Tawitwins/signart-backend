@@ -84,8 +84,12 @@ public class OeuvreSouscriptionConverter {
         entity.setAnnee(dto.getAnnee());
         entity.setDateAjout(dateAjout);
         entity.setPrix(dto.getPrix());
+        if(dto.getReference() != null)
+            entity.setReference(dto.getReference());
+
         entity.setTauxremise(dto.getTauxremise());
-        entity.setTaxes(dto.getTaxes());
+        if(dto.getTaxes() != null)
+            entity.setTaxes(dto.getTaxes());
         entity.setDescription(dto.getDescription());
         if(dto.getIdArtiste() != null)
             entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
@@ -101,7 +105,14 @@ public class OeuvreSouscriptionConverter {
             //System.out.println(entity.getImage()+"+++++++++++++++++++++++++++++++++++++++++++++++entity image++++++++++++++++++++++++++++++++++++++++++++++");
             //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique())); 
         }
-        
+        entity.setUsure(dto.getUsure());
+        entity.setSpecialDelivery(dto.isSpecialDelivery());
+        if(dto.getPourcentageOeuvre() != null)
+            entity.setPourcentageOeuvre(dto.getPourcentageOeuvre());
+        if(dto.getLibelleDimension() != null)
+            entity.setLibelleDimension(dto.getLibelleDimension());
+        if(dto.getLibellePoids() != null)
+            entity.setLibellePoids(dto.getLibellePoids());
         return entity;
     }
     
@@ -138,6 +149,16 @@ public class OeuvreSouscriptionConverter {
         //dto.setMiniature(entity.getMiniature());
         //dto.setTechnique(entity.getIdSousTechnique().getIdTechnique().getLibelle());
        // dto.setSousTechnique(entity.getIdSousTechnique().getLibelle());
+        dto.setUsure(entity.getUsure());
+        dto.setSpecialDelivery(entity.isSpecialDelivery());
+        if(entity.getPourcentageOeuvre() != null)
+            dto.setPourcentageOeuvre(entity.getPourcentageOeuvre());
+        if(entity.getLibelleDimension() != null)
+            dto.setLibelleDimension(entity.getLibelleDimension());
+        if(entity.getLibellePoids() != null)
+            dto.setLibellePoids(entity.getLibellePoids());
+        if(entity.getReference() != null)
+            dto.setReference(entity.getReference());
         return dto;
     }
  

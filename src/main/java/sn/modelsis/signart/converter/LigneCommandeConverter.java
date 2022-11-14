@@ -40,6 +40,8 @@ public class LigneCommandeConverter {
         dto.setNumeroCommande(entity.getIdCommande().getNumero());
         dto.setOeuvre(oeuvreConverter.entityToDto(oeuvreFacade.find(entity.getIdOeuvre().getId())));
         dto.setPrix(entity.getPrix());
+        if(dto.getOeuvre().getPrix() != null)
+            dto.setPrix(dto.getOeuvre().getPrix().subtract(dto.getOeuvre().getPrix().multiply(BigDecimal.valueOf(dto.getOeuvre().getTauxremise())).divide(BigDecimal.valueOf(100))));
         dto.setQuantite(entity.getQuantite());
         dto.setTotal(entity.getPrix().multiply(BigDecimal.valueOf(entity.getQuantite())));
         return dto;
@@ -51,6 +53,8 @@ public class LigneCommandeConverter {
         dto.setNumeroCommande(entity.getIdCommande().getNumero());
         dto.setOeuvre(oeuvreConverter.entityToDto(oeuvreFacade.find(entity.getIdOeuvre().getId())));
         dto.setPrix(entity.getPrix());
+        if(dto.getOeuvre().getPrix() != null)
+            dto.setPrix(dto.getOeuvre().getPrix().subtract(dto.getOeuvre().getPrix().multiply(BigDecimal.valueOf(dto.getOeuvre().getTauxremise())).divide(BigDecimal.valueOf(100))));
         dto.setQuantite(entity.getQuantite());
         dto.setTotal(entity.getPrix().multiply(BigDecimal.valueOf(entity.getQuantite())));
         LigneLivraison  ligneLiv= new LigneLivraison();
@@ -79,6 +83,8 @@ public class LigneCommandeConverter {
         else
             entity.setIdEtatLigneCommande(etatLigneCommandeFacade.find(dto.getIdEtatLigneCommande()));
         entity.setPrix(dto.getPrix());
+        if(entity.getIdOeuvre().getPrix() != null)
+            entity.setPrix(entity.getIdOeuvre().getPrix().subtract(entity.getIdOeuvre().getPrix().multiply(BigDecimal.valueOf(entity.getIdOeuvre().getTauxremise()))));
         entity.setQuantite(dto.getQuantite());
         return entity;
         

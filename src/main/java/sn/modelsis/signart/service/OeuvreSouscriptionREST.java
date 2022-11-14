@@ -25,6 +25,7 @@ import sn.modelsis.signart.dto.OeuvreDto;
 import sn.modelsis.signart.dto.OeuvreSouscriptionDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
+import sn.modelsis.signart.utils.Utils;
 
 /**
  *
@@ -39,12 +40,13 @@ public class OeuvreSouscriptionREST {
     OeuvreSouscriptionFacade oeuvreSouscriptionFacade;
     @Inject
     OeuvreSouscriptionConverter oeuvreSouscriptionConverter;
-    
-    
+
+    Utils utils = new Utils();
     
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(OeuvreSouscriptionDto dto) throws SignArtException {
+        dto.setReference("Ref-"+utils.generateReference());
         oeuvreSouscriptionFacade.create(oeuvreSouscriptionConverter.dtoToEntity(dto));
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
