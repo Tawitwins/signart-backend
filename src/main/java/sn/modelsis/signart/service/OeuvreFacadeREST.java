@@ -58,19 +58,20 @@ public class OeuvreFacadeREST {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response valider(OeuvreSouscriptionDto dto,@PathParam("idMagasin") Integer idMagasin) throws SignArtException {
         OeuvreSouscription enti = oeuvreSouscriptionFacade.findById(dto.getId());
-        if(dto.getLibellePoids() != null)
-            enti.setLibellePoids(dto.getLibellePoids());
-        if(dto.getPourcentageOeuvre() != null)
-            enti.setPourcentageOeuvre(dto.getPourcentageOeuvre());
-        if(dto.getLibelleDimension() != null)
-            enti.setLibelleDimension(dto.getLibelleDimension());
-        enti.setSpecialDelivery(dto.isSpecialDelivery());
-        if(dto.getPrix() != null)
-            enti.setPrix(dto.getPrix());
+
         Oeuvre entity = new Oeuvre();
-        
-        
+
         entity = oeuvreConverter.convertOueuvreSouscription(enti,idMagasin);
+        if(dto.getLibellePoids() != null)
+            entity.setLibellePoids(dto.getLibellePoids());
+        if(dto.getPourcentageOeuvre() != null)
+            entity.setPourcentageOeuvre(dto.getPourcentageOeuvre());
+        if(dto.getLibelleDimension() != null)
+            entity.setLibelleDimension(dto.getLibelleDimension());
+        entity.setSpecialDelivery(dto.isSpecialDelivery());
+        if(dto.getPrix() != null)
+            entity.setPrix(dto.getPrix());
+
         oeuvreFacade.create(entity);
        // OeuvreDto dtoRes = oeuvreConverter.entityToDto(entity);
         return Response.status(Response.Status.CREATED).entity(dto).build();
