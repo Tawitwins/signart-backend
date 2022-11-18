@@ -68,6 +68,7 @@ import sn.modelsis.signart.facade.VisiteurFacade;
                 configurator=TchatWSFacadeREST.EndpointConfigurator.class)
 
 public class TchatWSFacadeREST {
+    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\tchat\\";
 
     private @Inject MessagesTchatsFacade messagesTchatsFacade;
     private @Inject MessagesTchatsConverter messagesTchatsConverter;
@@ -246,7 +247,7 @@ public class TchatWSFacadeREST {
 
     private Response doPostFile(SignartFile signartFile) throws IOException {
         byte[] data = signartFile.getContent();
-        java.nio.file.Path filee = (java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+signartFile.getName());
+        java.nio.file.Path filee = (java.nio.file.Path) Paths.get(PATH +signartFile.getName());
         Files.write(filee, data);
         return Response.status(Response.Status.CREATED).entity(signartFile).build();
     }
@@ -254,17 +255,17 @@ public class TchatWSFacadeREST {
     @Path("/filesRemove/{filename}")
     @Consumes({MediaType.APPLICATION_JSON})
     public boolean DeleteFile(@PathParam("filename") String filename) throws IOException {
-        return Files.deleteIfExists((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
+        return Files.deleteIfExists((java.nio.file.Path) Paths.get(PATH + filename));
     }
     
     @GET
     @Path("/GetFiles/{filename}")
     @Produces(MediaType.TEXT_PLAIN)
     public String GetFile(@PathParam("filename") String filename) throws IOException {
-        byte [] myFile = Files.readAllBytes((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
+        byte [] myFile = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + filename));
         String File = Base64.encodeBase64String(myFile);
         String vof = String.valueOf(myFile);
-        String mimeType = Files.probeContentType((java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename));
+        String mimeType = Files.probeContentType((java.nio.file.Path) Paths.get(PATH + filename));
         return mimeType+";"+File;
     }
     /**

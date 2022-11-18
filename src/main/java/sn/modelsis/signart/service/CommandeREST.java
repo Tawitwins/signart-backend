@@ -51,8 +51,6 @@ public class CommandeREST {
     @Inject
     EtatPaiementFacade etatPaiementFacade;
     @Inject
-    LignePanierFacade lignePanierFacade;
-    @Inject
     CommandeConverter commandeConverter;
     @Inject
     LignePanierConverter lignePanierConverter;
@@ -62,12 +60,6 @@ public class CommandeREST {
     DeviseFacade deviseFacade;
     @Inject
     PaiementFacade paiementFacade;
-    @Inject
-    PaiementConverter paiementConverter;
-    @Inject
-    LignePaiementConverter lignePaiementConverter;
-    @Inject
-    LigneCommandeConverter ligneCommandeConverter;
     @Inject
     ModePaiementFacade modePaiementFacade;
     @Inject
@@ -82,16 +74,6 @@ public class CommandeREST {
     ParametrageFacade parametrageFacade;
     @Inject
     ParametreAlgoFacade parametreAlgoFacade;
-    @Inject
-    ParametreAlgoREST parametreAlgoREST;
-    @Inject
-    ParametreAlgoConverteur parametreAlgoConverteur;
-    @Inject
-    CoefficientParametrageFacade coefficientParametrageFacade;
-    @Inject
-    CoefficientParametrageConverter coefficientParametrageConverter;
-    @Inject
-    OeuvreConverter oeuvreConverter;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) throws SignArtException {

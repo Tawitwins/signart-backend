@@ -51,8 +51,9 @@ public class LicenceREST {
     AbonneFacade abonneFacade;
     @Inject
     DelaiFacade delaiFacade;
-    
+
     private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
     
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -121,7 +122,7 @@ public class LicenceREST {
 		//System.out.println(licence2);
                 String filename = "licence00"+username;    
                  try {
-                        FileWriter myWriter = new FileWriter("/opt/images"+filename);
+                        FileWriter myWriter = new FileWriter(PATH + "images"+filename);
                                                 //System.out.println(LicenceREST.class.getResource("/Stockage/licences").getPath()+"++++++++++++++++++++++++++++++path++++++++++++++++++++++++++++++++++++");
 
                         //File file = new File("");
