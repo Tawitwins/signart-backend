@@ -57,7 +57,7 @@ public class Menu implements Serializable {
     // private Technique technique;
     @Column(name = "idParent", nullable = true)
     private Integer idParent;
-    @JoinTable(name = "Menu_Profil", joinColumns = {
+    @JoinTable(name = "Menu_Profil", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idProfil", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.EAGER)

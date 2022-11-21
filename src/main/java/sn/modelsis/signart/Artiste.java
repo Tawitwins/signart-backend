@@ -96,12 +96,12 @@ public class Artiste implements Serializable {
     private Set<Oeuvre> oeuvreSet;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
     //private Set<Annonce> annonceSet;
-    @JoinTable(name = "Artiste_Exposition", joinColumns = {
+    @JoinTable(name = "Artiste_Exposition", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idExposition", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private Set<Exposition> expositionSet;
-    @JoinTable(name = "Artiste_Formation", joinColumns = {
+    @JoinTable(name = "Artiste_Formation", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idFormation", referencedColumnName = "id", nullable = false)})
     @ManyToMany

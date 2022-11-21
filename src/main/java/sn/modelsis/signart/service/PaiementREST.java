@@ -42,6 +42,7 @@ import sun.misc.BASE64Encoder;
 @Stateless
 @Path("paiement")
 public class PaiementREST {
+    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
 
     @Inject
     PaiementFacade paiementFacade;
@@ -49,8 +50,6 @@ public class PaiementREST {
     LignePaiementFacade lignePaiementFacade;
     @Inject
     PaiementConverter paiementConverter;
-    @Inject
-    LignePaiementConverter lignePaiementConverter;
     @Inject
     ParametrageFacade parametrageFacade;
     @Inject
@@ -203,12 +202,12 @@ public class PaiementREST {
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
             if (format.equalsIgnoreCase("html")) {
-                JasperExportManager.exportReportToHtmlFile(jasperPrint, basicPath + "\\reçue_paiement.html");
+                JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "recues\\"+id+"_reçue_paiement.html");
             }
             if (format.equalsIgnoreCase("pdf")) {
-                JasperExportManager.exportReportToPdfFile(jasperPrint, basicPath + "\\reçue_paiement.pdf");
+                JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues\\"+id+"_reçue_paiement.pdf");
             }
-            byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(basicPath + "\\reçue_paiement.pdf"));
+            byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues\\"+id+"_reçue_paiement.pdf"));
             BASE64Encoder encoder = new BASE64Encoder();
             String imageString = encoder.encode(imageByte);
             return imageString;

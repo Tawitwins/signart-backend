@@ -30,11 +30,7 @@ public class CommandeConverter {
     @Inject
     ClientFacade clientFacade;
     @Inject
-    OeuvreFacade oeuvreFacade;
-    @Inject
     DeviseFacade deviseFacade;
-    @Inject
-    OeuvreConverter oeuvreConverter;
     @Inject
     LigneCommandeConverter ligneCommandeConverter;
 

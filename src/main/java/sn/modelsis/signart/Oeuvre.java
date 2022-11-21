@@ -125,7 +125,7 @@ public class Oeuvre implements Serializable {
     @ManyToMany(mappedBy = "oeuvreSet")
     private Set<MotCle> motCleSet;
 
-    @JoinTable(name = "Theme_Oeuvre", joinColumns = {
+    @JoinTable(name = "Theme_Oeuvre", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = true)}, inverseJoinColumns = {
         @JoinColumn(name = "idTheme", referencedColumnName = "id", nullable = true)})
     @ManyToMany

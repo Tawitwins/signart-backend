@@ -40,7 +40,7 @@ public class Domaine implements Serializable {
     private String libelle;
     @Column(name = "description", length = 300)
     private String description;
-    @JoinTable(name = "Domaine_Oeuvre", joinColumns = {
+    @JoinTable(name = "Domaine_Oeuvre" , catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idDomaine", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = false)})
     @ManyToMany

@@ -24,17 +24,11 @@ public class LigneLivraisonConverter {
     @Inject
     LivraisonFacade livraisonFacade;
     @Inject
-    LivraisonConverter livraisonConverter;
-    @Inject
     LigneCommandeConverter ligneCommandeConverter;
-    @Inject
-    CommandeConverter commandeConverter;
     @Inject
     CommandeFacade commandeFacade;
     @Inject
     EtatLivraisonFacade etatLivraisonFacade;
-    @Inject
-    EtatLivraisonFacade etatLivraisonConverter;
     @Inject
     LigneCommandeFacade ligneCommandeFacade;
     @Inject

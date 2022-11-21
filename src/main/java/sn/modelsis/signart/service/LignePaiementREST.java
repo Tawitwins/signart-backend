@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 @Stateless
 @Path("lignepaiement")
 public class LignePaiementREST {
+    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
 
     @Inject
     LignePaiementFacade lignePaiementFacade;
@@ -205,7 +206,7 @@ public class LignePaiementREST {
         fileContent = fileContent.split("base64,")[1];
         try{
         byte[]  content = Base64.decodeBase64(fileContent);
-        String path = "C:\\Users\\SNMBENGUEO\\Desktop\\"+filename;
+        String path = PATH + "preuves\\" + filename;
         java.nio.file.Path filee = (java.nio.file.Path) Paths.get(path);
         Files.write(filee, content);
             return path;
@@ -254,12 +255,12 @@ public class LignePaiementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, basicPath + "\\reçue_Lpaiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "recues\\"+id+"_reçue_Lpaiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, basicPath + "\\reçu_Lpaiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues\\"+id+"_reçu_Lpaiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(basicPath + "\\reçue_Lpaiement.pdf"));
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues\\"+id+"_reçue_Lpaiement.pdf"));
         BASE64Encoder encoder = new BASE64Encoder();
         String imageString = encoder.encode(imageByte);
         return imageString;
