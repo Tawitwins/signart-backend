@@ -79,7 +79,7 @@ public class AgentREST {
     @Produces({MediaType.APPLICATION_JSON})
     public AgentDto findByUser(@PathParam("id") Integer id) throws SignArtException {
         Utilisateur user = utilisateurFacade.find(id);
-        Agent agent = agentFacade.findByUser(user.getId());
+        Agent agent = agentFacade.findByUserAdvanced(user.getId());
         return agentConverter.entityToDto(agent);
     }
     @GET

@@ -78,7 +78,7 @@ public class ClientFacadeREST {
         if (idUser == null || idUser == 0) {
             throw new SignArtException("Utilisateur invalide!");
         }
-        return clientConverter.entityToDto(clientFacade.findByUser(idUser));
+        return clientConverter.entityToDto(clientFacade.findByUserAdvanced(idUser));
     }
     @GET
     @Path("commande/{idCommande}")

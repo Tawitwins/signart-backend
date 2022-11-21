@@ -1,23 +1,10 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -43,9 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Artiste.findByIdUser", query = "SELECT a FROM Artiste a WHERE a.idUser.id = :idUser")})
 
 public class Artiste implements Serializable {
-   
-    @Lob
+
+
     @Column(name = "photo")
+    @Type(type = "org.hibernate.type.TextType")
     private byte[] photo;
  /*   @OneToMany(cascade = CascadeType.ALL, mappedBy = "artiste")
     private Set<ArtisteFonction> artisteFonctionSet;*/
@@ -101,7 +89,7 @@ public class Artiste implements Serializable {
     @JoinColumn(name = "idPays", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Pays idPays;
-    @JoinColumn(name = "idUser", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "idUser", referencedColumnName = "id")
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Utilisateur idUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
@@ -121,7 +109,7 @@ public class Artiste implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
     private Set<Filmographie> filmographieSet;
     @JoinColumn(name = "idBiographie", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Biographie idBiographie;
    /* @JoinTable(name = "Artiste_Fonction", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {

@@ -5,7 +5,14 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+
 import sn.modelsis.signart.AdminsTable;
+import sn.modelsis.signart.AdminsTable_;
+import sn.modelsis.signart.Utilisateur;
+import sn.modelsis.signart.Utilisateur_;
 import sn.modelsis.signart.exception.SignArtException;
 
 /**
@@ -68,4 +75,25 @@ public class AdminsTableFacade extends AbstractFacade<AdminsTable> {
         }
     }
 
+    public AdminsTable findByUserAdvanced(Integer idUser) throws SignArtException {
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<AdminsTable> cq = cb.createQuery(AdminsTable.class);
+
+            javax.persistence.criteria.Root<AdminsTable> order = cq.from(AdminsTable.class);
+            Join<AdminsTable, Utilisateur> clientUser = order.join(AdminsTable_.idUser);
+            cq.where(cb.and(cb.equal(clientUser.get(Utilisateur_.id), idUser)));
+            TypedQuery<AdminsTable> q = getEntityManager().createQuery(cq);
+
+            List<AdminsTable> list = q.getResultList();
+
+            if (list != null && !list.isEmpty()) {
+                return list.get(0);
+            }
+
+            return null;
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
 }

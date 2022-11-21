@@ -5,6 +5,8 @@
  */
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -92,9 +94,9 @@ public class OeuvreSouscription implements Serializable{
         
     @Column(name = "taxes", precision = 19, scale = 4)
     private BigDecimal taxes;
-    
-    @Lob
+
     @Column(name = "image")
+@Type(type = "org.hibernate.type.TextType")
     private byte[] image;
             
     @Column(name = "description", length = 1000)

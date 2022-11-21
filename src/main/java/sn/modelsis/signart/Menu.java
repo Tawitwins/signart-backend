@@ -1,5 +1,7 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -49,8 +51,7 @@ public class Menu implements Serializable {
     private String icon;
     @Column(name = "classe", length = 50)
     private String classe;
-    @Lob
-    @Column(name = "image")
+@Type(type = "org.hibernate.type.TextType")
     private byte[] image;
     // @OneToOne(cascade = CascadeType.ALL, mappedBy = "menu")
     // private Technique technique;

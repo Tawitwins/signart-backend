@@ -6,10 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.Artiste;
-import sn.modelsis.signart.Biographie;
-import sn.modelsis.signart.MarquageArtiste;
 
 /**
  *
@@ -138,12 +140,30 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
             final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.findByIdUser",
                     Artiste.class);
             query.setParameter("idUser", idUser);
-            query.setMaxResults(1);
-            final List<Artiste> users = query.getResultList();
-            if (users.isEmpty()) {
-                return null;
+            final Artiste art = query.getSingleResult();
+
+            return art;
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
+    public Artiste findByUserAdvanced(Integer idUser) throws SignArtException {
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Artiste> cq = cb.createQuery(Artiste.class);
+
+            javax.persistence.criteria.Root<Artiste> order = cq.from(Artiste.class);
+            Join<Artiste, Utilisateur> artisteUser = order.join(Artiste_.idUser);
+            cq.where(cb.and(cb.equal(artisteUser.get(Utilisateur_.id), idUser)));
+            TypedQuery<Artiste> q = getEntityManager().createQuery(cq);
+
+            List<Artiste> list = q.getResultList();
+
+            if (list != null && !list.isEmpty()) {
+                return list.get(0);
             }
-            return users.get(0);
+
+            return null;
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }

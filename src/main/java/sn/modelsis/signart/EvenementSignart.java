@@ -37,7 +37,7 @@ public class EvenementSignart implements Serializable {
     @Column(name = "dateOfficielle")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfficielle;
-    @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     private Artiste idArtiste;
     @Column(name = "status")
@@ -50,15 +50,14 @@ public class EvenementSignart implements Serializable {
     private Integer prixCodeEvent;
     @Column(name = "nbrCodeAchete")
     private Integer nbrCodeAchete;
-    @Basic(optional = true)
-    @Column(name = "lieu", nullable = false, length = 100)
+    @Column(name = "lieu", length = 100)
     private String lieu;
     @Column(name = "contact")
     private String contact;
     @Column(name = "responsable")
     private String  responsable;
     @ManyToOne
-    @JoinColumn(name = "idAdminUser", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "idAdminUser", referencedColumnName = "id")
     private Utilisateur idAdminUser;
 
     public EvenementSignart() {
