@@ -65,7 +65,8 @@ public class Magasin implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMagasin")
     private Set<Artiste> artisteSet;
 
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMagasin")
+    private Set<Souscription> souscriptionSet;
 
     public Magasin() {
     }
@@ -161,6 +162,14 @@ public class Magasin implements Serializable {
 
     public void setArtisteSet(Set<Artiste> artisteSet) {
         this.artisteSet = artisteSet;
+    }
+
+    public Set<Souscription> getSouscriptionSet() {
+        return souscriptionSet;
+    }
+
+    public void setSouscriptionSet(Set<Souscription> souscriptionSet) {
+        this.souscriptionSet = souscriptionSet;
     }
 
     @Override
