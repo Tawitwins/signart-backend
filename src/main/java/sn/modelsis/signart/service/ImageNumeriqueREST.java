@@ -53,7 +53,7 @@ import sn.modelsis.signart.facade.OeuvreNumeriqueFacade;
 import sn.modelsis.signart.facade.ImageNumeriqueFacade;
 
 
-import sun.misc.BASE64Encoder;
+import java.util.Base64.Decoder;
 /*import sn.modelsis.signart.Artiste;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -208,8 +208,7 @@ public class ImageNumeriqueREST {
             ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();
 
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
+            imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
             bos.close();
         } catch (IOException e) {
@@ -312,8 +311,7 @@ public class ImageNumeriqueREST {
         ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
         //String imgStr = new String(imgMn.getValeurImage()); 
          byte[] imageBytes = imgMn.getValeurImage();
-         BASE64Encoder encoder = new BASE64Encoder();
-         String imageString = encoder.encode(imageBytes);
+         String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
        // String imageBase64 = encodeToString(imgStr,"jpg");
        // System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
@@ -338,8 +336,7 @@ public class ImageNumeriqueREST {
         //String imgStr = new String(imgMn.getValeurImage()); 
 
          byte[] imageBytes = imgMn.getValeurImage();
-         BASE64Encoder encoder = new BASE64Encoder();
-         String imageString = encoder.encode(imageBytes);
+         String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
                // BufferedImage minImage = ImageIO.read(new File("/opt/images/"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
@@ -374,8 +371,7 @@ public class ImageNumeriqueREST {
             //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+dtoImgB.get(j).getNom()+".jpg"));
             ImageMiniature imgMn = imageMiniaturefacade.findByName(dtoImgB.get(j).getNom());
              byte[] imageBytes = imgMn.getValeurImage();
-             BASE64Encoder encoder = new BASE64Encoder();
-             String imageString = encoder.encode(imageBytes);
+             String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
            // String imgStr = new String(imgMn.getValeurImage());
             //System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             

@@ -35,7 +35,6 @@ import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ImageMiniatureFacade;
 import sn.modelsis.signart.facade.OeuvreNumeriqueFacade;
 import static sn.modelsis.signart.service.ImageNumeriqueREST.encodeToString;
-import sun.misc.BASE64Encoder;
 
 
 /**
@@ -155,8 +154,7 @@ public class ImageMiniatureREST {
         dto.setId(entity.getId());
         dto.setNomImage(entity.getNomImage());
          byte[] imageBytes = entity.getValeurImage();
-         BASE64Encoder encoder = new BASE64Encoder();
-         String imageString = encoder.encode(imageBytes);
+         String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
         dto.setValeurImage(imageString);
         return dto;
     }

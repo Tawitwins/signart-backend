@@ -33,7 +33,6 @@ import sn.modelsis.signart.facade.PaiementFacade;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import sn.modelsis.signart.utils.Utils;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -208,8 +207,7 @@ public class PaiementREST {
                 JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues\\"+id+"_reçue_paiement.pdf");
             }
             byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues\\"+id+"_reçue_paiement.pdf"));
-            BASE64Encoder encoder = new BASE64Encoder();
-            String imageString = encoder.encode(imageByte);
+            String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
             return imageString;
         }
         return null;
