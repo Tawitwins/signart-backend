@@ -3,14 +3,9 @@ package sn.modelsis.signart.service;
 import org.apache.commons.codec.binary.Base64;
 import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.LigneLivraisonConverter;
-import sn.modelsis.signart.converter.LignePaiementConverter;
-import sn.modelsis.signart.converter.LivraisonConverter;
-import sn.modelsis.signart.converter.PaiementConverter;
 import sn.modelsis.signart.dto.LigneLivraisonDto;
-import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
-import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -179,8 +174,7 @@ public class LigneLivraisonREST {
     public String downloadPreuve(@PathParam("id") Integer id) throws IOException {
         LigneLivraison ligneLivraison = ligneLivraisonFacade.find(id);
             byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(ligneLivraison.getPreuvePourLivraison().trim()));
-            BASE64Encoder encoder = new BASE64Encoder();
-            String imageString = encoder.encode(imageByte);
+            String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
             return  imageString;
     }
     @GET

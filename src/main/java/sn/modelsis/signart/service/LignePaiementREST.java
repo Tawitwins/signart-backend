@@ -9,9 +9,7 @@ import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
 import sn.modelsis.signart.utils.Utils;
-import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -261,8 +259,7 @@ public class LignePaiementREST {
             JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues\\"+id+"_reçu_Lpaiement.pdf");
         }
         byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues\\"+id+"_reçue_Lpaiement.pdf"));
-        BASE64Encoder encoder = new BASE64Encoder();
-        String imageString = encoder.encode(imageByte);
+        String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
         return imageString;
     }
     @GET
@@ -272,8 +269,7 @@ public class LignePaiementREST {
        try{
            PaymentDetails paymentDetails = paymentDetailsFacade.find(lignePaiement.getIdPaymentDetails().getId());
            byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(paymentDetails.getPreuve()));
-           BASE64Encoder encoder = new BASE64Encoder();
-           String imageString = encoder.encode(imageByte);
+           String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
            return  imageString;
        } catch (Exception e) {
            return  "Veuillez vérifier l'id du ligne de paiement";

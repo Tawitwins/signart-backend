@@ -4,19 +4,12 @@
  * and open the template in the editor.
  */
 package sn.modelsis.signart.service;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -35,7 +28,6 @@ import sn.modelsis.signart.dto.*;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import sn.modelsis.signart.utils.Utils;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -273,8 +265,7 @@ public class AbonnementREST {
             JasperExportManager.exportReportToPdfFile(jasperPrint, path1 + "\\reçue_paiement.pdf");
         }
         byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path1 + "\\reçue_paiement.pdf"));
-        BASE64Encoder encoder = new BASE64Encoder();
-        String imageString = encoder.encode(imageByte);
+        String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
         return imageString;
         //return "report generated in path : " + path;
     }

@@ -42,7 +42,6 @@ import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.OeuvreFacade;
 import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
-import sun.misc.BASE64Encoder;
 //import org.glassfish.jersey.media.multipart.MultiPartFeature;
 //import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
@@ -72,8 +71,7 @@ public class ImageREST {
             //ImageIO.write(image, type, bos);
             imageBytes = bos.toByteArray();
 
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
+            imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
             bos.close();
         } catch (IOException e) {
@@ -200,8 +198,7 @@ public class ImageREST {
         dto.setId(entity.getId());
         dto.setNomImage(entity.getNom());
          byte[] imageBytes = entity.getImage();
-         BASE64Encoder encoder = new BASE64Encoder();
-         String imageString = encoder.encode(imageBytes);
+         String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
         dto.setValeurImage(imageString);
         return dto;
     }
@@ -241,8 +238,7 @@ public class ImageREST {
             ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();
 
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
+            imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
             bos.close();
         } catch (IOException e) {

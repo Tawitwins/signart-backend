@@ -107,10 +107,12 @@ public class TchatWSFacadeREST {
       String host = "smtp.gmail.com";//or IP address
       //String PORT="587";
       String PORT="465";
+      //String userSMTP = "SignArtEmail2020";
+      //String passwordSMTP = "Sign@rtEm@il2020";
       String userSMTP = "SignArtEmail2020";
-      String passwordSMTP = "Sign@rtEm@il2020";
-     //Get the session object  
-      Properties properties = System.getProperties();  
+      String passwordSMTP = "hakjpquhthkzsyeh";
+     //Get the session object
+      Properties properties = System.getProperties();
       properties.put("mail.smtp.host", host); 
       properties.put("mail.smtp.auth", "true");
       properties.put("mail.smtp.port", PORT); 
