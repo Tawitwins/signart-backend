@@ -177,8 +177,8 @@ public class ImageREST {
         //ImageDto imgdto = new ImageDto();
             OeuvreSouscription oeuvreSouscription = oeuvreSouscriptionFacade.findById(id);
             //System.out.println(oeuvreSouscription.getImage()+"+++++++++++++++++++++++++++++++++++++++OEUVRE IMAGE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            if(oeuvreSouscription.getImageText() != null)
-                oeuvreSouscription.setImage(Base64.decodeBase64(oeuvreSouscription.getImageText().getBytes()));
+           /** if(oeuvreSouscription.getImageText() != null)
+                oeuvreSouscription.setImage(Base64.decodeBase64(oeuvreSouscription.getImageText().getBytes()));**/
 
             final ResponseBuilder response = Response.ok(oeuvreSouscription.getImage());
             response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
