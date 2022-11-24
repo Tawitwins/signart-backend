@@ -50,7 +50,7 @@ public class FonctionFacade extends AbstractFacade<Fonction> {
             final TypedQuery<Fonction> query = getEntityManager().createNamedQuery("Fonction.findById",
                     Fonction.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Fonction> fonctions = query.getResultList();
             if (fonctions.isEmpty()) {
                 return null;

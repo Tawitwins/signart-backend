@@ -78,7 +78,7 @@ public class AbonneFacade extends AbstractFacade<Abonne> {
             final TypedQuery<Abonne> query = getEntityManager().createNamedQuery("Abonne.findById",
                     Abonne.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Abonne> abonnes = query.getResultList();
             if (abonnes.isEmpty()) {
                 return null;

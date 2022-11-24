@@ -28,6 +28,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.ImageMiniature;
@@ -175,7 +177,9 @@ public class ImageREST {
         //ImageDto imgdto = new ImageDto();
             OeuvreSouscription oeuvreSouscription = oeuvreSouscriptionFacade.findById(id);
             //System.out.println(oeuvreSouscription.getImage()+"+++++++++++++++++++++++++++++++++++++++OEUVRE IMAGE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            
+            if(oeuvreSouscription.getImageText() != null)
+                oeuvreSouscription.setImage(Base64.decodeBase64(oeuvreSouscription.getImageText().getBytes()));
+
             final ResponseBuilder response = Response.ok(oeuvreSouscription.getImage());
             response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
             return response.build();

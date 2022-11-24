@@ -64,7 +64,7 @@ public class AgentFacade extends AbstractFacade<Agent> {
             final TypedQuery<Agent> query = getEntityManager().createNamedQuery("Agent.findByIdUser",
                     Agent.class);
             query.setParameter("idUser", idUser);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Agent> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;
@@ -99,7 +99,7 @@ public class AgentFacade extends AbstractFacade<Agent> {
             final TypedQuery<Agent> query = getEntityManager().createNamedQuery("Agent.findByRole",
                     Agent.class);
             query.setParameter("role", role);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Agent> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

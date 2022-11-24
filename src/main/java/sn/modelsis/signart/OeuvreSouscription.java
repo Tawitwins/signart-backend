@@ -96,8 +96,11 @@ public class OeuvreSouscription implements Serializable{
     private BigDecimal taxes;
 
     @Column(name = "image")
-@Type(type = "org.hibernate.type.TextType")
+    @Type(type = "org.hibernate.type.TextType")
     private byte[] image;
+
+   /** @Column(name = "imageText", columnDefinition="TEXT")
+    private String imageText;**/
             
     @Column(name = "description", length = 1000)
     private String description;
@@ -249,7 +252,13 @@ public class OeuvreSouscription implements Serializable{
         this.image = image;
     }
 
-   
+/**    public String getImageText() {
+        return imageText;
+    }
+
+    public void setImageText(String imageText) {
+        this.imageText = imageText;
+    }**/
 
     public String getDescription() {
         return description;

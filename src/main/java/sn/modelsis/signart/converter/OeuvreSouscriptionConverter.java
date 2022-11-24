@@ -102,6 +102,8 @@ public class OeuvreSouscriptionConverter {
             //System.out.println(imageValue+"+++++++++++++++++++++++++++++++++++++++++++++++imageValue++++++++++++++++++++++++++++++++++++++++++++++");
             final byte[] image = Base64.decodeBase64(imageValue.getBytes());
             entity.setImage(image);
+            //entity.setImageText(imageValue);
+
             //System.out.println(entity.getImage()+"+++++++++++++++++++++++++++++++++++++++++++++++entity image++++++++++++++++++++++++++++++++++++++++++++++");
             //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique())); 
         }

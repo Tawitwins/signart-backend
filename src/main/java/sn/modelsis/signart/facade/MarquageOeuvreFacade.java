@@ -58,7 +58,7 @@ public class MarquageOeuvreFacade extends AbstractFacade<MarquageOeuvre> {
             query.setParameter("idClient", idClient);
             query.setParameter("idOeuvre", idOeuvre);
             query.setParameter("codeTypeMarquage", codeTypeMarquage);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<MarquageOeuvre> list = query.getResultList();
             if (list.isEmpty()) {
                 return null;

@@ -37,7 +37,7 @@ public class ImageNumeriqueFacade extends AbstractFacade<ImageNumerique>{
             final TypedQuery<ImageNumerique> query = getEntityManager().createNamedQuery("ImageNumerique.findById",
                     ImageNumerique.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<ImageNumerique> images = query.getResultList();
             if (images.isEmpty()) {
                 return null;
@@ -53,7 +53,7 @@ public class ImageNumeriqueFacade extends AbstractFacade<ImageNumerique>{
             final TypedQuery<ImageNumerique> query = getEntityManager().createNamedQuery("ImageNumerique.findByValue",
                     ImageNumerique.class);
             query.setParameter("value", value);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<ImageNumerique> images = query.getResultList();
             if (images.isEmpty()) {
                 return null;

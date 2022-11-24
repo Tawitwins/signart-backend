@@ -182,7 +182,7 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
             query.setParameter("ville", artiste.getVille());
             query.setParameter("pays", artiste.getIdPays());
             query.setParameter("id", artiste.getId());
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Artiste> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;
@@ -214,7 +214,7 @@ public class ArtisteFacade extends AbstractFacade<Artiste> {
             final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.findById",
                     Artiste.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Artiste> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

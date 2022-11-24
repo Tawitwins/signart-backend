@@ -41,7 +41,7 @@ public class DelaiFacade extends AbstractFacade<Delai> {
             final TypedQuery<Delai> query = getEntityManager().createNamedQuery("Delai.findById",
                     Delai.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Delai> delais = query.getResultList();
             if (delais.isEmpty()) {
                 return null;

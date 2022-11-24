@@ -41,7 +41,7 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
             final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findById",
                     Abonnement.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Abonnement> abonnements = query.getResultList();
             if (abonnements.isEmpty()) {
                 return null;
@@ -73,7 +73,7 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
             final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findAllByIdAbonne",
                     Abonnement.class);
             query.setParameter("idAbonne", idAbonne);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Abonnement> abonnements = query.getResultList();
             if (abonnements.isEmpty()) {
                 return null;

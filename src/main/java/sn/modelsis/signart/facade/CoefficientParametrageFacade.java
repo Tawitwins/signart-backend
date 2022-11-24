@@ -31,7 +31,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findById",
                     CoefficientParametrage.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;
@@ -59,7 +59,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByValeurParametre",
                     CoefficientParametrage.class);
             query.setParameter("valeurParametre", valeurParametre);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;
@@ -74,7 +74,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByStatut",
                     CoefficientParametrage.class);
             query.setParameter("statut", statut);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;
@@ -90,7 +90,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByEnumTypeParam",
                     CoefficientParametrage.class);
             query.setParameter("enumTypeParam", enumTypeParam);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;
