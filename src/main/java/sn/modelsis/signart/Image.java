@@ -33,7 +33,7 @@ public class Image implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic(optional = false)
-@Type(type = "org.hibernate.type.TextType")
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] image;
     @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)

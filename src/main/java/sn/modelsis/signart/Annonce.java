@@ -46,7 +46,7 @@ public class Annonce implements Serializable {
     @Basic(optional = false)
     @Column(name = "description",columnDefinition = "TEXT",nullable = false, length = 2048)
     private String description;
-@Type(type = "org.hibernate.type.TextType")
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] photo;
     @Column(name = "lieu", nullable = false, length = 500)
     private String lieu;

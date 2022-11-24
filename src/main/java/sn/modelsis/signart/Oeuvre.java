@@ -86,7 +86,7 @@ public class Oeuvre implements Serializable {
 
     @Column(name = "taxes", precision = 19, scale = 4)
     private BigDecimal taxes;
-@Type(type = "org.hibernate.type.TextType")
+//@Type(type = "org.hibernate.type.TextType")
     @Column(name = "image")
     private byte[] image;
 
@@ -118,7 +118,7 @@ public class Oeuvre implements Serializable {
     @Column(name = "pourcentageOeuvre")
     private Float pourcentageOeuvre;
 
-@Type(type = "org.hibernate.type.TextType")
+//@Type(type = "org.hibernate.type.TextType")
     @Column(name = "miniature")
     private byte[] miniature;
 

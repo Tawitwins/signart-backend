@@ -51,7 +51,7 @@ public class Menu implements Serializable {
     private String icon;
     @Column(name = "classe", length = 50)
     private String classe;
-@Type(type = "org.hibernate.type.TextType")
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] image;
     // @OneToOne(cascade = CascadeType.ALL, mappedBy = "menu")
     // private Technique technique;

@@ -33,7 +33,7 @@ public class Artiste implements Serializable {
 
 
     @Column(name = "photo")
-    @Type(type = "org.hibernate.type.TextType")
+    //@Type(type = "org.hibernate.type.TextType")
     private byte[] photo;
  /*   @OneToMany(cascade = CascadeType.ALL, mappedBy = "artiste")
     private Set<ArtisteFonction> artisteFonctionSet;*/

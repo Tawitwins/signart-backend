@@ -40,7 +40,7 @@ public class ImageMiniature implements Serializable {
     private Integer id;
     @Column(name = "nomImage", length = 500)
     private String nomImage ;
-@Type(type = "org.hibernate.type.TextType")
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] valeurImage;
 
     public ImageMiniature() {

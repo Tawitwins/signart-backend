@@ -46,7 +46,6 @@ public class OeuvreSouscriptionDto implements Serializable{
     private Float pourcentageOeuvre;
 
     private String reference;
-    //private String imageText;
     public OeuvreSouscriptionDto() {
     }
 
@@ -247,12 +246,4 @@ public class OeuvreSouscriptionDto implements Serializable{
     public void setReference(String reference) {
         this.reference = reference;
     }
-
-  /**  public String getImageText() {
-        return imageText;
-    }
-
-    public void setImageText(String imageText) {
-        this.imageText = imageText;
-    }**/
 }
