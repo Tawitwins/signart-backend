@@ -30,7 +30,9 @@ import java.util.logging.Logger;
 @Path("lignelivraison")
 public class LigneLivraisonREST {
 
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+   // public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    public final static String PATH = "/signartFiles/commande/";
+
     // C:\Users\SNMBENGUEO\Desktop\
     @Inject
     LigneLivraisonFacade ligneLivraisonFacade;
@@ -163,7 +165,7 @@ public class LigneLivraisonREST {
             byte[]  content = Base64.decodeBase64(fileContent);
             java.nio.file.Path filee = (java.nio.file.Path) Paths.get(PATH + filename);
             Files.write(filee, content);
-            return PATH + "preuves\\"+filename;
+            return PATH + "preuves/"+filename;
         }catch (Exception e) {
             e.printStackTrace();
         }

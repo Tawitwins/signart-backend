@@ -68,7 +68,8 @@ import sn.modelsis.signart.facade.VisiteurFacade;
                 configurator=TchatWSFacadeREST.EndpointConfigurator.class)
 
 public class TchatWSFacadeREST {
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\tchat\\";
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\tchat\\";
+    public final static String PATH = "/signartFiles/tchat/";
 
     private @Inject MessagesTchatsFacade messagesTchatsFacade;
     private @Inject MessagesTchatsConverter messagesTchatsConverter;

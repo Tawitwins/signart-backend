@@ -77,9 +77,10 @@ public class ImageNumeriqueREST {
     ArtisteFacade artisteFacade;*/
    
     public final static String GOODPATH = "/opt/";
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
     public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
-    
+    public final static String PATH = "/signartFiles/abonnement/";
+
     @Inject
     OeuvreNumeriqueFacade oeuvreNumeriqueFacade;
     

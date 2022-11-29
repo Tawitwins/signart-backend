@@ -53,8 +53,9 @@ public class LicenceREST {
     DelaiFacade delaiFacade;
 
     private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
-    
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+    public final static String PATH = "/signartFiles/abonnement/";
+
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(LicenceDto dto) throws SignArtException {

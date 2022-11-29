@@ -27,9 +27,10 @@ import sn.modelsis.signart.facade.UtilisateurFacade;
 public class DecompressionDechiffrementREST {
     
     public final static String GOODPATH = "/opt/images";
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+   // public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
     public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
-    
+    public final static String PATH = "/signartFiles/abonnement/";
+
     @Inject
     AbonneFacade abonnefacade;
 

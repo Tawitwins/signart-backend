@@ -36,6 +36,7 @@ import sn.modelsis.signart.utils.Utils;
 @Stateless
 @Path("abonnement")
 public class AbonnementREST {
+    public final static String PATH = "/signartFiles/abonnement/";
 
     @Inject
     AbonnementFacade abonnementfacade;
@@ -225,13 +226,13 @@ public class AbonnementREST {
     @GET
     @Path("report/{id}/{format}/{adrGal}")
     public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
-        String path1 = "D:\\projet signart";
-        String path = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
+        String pathLogo = "/signartFiles/resources/assets/images/logo_signart.png";
+        String pathRessource = "/signartFiles/resources/";
 
         List<AbonnementDto> abonnementDtoList = new ArrayList<>();
         abonnementDtoList.add(find(id));
 
-        File file = new File(path+"recuAbonnement.jrxml");
+        File file = new File(pathRessource+"recuAbonnement.jrxml");
         System.out.println(file);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
@@ -244,7 +245,6 @@ public class AbonnementREST {
         String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
         String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
         Long montantTotal = new Long(abonnement.getMontantPaiement());
-        String pathLogo = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
 
         parameters.put("NomClient", abonne.getPrenom()+ " " +abonne.getNom());
         parameters.put("abonnementID", id);
@@ -259,12 +259,12 @@ public class AbonnementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, path1 + "\\reçue_paiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH+"reçues/"+id+"/reçue_paiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path1 + "\\reçue_paiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH+"reçues/"+id+"/reçue_paiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path1 + "\\reçue_paiement.pdf"));
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH+"reçues/"+id+"/reçue_paiement.pdf"));
         String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
         return imageString;
         //return "report generated in path : " + path;

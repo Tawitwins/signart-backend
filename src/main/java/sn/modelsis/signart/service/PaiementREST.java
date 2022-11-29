@@ -41,7 +41,8 @@ import sn.modelsis.signart.utils.Utils;
 @Stateless
 @Path("paiement")
 public class PaiementREST {
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    public final static String PATH = "/signartFiles/commande/";
 
     @Inject
     PaiementFacade paiementFacade;
@@ -152,9 +153,8 @@ public class PaiementREST {
                                  @PathParam("lieu") String lieu)
             throws JRException, IOException {
 
-        String basicPath = "D:\\projet signart";
-        String Path = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
-        String pathLogo = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
+        String pathRessource = "/signartFiles/resources/";
+        String pathLogo = "/signartFiles/resources/assets/images/logo_signart.png";
 
         Client client = null;
         List<PaiementDto> paiementDtoList = new ArrayList<>();
@@ -181,7 +181,7 @@ public class PaiementREST {
             String ninea = parametrageFacade.findByParamName("NINEA").getValue();
             String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
             String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
-            File file = new File(Path + "recuPaiement.jrxml");
+            File file = new File(pathRessource + "recuPaiement.jrxml");
 
             JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paiementDtoList);
@@ -201,12 +201,12 @@ public class PaiementREST {
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
             if (format.equalsIgnoreCase("html")) {
-                JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "recues\\"+id+"_reçue_paiement.html");
+                JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "recues/"+id+"_reçue_paiement.html");
             }
             if (format.equalsIgnoreCase("pdf")) {
-                JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues\\"+id+"_reçue_paiement.pdf");
+                JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues/"+id+"_reçue_paiement.pdf");
             }
-            byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues\\"+id+"_reçue_paiement.pdf"));
+            byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues/"+id+"_reçue_paiement.pdf"));
             String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
             return imageString;
         }

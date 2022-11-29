@@ -34,7 +34,8 @@ import java.util.logging.Logger;
 @Stateless
 @Path("lignepaiement")
 public class LignePaiementREST {
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    public final static String PATH = "/signartFiles/commande/";
 
     @Inject
     LignePaiementFacade lignePaiementFacade;
@@ -204,7 +205,7 @@ public class LignePaiementREST {
         fileContent = fileContent.split("base64,")[1];
         try{
         byte[]  content = Base64.decodeBase64(fileContent);
-        String path = PATH + "preuves\\" + filename;
+        String path = PATH + "preuves/" + filename;
         java.nio.file.Path filee = (java.nio.file.Path) Paths.get(path);
         Files.write(filee, content);
             return path;
@@ -224,16 +225,16 @@ public class LignePaiementREST {
         List<LignePaiementDto> lignePaiementDtoList =  new ArrayList<>();
         lignePaiementDtoList.add(find(id));
 
-        String basicPath = "D:\\projet signart";
-        String path = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
-        String pathLogo =  "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
+        String pathRessource = "/signartFiles/resources/";
+        String pathLogo = "/signartFiles/resources/assets/images/logo_signart.png";
+
 
         String ninea = parametrageFacade.findByParamName("NINEA").getValue();
         String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
         String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
         Client client = clientFacade.find(commandeFacade.find(lignePaiementDtoList.get(0).getLigneCommande().getIdCommande()).getIdClient().getId());
 
-        File file = new File(path+ "recuLignePaiement.jrxml");
+        File file = new File(pathRessource+ "recuLignePaiement.jrxml");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(lignePaiementDtoList);
@@ -253,12 +254,12 @@ public class LignePaiementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "recues\\"+id+"_reçue_Lpaiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "reçues/"+id+"_reçue_Lpaiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues\\"+id+"_reçu_Lpaiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "reçues/"+id+"_reçu_Lpaiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues\\"+id+"_reçue_Lpaiement.pdf"));
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "reçues/"+id+"_reçue_Lpaiement.pdf"));
         String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
         return imageString;
     }

@@ -46,7 +46,8 @@ import static sn.modelsis.signart.service.ImageNumeriqueREST.encodeToString;
 @Path("imageMiniature")
 public class ImageMiniatureREST {
 
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+    public final static String PATH = "/signartFiles/abonnement/";
 
     @Inject
     ImageMiniatureFacade imageMiniaturefacade;
