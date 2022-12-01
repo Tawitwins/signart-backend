@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  signart:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4848:4848
+      - 8080:8080
+    volumes:
+      - data:/signartFiles
+      - "./script.sh:/usr/local/bin/script.sh"
+    command:
+      - /bin/sh
+      - -c
+      - |
+        /usr/local/bin/script.sh 
+volumes:
+  data:
+
+
+
