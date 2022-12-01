@@ -225,8 +225,8 @@ public class LignePaiementREST {
         List<LignePaiementDto> lignePaiementDtoList =  new ArrayList<>();
         lignePaiementDtoList.add(find(id));
 
-        String pathRessource = "/signartFiles/resources/";
-        String pathLogo = "/signartFiles/resources/assets/images/logo_signart.png";
+        String pathRessource = "/signartResources/resources/";
+        String pathLogo = "/signartResources/resources/assets/images/logo_signart.png";
 
 
         String ninea = parametrageFacade.findByParamName("NINEA").getValue();

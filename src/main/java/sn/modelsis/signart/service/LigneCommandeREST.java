@@ -19,11 +19,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.LigneCommandeConverter;
 import sn.modelsis.signart.dto.LigneCommandeDto;
-import sn.modelsis.signart.dto.LigneLivraisonDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 

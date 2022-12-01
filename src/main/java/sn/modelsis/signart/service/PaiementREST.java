@@ -153,8 +153,8 @@ public class PaiementREST {
                                  @PathParam("lieu") String lieu)
             throws JRException, IOException {
 
-        String pathRessource = "/signartFiles/resources/";
-        String pathLogo = "/signartFiles/resources/assets/images/logo_signart.png";
+        String pathRessource = "/signartResources/resources/";
+        String pathLogo = "/signartResources/resources/assets/images/logo_signart.png";
 
         Client client = null;
         List<PaiementDto> paiementDtoList = new ArrayList<>();

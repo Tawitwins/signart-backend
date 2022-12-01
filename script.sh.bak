@@ -14,6 +14,5 @@ mkdir -p "recues"
 cd ../commande
 mkdir -p "preuves"
 mkdir -p "recues"
-cd ..
 
 /usr/local/glassfish4/bin/asadmin start-domain --verbose

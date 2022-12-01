@@ -226,8 +226,8 @@ public class AbonnementREST {
     @GET
     @Path("report/{id}/{format}/{adrGal}")
     public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
-        String pathLogo = "/signartFiles/resources/assets/images/logo_signart.png";
-        String pathRessource = "/signartFiles/resources/";
+        String pathLogo = "/signartResources/resources/assets/images/logo_signart.png";
+        String pathRessource = "/signartResources/resources/";
 
         List<AbonnementDto> abonnementDtoList = new ArrayList<>();
         abonnementDtoList.add(find(id));
@@ -259,12 +259,12 @@ public class AbonnementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH+"reçues/"+id+"/reçue_paiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH+"recues/"+id+"_recue_paiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH+"reçues/"+id+"/reçue_paiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH+"recues/"+id+"_recue_paiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH+"reçues/"+id+"/reçue_paiement.pdf"));
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH+"recues/"+id+"_recue_paiement.pdf"));
         String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
         return imageString;
         //return "report generated in path : " + path;
