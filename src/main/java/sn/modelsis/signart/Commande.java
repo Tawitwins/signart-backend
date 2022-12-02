@@ -3,6 +3,7 @@ package sn.modelsis.signart;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -48,7 +49,7 @@ public class Commande implements Serializable {
     @Basic(optional = false)
     @Column(name = "dateCommande", nullable = false)
     // @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate dateCommande;
+    private Date dateCommande;
     @Column(name = "delaiLivraison", nullable = false)
     private Integer delaiLivraison;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -98,7 +99,7 @@ public class Commande implements Serializable {
         this.id = id;
     }
 
-    public Commande(Integer id, LocalDate date, BigDecimal montant, BigDecimal fraisLivraison) {
+    public Commande(Integer id, Date date, BigDecimal montant, BigDecimal fraisLivraison) {
         this.id = id;
         this.dateCommande = date;
         this.montant = montant;
@@ -113,11 +114,11 @@ public class Commande implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDateCommande() {
+    public Date getDateCommande() {
         return dateCommande;
     }
 
-    public void setDateCommande(LocalDate dateCommande) {
+    public void setDateCommande(Date dateCommande) {
         this.dateCommande = dateCommande;
     }
 

@@ -43,7 +43,8 @@ public class CommandeConverter {
     public CommandeDto entityToDto(Commande entity) {
         CommandeDto dto = new CommandeDto();
         dto.setId(entity.getId());
-        dto.setDateCreation(entity.getDateCommande());
+        //dto.setDateCreation(entity.getDateCommande());
+        dto.setDateCommande(entity.getDateCommande());
         dto.setTotal(entity.getMontant());
         dto.setCodeDevise(entity.getIdDevise().getCode());
         dto.setIdClient(entity.getIdClient().getId());
@@ -99,7 +100,8 @@ public class CommandeConverter {
     public Commande dtoToEntity(CommandeDto dto) throws SignArtException {
         Commande entity = new Commande();
         entity.setId(dto.getId());
-        entity.setDateCommande(dto.getDateCreation());
+        //entity.setDateCommande(dto.getDateCreation());
+        entity.setDateCommande(dto.getDateCommande());
         entity.setDelaiLivraison(10);
         //entity.setIdOeuvre(oeuvreFacade.find(dto.getOeuvre().getId()));
         //entity.setIdCommande(commandeFacade.findByIdClient(dto.getIdClient()));

@@ -50,8 +50,10 @@ public class CommandeDto {
     private Integer idEtatPaiement;
     private String libelleEtatPaiement;
     private String state;
-    private LocalDate dateCreation;
+    private Date dateCreation;
     private Date dateModification;
+    private Date dateCommande;
+
     private Date dateFin;
     private Integer idClient;
     private Integer idMagasin;
@@ -178,11 +180,11 @@ public class CommandeDto {
         this.state = state;
     }
 
-    public LocalDate getDateCreation() {
+    public Date getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(LocalDate dateCreation) {
+    public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
     }
 
@@ -304,5 +306,13 @@ public class CommandeDto {
 
     public void setMontant(BigDecimal montant) {
         this.montant = montant;
+    }
+
+    public Date getDateCommande() {
+        return dateCommande;
+    }
+
+    public void setDateCommande(Date dateCommande) {
+        this.dateCommande = dateCommande;
     }
 }

@@ -85,9 +85,20 @@ public class CommandeREST {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, CommandeDto dto) throws SignArtException {
-
+        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
         commandeFacade.edit(commandeConverter.dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
+    }
+
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(CommandeDto dto) throws SignArtException{
+        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
+        Commande entity = commandeConverter.dtoToEntity(dto);
+        entity = commandeFacade.save(entity);
+        CommandeDto dtoRes = commandeConverter.entityToDto(entity);
+        return Response.status(Response.Status.OK).entity(dtoRes).build();
+
     }
     
     @DELETE
@@ -194,7 +205,7 @@ public class CommandeREST {
             // Set<LignePanier> lignePanierSet = panier.getLignePanierSet();
             Set<LigneCommande> ligneCommandeSet = new HashSet<>();
             Commande commande = new Commande();
-            commande.setDateCommande(LocalDate.now());
+            commande.setDateCommande(new Date());
             // commande.setIdClient(listLignePanier.get(0).getIdPanier().getIdClient());
             commande.setIdClient(clientFacade.find(idClient));
             // commande.setIdDevise(listLignePanier.get(0).getIdPanier().getIdDevise());
