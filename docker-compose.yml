@@ -27,13 +27,13 @@ services:
       context: ../signartweb_v2/
       dockerfile: Dockerfile
     ports:
-      - 4200:80
+      - 8084:80
   signart_front_admin:
     build:
       context: ../adminweb/
       dockerfile: Dockerfile
     ports:
-      - 4201:80
+      - 8085:80
 volumes:
   data:
 
