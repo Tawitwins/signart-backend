@@ -73,7 +73,7 @@ public class ImageMiniatureREST {
         for(int i=0; i<oeuvre.size(); i++){
             ImageMiniature image = new ImageMiniature();
             String nom = oeuvre.get(i).getNom();
-            BufferedImage minImage = ImageIO.read(new File(PATH+"images\\min_"+nom+".jpg"));
+            BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+nom+".jpg"));
             byte[] minImageByte = toByteArray(minImage, "jpg");           
             image.setNomImage(nom);         
             image.setValeurImage(minImageByte);
@@ -89,7 +89,7 @@ public class ImageMiniatureREST {
         
         //OeuvreNumerique oeuvre = oeuvreNumeriqueFacade.findByName(nameImage);
         ImageMiniature image = new ImageMiniature();
-            BufferedImage minImage = ImageIO.read(new File(PATH + "images\\min_"+nameImage+".jpg"));
+            BufferedImage minImage = ImageIO.read(new File(PATH + "images/min_"+nameImage+".jpg"));
             byte[] minImageByte = toByteArray(minImage, "jpg");           
             image.setNomImage(nameImage);         
             image.setValeurImage(minImageByte);
