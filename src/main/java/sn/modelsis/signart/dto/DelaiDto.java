@@ -19,6 +19,7 @@ public class DelaiDto implements Serializable{
     private String description;
     private Integer nbMois;
     private Integer prix;
+    private String delaiLevel;
 
     public DelaiDto(Integer id, String libelle, String description, Integer nbMois) {
         this.id = id;
@@ -78,7 +79,12 @@ public class DelaiDto implements Serializable{
     public void setNbMois(Integer nbMois) {
         this.nbMois = nbMois;
     }
-    
-    
+    public String getDelaiLevel() {
+        return delaiLevel;
+    }
+
+    public void setDelaiLevel(String delaiLevel) {
+        this.delaiLevel = delaiLevel;
+    }
     
 }

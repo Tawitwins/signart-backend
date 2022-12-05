@@ -41,7 +41,7 @@ public class EtatAbonnementFacade extends AbstractFacade<EtatAbonnement> {
             final TypedQuery<EtatAbonnement> query = getEntityManager().createNamedQuery("EtatAbonnement.findById",
                     EtatAbonnement.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<EtatAbonnement> etats = query.getResultList();
             if (etats.isEmpty()) {
                 return null;
@@ -57,7 +57,7 @@ public class EtatAbonnementFacade extends AbstractFacade<EtatAbonnement> {
             final TypedQuery<EtatAbonnement> query = getEntityManager().createNamedQuery("EtatAbonnement.findByLibelle",
                     EtatAbonnement.class);
             query.setParameter("libelle", libelle);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<EtatAbonnement> etats = query.getResultList();
             if (etats.isEmpty()) {
                 return null;
@@ -73,7 +73,7 @@ public class EtatAbonnementFacade extends AbstractFacade<EtatAbonnement> {
             final TypedQuery<EtatAbonnement> query = getEntityManager().createNamedQuery("EtatAbonnement.findByCode",
                     EtatAbonnement.class);
             query.setParameter("code", code);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<EtatAbonnement> etats = query.getResultList();
             if (etats.isEmpty()) {
                 return null;

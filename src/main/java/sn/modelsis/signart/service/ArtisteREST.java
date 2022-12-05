@@ -22,18 +22,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.codec.binary.Base64;
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.Artiste;
-import sn.modelsis.signart.Biographie;
-import sn.modelsis.signart.Pays;
-import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.ArtisteDto;
 import sn.modelsis.signart.dto.BiographieDto;
 import sn.modelsis.signart.dto.ImageProfilDto;
-import sn.modelsis.signart.facade.ArtisteFacade;
-import sn.modelsis.signart.facade.EtatArtisteFacade;
-import sn.modelsis.signart.facade.PaysFacade;
-import sn.modelsis.signart.facade.UtilisateurFacade;
+import sn.modelsis.signart.facade.*;
 
 /**
  *
@@ -55,9 +49,12 @@ public class ArtisteREST {
     @Inject
     EtatArtisteFacade etatArtisteFacade;
 
+    @Inject
+    MagasinFacade magasinFacade;
+
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(ArtisteDto dto) {
+    public Response create(ArtisteDto dto) throws SignArtException {
         Artiste entity = dtoToEntity(dto);
         artisteFacade.create(entity);
         ArtisteDto dtoRes = entityToDto(entity);
@@ -131,6 +128,7 @@ public class ArtisteREST {
     @Produces({MediaType.APPLICATION_JSON})
     public ArtisteDto find(@PathParam("id") Integer id) {
         Artiste artiste = artisteFacade.find(id);
+        System.out.println(artiste.getNom());
         return entityToDto(artiste);
     }
     
@@ -139,7 +137,7 @@ public class ArtisteREST {
     @Produces({MediaType.APPLICATION_JSON})
     public ArtisteDto findByUser(@PathParam("id") Integer id) throws SignArtException {
         Utilisateur user = utilisateurFacade.find(id);
-        Artiste artiste = artisteFacade.findByUser(user.getId());
+        Artiste artiste = artisteFacade.findByUserAdvanced(user.getId());
         return entityToDto(artiste);
     }
 
@@ -154,7 +152,7 @@ public class ArtisteREST {
     }*/
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
-    public List<ArtisteDto> findAll() {
+    public List<ArtisteDto> findAll() throws SignArtException {
         List<ArtisteDto> listDto = new ArrayList<>();
         List<Artiste> listEnt = artisteFacade.findAll();
         
@@ -251,7 +249,7 @@ public class ArtisteREST {
 
     
     
-    public Artiste dtoToEntity(ArtisteDto dto) {
+    public Artiste dtoToEntity(ArtisteDto dto) throws SignArtException {
         Artiste entity = new Artiste();
         entity.setAdresse(dto.getAdresse());
         entity.setBiographie(dto.getBiographie());
@@ -263,6 +261,10 @@ public class ArtisteREST {
             entity.setIdPays(paysFacade.findByLibelle(dto.getPays()));
         entity.setPrenom(dto.getPrenom());
         entity.setSurnom(dto.getSurnom());
+
+        if(dto.getIdMagasin() != null)
+            entity.setIdMagasin(magasinFacade.findById(dto.getIdMagasin()));
+        //entity.setIdMagasin(magasinFacade.findByNom(dto.getMagasin()));
         entity.setTelephone(dto.getTelephone());
         entity.setVille(dto.getVille());
         entity.setEmail(dto.getEmail());
@@ -279,10 +281,13 @@ public class ArtisteREST {
         String surnom = "artiste00"+dto.getTelephone();
         String identite = nom+"_"+prenom+"_"+surnom;
         entity.setIdentite(identite);
+        entity.setAnneeDebutCarrier(dto.getAnneeDebutCarrier());
+        entity.setQualificationLevel(dto.getQualificationLevel());
         return entity;
     }
             
     public ArtisteDto entityToDto(Artiste entity) {
+
         ArtisteDto dto = new ArtisteDto();
         dto.setAdresse(entity.getAdresse());
         dto.setBiographie(entity.getBiographie());
@@ -293,6 +298,9 @@ public class ArtisteREST {
         dto.setPays(entity.getIdPays().getLibelle());
         dto.setPrenom(entity.getPrenom());
         dto.setSurnom(entity.getSurnom());
+        if(entity.getIdMagasin() != null)
+            dto.setIdMagasin(entity.getIdMagasin().getId());
+        //dto.setMagasin(entity.getIdMagasin().getNom());
         dto.setTelephone(entity.getTelephone());
         dto.setVille(entity.getVille());
         dto.setEmail(entity.getEmail());
@@ -304,6 +312,8 @@ public class ArtisteREST {
         dto.setFormation(entity.getFormation());
         dto.setExpositions(entity.getExpositions());
         dto.setIdentite(entity.getIdentite());
+        dto.setAnneeDebutCarrier(entity.getAnneeDebutCarrier());
+        dto.setQualificationLevel(entity.getQualificationLevel());
         
         
         dto.setProfession(entity.getProfession());
@@ -316,7 +326,7 @@ public class ArtisteREST {
         return dto;
     }
     
-    private Artiste dtoToEtityProfil(ArtisteDto dto, Artiste entity) {
+    private Artiste dtoToEtityProfil(ArtisteDto dto, Artiste entity) throws SignArtException {
         entity.setNom(dto.getNom());
         entity.setPrenom(dto.getPrenom());
         entity.setSurnom(dto.getSurnom());
@@ -325,7 +335,7 @@ public class ArtisteREST {
         entity.setAdresse(dto.getAdresse());
         entity.setVille(dto.getVille());
         entity.setIdPays(findPays(dto.getPays()));
-        
+        entity.setIdMagasin(findMagasin(dto.getIdMagasin()));
         String prenom = dto.getPrenom().replaceAll("\\s","");
         String nom = dto.getNom().replaceAll("\\s","");
         String surnom = "artiste00"+dto.getTelephone();
@@ -339,10 +349,13 @@ public class ArtisteREST {
     private Pays findPays(String libelle){
         return paysFacade.findByLibelle(libelle);
     }
-    
+
+    private Magasin findMagasin(Integer idMagasin) throws SignArtException {
+        return magasinFacade.findById(idMagasin);
+    }
     
 
-    private BiographieDto entityToBiographieDto(Biographie entity) {
+    private BiographieDto entityToBiographieDto(Biographie entity) throws SignArtException {
 
         if (entity == null) {
             return null;
@@ -360,7 +373,7 @@ public class ArtisteREST {
     @GET
     @Path("biographie/{idArtiste}")
     @Produces({MediaType.APPLICATION_JSON})
-    public BiographieDto findBiogByArtiste(@PathParam("idArtiste") Integer idArtiste) {
+    public BiographieDto findBiogByArtiste(@PathParam("idArtiste") Integer idArtiste) throws SignArtException {
         Biographie bigraphie = new Biographie();
         try {
             bigraphie = artisteFacade.findBiographieByArtiste(idArtiste);

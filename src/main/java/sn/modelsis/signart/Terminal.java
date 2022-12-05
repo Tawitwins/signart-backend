@@ -27,7 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
       @NamedQuery(name = "Terminal.findAll", query = "SELECT t FROM Terminal t")
-    , @NamedQuery(name = "Terminal.findById", query = "SELECT t FROM Terminal t WHERE t.id = :id")})
+    , @NamedQuery(name = "Terminal.findById", query = "SELECT t FROM Terminal t WHERE t.id = :id"),
+        @NamedQuery(name = "Terminal.findByCode", query = "SELECT t FROM Terminal t WHERE t.code = :code")
+
+})
+
 public class Terminal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +48,8 @@ public class Terminal implements Serializable {
     @Column(name = "prix", nullable = false)
     private Integer prix;
 
+    @Column(name = "code", nullable = false)
+    private String code;
     public Terminal() {
     }
     
@@ -93,7 +99,12 @@ public class Terminal implements Serializable {
     public void setPrix(Integer prix) {
         this.prix = prix;
     }
-    
-    
-    
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

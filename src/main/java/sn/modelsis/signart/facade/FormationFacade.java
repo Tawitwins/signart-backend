@@ -63,7 +63,7 @@ public class FormationFacade extends AbstractFacade<Formation> {
             final TypedQuery<Formation> query = getEntityManager().createNamedQuery("Formation.findById",
                     Formation.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Formation> formations = query.getResultList();
             if (formations.isEmpty()) {
                 return null;

@@ -1,5 +1,7 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -63,8 +65,8 @@ public class Exposition implements Serializable {
     private String longitude;*/
     @Column(name = "type", nullable = false, length = 100)
     private String type;
-    @Lob
-    @Column(name = "description", length = 2147483647)
+
+    @Column(name = "description",columnDefinition = "TEXT", length = 2048)
     private String description;
    // @Lob
    // @Column(name = "photo")

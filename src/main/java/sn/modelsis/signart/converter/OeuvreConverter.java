@@ -11,11 +11,9 @@ import sn.modelsis.signart.OeuvreSouscription;
 import sn.modelsis.signart.Technique;
 import sn.modelsis.signart.dto.OeuvreDto;
 import sn.modelsis.signart.exception.SignArtException;
-import sn.modelsis.signart.facade.ArtisteFacade;
-import sn.modelsis.signart.facade.CouleurFacade;
-import sn.modelsis.signart.facade.StatutOeuvreFacade;
+import sn.modelsis.signart.facade.*;
 //import sn.modelsis.signart.facade.SousTechniqueFacade;
-import sn.modelsis.signart.facade.TechniqueFacade;
+
 
 /**
  *
@@ -28,12 +26,14 @@ public class OeuvreConverter {
     ArtisteFacade artisteFacade;
     @Inject
     TechniqueFacade techniqueFacade;
-   /* @Inject
-    SousTechniqueFacade sousTechniqueFacade;*/
+   @Inject
+    MagasinFacade magasinFacade;
     @Inject
     CouleurFacade couleurFacade;
     @Inject
     StatutOeuvreFacade statutOeuvreFacade;
+    @Inject
+    ParametrageFacade parametrageFacade;
 
     public OeuvreDto entityToDto(Oeuvre entity) {
         OeuvreDto dto = new OeuvreDto();
@@ -47,21 +47,37 @@ public class OeuvreConverter {
             dto.setIdTechnique(entity.getIdTechnique().getId());
         if(entity.getIdCouleur()!= null)
             dto.setIdCouleur(entity.getIdCouleur().getId());
+        if(entity.getIdMagasin() != null){
+            dto.setIdMagasin(entity.getIdMagasin().getId());
+        }
+        if(entity.getPourcentageOeuvre() != null)
+                dto.setPourcentageOeuvre(entity.getPourcentageOeuvre());
         dto.setNouveau(entity.getNouveau());
+        dto.setSpecialDelivery(entity.getSpecialDelivery());
         dto.setLithographie(entity.getLithographie());
+        dto.setPaid(entity.getPaid());
         dto.setAuteur(entity.getAuteur());
         dto.setAnnee(entity.getAnnee());
         dto.setDimensions(entity.getDimensions());
         dto.setPrix(entity.getPrix());
         dto.setTauxremise(entity.getTauxremise());
-        dto.setTaxes(entity.getTaxes());
-        dto.setImage(entity.getImage());
+        if(entity.getTaxes() != null)
+            dto.setTaxes(entity.getTaxes());
+        //dto.setImage(entity.getImage());
         dto.setMiniature(entity.getMiniature());
         dto.setDateAjout(entity.getDateAjout());
         dto.setDescription(entity.getDescription());
+        dto.setReference(entity.getReference());
+        dto.setPoids(entity.getPoids());
+        dto.setLibellePoids(entity.getLibellePoids());
+        dto.setLibelleDimension(entity.getLibelleDimension());
         if(entity.getIdStatut() != null)
             dto.setIdStatus(entity.getIdStatut().getId());
         dto.setStock(entity.getStock());
+
+        if(entity.getUsure() != null){
+            dto.setUsure(entity.getUsure());
+        }
         //dto.setIdSousTechnique(entity.getIdSousTechnique().getId());
         //dto.setTechnique(entity.getIdSousTechnique().getIdTechnique().getLibelle());
        // dto.setSousTechnique(entity.getIdSousTechnique().getLibelle());
@@ -83,31 +99,45 @@ public class OeuvreConverter {
         if(dto.getIdCouleur() != null)
             entity.setIdCouleur(recupCouleur(dto.getIdCouleur()));
         entity.setNouveau(dto.getNouveau());
+        entity.setSpecialDelivery(dto.getSpecialDelivery());
         entity.setLithographie(dto.getLithographie());
+        entity.setPaid(dto.getPaid());
         entity.setAuteur(dto.getAuteur());
         entity.setDimensions(dto.getDimensions());
         entity.setAnnee(dto.getAnnee());
         entity.setDateAjout(dateAjout);
+        if(dto.getPourcentageOeuvre() != null){
+            entity.setPourcentageOeuvre(dto.getPourcentageOeuvre());
+        }
         entity.setPrix(dto.getPrix());
         entity.setTauxremise(dto.getTauxremise());
         entity.setTaxes(dto.getTaxes());
         entity.setImage(dto.getImage());
         entity.setDescription(dto.getDescription());
+        entity.setReference(dto.getReference());
+        entity.setPoids(dto.getPoids());
+        entity.setLibellePoids(dto.getLibellePoids());
+        entity.setLibelleDimension(dto.getLibelleDimension());
         if(dto.getIdArtiste() != null)
             entity.setIdArtiste(recupArtiste(dto.getIdArtiste()));
+        if(dto.getIdMagasin() != null){
+            entity.setIdMagasin(magasinFacade.findById(dto.getIdMagasin()));
+        }
         entity.setFraisLivraison(BigDecimal.valueOf(1500.00));
         entity.setMiniature(dto.getMiniature());
         if(dto.getIdStatus() != null)
             entity.setIdStatut(statutOeuvreFacade.find(dto.getIdStatus()));
         entity.setStock(dto.getStock());
-        
+
+        if(dto.getUsure() != null)
+            entity.setUsure(dto.getUsure());
         //entity.setIdSousTechnique(sousTechniqueFacade.find(dto.getIdSousTechnique()));
         
         
         return entity;
     }
     
-     public Oeuvre convertOueuvreSouscription(OeuvreSouscription dto) throws SignArtException {
+     public Oeuvre convertOueuvreSouscription(OeuvreSouscription dto,Integer idMagasin) throws SignArtException {
         Oeuvre entity = new Oeuvre();
         Calendar calendar = Calendar.getInstance();
         java.util.Date currentDate = calendar.getTime();
@@ -115,13 +145,15 @@ public class OeuvreConverter {
         
         
         
-       // entity.setId(dto.getId());
+        // entity.setId(dto.getId());
         entity.setNom(dto.getNom());
         if(dto.getIdTechnique() != null)
             entity.setIdTechnique(dto.getIdTechnique());
         if(dto.getIdCouleur() != null)
             entity.setIdCouleur(dto.getIdCouleur());
+        entity.setIdMagasin(magasinFacade.findById(idMagasin));
         entity.setNouveau(dto.getNouveau());
+        //entity.setSpecialDelivery(dto.getSpecialDelivery());
         entity.setLithographie(dto.getLithographie());
         entity.setAuteur(dto.getAuteur());
         entity.setDimensions(dto.getDimensions());

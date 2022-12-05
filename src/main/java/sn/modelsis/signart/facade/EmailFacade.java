@@ -88,7 +88,7 @@ public class EmailFacade extends AbstractFacade<Email>  {
             final TypedQuery<Client> query = getEntityManager().createNamedQuery("Client.findByIdUser",
                     Client.class);
             query.setParameter("idUser", idUser);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Client> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

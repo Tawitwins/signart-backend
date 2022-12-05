@@ -2,7 +2,7 @@ package sn.modelsis.signart;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Commande.findByDelaiLivraison", query = "SELECT c FROM Commande c WHERE c.delaiLivraison = :delaiLivraison")
     , @NamedQuery(name = "Commande.findByMontant", query = "SELECT c FROM Commande c WHERE c.montant = :montant")
     , @NamedQuery(name = "Commande.findByFraisLivraison", query = "SELECT c FROM Commande c WHERE c.fraisLivraison = :fraisLivraison")
-    , @NamedQuery(name = "Commande.findByCommentaire", query = "SELECT c FROM Commande c WHERE c.commentaire = :commentaire")})
+    , @NamedQuery(name = "Commande.findByCommentaire", query = "SELECT c FROM Commande c WHERE c.commentaire = :commentaire")
+    , @NamedQuery(name = "Commande.findByToken", query = "SELECT c FROM Commande c WHERE c.tokenPaiement = :tokenPaiement")})
 public class Commande implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,7 +48,7 @@ public class Commande implements Serializable {
     @Basic(optional = false)
     @Column(name = "dateCommande", nullable = false)
     // @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate dateCommande;
+    private Date dateCommande;
     @Column(name = "delaiLivraison", nullable = false)
     private Integer delaiLivraison;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -63,6 +64,8 @@ public class Commande implements Serializable {
     private String numero;
     @Column(name = "etat", length = 15)
     private String etat;
+    @Column(name = "tokenPaiement", length = 200)
+    private String tokenPaiement;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "commande")
     private Livraison livraison;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "commande")
@@ -76,6 +79,15 @@ public class Commande implements Serializable {
     @JoinColumn(name = "idEtatCommande", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EtatCommande idEtatCommande;
+    @JoinColumn(name = "idMagasin", referencedColumnName = "id")
+    @ManyToOne
+    private Magasin idMagasin;
+    @JoinColumn(name = "idServiceLivraison", referencedColumnName = "id")
+    @ManyToOne
+    private ServiceLivraison idServiceLivraison;
+    @JoinColumn(name = "idTarification", referencedColumnName = "id")
+    @ManyToOne
+    private Tarification idTarification;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCommande")
     private Set<LigneCommande> ligneCommandeSet;
 
@@ -86,7 +98,7 @@ public class Commande implements Serializable {
         this.id = id;
     }
 
-    public Commande(Integer id, LocalDate date, BigDecimal montant, BigDecimal fraisLivraison) {
+    public Commande(Integer id, Date date, BigDecimal montant, BigDecimal fraisLivraison) {
         this.id = id;
         this.dateCommande = date;
         this.montant = montant;
@@ -101,11 +113,11 @@ public class Commande implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDateCommande() {
+    public Date getDateCommande() {
         return dateCommande;
     }
 
-    public void setDateCommande(LocalDate dateCommande) {
+    public void setDateCommande(Date dateCommande) {
         this.dateCommande = dateCommande;
     }
 
@@ -153,8 +165,15 @@ public class Commande implements Serializable {
         return etat;
     }
 
-    public void setEtat(String etat) {
+    public void setEtat(String etat){
         this.etat = etat;
+    }
+    public String getTokenPaiement() {
+        return tokenPaiement;
+    }
+
+    public void setTokenPaiement(String tokenPaiement) {
+        this.tokenPaiement = tokenPaiement;
     }
 
     public Devise getIdDevise() {
@@ -196,6 +215,29 @@ public class Commande implements Serializable {
     public void setIdClient(Client idClient) {
         this.idClient = idClient;
     }
+    public Magasin getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Magasin idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
+    public ServiceLivraison getIdServiceLivraison() {
+        return idServiceLivraison;
+    }
+
+    public void setIdServiceLivraison(ServiceLivraison idServiceLivraison) {
+        this.idServiceLivraison = idServiceLivraison;
+    }
+
+    public Tarification getIdTarification() {
+        return idTarification;
+    }
+
+    public void setIdTarification(Tarification idTarification) {
+        this.idTarification = idTarification;
+    }
 
     @XmlTransient
     public Set<LigneCommande> getLigneCommandeSet() {
@@ -227,5 +269,5 @@ public class Commande implements Serializable {
     public String toString() {
         return "sn.modelsis.signart.Commande[ id=" + id + " ]";
     }
-    
+
 }

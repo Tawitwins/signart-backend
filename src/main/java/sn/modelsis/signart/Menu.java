@@ -1,5 +1,7 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -49,14 +51,13 @@ public class Menu implements Serializable {
     private String icon;
     @Column(name = "classe", length = 50)
     private String classe;
-    @Lob
-    @Column(name = "image")
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] image;
     // @OneToOne(cascade = CascadeType.ALL, mappedBy = "menu")
     // private Technique technique;
     @Column(name = "idParent", nullable = true)
     private Integer idParent;
-    @JoinTable(name = "Menu_Profil", joinColumns = {
+    @JoinTable(name = "Menu_Profil", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idProfil", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.EAGER)

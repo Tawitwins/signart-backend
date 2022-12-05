@@ -1,22 +1,13 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -49,8 +40,12 @@ public class LigneCommande implements Serializable {
     private int quantite;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLigneCommande")
     private Set<LigneLivraison> ligneLivraisonSet;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLigneCommande")
+    private Set<LignePaiement> lignePaiementSet;
     @JoinColumn(name = "idCommande", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    //@NotFound(action = NotFoundAction.IGNORE)
     private Commande idCommande;
     @JoinColumn(name = "idEtatLigneCommande", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -73,7 +68,7 @@ public class LigneCommande implements Serializable {
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -129,8 +124,21 @@ public class LigneCommande implements Serializable {
         this.idOeuvre = idOeuvre;
     }
 
+    public Set<LignePaiement> getLignePaiementSet() {
+        return lignePaiementSet;
+    }
 
-    @Override
+    public void setLignePaiementSet(Set<LignePaiement> lignePaiementSet) {
+        this.lignePaiementSet = lignePaiementSet;
+    }
+
+ /*   @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }*/
+   @Override
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.id);
@@ -139,8 +147,16 @@ public class LigneCommande implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.idOeuvre);
         return hash;
     }
-
     @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof LigneCommande)) {
+            return false;
+        }
+        LigneCommande other = (LigneCommande) object;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+    }
+   /* @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -165,7 +181,7 @@ public class LigneCommande implements Serializable {
             return false;
         }
         return true;
-    }
+    }*/
 
     @Override
     public String toString() {

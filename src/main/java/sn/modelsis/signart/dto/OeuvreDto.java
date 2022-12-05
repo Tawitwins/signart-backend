@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import sn.modelsis.signart.Artiste;
 
+import javax.persistence.Column;
+
 /**
  *
  * @author SNLOM
@@ -17,10 +19,14 @@ public class OeuvreDto implements Serializable {
     private Integer idTechnique;
     private Integer idCouleur;
     private Boolean nouveau;
+
+    private Boolean specialDelivery = false;
     private Boolean lithographie;
+    private Boolean isPaid;
     private String auteur;
     private String artiste;
     private String dimensions;
+    private String libelleDimension;
     private Integer annee;
     private BigDecimal prix;
     private Integer tauxremise;
@@ -32,9 +38,15 @@ public class OeuvreDto implements Serializable {
     private Date dateAjout;   
     private  byte[] miniature;
     private Integer idStatus;
+    private Integer idMagasin;
     private Integer stock;
-    
-    
+
+    private String reference;
+    private Integer poids;
+    private String libellePoids;
+
+    private String usure;
+    private Float pourcentageOeuvre;
     
     //private Collection<MotCle> motCleCollection;
     //private Collection<Theme> themeCollection;
@@ -45,11 +57,12 @@ public class OeuvreDto implements Serializable {
    // private String technique; 
     //private String artiste;
 
-    public OeuvreDto(String nom, Integer idTechnique, Integer idCouleur, Boolean nouveau, Boolean lithographie, String auteur, String dimensions, Integer annee, BigDecimal prix, Integer tauxremise, BigDecimal taxes, byte[] image, String description, Integer idArtiste) {
+    public OeuvreDto(String nom, Integer idTechnique, Integer idCouleur, Boolean nouveau, Boolean specialDelivery,  Boolean lithographie, String auteur, String dimensions, Integer annee, BigDecimal prix, Integer tauxremise, BigDecimal taxes, byte[] image, String description, Integer idArtiste) {
         this.nom = nom;
         this.idTechnique = idTechnique;
         this.idCouleur = idCouleur;
         this.nouveau = nouveau;
+        this.specialDelivery = specialDelivery;
         this.lithographie = lithographie;
         this.auteur = auteur;
         this.dimensions = dimensions;
@@ -151,6 +164,14 @@ public class OeuvreDto implements Serializable {
         this.nouveau = nouveau;
     }
 
+    public Boolean getSpecialDelivery() {
+        return specialDelivery;
+    }
+
+    public void setSpecialDelivery(Boolean specialDelivery) {
+        this.specialDelivery = specialDelivery;
+    }
+
     public String getDimensions() {
         return dimensions;
     }
@@ -190,9 +211,31 @@ public class OeuvreDto implements Serializable {
     public void setArtiste(String artiste) {
         this.artiste = artiste;
     }
-    
 
-   /* public Integer getIdSousTechnique() {
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
+    public String getLibelleDimension() {
+        return libelleDimension;
+    }
+
+    public void setLibelleDimension(String libelleDimension) {
+        this.libelleDimension = libelleDimension;
+    }
+
+    public String getUsure() {
+        return usure;
+    }
+
+    public void setUsure(String usure) {
+        this.usure = usure;
+    }
+    /* public Integer getIdSousTechnique() {
         return idSousTechnique;
     }
 
@@ -255,10 +298,47 @@ public class OeuvreDto implements Serializable {
     public void setAnnee(Integer annee) {
         this.annee = annee;
     }
-    
-    
 
-    
+    public Boolean getPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(Boolean paid) {
+        isPaid = paid;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Integer getPoids() {
+        return poids;
+    }
+
+    public void setPoids(Integer poids) {
+        this.poids = poids;
+    }
+
+    public String getLibellePoids() {
+        return libellePoids;
+    }
+
+    public void setLibellePoids(String libellePoids) {
+        this.libellePoids = libellePoids;
+    }
+
+    public Float getPourcentageOeuvre() {
+        return pourcentageOeuvre;
+    }
+
+    public void setPourcentageOeuvre(Float pourcentageOeuvre) {
+        this.pourcentageOeuvre = pourcentageOeuvre;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

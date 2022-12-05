@@ -1,7 +1,6 @@
 package sn.modelsis.signart.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -36,6 +35,8 @@ public class CommandeDto {
     private Integer id;
     private String numero;
     private BigDecimal total;
+    private BigDecimal montant;
+
     private Integer nbTotal;
     private BigDecimal totalLivraison;
     private BigDecimal totalTaxes;
@@ -48,16 +49,23 @@ public class CommandeDto {
     private Integer idEtatPaiement;
     private String libelleEtatPaiement;
     private String state;
-    private LocalDate dateCreation;
+    private Date dateCreation;
     private Date dateModification;
+    private Date dateCommande;
+
     private Date dateFin;
     private Integer idClient;
+    private Integer idMagasin;
+    private Integer idServiceLivraison;
+    private Integer idTarification;
     private boolean risque;
     private String token;
     private Set<AdresseDto> billAdress;
     private Set<AdresseDto> paymentAdress;
     private Set<LigneCommandeDto> lignesCommande;
     private Set<PaiementDto> payments;
+
+    private BigDecimal fraisLivraison;
 
     public Integer getId() {
         return id;
@@ -171,11 +179,11 @@ public class CommandeDto {
         this.state = state;
     }
 
-    public LocalDate getDateCreation() {
+    public Date getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(LocalDate dateCreation) {
+    public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
     }
 
@@ -258,5 +266,52 @@ public class CommandeDto {
     public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
     }
-    
+
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
+    public Integer getIdServiceLivraison() {
+        return idServiceLivraison;
+    }
+
+    public void setIdServiceLivraison(Integer idServiceLivraison) {
+        this.idServiceLivraison = idServiceLivraison;
+    }
+
+    public Integer getIdTarification() {
+        return idTarification;
+    }
+
+    public void setIdTarification(Integer idTarification) {
+        this.idTarification = idTarification;
+    }
+
+    public BigDecimal getFraisLivraison() {
+        return fraisLivraison;
+    }
+
+    public void setFraisLivraison(BigDecimal fraisLivraison) {
+        this.fraisLivraison = fraisLivraison;
+    }
+
+    public BigDecimal getMontant() {
+        return montant;
+    }
+
+    public void setMontant(BigDecimal montant) {
+        this.montant = montant;
+    }
+
+    public Date getDateCommande() {
+        return dateCommande;
+    }
+
+    public void setDateCommande(Date dateCommande) {
+        this.dateCommande = dateCommande;
+    }
 }

@@ -1,6 +1,5 @@
 package sn.modelsis.signart.dto;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -10,7 +9,7 @@ import java.util.Set;
  */
 public class LivraisonDto {
     private Integer id;
-    private LocalDate dateLivraison;
+    private Date dateLivraison;
     private Integer idAdresseLivraison;
     private Integer idAdresseFacturation;
     private Integer idEtatLivraison;
@@ -31,11 +30,11 @@ public class LivraisonDto {
         this.id = id;
     }
 
-    public LocalDate getDateLivraison() {
+    public Date getDateLivraison() {
         return dateLivraison;
     }
 
-    public void setDateLivraison(LocalDate dateLivraison) {
+    public void setDateLivraison(Date dateLivraison) {
         this.dateLivraison = dateLivraison;
     }
 
@@ -126,5 +125,5 @@ public class LivraisonDto {
     public void setLigneLivraisons(Set<LigneLivraisonDto> ligneLivraisons) {
         this.ligneLivraisons = ligneLivraisons;
     }
- 
+
 }

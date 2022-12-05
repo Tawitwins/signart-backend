@@ -53,7 +53,7 @@ import sn.modelsis.signart.facade.OeuvreNumeriqueFacade;
 import sn.modelsis.signart.facade.ImageNumeriqueFacade;
 
 
-import sun.misc.BASE64Encoder;
+import java.util.Base64.Decoder;
 /*import sn.modelsis.signart.Artiste;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -76,9 +76,11 @@ public class ImageNumeriqueREST {
     @Inject
     ArtisteFacade artisteFacade;*/
    
-    public final static String PATH = "/opt/";
+    public final static String GOODPATH = "/opt/";
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
     public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
-    
+    public final static String PATH = "/signartFiles/abonnement/";
+
     @Inject
     OeuvreNumeriqueFacade oeuvreNumeriqueFacade;
     
@@ -108,6 +110,9 @@ public class ImageNumeriqueREST {
         entity.setDescription(dto.getDescription());
         entity.setTechnique(dto.getTechnique());
         entity.setNom(nom);
+        entity.setDimensionLevel(dto.getDimensionLevel());
+        entity.setPoids(dto.getPoids());
+        entity.setNiveauPoids(dto.getNiveauPoids());
         return entity;
     }
     
@@ -125,6 +130,9 @@ public class ImageNumeriqueREST {
         dto.setDescription(entity.getDescription());
         dto.setTechnique(entity.getTechnique());
         dto.setNom(entity.getNom());
+        dto.setPoids(entity.getPoids());
+        dto.setDimensionLevel(entity.getDimensionLevel());
+        dto.setNiveauPoids(entity.getNiveauPoids());
         return dto;
     }
     
@@ -201,8 +209,7 @@ public class ImageNumeriqueREST {
             ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();
 
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
+            imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
             bos.close();
         } catch (IOException e) {
@@ -247,7 +254,7 @@ public class ImageNumeriqueREST {
             try {
                 bImageFromConvert = ImageIO.read(in);
                 System.out.println(bImageFromConvert+"+++++++++++++++++++++++++++++++++++++++++++++bImageFromConvert++++++++++++++++++++++++++++++++++++");
-               ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+nom+".jpg"));
+               ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images"+nom+".jpg"));
               // System.out.println(source+"+++++++++++++++++++++++++++++++++++++++++++++source++++++++++++++++++++++++++++++++++++");
 
                //   ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
@@ -305,8 +312,7 @@ public class ImageNumeriqueREST {
         ImageMiniature imgMn = imageMiniaturefacade.findByName(imageName);
         //String imgStr = new String(imgMn.getValeurImage()); 
          byte[] imageBytes = imgMn.getValeurImage();
-         BASE64Encoder encoder = new BASE64Encoder();
-         String imageString = encoder.encode(imageBytes);
+         String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
        // String imageBase64 = encodeToString(imgStr,"jpg");
        // System.out.println(imageBase64+"+++++++++++++++++++++++++++++++++++++++++++++imageBase64+++++++++++++++++++++++++++++++++++++");
         dtoImgB = entityToDtoOeuvre(oeuvreNumeriqueFacade.findByName(imageName));
@@ -331,8 +337,7 @@ public class ImageNumeriqueREST {
         //String imgStr = new String(imgMn.getValeurImage()); 
 
          byte[] imageBytes = imgMn.getValeurImage();
-         BASE64Encoder encoder = new BASE64Encoder();
-         String imageString = encoder.encode(imageBytes);
+         String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
                // BufferedImage minImage = ImageIO.read(new File("/opt/images/"+imageName+".jpg"));
 
              //   System.out.println(minImage+"+++++++++++++++++++++++++++++++++++++++++++++minImage+++++++++++++++++++++++++++++++++++++");
@@ -367,8 +372,7 @@ public class ImageNumeriqueREST {
             //BufferedImage minImage = ImageIO.read(new File(PATH+"images/min_"+dtoImgB.get(j).getNom()+".jpg"));
             ImageMiniature imgMn = imageMiniaturefacade.findByName(dtoImgB.get(j).getNom());
              byte[] imageBytes = imgMn.getValeurImage();
-             BASE64Encoder encoder = new BASE64Encoder();
-             String imageString = encoder.encode(imageBytes);
+             String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
            // String imgStr = new String(imgMn.getValeurImage());
             //System.out.println(dtoImgB.get(j).getNom()+"+++++++++++++++++++++++++++++++++++++++++++++nom+++++++++++++++++++++++++++++++++++++");
             
@@ -392,8 +396,8 @@ public class ImageNumeriqueREST {
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path minImagePath = Paths.get(PATH+"images\\min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATH+"images\\"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -417,8 +421,8 @@ public class ImageNumeriqueREST {
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get(PATHTEST+"images\\min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get(PATHTEST+"images\\"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path minImagePath = Paths.get(PATH+"images\\min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATH+"images\\"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -524,8 +528,8 @@ public class ImageNumeriqueREST {
             Integer largeur = dto.getLargeur()/3; 
             Integer longueur = dto.getLongueur()/3;
             
-            java.nio.file.Path minImagePath = Paths.get("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\min_"+oeuvreNum.getNom()+".jpg");
-            java.nio.file.Path imagePath = Paths.get(PATHTEST+"image\\"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path minImagePath = Paths.get(PATH + "min_"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path imagePath = Paths.get(PATH+"image\\"+oeuvreNum.getNom()+".jpg");
             try {
                    Files.delete((java.nio.file.Path) minImagePath);
                     Files.delete((java.nio.file.Path) imagePath);
@@ -554,7 +558,7 @@ public class ImageNumeriqueREST {
             byte[] imgMinByte = null;
             try {
                 bImageFromConvert = ImageIO.read(in);
-                ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+oeuvreNum.getNom()+".jpg"));
+                ImageIO.write(bImageFromConvert, "jpg", new File(PATH + oeuvreNum.getNom()+".jpg"));
                 int type = bImageFromConvert.getType() == 0? BufferedImage.TYPE_INT_ARGB : bImageFromConvert.getType();
                 //BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
                 BufferedImage resizeImageJpg = resizeImage(bImageFromConvert, type, largeur, longueur);
@@ -587,6 +591,8 @@ public class ImageNumeriqueREST {
         oeuvreNum.setDescription(dto.getDescription());
         oeuvreNum.setTechnique(dto.getTechnique());
         oeuvreNum.setNom(nom);
+        oeuvreNum.setNiveauPoids(dto.getNiveauPoids());
+        oeuvreNum.setDimensionLevel(dto.getDimensionLevel());
         return oeuvreNum;
     }
      

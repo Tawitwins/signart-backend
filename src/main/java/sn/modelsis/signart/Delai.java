@@ -43,6 +43,9 @@ public class Delai {
     @Column(name = "prix", nullable = false)
     private Integer prix;
 
+    @Column(name = "delaiLevel", nullable = false)
+    private String delaiLevel;
+
     public Delai(Integer id, String libelle, String description, Integer nbMois) {
         this.id = id;
         this.libelle = libelle;
@@ -101,7 +104,14 @@ public class Delai {
     public void setNbMois(Integer nbMois) {
         this.nbMois = nbMois;
     }
-    
+
+    public String getDelaiLevel() {
+        return delaiLevel;
+    }
+
+    public void setDelaiLevel(String delaiLevel) {
+        this.delaiLevel = delaiLevel;
+    }
     
     
 }

@@ -29,7 +29,7 @@ public class ModeLivraisonDto {
     public void setLibelle(String libelle) {
         this.libelle = libelle;
     }
-    public String getLCode() {
+    public String getCode() {
         return code;
     }
 

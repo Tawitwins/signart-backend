@@ -1,16 +1,7 @@
 package sn.modelsis.signart;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -66,7 +57,10 @@ public class Souscription implements Serializable {
     private String expositions;
     @Column(name = "codePays", length = 5)
     private String codePays;
-   
+
+    @JoinColumn(name = "idMagasin", referencedColumnName = "id", nullable = true)
+    @ManyToOne(optional = false)
+    private Magasin idMagasin;
    
    
     public Souscription() {
@@ -194,7 +188,14 @@ public class Souscription implements Serializable {
         this.codePays = codePays;
     }
 
-    
+    public Magasin getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Magasin idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

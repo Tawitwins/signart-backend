@@ -63,7 +63,9 @@ public class Utilisateur implements Serializable {
     private Set<Client> clientSet;
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idUser")
     private Set<AdminsTable> adminsTableSet;
-    
+
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idAdminUser")
+    private Set<EvenementSignart> evenementSignarts;
     @JoinColumn(name = "idProfil", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Profil idProfil;
@@ -131,7 +133,13 @@ public class Utilisateur implements Serializable {
     public void setAdminsTableSet(Set<AdminsTable> adminsTableSet) {
         this.adminsTableSet = adminsTableSet;
     }
+    public Set<EvenementSignart> getEvenementSignarts() {
+        return evenementSignarts;
+    }
 
+    public void setEvenementSignarts(Set<EvenementSignart> evenementSignarts) {
+        this.evenementSignarts = evenementSignarts;
+    }
     @XmlTransient
     public Set<Client> getClientSet() {
         return clientSet;

@@ -41,7 +41,7 @@ public class TerminalFacade extends AbstractFacade<Terminal> {
             final TypedQuery<Terminal> query = getEntityManager().createNamedQuery("Terminal.findById",
                     Terminal.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Terminal> terminals = query.getResultList();
             if (terminals.isEmpty()) {
                 return null;
@@ -51,7 +51,22 @@ public class TerminalFacade extends AbstractFacade<Terminal> {
             throw new SignArtException(e.getMessage(), e);
         }
     }
-    
+
+    public Terminal findByCode(String code) throws SignArtException {
+        try {
+            final TypedQuery<Terminal> query = getEntityManager().createNamedQuery("Terminal.findByCode",
+                    Terminal.class);
+            query.setParameter("code", code);
+            //query.setMaxResults(1);
+            final List<Terminal> terminals = query.getResultList();
+            if (terminals.isEmpty()) {
+                return null;
+            }
+            return terminals.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
     
     public List<Terminal> findAll(){
         

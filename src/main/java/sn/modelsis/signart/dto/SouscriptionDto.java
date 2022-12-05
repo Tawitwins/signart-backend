@@ -24,6 +24,7 @@ public class SouscriptionDto implements Serializable {
     private String formation;
     private String expositions;
     private String codePays;
+    private Integer idMagasin;
     public SouscriptionDto() {
     }
 
@@ -142,6 +143,14 @@ public class SouscriptionDto implements Serializable {
 
     public void setExpositions(String expositions) {
         this.expositions = expositions;
+    }
+
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
     }
 
     @Override

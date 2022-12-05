@@ -12,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import sn.modelsis.signart.Abonnement;
+import sn.modelsis.signart.Commande;
 import sn.modelsis.signart.exception.SignArtException;
 
 /**
@@ -40,7 +41,7 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
             final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findById",
                     Abonnement.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Abonnement> abonnements = query.getResultList();
             if (abonnements.isEmpty()) {
                 return null;
@@ -51,17 +52,17 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
         }
     }
     
-    public Abonnement findByIdAbonne(Integer idAbonne) throws SignArtException {
+    public List<Abonnement> findByIdAbonne(Integer idAbonne) throws SignArtException {
         try {
             final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findByIdAbonne",
                     Abonnement.class);
             query.setParameter("idAbonne", idAbonne);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Abonnement> abonnements = query.getResultList();
             if (abonnements.isEmpty()) {
                 return null;
             }
-            return abonnements.get(0);
+            return abonnements;
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }
@@ -72,7 +73,7 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
             final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findAllByIdAbonne",
                     Abonnement.class);
             query.setParameter("idAbonne", idAbonne);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Abonnement> abonnements = query.getResultList();
             if (abonnements.isEmpty()) {
                 return null;
@@ -81,6 +82,30 @@ public class AbonnementFacade extends AbstractFacade<Abonnement> {
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }
+    }
+    public Abonnement findByToken(String tokenPaiement) {
+        final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findByTokenPaiement", Abonnement.class);
+        query.setParameter("tokenPaiement", tokenPaiement);
+        List<Abonnement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param reabonne
+     * @return
+     */
+    public Abonnement findByReabonne(Boolean reabonne) {
+        final TypedQuery<Abonnement> query = getEntityManager().createNamedQuery("Abonnement.findByReabonne", Abonnement.class);
+        query.setParameter("reabonne", reabonne);
+        List<Abonnement> list = query.getResultList();
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
     }
     
     /**

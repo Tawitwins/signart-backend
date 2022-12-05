@@ -76,7 +76,7 @@ public class SouscriptionFacade extends AbstractFacade<Souscription> {
             final TypedQuery<Artiste> query = getEntityManager().createNamedQuery("Artiste.findById",
                     Artiste.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Artiste> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

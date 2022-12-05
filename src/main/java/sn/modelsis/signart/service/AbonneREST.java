@@ -6,6 +6,7 @@
 package sn.modelsis.signart.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,6 +96,7 @@ public class AbonneREST {
                         -> listDto.add(dto)
                 );
             }
+            Collections.reverse(listDto);
             return listDto;
         } catch (final SignArtException e) {
             Logger.getLogger(FormationREST.class.getName()).log(Level.SEVERE, "findAllByUtilisateur/Exception", e);

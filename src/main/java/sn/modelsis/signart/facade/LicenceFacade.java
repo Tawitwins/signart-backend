@@ -53,7 +53,7 @@ public class LicenceFacade extends AbstractFacade<Licence> {
             final TypedQuery<Licence> query = getEntityManager().createNamedQuery("Licence.findById",
                     Licence.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Licence> licences = query.getResultList();
             if (licences.isEmpty()) {
                 return null;

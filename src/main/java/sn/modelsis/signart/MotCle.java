@@ -36,7 +36,7 @@ public class MotCle implements Serializable {
     private Integer id;
     @Column(name = "libelle", length = 50)
     private String libelle;
-    @JoinTable(name = "Oeuvre_MotCle", joinColumns = {
+    @JoinTable(name = "Oeuvre_MotCle", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idMotCle", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = false)})
     @ManyToMany

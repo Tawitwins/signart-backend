@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author SNNGOMN
  */
 @Entity
-@Table(name = "Filmographie")
+@Table(name = "Filmographie", catalog = "signart", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Filmographie.findByArtiste", query = "SELECT a FROM Filmographie a WHERE a.idArtiste.id = :idArtiste"),

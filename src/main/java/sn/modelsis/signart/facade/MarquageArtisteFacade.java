@@ -64,7 +64,7 @@ public class MarquageArtisteFacade extends AbstractFacade<MarquageArtiste> {
             query.setParameter("idClient", idClient);
             query.setParameter("idArtiste", idArtiste);
             query.setParameter("codeTypeMarquage", codeTypeMarquage);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<MarquageArtiste> list = query.getResultList();
             if (list.isEmpty()) {
                 return null;
@@ -83,7 +83,7 @@ public class MarquageArtisteFacade extends AbstractFacade<MarquageArtiste> {
             query.setParameter("idVisiteur", idVisiteur);
             query.setParameter("idArtiste", idArtiste);
             query.setParameter("codeTypeMarquage", codeTypeMarquage);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<MarquageArtiste> list = query.getResultList();
             if (list.isEmpty()) {
                 return null;
@@ -99,7 +99,7 @@ public class MarquageArtisteFacade extends AbstractFacade<MarquageArtiste> {
             final TypedQuery<MarquageArtiste> query = getEntityManager().createNamedQuery("MarquageArtiste.findById",
                     MarquageArtiste.class);
             query.setParameter("id", idMarquageArtiste);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<MarquageArtiste> list = query.getResultList();
             if (list.isEmpty()) {
                 return null;
@@ -118,7 +118,7 @@ public class MarquageArtisteFacade extends AbstractFacade<MarquageArtiste> {
             query.setParameter("idClient", idClient);
             query.setParameter("idArtiste", idArtiste);
             query.setParameter("codeTypeMarquage", codeTypeMarquage);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<MarquageArtiste> list = query.getResultList();
             Visiteur visiteur = VisiteurFacade.find(idArtiste);
             if (list.isEmpty() && visiteur != null) {

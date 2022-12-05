@@ -15,6 +15,7 @@ import sn.modelsis.signart.EtatClient;
 import sn.modelsis.signart.Profil;
 import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.AccountDto;
+import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.AdminsTableFacade;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.ClientFacade;
@@ -55,7 +56,7 @@ public class AccountREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     //@Produces({MediaType.APPLICATION_JSON})
-    public Response create(AccountDto dto) {
+    public Response create(AccountDto dto) throws SignArtException {
         Utilisateur user = dtoToEntity(dto);
         user.setActif(Boolean.TRUE);
         final String passwordEncoded = passwordEncoder.encodePassword(dto.getPassword(), dto.getEmail());
@@ -66,10 +67,11 @@ public class AccountREST {
             case Profil.CODE_PROFIL_ARTISTE:
                 user.setUserType(Utilisateur.CODE_USER_TYPE_ARTISTE);
                 //création de l'artiste
-                Artiste artiste = dtoToArtisteEntity(dto, user);
+                Artiste artiste = artisteFacade.findById(dto.getIdArtiste());//dtoToArtisteEntity(dto, user);
                 artiste.setIdEtatArtiste(etatArtisteFacade.findByCode(EtatArtiste.CODE_ETAT_ARTISTE_ACTIF));
                 artiste.setTelephone(dto.getMobile());
-                artisteFacade.create(artiste);
+                artiste.setIdUser(user);
+                artiste = artisteFacade.save(artiste);
                 if (artiste.getId() != null) {
                     dto.setIdArtiste(artiste.getId());
                 }   break;

@@ -5,6 +5,8 @@
  */
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,8 +40,7 @@ public class ImageMiniature implements Serializable {
     private Integer id;
     @Column(name = "nomImage", length = 500)
     private String nomImage ;
-    @Lob
-    @Column(name = "valeurImage")
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] valeurImage;
 
     public ImageMiniature() {
