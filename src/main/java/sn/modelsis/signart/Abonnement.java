@@ -8,7 +8,6 @@ package sn.modelsis.signart;
 import org.apache.james.mime4j.field.datetime.DateTime;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;

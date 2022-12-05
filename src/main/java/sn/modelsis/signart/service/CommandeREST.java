@@ -2,7 +2,6 @@ package sn.modelsis.signart.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,7 +84,7 @@ public class CommandeREST {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, CommandeDto dto) throws SignArtException {
-        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
+        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getDateCommande()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
         commandeFacade.edit(commandeConverter.dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
     }
@@ -93,7 +92,7 @@ public class CommandeREST {
     @PUT
     @Produces({MediaType.APPLICATION_JSON})
     public Response update(CommandeDto dto) throws SignArtException{
-        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
+        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getDateCommande()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
         Commande entity = commandeConverter.dtoToEntity(dto);
         entity = commandeFacade.save(entity);
         CommandeDto dtoRes = commandeConverter.entityToDto(entity);

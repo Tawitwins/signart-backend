@@ -3,7 +3,6 @@ package sn.modelsis.signart.dto;
 import sn.modelsis.signart.Agent;
 import sn.modelsis.signart.LigneCommande;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -16,7 +15,7 @@ public class LigneLivraisonDto {
     private Integer idLivraison;
 
     private LivraisonDto livraison;
-    private LocalDate dateLivraison;
+    private Date dateLivraison;
     private Integer idEtatLivraison;
     private EtatLivraisonDto etatLivraison;
 
@@ -56,11 +55,11 @@ public class LigneLivraisonDto {
         this.idLivraison = idLivraison;
     }
 
-    public LocalDate getDateLivraison() {
+    public Date getDateLivraison() {
         return dateLivraison;
     }
 
-    public void setDateLivraison(LocalDate dateLivraison) {
+    public void setDateLivraison(Date dateLivraison) {
         this.dateLivraison = dateLivraison;
     }
 

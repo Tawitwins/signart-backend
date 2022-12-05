@@ -1,12 +1,14 @@
 package sn.modelsis.signart.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author SNMBENGUEO
  */
-public class EvenementSignartDto {
+public class EvenementSignartDto implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private String titre;
     private String description;

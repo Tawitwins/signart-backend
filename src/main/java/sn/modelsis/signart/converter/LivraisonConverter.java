@@ -1,7 +1,6 @@
 package sn.modelsis.signart.converter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.util.Date;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -118,7 +117,9 @@ public class LivraisonConverter {
         entity.setIdAdresseLivraison(adresseFacade.find(dto.getIdAdresseLivraison()));
         Commande commande = commandeFacade.find(dto.getId());
         Parametrage delaiLivraison = parametrageFacade.findByParamName("DelaiLivraison");
-        LocalDate dateLivraisonPrevue = LocalDate.now().plusDays(Long.parseLong(delaiLivraison.getValue()));
+        Date now= new Date();
+
+        Date dateLivraisonPrevue = new Date(now.getTime() + (1000*60*60*24)*Long.parseLong(delaiLivraison.getValue()));
         //commande.getDateCommande().plusDays(commande.getDelaiLivraison());
         
         entity.setDateLivraisonPrevue(dateLivraisonPrevue);
