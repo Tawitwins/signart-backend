@@ -31,7 +31,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findById",
                     CoefficientParametrage.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;
@@ -42,20 +42,16 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
         }
     }
 
-    public CoefficientParametrage findByCodeParametre(String codeParametre) throws SignArtException {
-        try {
+    public List<CoefficientParametrage> findByCodeParametre(String codeParametre) {
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByCodeParametre",
                     CoefficientParametrage.class);
             query.setParameter("codeParametre", codeParametre);
-            query.setMaxResults(1);
-            final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
-            if (coefficientParametrageList.isEmpty()) {
-                return null;
+            List<CoefficientParametrage> list = query.getResultList();
+            if (!list.isEmpty() && list != null) {
+                return list;
             }
-            return coefficientParametrageList.get(0);
-        } catch (Exception e) {
-            throw new SignArtException(e.getMessage(), e);
-        }
+            return null;
+
     }
 
     public CoefficientParametrage findByValeurParametre(String valeurParametre) throws SignArtException {
@@ -63,7 +59,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByValeurParametre",
                     CoefficientParametrage.class);
             query.setParameter("valeurParametre", valeurParametre);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;
@@ -78,7 +74,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByStatut",
                     CoefficientParametrage.class);
             query.setParameter("statut", statut);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;
@@ -94,7 +90,7 @@ public class CoefficientParametrageFacade extends  AbstractFacade<CoefficientPar
             final TypedQuery<CoefficientParametrage> query = getEntityManager().createNamedQuery("CoefficientParametrage.findByEnumTypeParam",
                     CoefficientParametrage.class);
             query.setParameter("enumTypeParam", enumTypeParam);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<CoefficientParametrage> coefficientParametrageList = query.getResultList();
             if (coefficientParametrageList.isEmpty()) {
                 return null;

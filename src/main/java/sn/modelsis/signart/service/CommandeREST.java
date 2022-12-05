@@ -1,7 +1,7 @@
 package sn.modelsis.signart.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,8 +19,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.*;
 import sn.modelsis.signart.dto.*;
@@ -52,8 +50,6 @@ public class CommandeREST {
     @Inject
     EtatPaiementFacade etatPaiementFacade;
     @Inject
-    LignePanierFacade lignePanierFacade;
-    @Inject
     CommandeConverter commandeConverter;
     @Inject
     LignePanierConverter lignePanierConverter;
@@ -64,12 +60,6 @@ public class CommandeREST {
     @Inject
     PaiementFacade paiementFacade;
     @Inject
-    PaiementConverter paiementConverter;
-    @Inject
-    LignePaiementConverter lignePaiementConverter;
-    @Inject
-    LigneCommandeConverter ligneCommandeConverter;
-    @Inject
     ModePaiementFacade modePaiementFacade;
     @Inject
     EtatAbonnementFacade etatAbonnementFacade;
@@ -79,6 +69,10 @@ public class CommandeREST {
     LignePaiementFacade lignePaiementFacade;
     @Inject
     ClientConverter clientConverter;
+    @Inject
+    ParametrageFacade parametrageFacade;
+    @Inject
+    ParametreAlgoFacade parametreAlgoFacade;
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(CommandeDto dto) throws SignArtException {
@@ -90,8 +84,20 @@ public class CommandeREST {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, CommandeDto dto) throws SignArtException {
+        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getDateCommande()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
         commandeFacade.edit(commandeConverter.dtoToEntity(dto));
         return Response.status(Response.Status.OK).entity(dto).build();
+    }
+
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response update(CommandeDto dto) throws SignArtException{
+        Logger.getLogger(CommandeREST.class.getName()).log(Level.INFO,"Freish rest edit DTO =>"+dto+" ; "+dto.getDateCreation()+" ; "+dto.getDateCommande()+" ; "+dto.getToken()+" ; "+dto.getDateFin()+" ; "+dto.getDateModification()+" ; "+dto.getNumero());
+        Commande entity = commandeConverter.dtoToEntity(dto);
+        entity = commandeFacade.save(entity);
+        CommandeDto dtoRes = commandeConverter.entityToDto(entity);
+        return Response.status(Response.Status.OK).entity(dtoRes).build();
+
     }
     
     @DELETE
@@ -198,7 +204,7 @@ public class CommandeREST {
             // Set<LignePanier> lignePanierSet = panier.getLignePanierSet();
             Set<LigneCommande> ligneCommandeSet = new HashSet<>();
             Commande commande = new Commande();
-            commande.setDateCommande(LocalDate.now());
+            commande.setDateCommande(new Date());
             // commande.setIdClient(listLignePanier.get(0).getIdPanier().getIdClient());
             commande.setIdClient(clientFacade.find(idClient));
             // commande.setIdDevise(listLignePanier.get(0).getIdPanier().getIdDevise());
@@ -371,5 +377,132 @@ public class CommandeREST {
     public  ClientDto findClientByIdCommande(@PathParam("idCommande") Integer idCommande){
         Client client = clientFacade.find(commandeFacade.find(idCommande).getIdClient().getId());
         return clientConverter.entityToDto(client);
+    }
+
+    BigDecimal somCoeffOeuvre = BigDecimal.ZERO;
+    BigDecimal somCoeffTarif = BigDecimal.ZERO;
+
+    @GET
+    @Path("getFraisLivraison/{commandeId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public BigDecimal calculFraisLivraison(@PathParam("commandeId") Integer commandeId){
+        somCoeffOeuvre = BigDecimal.ZERO;
+        somCoeffTarif = BigDecimal.ZERO;
+        BigDecimal fraisLiv = BigDecimal.ZERO;
+        try{
+            fraisLiv = (moyennePrixOeuvre(commandeId).multiply(somCoeffOeuvre)).add(getPrixTarification(commandeId).multiply(somCoeffTarif));
+            return fraisLiv.divide((somCoeffTarif.add(somCoeffOeuvre)),2, RoundingMode.HALF_EVEN);
+        } catch (Exception e){
+            System.out.println("Something went wrong.");
+        }
+        return fraisLiv;
+    }
+    @GET
+    @Path("moyennePrixOeuvre/{commandeId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public BigDecimal moyennePrixOeuvre(@PathParam("commandeId")  Integer commandeId){
+        BigDecimal prixOeuvre = BigDecimal.ZERO;
+        BigDecimal prixOeuvres = BigDecimal.ZERO;
+        BigDecimal moyennePrixOeuvre = BigDecimal.ZERO;
+        BigDecimal quotient = BigDecimal.ONE;
+        BigDecimal coeffParamPoids = BigDecimal.ZERO;
+        BigDecimal coeffParamDim = BigDecimal.ZERO;
+        BigDecimal coeffTotal = BigDecimal.ZERO;
+
+        try{
+            Commande commande = commandeFacade.find(commandeId);
+            Set<LigneCommande> ligneCommandeSet = commande.getLigneCommandeSet();
+            BigDecimal nombreTotalOeuvre = BigDecimal.valueOf(ligneCommandeSet.size());
+            Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
+            BigDecimal prixBase = BigDecimal.valueOf(Integer.valueOf(parametrage.getValue()));
+
+            if (ligneCommandeSet != null && !ligneCommandeSet.isEmpty()) {
+                for (LigneCommande ligneCommande : ligneCommandeSet) {
+
+                    Oeuvre oeuvre = ligneCommande.getIdOeuvre();
+                    ParametreAlgo paramAlgoPoids = ligneParam(oeuvre,null, "POIDS");
+                    ParametreAlgo paramAlgoDim = ligneParam(oeuvre,null, "DIMENSIONS");
+
+                    coeffParamPoids = BigDecimal.valueOf(paramAlgoPoids.getCoefficientParam().getValeurParametre());
+                    coeffParamDim = BigDecimal.valueOf(paramAlgoDim.getCoefficientParam().getValeurParametre());
+                    BigDecimal baseNote = BigDecimal.valueOf(paramAlgoDim.getBaseNote());
+                    BigDecimal notePoids = BigDecimal.valueOf(paramAlgoPoids.getNote());
+                    BigDecimal noteDim = BigDecimal.valueOf(paramAlgoDim.getNote());
+                    BigDecimal pourcentageReduction = BigDecimal.valueOf(paramAlgoDim.getPourcentReduction());
+
+                    BigDecimal noteCoefPoids = coeffParamPoids.multiply(notePoids);
+                    BigDecimal noteCoefDim = coeffParamDim.multiply(noteDim);
+                     //ligneCommande.getIdOeuvre().getPrix()
+                    quotient = (coeffParamPoids.add(coeffParamDim)).multiply(baseNote);
+
+                    coeffTotal = coeffTotal.add(coeffParamPoids.add(coeffParamDim));
+
+                    prixOeuvre = (prixBase.multiply(noteCoefPoids.add(noteCoefDim)).multiply(pourcentageReduction).divide(quotient,2, RoundingMode.HALF_EVEN));
+
+                    prixOeuvres = prixOeuvres.add(prixOeuvre);
+                    somCoeffOeuvre = somCoeffOeuvre.add(coeffTotal);
+
+                }
+            }
+            return  prixOeuvres.divide(nombreTotalOeuvre,2, RoundingMode.HALF_EVEN);
+        }catch (Exception e){
+            System.out.println("Something went wrong.");
+        }
+        return BigDecimal.ZERO;
+    }
+    @GET
+    @Path("getPrixTarification/{commandeId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public BigDecimal getPrixTarification(@PathParam("commandeId")  Integer commandeId){
+
+        BigDecimal coeffParamZone = BigDecimal.ZERO;
+        BigDecimal coeffParamDistance = BigDecimal.ZERO;
+        BigDecimal prixTarification = BigDecimal.ZERO;
+
+        Commande commande = commandeFacade.find(commandeId);
+
+        try{
+            Tarification tarification = commande.getIdTarification();
+            ParametreAlgo paramAlgoZone = ligneParam(null, tarification,"ZONE_LIVRAISON");
+            ParametreAlgo paramAlgoDistance = ligneParam(null, tarification,"DISTANCE");
+
+            coeffParamZone = BigDecimal.valueOf(paramAlgoZone.getCoefficientParam().getValeurParametre());
+            coeffParamDistance = BigDecimal.valueOf(paramAlgoDistance.getCoefficientParam().getValeurParametre());
+            BigDecimal baseNote = BigDecimal.valueOf(paramAlgoDistance.getBaseNote());
+            BigDecimal noteZone = BigDecimal.valueOf(paramAlgoZone.getNote());
+            BigDecimal noteDistance = BigDecimal.valueOf(paramAlgoDistance.getNote());
+            BigDecimal pourcentageReduction = BigDecimal.valueOf(paramAlgoZone.getPourcentReduction());
+
+            BigDecimal prixZone = coeffParamZone.multiply(noteZone);
+            BigDecimal prixDistance = coeffParamDistance.multiply(noteDistance);
+            BigDecimal somNoteCoeffZD = prixZone.add(prixDistance);
+            somCoeffTarif = somCoeffTarif.add(coeffParamDistance.add(coeffParamZone));
+
+            return moyennePrixOeuvre(commandeId).multiply(somNoteCoeffZD.multiply(pourcentageReduction)).divide(((coeffParamDistance.add(coeffParamZone)).multiply(baseNote)),2, RoundingMode.HALF_EVEN);
+        }catch (Exception e){
+            System.out.println("Something went wrong.");
+        }
+      return BigDecimal.ZERO;
+    }
+
+    public ParametreAlgo ligneParam(Oeuvre oeuvre,Tarification tarification, String type) {
+        ParametreAlgo paramAlgo = new ParametreAlgo();
+        switch (type){
+            case "DIMENSIONS":
+                paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getLibelleDimension());
+                break;
+            case "POIDS":
+                paramAlgo = parametreAlgoFacade.findByNiveau(oeuvre.getLibellePoids());
+                break;
+            case "ZONE_LIVRAISON":
+                paramAlgo = parametreAlgoFacade.findByNiveau(tarification.getAccessibiliteZone());
+                break;
+            case "DISTANCE":
+                paramAlgo = parametreAlgoFacade.findByNiveau(tarification.getCategorieDistance());
+                break;
+            default:
+                break;
+        }
+        return paramAlgo;
     }
 }

@@ -5,6 +5,8 @@
  */
 package sn.modelsis.signart.dto;
 
+import javax.persistence.Column;
+
 /**
  *
  * @author Pendaaa
@@ -22,6 +24,11 @@ public class OeuvreNumeriqueDto {
     private String technique;
     private ImageNumeriqueDto avatar;
     private String nom;
+
+    private Float poids;
+
+    private String niveauPoids;
+    private String dimensionLevel;
 
     public OeuvreNumeriqueDto() {
     }
@@ -121,8 +128,28 @@ public class OeuvreNumeriqueDto {
     public void setNom(String nom) {
         this.nom = nom;
     }
+    public Float getPoids() {
+        return poids;
+    }
 
-    
+    public void setPoids(Float poids) {
+        this.poids = poids;
+    }
+
+    public String getDimensionLevel() {
+        return dimensionLevel;
+    }
+
+    public void setDimensionLevel(String dimensionLevel) {
+        this.dimensionLevel = dimensionLevel;
+    }
+    public String getNiveauPoids() {
+        return niveauPoids;
+    }
+
+    public void setNiveauPoids(String niveauPoids) {
+        this.niveauPoids = niveauPoids;
+    }
 
 
     

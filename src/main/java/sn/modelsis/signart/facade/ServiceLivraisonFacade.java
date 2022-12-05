@@ -59,7 +59,7 @@ public class ServiceLivraisonFacade extends AbstractFacade<ServiceLivraison> {
             final TypedQuery<ServiceLivraison> query = getEntityManager().createNamedQuery("ServiceLivraison.findByNom",
                     ServiceLivraison.class);
             query.setParameter("nom", nom);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<ServiceLivraison> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

@@ -1,5 +1,7 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -42,11 +44,9 @@ public class Annonce implements Serializable {
     @Column(name = "titre", nullable = false, length = 100)
     private String titre;
     @Basic(optional = false)
-    @Lob
-    @Column(name = "description", nullable = false, length = 2147483647)
+    @Column(name = "description",columnDefinition = "TEXT",nullable = false, length = 2048)
     private String description;
-    @Lob
-    @Column(name = "photo")
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] photo;
     @Column(name = "lieu", nullable = false, length = 500)
     private String lieu;

@@ -48,7 +48,7 @@ public class Client implements Serializable {
     @Column(name = "dateNaissance")
     @Temporal(TemporalType.DATE)
     private Date dateNaissance;
-    @JoinTable(name = "TypeNewsletter_Client", joinColumns = {
+    @JoinTable(name = "TypeNewsletter_Client", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idClient", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idTypeNewsletter", referencedColumnName = "id", nullable = false)})
     @ManyToMany

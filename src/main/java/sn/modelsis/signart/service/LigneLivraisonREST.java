@@ -3,14 +3,9 @@ package sn.modelsis.signart.service;
 import org.apache.commons.codec.binary.Base64;
 import sn.modelsis.signart.*;
 import sn.modelsis.signart.converter.LigneLivraisonConverter;
-import sn.modelsis.signart.converter.LignePaiementConverter;
-import sn.modelsis.signart.converter.LivraisonConverter;
-import sn.modelsis.signart.converter.PaiementConverter;
 import sn.modelsis.signart.dto.LigneLivraisonDto;
-import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
-import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -35,6 +30,10 @@ import java.util.logging.Logger;
 @Path("lignelivraison")
 public class LigneLivraisonREST {
 
+   // public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    public final static String PATH = "/signartFiles/commande/";
+
+    // C:\Users\SNMBENGUEO\Desktop\
     @Inject
     LigneLivraisonFacade ligneLivraisonFacade;
     @Inject
@@ -164,9 +163,9 @@ public class LigneLivraisonREST {
     public  String encode(@PathParam("filename") String filename,String fileContent) throws IOException {
         try{
             byte[]  content = Base64.decodeBase64(fileContent);
-            java.nio.file.Path filee = (java.nio.file.Path) Paths.get("C:\\Users\\SNMBENGUEO\\Desktop\\"+filename);
+            java.nio.file.Path filee = (java.nio.file.Path) Paths.get(PATH + filename);
             Files.write(filee, content);
-            return "C:\\Users\\SNMBENGUEO\\Desktop\\"+filename;
+            return PATH + "preuves/"+filename;
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,8 +176,7 @@ public class LigneLivraisonREST {
     public String downloadPreuve(@PathParam("id") Integer id) throws IOException {
         LigneLivraison ligneLivraison = ligneLivraisonFacade.find(id);
             byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(ligneLivraison.getPreuvePourLivraison().trim()));
-            BASE64Encoder encoder = new BASE64Encoder();
-            String imageString = encoder.encode(imageByte);
+            String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
             return  imageString;
     }
     @GET

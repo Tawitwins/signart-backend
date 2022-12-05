@@ -74,7 +74,7 @@ public class PresentationFacade extends AbstractFacade<Presentation>{
             final TypedQuery<Presentation> query = getEntityManager().createNamedQuery("Presentation.findById",
                     Presentation.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Presentation> presentation = query.getResultList();
             if (presentation.isEmpty()) {
                 return null;

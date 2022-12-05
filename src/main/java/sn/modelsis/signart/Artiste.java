@@ -1,23 +1,10 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -43,12 +30,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Artiste.findByIdUser", query = "SELECT a FROM Artiste a WHERE a.idUser.id = :idUser")})
 
 public class Artiste implements Serializable {
-   
-    @Lob
+
+
     @Column(name = "photo")
+    //@Type(type = "org.hibernate.type.TextType")
     private byte[] photo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artiste")
-    private Set<ArtisteFonction> artisteFonctionSet;
+ /*   @OneToMany(cascade = CascadeType.ALL, mappedBy = "artiste")
+    private Set<ArtisteFonction> artisteFonctionSet;*/
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -83,7 +71,7 @@ public class Artiste implements Serializable {
     private String adrGalerie;
     @Column(name = "villeGalerie", length = 50)
     private String villeGalerie;
-    @Column(name = "spécialités", length = 200)
+    @Column(name = "spécialités", length = 2000)
     private String specialites;
     @Column(name = "formations", length = 2000)
     private String formation;
@@ -93,27 +81,27 @@ public class Artiste implements Serializable {
     
     @Column(name = "profession", length = 200)
     private String profession;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
-    private Set<Compte> compteSet;
+  /*  @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
+    private Set<Compte> compteSet;*/
     @JoinColumn(name = "idEtatArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EtatArtiste idEtatArtiste;
     @JoinColumn(name = "idPays", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Pays idPays;
-    @JoinColumn(name = "idUser", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "idUser", referencedColumnName = "id")
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Utilisateur idUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
     private Set<Oeuvre> oeuvreSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
-    private Set<Annonce> annonceSet;
-    @JoinTable(name = "Artiste_Exposition", joinColumns = {
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
+    //private Set<Annonce> annonceSet;
+    @JoinTable(name = "Artiste_Exposition", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idExposition", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private Set<Exposition> expositionSet;
-    @JoinTable(name = "Artiste_Formation", joinColumns = {
+    @JoinTable(name = "Artiste_Formation", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idFormation", referencedColumnName = "id", nullable = false)})
     @ManyToMany
@@ -121,17 +109,22 @@ public class Artiste implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idArtiste")
     private Set<Filmographie> filmographieSet;
     @JoinColumn(name = "idBiographie", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Biographie idBiographie;
-    @JoinTable(name = "Artiste_Fonction", joinColumns = {
+   /* @JoinTable(name = "Artiste_Fonction", joinColumns = {
         @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idFonction", referencedColumnName = "id", nullable = false)})
     @ManyToMany
-    private Set<Fonction> fonctionSet;
+    private Set<Fonction> fonctionSet;*/
 
     @JoinColumn(name = "idMagasin", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Magasin idMagasin;
+    @Column(name = "qualificationLevel",nullable = false)
+    private String qualificationLevel;
+
+    @Column(name = "anneeDebutCarrier",nullable = false)
+    private Integer anneeDebutCarrier;
 
     public Artiste() {
     }
@@ -319,14 +312,14 @@ public class Artiste implements Serializable {
         this.idMagasin = idMagasin;
     }
 
-    @XmlTransient
+  /*  @XmlTransient
     public Set<Compte> getCompteSet() {
         return compteSet;
     }
 
     public void setCompteSet(Set<Compte> compteSet) {
         this.compteSet = compteSet;
-    }
+    }*/
 
     public EtatArtiste getIdEtatArtiste() {
         return idEtatArtiste;
@@ -361,7 +354,7 @@ public class Artiste implements Serializable {
         this.oeuvreSet = oeuvreSet;
     }
 
-    @XmlTransient
+   /* @XmlTransient
     public Set<Annonce> getAnnonceSet() {
         return annonceSet;
     }
@@ -369,7 +362,7 @@ public class Artiste implements Serializable {
     public void setAnnonceSet(Set<Annonce> annonceSet) {
         this.annonceSet = annonceSet;
     }
-
+*/
     @XmlTransient
     public Set<Exposition> getExpositionSet() {
         return expositionSet;
@@ -378,6 +371,22 @@ public class Artiste implements Serializable {
     public void setExpositionSet(Set<Exposition> expositionSet) {
         this.expositionSet = expositionSet;
     }
+    public String getQualificationLevel() {
+        return qualificationLevel;
+    }
+
+    public void setQualificationLevel(String qualificationLevel) {
+        this.qualificationLevel = qualificationLevel;
+    }
+
+    public Integer getAnneeDebutCarrier() {
+        return anneeDebutCarrier;
+    }
+
+    public void setAnneeDebutCarrier(Integer anneeDebutCarrier) {
+        this.anneeDebutCarrier = anneeDebutCarrier;
+    }
+
 
     @Override
     public int hashCode() {
@@ -440,16 +449,12 @@ public class Artiste implements Serializable {
     /**
      * @return the fonctionSet
      */
-    public Set<Fonction> getFonctionSet() {
+/*    public Set<Fonction> getFonctionSet() {
         return fonctionSet;
     }
-
-    /**
-     * @param fonctionSet the fonctionSet to set
-     */
     public void setFonctionSet(Set<Fonction> fonctionSet) {
         this.fonctionSet = fonctionSet;
-    }
+    }*/
 
     public byte[] getPhoto() {
         return photo;
@@ -462,16 +467,12 @@ public class Artiste implements Serializable {
     /**
      * @return the artisteFonctionSet
      */
-    @XmlTransient
+ /*   @XmlTransient
     public Set<ArtisteFonction> getArtisteFonctionSet() {
         return artisteFonctionSet;
     }
-
-    /**
-     * @param artisteFonctionSet the artisteFonctionSet to set
-     */
     public void setArtisteFonctionSet(Set<ArtisteFonction> artisteFonctionSet) {
         this.artisteFonctionSet = artisteFonctionSet;
-    }
+    }*/
 
 }

@@ -64,6 +64,14 @@ public class OeuvreNumerique implements Serializable{
     @Column(name = "nom", nullable = false)
     private String nom;
 
+    @Column(name = "poids", nullable = false)
+    private Float poids;
+
+    @Column(name = "niveauPoids", nullable = false)
+    private String niveauPoids;
+    @Column(name = "dimensionLevel", nullable = false)
+    private String dimensionLevel;
+
     public OeuvreNumerique() {
     }
 
@@ -155,7 +163,29 @@ public class OeuvreNumerique implements Serializable{
         this.nom = nom;
     }
 
-    
+    public Float getPoids() {
+        return poids;
+    }
+
+    public void setPoids(Float poids) {
+        this.poids = poids;
+    }
+
+    public String getDimensionLevel() {
+        return dimensionLevel;
+    }
+
+    public void setDimensionLevel(String dimensionLevel) {
+        this.dimensionLevel = dimensionLevel;
+    }
+
+    public String getNiveauPoids() {
+        return niveauPoids;
+    }
+
+    public void setNiveauPoids(String niveauPoids) {
+        this.niveauPoids = niveauPoids;
+    }
     
     
     

@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import sn.modelsis.signart.Artiste;
 
+import javax.persistence.Column;
+
 /**
  *
  * @author SNLOM
@@ -24,6 +26,7 @@ public class OeuvreDto implements Serializable {
     private String auteur;
     private String artiste;
     private String dimensions;
+    private String libelleDimension;
     private Integer annee;
     private BigDecimal prix;
     private Integer tauxremise;
@@ -39,8 +42,11 @@ public class OeuvreDto implements Serializable {
     private Integer stock;
 
     private String reference;
-    
-    
+    private Integer poids;
+    private String libellePoids;
+
+    private String usure;
+    private Float pourcentageOeuvre;
     
     //private Collection<MotCle> motCleCollection;
     //private Collection<Theme> themeCollection;
@@ -213,9 +219,23 @@ public class OeuvreDto implements Serializable {
     public void setIdMagasin(Integer idMagasin) {
         this.idMagasin = idMagasin;
     }
-    
 
-   /* public Integer getIdSousTechnique() {
+    public String getLibelleDimension() {
+        return libelleDimension;
+    }
+
+    public void setLibelleDimension(String libelleDimension) {
+        this.libelleDimension = libelleDimension;
+    }
+
+    public String getUsure() {
+        return usure;
+    }
+
+    public void setUsure(String usure) {
+        this.usure = usure;
+    }
+    /* public Integer getIdSousTechnique() {
         return idSousTechnique;
     }
 
@@ -293,6 +313,30 @@ public class OeuvreDto implements Serializable {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public Integer getPoids() {
+        return poids;
+    }
+
+    public void setPoids(Integer poids) {
+        this.poids = poids;
+    }
+
+    public String getLibellePoids() {
+        return libellePoids;
+    }
+
+    public void setLibellePoids(String libellePoids) {
+        this.libellePoids = libellePoids;
+    }
+
+    public Float getPourcentageOeuvre() {
+        return pourcentageOeuvre;
+    }
+
+    public void setPourcentageOeuvre(Float pourcentageOeuvre) {
+        this.pourcentageOeuvre = pourcentageOeuvre;
     }
 
     @Override

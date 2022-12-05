@@ -80,7 +80,7 @@ public class LoginREST {
     @Path("adminInfos/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public AdminsTableDto find(@PathParam("id") Integer idUser) throws SignArtException {
-        return adminsTableConverter.entityToDto(adminsTableFacade.findByIdUser(idUser));
+        return adminsTableConverter.entityToDto(adminsTableFacade.findByUserAdvanced(idUser));
     }
 
 

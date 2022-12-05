@@ -33,7 +33,6 @@ import sn.modelsis.signart.facade.PaiementFacade;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import sn.modelsis.signart.utils.Utils;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -42,6 +41,8 @@ import sun.misc.BASE64Encoder;
 @Stateless
 @Path("paiement")
 public class PaiementREST {
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    public final static String PATH = "/signartFiles/commande/";
 
     @Inject
     PaiementFacade paiementFacade;
@@ -49,8 +50,6 @@ public class PaiementREST {
     LignePaiementFacade lignePaiementFacade;
     @Inject
     PaiementConverter paiementConverter;
-    @Inject
-    LignePaiementConverter lignePaiementConverter;
     @Inject
     ParametrageFacade parametrageFacade;
     @Inject
@@ -154,11 +153,8 @@ public class PaiementREST {
                                  @PathParam("lieu") String lieu)
             throws JRException, IOException {
 
-        String basicPathK = "D:\\Modelsis";
-        String basicPathO = "D:\\projet signart";
-        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
-        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
-        String pathLogo = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
+        String pathRessource = "/signartResources/resources/";
+        String pathLogo = "/signartResources/resources/assets/images/logo_signart.png";
 
         Client client = null;
         List<PaiementDto> paiementDtoList = new ArrayList<>();
@@ -185,7 +181,7 @@ public class PaiementREST {
             String ninea = parametrageFacade.findByParamName("NINEA").getValue();
             String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
             String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
-            File file = new File(oPath + "recuPaiement.jrxml");
+            File file = new File(pathRessource + "recuPaiement.jrxml");
 
             JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(paiementDtoList);
@@ -205,14 +201,13 @@ public class PaiementREST {
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
             if (format.equalsIgnoreCase("html")) {
-                JasperExportManager.exportReportToHtmlFile(jasperPrint, basicPathO + "\\reçue_paiement.html");
+                JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "recues/"+id+"_reçue_paiement.html");
             }
             if (format.equalsIgnoreCase("pdf")) {
-                JasperExportManager.exportReportToPdfFile(jasperPrint, basicPathO + "\\reçue_paiement.pdf");
+                JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "recues/"+id+"_reçue_paiement.pdf");
             }
-            byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(basicPathO + "\\reçue_paiement.pdf"));
-            BASE64Encoder encoder = new BASE64Encoder();
-            String imageString = encoder.encode(imageByte);
+            byte[] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "recues/"+id+"_reçue_paiement.pdf"));
+            String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
             return imageString;
         }
         return null;

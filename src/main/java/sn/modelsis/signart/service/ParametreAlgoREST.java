@@ -24,6 +24,8 @@ public class ParametreAlgoREST {
     ParametreAlgoFacade parametreAlgoFacade;
     @Inject
     ParametreAlgoConverteur parametreAlgoConverteur;
+    @Inject
+    ParametrageFacade parametrageFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -47,7 +49,19 @@ public class ParametreAlgoREST {
         parametreAlgo.setNote(parametreAlgoDto.getNote());
         parametreAlgo.setBaseNote(parametreAlgoDto.getBaseNote());
         parametreAlgo.setPourcentReduction(parametreAlgoDto.getPourcentReduction());
+        if(parametreAlgoDto.getBorneInf() != 0)
+            parametreAlgo.setBorneInf(parametreAlgoDto.getBorneInf());
+        if(parametreAlgoDto.getBorneSup() != 0)
+            parametreAlgo.setBorneSup(parametreAlgoDto.getBorneSup());
         return parametreAlgo;
+    }
+    @DELETE
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public boolean  delete(@PathParam("id") Integer id){
+        ParametreAlgo entity = parametreAlgoFacade.find(id);
+        parametreAlgoFacade.remove(entity);
+        return true;
     }
     @GET
     @Path("{id}")
@@ -58,6 +72,24 @@ public class ParametreAlgoREST {
     }
 
     @GET
+    @Path("byCodeParamCoef/{code}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<ParametreAlgoDto> findByCode(@PathParam("code") String code) {
+        List<ParametreAlgoDto> parametreAlgoDtoList = new ArrayList<>();
+        List<ParametreAlgo> parametreAlgoList = parametreAlgoFacade.findByCode(code);
+
+        if(parametreAlgoList != null){
+            parametreAlgoList.stream().map(parametrage -> {
+                try {
+                    return parametreAlgoConverteur.entityToDto(parametrage);
+                } catch (SignArtException e) {
+                    throw new RuntimeException(e);
+                }
+            }).forEachOrdered(dto ->
+                    parametreAlgoDtoList.add(dto));
+        }
+        return parametreAlgoDtoList;
+    }@GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<ParametreAlgoDto> findAll() {
         List<ParametreAlgoDto> parametreAlgoDtoList = new ArrayList<>();
@@ -74,5 +106,50 @@ public class ParametreAlgoREST {
                     parametreAlgoDtoList.add(dto));
         }
         return parametreAlgoDtoList;
+    }
+
+
+    @POST
+    @Path("prixOeuvreByListParam")
+    @Produces({MediaType.APPLICATION_JSON})
+    public float getPrix(List<ParametreAlgo> listParams) throws SignArtException {
+        Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
+        Float prixBase = Float.parseFloat(parametrage.getValue());
+
+        //ParametreAlgo parametreAlgo = parametreAlgoFacade.find(id);
+        float totalCoef = 0;
+        float totalProduit = 0;
+        for (ParametreAlgo parametreAlgo : listParams) {
+            totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+            totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
+        }
+        totalProduit = totalProduit / listParams.get(0).getBaseNote();
+        totalProduit = totalProduit * prixBase / totalCoef;
+        return totalProduit;
+    }
+    @POST
+    @Path("prixMoyenneByListParam")
+    @Produces({MediaType.APPLICATION_JSON})
+    public float getPrixMoyen(List<List<ParametreAlgo>> listParams) throws SignArtException {
+        Parametrage parametrage = parametrageFacade.findByParamName("prixBaseOeuvreL");
+        Float prixBase = Float.parseFloat(parametrage.getValue());
+
+        //ParametreAlgo parametreAlgo = parametreAlgoFacade.find(id);
+
+        float totalCoef = 0;
+        float totalProduit = 0;
+        float prixMoyenne = 0;
+        for (List<ParametreAlgo> parametreAlgoList : listParams) {
+            totalCoef = 0;
+            totalProduit = 0;
+            for (ParametreAlgo parametreAlgo : parametreAlgoList) {
+                totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+                totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
+            }
+            totalProduit = totalProduit / parametreAlgoList.get(0).getBaseNote();
+            totalProduit = totalProduit * prixBase / totalCoef;
+            prixMoyenne += totalProduit;
+        }
+        return prixMoyenne/listParams.size();
     }
 }

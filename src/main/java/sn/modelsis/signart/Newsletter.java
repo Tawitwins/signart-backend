@@ -1,5 +1,7 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -43,8 +45,7 @@ public class Newsletter implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic(optional = false)
-    @Lob
-    @Column(name = "contenu", nullable = false, length = 2147483647)
+    @Column(name = "contenu",columnDefinition = "TEXT", nullable = false, length = 2048)
     private String contenu;
     @Basic(optional = false)
     @Column(name = "envoye", nullable = false)

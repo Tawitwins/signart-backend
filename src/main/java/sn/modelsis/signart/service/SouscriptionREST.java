@@ -18,6 +18,8 @@ import sn.modelsis.signart.Biographie;
 import sn.modelsis.signart.Souscription;
 import sn.modelsis.signart.dto.BiographieDto;
 import sn.modelsis.signart.dto.SouscriptionDto;
+import sn.modelsis.signart.exception.SignArtException;
+import sn.modelsis.signart.facade.MagasinFacade;
 import sn.modelsis.signart.facade.PaysFacade;
 import sn.modelsis.signart.facade.SouscriptionFacade;
 
@@ -31,14 +33,15 @@ public class SouscriptionREST {
 
     @Inject
     SouscriptionFacade souscriptionFacade;
-    
+    @Inject
+    MagasinFacade magasinFacade;
     
     @Inject
     PaysFacade paysFacade;
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(SouscriptionDto dto) {
+    public Response create(SouscriptionDto dto) throws SignArtException {
         Souscription entity = dtoToEntity(dto);
         souscriptionFacade.create(entity);
         SouscriptionDto resDto = entityToDto(entity);
@@ -48,7 +51,7 @@ public class SouscriptionREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Integer id, SouscriptionDto dto) {
+    public Response edit(@PathParam("id") Integer id, SouscriptionDto dto) throws SignArtException {
         Souscription entity = dtoToEntity(dto);
         souscriptionFacade.edit(entity);
         return Response.status(Response.Status.OK).entity(dto).build();
@@ -123,7 +126,7 @@ public class SouscriptionREST {
 
     
     
-    public Souscription dtoToEntity(SouscriptionDto dto) {
+    public Souscription dtoToEntity(SouscriptionDto dto) throws SignArtException {
         Souscription entity = new Souscription();
         entity.setId(dto.getId());    
         entity.setNom(dto.getNom());
@@ -138,6 +141,9 @@ public class SouscriptionREST {
         entity.setSpecialites(dto.getSpecialites());
         entity.setFormation(dto.getFormation());  
         entity.setExpositions(dto.getExpositions());
+        if(dto.getIdMagasin() != null){
+            entity.setIdMagasin(magasinFacade.findById(dto.getIdMagasin()));
+        }
         return entity;
     }
             
@@ -156,7 +162,9 @@ public class SouscriptionREST {
         dto.setSpecialites(entity.getSpecialites());
         dto.setFormation(entity.getFormation());
         dto.setExpositions(entity.getExpositions());
-        
+        if(entity.getIdMagasin() != null){
+            dto.setIdMagasin(entity.getIdMagasin().getId());
+        }
         /*try {
             dto.setNbFans(artisteFacade.countMarqueArtiste("SUIV"));//TODO calculer
             dto.setNbOeuvres(artisteFacade.countOeuvre(entity.getId()));//TODO calculer

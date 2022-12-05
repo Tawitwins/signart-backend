@@ -1,5 +1,7 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,8 +33,7 @@ public class Image implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic(optional = false)
-    @Lob
-    @Column(name = "image", nullable = false)
+//@Type(type = "org.hibernate.type.TextType")
     private byte[] image;
     @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)

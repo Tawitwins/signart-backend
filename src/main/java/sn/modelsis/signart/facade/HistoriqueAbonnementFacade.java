@@ -64,7 +64,7 @@ public class HistoriqueAbonnementFacade extends AbstractFacade<HistoriqueAbonnem
             final TypedQuery<HistoriqueAbonnement> query = getEntityManager().createNamedQuery("HistoriqueAbonnement.findById",
                     HistoriqueAbonnement.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<HistoriqueAbonnement> historiqueAbonnements = query.getResultList();
             if (historiqueAbonnements.isEmpty()) {
                 return null;

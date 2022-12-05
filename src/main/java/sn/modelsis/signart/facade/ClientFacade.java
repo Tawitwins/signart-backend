@@ -5,7 +5,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import sn.modelsis.signart.Client;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+
+import sn.modelsis.signart.*;
 import sn.modelsis.signart.exception.SignArtException;
 
 /**
@@ -58,12 +62,33 @@ public class ClientFacade extends AbstractFacade<Client> {
             final TypedQuery<Client> query = getEntityManager().createNamedQuery("Client.findByIdUser",
                     Client.class);
             query.setParameter("idUser", idUser);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Client> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;
             }
             return users.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
+    public Client findByUserAdvanced(Integer idUser) throws SignArtException {
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Client> cq = cb.createQuery(Client.class);
+
+            javax.persistence.criteria.Root<Client> order = cq.from(Client.class);
+            Join<Client, Utilisateur> clientUser = order.join(Client_.idUser);
+            cq.where(cb.and(cb.equal(clientUser.get(Utilisateur_.id), idUser)));
+            TypedQuery<Client> q = getEntityManager().createQuery(cq);
+
+            List<Client> list = q.getResultList();
+
+            if (list != null && !list.isEmpty()) {
+                return list.get(0);
+            }
+
+            return null;
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }
@@ -74,7 +99,7 @@ public class ClientFacade extends AbstractFacade<Client> {
             final TypedQuery<Client> query = getEntityManager().createNamedQuery("Client.findById",
                     Client.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Client> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

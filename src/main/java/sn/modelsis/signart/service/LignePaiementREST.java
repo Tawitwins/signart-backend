@@ -9,9 +9,7 @@ import sn.modelsis.signart.dto.LignePaiementDto;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
 import sn.modelsis.signart.utils.Utils;
-import sun.misc.BASE64Encoder;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -36,6 +34,8 @@ import java.util.logging.Logger;
 @Stateless
 @Path("lignepaiement")
 public class LignePaiementREST {
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\commande\\";
+    public final static String PATH = "/signartFiles/commande/";
 
     @Inject
     LignePaiementFacade lignePaiementFacade;
@@ -205,7 +205,7 @@ public class LignePaiementREST {
         fileContent = fileContent.split("base64,")[1];
         try{
         byte[]  content = Base64.decodeBase64(fileContent);
-        String path = "C:\\Users\\SNMBENGUEO\\Desktop\\"+filename;
+        String path = PATH + "preuves/" + filename;
         java.nio.file.Path filee = (java.nio.file.Path) Paths.get(path);
         Files.write(filee, content);
             return path;
@@ -225,18 +225,16 @@ public class LignePaiementREST {
         List<LignePaiementDto> lignePaiementDtoList =  new ArrayList<>();
         lignePaiementDtoList.add(find(id));
 
-        String basicPathK = "D:\\Modelsis";
-        String basicPathO = "D:\\projet signart";
-        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
-        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
-        String pathLogo =  "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
+        String pathRessource = "/signartResources/resources/";
+        String pathLogo = "/signartResources/resources/assets/images/logo_signart.png";
+
 
         String ninea = parametrageFacade.findByParamName("NINEA").getValue();
         String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
         String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
         Client client = clientFacade.find(commandeFacade.find(lignePaiementDtoList.get(0).getLigneCommande().getIdCommande()).getIdClient().getId());
 
-        File file = new File(oPath+ "recuLignePaiement.jrxml");
+        File file = new File(pathRessource+ "recuLignePaiement.jrxml");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(lignePaiementDtoList);
@@ -256,14 +254,13 @@ public class LignePaiementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, basicPathO + "\\reçue_Lpaiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH + "reçues/"+id+"_reçue_Lpaiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, basicPathO + "\\reçu_Lpaiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH + "reçues/"+id+"_reçu_Lpaiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(basicPathO + "\\reçue_Lpaiement.pdf"));
-        BASE64Encoder encoder = new BASE64Encoder();
-        String imageString = encoder.encode(imageByte);
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH + "reçues/"+id+"_reçue_Lpaiement.pdf"));
+        String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
         return imageString;
     }
     @GET
@@ -273,8 +270,7 @@ public class LignePaiementREST {
        try{
            PaymentDetails paymentDetails = paymentDetailsFacade.find(lignePaiement.getIdPaymentDetails().getId());
            byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(paymentDetails.getPreuve()));
-           BASE64Encoder encoder = new BASE64Encoder();
-           String imageString = encoder.encode(imageByte);
+           String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
            return  imageString;
        } catch (Exception e) {
            return  "Veuillez vérifier l'id du ligne de paiement";

@@ -5,6 +5,8 @@
  */
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -39,7 +41,13 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "OeuvreSouscription.findByNom", query = "SELECT o FROM OeuvreSouscription o WHERE o.nom = :nom")
     , @NamedQuery(name = "OeuvreSouscription.findByDateAjout", query = "SELECT o FROM OeuvreSouscription o WHERE o.dateAjout = :dateAjout")
     , @NamedQuery(name = "OeuvreSouscription.findByNouveau", query = "SELECT o FROM OeuvreSouscription o WHERE o.nouveau = :nouveau")
-    , @NamedQuery(name = "OeuvreSouscription.findByDimensions", query = "SELECT o FROM OeuvreSouscription o WHERE o.dimensions = :dimensions")})
+        , @NamedQuery(name = "OeuvreSouscription.findBySpecialDelivery", query = "SELECT o FROM OeuvreSouscription o WHERE o.specialDelivery = :specialDelivery")
+        , @NamedQuery(name = "OeuvreSouscription.findByUsure", query = "SELECT o FROM OeuvreSouscription o WHERE o.usure = :usure")
+        , @NamedQuery(name = "OeuvreSouscription.findByLibelleDimension", query = "SELECT o FROM OeuvreSouscription o WHERE o.libelleDimension = :libelleDimension")
+        , @NamedQuery(name = "OeuvreSouscription.findByLibellePoids", query = "SELECT o FROM OeuvreSouscription o WHERE o.libellePoids = :libellePoids")
+        , @NamedQuery(name = "OeuvreSouscription.findByPourcentageOeuvre", query = "SELECT o FROM OeuvreSouscription o WHERE o.pourcentageOeuvre = :pourcentageOeuvre")
+        , @NamedQuery(name = "OeuvreSouscription.findByReference", query = "SELECT o FROM OeuvreSouscription o WHERE o.reference = :reference")
+        , @NamedQuery(name = "OeuvreSouscription.findByDimensions", query = "SELECT o FROM OeuvreSouscription o WHERE o.dimensions = :dimensions")})
 public class OeuvreSouscription implements Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -86,14 +94,27 @@ public class OeuvreSouscription implements Serializable{
         
     @Column(name = "taxes", precision = 19, scale = 4)
     private BigDecimal taxes;
-    
-    @Lob
+
     @Column(name = "image")
     private byte[] image;
             
     @Column(name = "description", length = 1000)
     private String description;
-    
+
+    @Column(name = "specialDelivery")
+    private boolean specialDelivery;
+
+    @Column(name = "libellePoids" , length = 100)
+    private String libellePoids;
+
+    @Column(name = "libelleDimension" , length = 100)
+    private String libelleDimension;
+
+    @Column(name = "usure", length = 100)
+    private String usure;
+
+    @Column(name = "pourcentageOeuvre" , length = 100)
+    private Float pourcentageOeuvre;
     @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Artiste idArtiste;
@@ -105,7 +126,8 @@ public class OeuvreSouscription implements Serializable{
     @Column(name = "dateAjout")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAjout;
-    
+    @Column(name = "reference", length = 100)
+    private String reference;
 
     public OeuvreSouscription() {
     }
@@ -153,14 +175,6 @@ public class OeuvreSouscription implements Serializable{
     public void setNouveau(Boolean nouveau) {
         this.nouveau = nouveau;
     }
-
-    /**public Boolean getSpecialDelivery() {
-        return specialDelivery;
-    }
-
-    public void setSpecialDelivery(Boolean specialDelivery) {
-        this.specialDelivery = specialDelivery;
-    }**/
 
     public Boolean getLithographie() {
         return lithographie;
@@ -226,8 +240,6 @@ public class OeuvreSouscription implements Serializable{
         this.image = image;
     }
 
-   
-
     public String getDescription() {
         return description;
     }
@@ -259,7 +271,52 @@ public class OeuvreSouscription implements Serializable{
     public void setDateAjout(Date dateAjout) {
         this.dateAjout = dateAjout;
     }
-    
-    
-    
+
+    public boolean isSpecialDelivery() {
+        return specialDelivery;
+    }
+
+    public void setSpecialDelivery(boolean specialDelivery) {
+        this.specialDelivery = specialDelivery;
+    }
+
+    public String getLibellePoids() {
+        return libellePoids;
+    }
+
+    public void setLibellePoids(String libellePoids) {
+        this.libellePoids = libellePoids;
+    }
+
+    public String getLibelleDimension() {
+        return libelleDimension;
+    }
+
+    public void setLibelleDimension(String libelleDimension) {
+        this.libelleDimension = libelleDimension;
+    }
+
+    public String getUsure() {
+        return usure;
+    }
+
+    public void setUsure(String usure) {
+        this.usure = usure;
+    }
+
+    public Float getPourcentageOeuvre() {
+        return pourcentageOeuvre;
+    }
+
+    public void setPourcentageOeuvre(Float pourcentageOeuvre) {
+        this.pourcentageOeuvre = pourcentageOeuvre;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 }

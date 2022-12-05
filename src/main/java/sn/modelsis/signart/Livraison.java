@@ -1,9 +1,8 @@
 package sn.modelsis.signart;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Set;
-
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,11 +39,11 @@ public class Livraison implements Serializable {
     @Basic(optional = false)
     @Column(name = "dateLivraisonPrevue", nullable = false)
     // @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate dateLivraisonPrevue;
+    private Date dateLivraisonPrevue;
     @Basic(optional = false)
     @Column(name = "dateLivraisonEffective", nullable = false)
     // @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate dateLivraisonEffective;
+    private Date dateLivraisonEffective;
     @JoinColumn(name = "idAdresseLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Adresse idAdresseLivraison;
@@ -72,18 +71,18 @@ public class Livraison implements Serializable {
         this.idCommande = idCommande;
     }
 
-    public Livraison(Integer idCommande, LocalDate dateLivraisonPrevue) {
+    public Livraison(Integer idCommande, Date dateLivraisonPrevue) {
         this.idCommande = idCommande;
         this.dateLivraisonPrevue = dateLivraisonPrevue;
     }
 
 
 
-    public LocalDate getDateLivraisonPrevue() {
+    public Date getDateLivraisonPrevue() {
         return dateLivraisonPrevue;
     }
 
-    public void setDateLivraisonPrevue(LocalDate dateLivraison) {
+    public void setDateLivraisonPrevue(Date dateLivraison) {
         this.dateLivraisonPrevue = dateLivraison;
     }
 
@@ -162,11 +161,11 @@ public class Livraison implements Serializable {
         return "sn.modelsis.signart.Livraison[ id=" + idCommande + " ]";
     }
 
-    public LocalDate getDateLivraisonEffective() {
+    public Date getDateLivraisonEffective() {
         return dateLivraisonEffective;
     }
 
-    public void setDateLivraisonEffective(LocalDate dateLivraisonEffective) {
+    public void setDateLivraisonEffective(Date dateLivraisonEffective) {
         this.dateLivraisonEffective = dateLivraisonEffective;
     }
 

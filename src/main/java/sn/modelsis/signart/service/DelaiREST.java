@@ -112,6 +112,7 @@ public class DelaiREST {
         entity.setNbMois(dto.getNbMois());
         entity.setDescription(dto.getDescription());
         entity.setPrix(dto.getPrix());
+        entity.setDelaiLevel(dto.getDelaiLevel());
         return entity;
     }
     
@@ -122,6 +123,7 @@ public class DelaiREST {
         dto.setNbMois(entity.getNbMois());
         dto.setDescription(entity.getDescription());
         dto.setPrix(entity.getPrix());
+        dto.setDelaiLevel(entity.getDelaiLevel());
         return dto;
     }
     

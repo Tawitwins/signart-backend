@@ -21,18 +21,17 @@ public class CoefficientParametrage {
     private Integer id;
     @Column(name = "codeParametre", length = 1000)
     private String codeParametre;
-    @Column(name = "valeurParametre", length = 1000)
-    private String valeurParametre;
+    @Column(name = "valeurParametre")
+    private Integer valeurParametre;
     @Column(name = "statut", length = 1000)
     private String statut;
-    @Enumerated(EnumType.STRING)
-    @Column(length = 100)
-    private EnumTypeParam enumTypeParam;
+    @Column(name = "enumTypeParam", length = 1000)
+    private String enumTypeParam;
 
     public CoefficientParametrage() {
     }
 
-    public CoefficientParametrage(EnumTypeParam enumTypeParam) {
+    public CoefficientParametrage(String enumTypeParam) {
         this.enumTypeParam = enumTypeParam;
     }
 
@@ -52,11 +51,11 @@ public class CoefficientParametrage {
         this.codeParametre = codeParametre;
     }
 
-    public String getValeurParametre() {
+    public Integer getValeurParametre() {
         return valeurParametre;
     }
 
-    public void setValeurParametre(String valeurParametre) {
+    public void setValeurParametre(Integer valeurParametre) {
         this.valeurParametre = valeurParametre;
     }
 
@@ -68,11 +67,11 @@ public class CoefficientParametrage {
         this.statut = statut;
     }
 
-    public EnumTypeParam getEnumTypeParam() {
+    public String getEnumTypeParam() {
         return enumTypeParam;
     }
 
-    public void setEnumTypeParam(EnumTypeParam enumTypeParam) {
+    public void setEnumTypeParam(String enumTypeParam) {
         this.enumTypeParam = enumTypeParam;
     }
 }

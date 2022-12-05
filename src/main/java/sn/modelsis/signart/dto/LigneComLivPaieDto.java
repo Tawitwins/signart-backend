@@ -2,7 +2,6 @@ package sn.modelsis.signart.dto;
 
 import sn.modelsis.signart.LigneCommande;
 
-import java.time.LocalDate;
 
 /**
  *

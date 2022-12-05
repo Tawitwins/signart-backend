@@ -5,7 +5,6 @@ import org.hibernate.annotations.NotFoundAction;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
@@ -34,7 +33,7 @@ public class LigneLivraison implements Serializable {
     @Basic(optional = false)
     @Column(name = "dateLivraison", nullable = false)
     // @Temporal(TemporalType.TIMESTAMP)
-    private LocalDate dateLivraison;
+    private Date dateLivraison;
     @JoinColumn(name = "idEtatLivraison", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EtatLivraison idEtatLivraison;
@@ -61,7 +60,7 @@ public class LigneLivraison implements Serializable {
         this.id = id;
     }
 
-    public LigneLivraison(Integer id, LocalDate dateLivraison) {
+    public LigneLivraison(Integer id, Date dateLivraison) {
         this.id = id;
         this.dateLivraison = dateLivraison;
     }
@@ -74,11 +73,11 @@ public class LigneLivraison implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDateLivraison() {
+    public Date getDateLivraison() {
         return dateLivraison;
     }
 
-    public void setDateLivraison(LocalDate dateLivraison) {
+    public void setDateLivraison(Date dateLivraison) {
         this.dateLivraison = dateLivraison;
     }
 

@@ -4,19 +4,12 @@
  * and open the template in the editor.
  */
 package sn.modelsis.signart.service;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -35,7 +28,6 @@ import sn.modelsis.signart.dto.*;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.*;
 import sn.modelsis.signart.utils.Utils;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -44,6 +36,7 @@ import sun.misc.BASE64Encoder;
 @Stateless
 @Path("abonnement")
 public class AbonnementREST {
+    public final static String PATH = "/signartFiles/abonnement/";
 
     @Inject
     AbonnementFacade abonnementfacade;
@@ -73,10 +66,12 @@ public class AbonnementREST {
     ListeSelection_OeuvresFacade listeOeuvreFacade;
     @Inject
     OeuvreNumeriqueFacade oeuvreNumeriqueFacade;
-
-
     @Inject
     ParametrageFacade parametrageFacade;
+    @Inject
+    ParametreAlgoFacade parametreAlgoFacade;
+    @Inject
+    ExpositionFacade expositionFacade;
     Utils utils = new Utils();
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -207,25 +202,37 @@ public class AbonnementREST {
     @Produces({MediaType.APPLICATION_JSON})
     public AbonnementDto calculMontantAbonnement(@PathParam("id") Integer id) throws SignArtException {
         Abonnement abonnement = abonnementfacade.find(id);
-        float prixOeuvre = getPrixActuelOeuvre(abonnement);
-        float prixAbonné = getPrixAbonne(abonnement);
-        //float Total =
+        List<Float> resultPrixOeuvre = getPrixActuelOeuvre(abonnement);
+        List<Float> resultPrixAbonne = getPrixAbonne(abonnement,resultPrixOeuvre.get(0));
+
+        float Total = (resultPrixOeuvre.get(0)*resultPrixOeuvre.get(1) + resultPrixAbonne.get(0)*resultPrixAbonne.get(1))/ resultPrixOeuvre.get(1)+resultPrixAbonne.get(1);
+        abonnement.setMontantPaiement((int)Total);
         return entityToDto(abonnement);
+    }
+    @POST
+    @Path("getMontantByAbonnementDto")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Float calculMontantAbonnementDto(AbonnementDto abonnementDto) throws SignArtException {
+        Abonnement abonnement = dtoToEntity(abonnementDto);//abonnementfacade.find(id);
+        List<Float> resultPrixOeuvre = getPrixActuelOeuvre(abonnement);
+        List<Float> resultPrixAbonne = getPrixAbonne(abonnement,resultPrixOeuvre.get(0));
+
+        float Total = (resultPrixOeuvre.get(0)*resultPrixOeuvre.get(1) + resultPrixAbonne.get(0)*resultPrixAbonne.get(1))/ resultPrixOeuvre.get(1)+resultPrixAbonne.get(1);
+        abonnement.setMontantPaiement((int)Total);
+        return Total;
     }
 
     @GET
     @Path("report/{id}/{format}/{adrGal}")
     public String generateReport(@PathParam("id") Integer id,@PathParam("format") String format,@PathParam("adrGal") String adrGal) throws JRException, SignArtException, IOException {
-        String path1 = "D:\\projet signart";
-        String path = "D:\\Modelsis";
-
-        String kPath = "D:\\Modelsis\\SignArt\\signArt\\referentielsignart\\src\\main\\resources\\";
-        String oPath = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\";
+        String pathLogo = "/signartResources/resources/assets/images/logo_signart.png";
+        String pathRessource = "/signartResources/resources/";
 
         List<AbonnementDto> abonnementDtoList = new ArrayList<>();
         abonnementDtoList.add(find(id));
 
-        File file = new File(oPath+"recuAbonnement.jrxml");
+        File file = new File(pathRessource+"recuAbonnement.jrxml");
         System.out.println(file);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getPath());
@@ -238,7 +245,6 @@ public class AbonnementREST {
         String adresseSignArt = parametrageFacade.findByParamName("adresseSignArt").getValue();
         String telephoneSignArt = parametrageFacade.findByParamName("telephoneSignArt").getValue();
         Long montantTotal = new Long(abonnement.getMontantPaiement());
-        String pathLogo = "D:\\projet signart\\referentielsignart\\src\\main\\resources\\assets\\images\\logo_signart.png";
 
         parameters.put("NomClient", abonne.getPrenom()+ " " +abonne.getNom());
         parameters.put("abonnementID", id);
@@ -253,14 +259,13 @@ public class AbonnementREST {
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (format.equalsIgnoreCase("html")) {
-            JasperExportManager.exportReportToHtmlFile(jasperPrint, path1 + "\\reçue_paiement.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint, PATH+"recues/"+id+"_recue_paiement.html");
         }
         if (format.equalsIgnoreCase("pdf")) {
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path1 + "\\reçue_paiement.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, PATH+"recues/"+id+"_recue_paiement.pdf");
         }
-        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(path1 + "\\reçue_paiement.pdf"));
-        BASE64Encoder encoder = new BASE64Encoder();
-        String imageString = encoder.encode(imageByte);
+        byte [] imageByte = Files.readAllBytes((java.nio.file.Path) Paths.get(PATH+"recues/"+id+"_recue_paiement.pdf"));
+        String imageString = java.util.Base64.getEncoder().encodeToString(imageByte);
         return imageString;
         //return "report generated in path : " + path;
     }
@@ -338,9 +343,12 @@ public class AbonnementREST {
         return listeSelectionFacade.findById(idList);
     }
 
-    private float getPrixActuelOeuvre(Abonnement abonnement) throws SignArtException {
+    private List<Float> getPrixActuelOeuvre(Abonnement abonnement) throws SignArtException {
         List<ListeSelection_Oeuvres> listOeuvre = listeOeuvreFacade.findByIdListe(abonnement.getIdListeSelection().getId());
-        listOeuvre.forEach(oeuvre -> {
+        Parametrage prixBaseOeuvre = parametrageFacade.findByParamName("prixBaseOeuvre");
+        int prixOeuvres = 0;
+        int totalCoef = 0;
+        for (ListeSelection_Oeuvres oeuvre : listOeuvre) {
             OeuvreNumerique currentOeuvre;
             try {
                 currentOeuvre = oeuvreNumeriqueFacade.findByName(oeuvre.getNomOeuvre());
@@ -353,39 +361,120 @@ public class AbonnementREST {
             listParamByArtiste = recupérationParamArtiste(currentOeuvre.getIdentiteAuteur());
             listParamByOeuvre = récuperationParamOeuvre(currentOeuvre);
             listParamByElement = listParamByOeuvre;
-            listParamByElement.addAll(listParamByArtiste) ;
-        });
+            listParamByElement.addAll(listParamByArtiste);
+            int totalProduit = 0;
+            totalCoef = 0;
+            for (ParametreAlgo parametreAlgo : listParamByElement) {
+                totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+                totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
+            }
+            totalProduit = totalProduit / listParamByElement.get(0).getBaseNote();
+            totalProduit = totalProduit * Integer.parseInt(prixBaseOeuvre.getValue()) / totalCoef;
+            prixOeuvres += totalProduit;
 
-        return 0;
+        }
+        float moyenneOeuvres = prixOeuvres / listOeuvre.size();
+        List<Float> result = new ArrayList<>();
+        result.add(moyenneOeuvres);
+        result.add((float) totalCoef);
+        return result;
     }
-    private float getPrixAbonne(Abonnement abonnement){
-        return 0;
+    private List<Float> getPrixAbonne(Abonnement abonnement,float prixOeuvre) throws SignArtException {
+        List<ParametreAlgo> listParamByAbonnement = new ArrayList<>();
+        listParamByAbonnement = recupérationParamAbonnement(abonnement);
+        float totalProduit = 0;
+        float totalCoef = 0;
+        for (ParametreAlgo parametreAlgo : listParamByAbonnement) {
+            totalProduit += parametreAlgo.getNote() * parametreAlgo.getCoefficientParam().getValeurParametre() * parametreAlgo.getPourcentReduction();
+            totalCoef += parametreAlgo.getCoefficientParam().getValeurParametre();
+        }
+        totalProduit = totalProduit/listParamByAbonnement.get(0).getBaseNote();
+        totalProduit = totalProduit * prixOeuvre / totalCoef;
+        float prixAbonnee = totalProduit;
+        List<Float> result = new ArrayList<>();
+        result.add(prixAbonnee);
+        result.add((float) totalCoef);
+        return result;
     }
     private  List<ParametreAlgo> récuperationParamOeuvre(OeuvreNumerique oeuvre) {
+        List<ParametreAlgo> listParamOeuvre = new ArrayList<>();
+        List<ParametreAlgo> allListParam = new ArrayList<>();
+        allListParam = parametreAlgoFacade.findAll();
+        // Dimension oeuvre
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(oeuvre.getDimensionLevel())){
+                listParamOeuvre.add(parametreAlgo);
+            }
+        }
+        //listParamOeuvre.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getNiveau().equals(oeuvre.getDimensionLevel())).get());
+        // poids oeuvre
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(oeuvre.getNiveauPoids())){
+                listParamOeuvre.add(parametreAlgo);
+            }
+        }
+        //listParamOeuvre.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getNiveau().equals(oeuvre.getPoids())).get());
+        return listParamOeuvre;
+    }
+
+    private  List<ParametreAlgo> recupérationParamArtiste(Artiste artiste) throws SignArtException {
         List<ParametreAlgo> listParamArtiste = new ArrayList<>();
+        List<ParametreAlgo> allListParam = new ArrayList<>();
+        allListParam = parametreAlgoFacade.findAll();
+        // Qalification Artiste
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(artiste.getQualificationLevel())){
+                listParamArtiste.add(parametreAlgo);
+            }
+        }
+        //listParamArtiste.add(allListParam.stream().filter(parametreAlgo ->parametreAlgo.getNiveau().equals(artiste.getQualificationLevel())).findFirst().get());
+        // Nombre Exposition
+        int nbrExpo = expositionFacade.findByArtiste(artiste.getId()).size();
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if(parametreAlgo.getBorneInf() != null && parametreAlgo.getBorneSup() != null)
+            {
+                if (parametreAlgo.getBorneInf() <= nbrExpo && parametreAlgo.getBorneSup()>nbrExpo){
+                    listParamArtiste.add(parametreAlgo);
+                }
+            }
+        }
+        //listParamArtiste.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= nbrExpo && parametreAlgo.getBorneSup()>nbrExpo).get());
+        // Nombre année expérience
+        Date currentDate = new Date();
+        int anneeXp = currentDate.getYear() - artiste.getAnneeDebutCarrier();
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if(parametreAlgo.getBorneInf() != null && parametreAlgo.getBorneSup() != null)
+            {
+                if ( parametreAlgo.getBorneInf() <= anneeXp && parametreAlgo.getBorneSup()>anneeXp){
+                    listParamArtiste.add(parametreAlgo);
+                }
+            }
+        }
+        //listParamArtiste.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= anneeXp && parametreAlgo.getBorneSup()>anneeXp).get());
         return listParamArtiste;
     }
-
-    private  List<ParametreAlgo> recupérationParamArtiste(Artiste artiste) {
-        List<ParametreAlgo> listParamArtiste = new ArrayList<>();
-        return listParamArtiste;
+    private  List<ParametreAlgo> recupérationParamAbonnement(Abonnement abonnement) throws SignArtException {
+        List<ListeSelection_Oeuvres> listOeuvre = listeOeuvreFacade.findByIdListe(abonnement.getIdListeSelection().getId());
+        List<ParametreAlgo> listParamAbonnement = new ArrayList<>();
+        List<ParametreAlgo> allListParam = new ArrayList<>();
+        allListParam = parametreAlgoFacade.findAll();
+        // Nombre oeuvre dans abonnement
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if(parametreAlgo.getBorneInf() != null && parametreAlgo.getBorneSup() != null)
+            {
+                if (parametreAlgo.getBorneInf() <= listOeuvre.size() && parametreAlgo.getBorneSup()>listOeuvre.size()){
+                    listParamAbonnement.add(parametreAlgo);
+                }
+            }
+        }
+        //listParamAbonnement.add(allListParam.stream().findAny().filter(parametreAlgo -> parametreAlgo.getBorneInf() <= listOeuvre.size() && parametreAlgo.getBorneSup()>listOeuvre.size()).get());
+        // Durée abonnement
+        for (ParametreAlgo parametreAlgo : allListParam) {
+            if (parametreAlgo.getNiveau().equals(abonnement.getIdDelai().getDelaiLevel())){
+                listParamAbonnement.add(parametreAlgo);
+            }
+        }
+        //listParamAbonnement.add(allListParam.stream().findAny().filter(parametreAlgo ->parametreAlgo.getNiveau().equals(abonnement.getIdDelai().getDelaiLevel())).get());
+        return listParamAbonnement;
     }
-    private OeuvreNumeriqueDto entityToDtoOeuvre(OeuvreNumerique entity) {
-
-        OeuvreNumeriqueDto dto = new OeuvreNumeriqueDto();
-        dto.setId(entity.getId());
-        dto.setAnnee(entity.getAnnee());
-        dto.setIdentiteAuteur(entity.getIdentiteAuteur().getId());
-        dto.setTitre(entity.getTitre());
-        dto.setLargeur(entity.getLargeur());
-        dto.setLongueur(entity.getLongueur());
-        dto.setMotscles(entity.getMotscles());
-        dto.setTarif(entity.getTarif());
-        dto.setDescription(entity.getDescription());
-        dto.setTechnique(entity.getTechnique());
-        dto.setNom(entity.getNom());
-        return dto;
-    }
-
-
 }

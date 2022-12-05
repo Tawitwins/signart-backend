@@ -59,7 +59,23 @@ public class TarificationFacade extends AbstractFacade<Tarification> {
             final TypedQuery<Tarification> query = getEntityManager().createNamedQuery("Tarification.findByZone",
                     Tarification.class);
             query.setParameter("zone", zone);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
+            final List<Tarification> users = query.getResultList();
+            if (users.isEmpty()) {
+                return null;
+            }
+            return users.get(0);
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }
+
+    public Tarification findByDistance(Integer distance) throws SignArtException {
+        try {
+            final TypedQuery<Tarification> query = getEntityManager().createNamedQuery("Tarification.findByDistance",
+                    Tarification.class);
+            query.setParameter("distance", distance);
+            //query.setMaxResults(1);
             final List<Tarification> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

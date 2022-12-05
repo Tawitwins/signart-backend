@@ -5,6 +5,7 @@
  */
 package sn.modelsis.signart.dto;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,6 +35,17 @@ public class OeuvreSouscriptionDto implements Serializable{
     private Integer idSouscription;
     private Date dateAjout;
 
+    private boolean specialDelivery;
+
+    private String libellePoids;
+
+    private String libelleDimension;
+
+    private String usure;
+
+    private Float pourcentageOeuvre;
+
+    private String reference;
     public OeuvreSouscriptionDto() {
     }
 
@@ -184,8 +196,54 @@ public class OeuvreSouscriptionDto implements Serializable{
     public void setDateAjout(Date dateAjout) {
         this.dateAjout = dateAjout;
     }
-    
-    
-    
-    
+
+    public boolean isSpecialDelivery() {
+        return specialDelivery;
+    }
+
+    public void setSpecialDelivery(boolean specialDelivery) {
+        this.specialDelivery = specialDelivery;
+    }
+
+    public String getLibellePoids() {
+        return libellePoids;
+    }
+
+    public void setLibellePoids(String libellePoids) {
+        this.libellePoids = libellePoids;
+    }
+
+    public String getLibelleDimension() {
+        return libelleDimension;
+    }
+
+    public String getUsure() {
+        return usure;
+    }
+
+    public void setUsure(String usure) {
+        this.usure = usure;
+    }
+
+    public void setLibelleDimension(String libelleDimension) {
+        this.libelleDimension = libelleDimension;
+    }
+
+
+
+    public Float getPourcentageOeuvre() {
+        return pourcentageOeuvre;
+    }
+
+    public void setPourcentageOeuvre(Float pourcentageOeuvre) {
+        this.pourcentageOeuvre = pourcentageOeuvre;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 }

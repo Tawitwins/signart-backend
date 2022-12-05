@@ -40,7 +40,7 @@ public class EtatLicenceFacade extends AbstractFacade<EtatLicence> {
             final TypedQuery<EtatLicence> query = getEntityManager().createNamedQuery("EtatLicence.findById",
                     EtatLicence.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<EtatLicence> etats = query.getResultList();
             if (etats.isEmpty()) {
                 return null;
@@ -56,7 +56,7 @@ public class EtatLicenceFacade extends AbstractFacade<EtatLicence> {
             final TypedQuery<EtatLicence> query = getEntityManager().createNamedQuery("EtatLicence.findByLibelle",
                     EtatLicence.class);
             query.setParameter("libelle", libelle);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<EtatLicence> etats = query.getResultList();
             if (etats.isEmpty()) {
                 return null;

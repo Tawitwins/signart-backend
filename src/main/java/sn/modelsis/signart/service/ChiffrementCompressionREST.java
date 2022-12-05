@@ -91,7 +91,8 @@ import sn.modelsis.signart.facade.UtilisateurFacade;
 @javax.ws.rs.Path("chiffrementCompression")
 public class ChiffrementCompressionREST {
     
-    public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+    //public final static String PATH = "C:\\Users\\snmbengueo\\Documents\\SignartRepSave\\abonnement\\";
+    public final static String PATH = "/signartFiles/abonnement/";
     public final static String GOODPATH = "/opt/images";
     //public final static String PATHTEST = "C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\";
     

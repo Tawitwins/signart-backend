@@ -128,6 +128,7 @@ public class ArtisteREST {
     @Produces({MediaType.APPLICATION_JSON})
     public ArtisteDto find(@PathParam("id") Integer id) {
         Artiste artiste = artisteFacade.find(id);
+        System.out.println(artiste.getNom());
         return entityToDto(artiste);
     }
     
@@ -136,7 +137,7 @@ public class ArtisteREST {
     @Produces({MediaType.APPLICATION_JSON})
     public ArtisteDto findByUser(@PathParam("id") Integer id) throws SignArtException {
         Utilisateur user = utilisateurFacade.find(id);
-        Artiste artiste = artisteFacade.findByUser(user.getId());
+        Artiste artiste = artisteFacade.findByUserAdvanced(user.getId());
         return entityToDto(artiste);
     }
 
@@ -280,10 +281,13 @@ public class ArtisteREST {
         String surnom = "artiste00"+dto.getTelephone();
         String identite = nom+"_"+prenom+"_"+surnom;
         entity.setIdentite(identite);
+        entity.setAnneeDebutCarrier(dto.getAnneeDebutCarrier());
+        entity.setQualificationLevel(dto.getQualificationLevel());
         return entity;
     }
             
     public ArtisteDto entityToDto(Artiste entity) {
+
         ArtisteDto dto = new ArtisteDto();
         dto.setAdresse(entity.getAdresse());
         dto.setBiographie(entity.getBiographie());
@@ -308,6 +312,8 @@ public class ArtisteREST {
         dto.setFormation(entity.getFormation());
         dto.setExpositions(entity.getExpositions());
         dto.setIdentite(entity.getIdentite());
+        dto.setAnneeDebutCarrier(entity.getAnneeDebutCarrier());
+        dto.setQualificationLevel(entity.getQualificationLevel());
         
         
         dto.setProfession(entity.getProfession());

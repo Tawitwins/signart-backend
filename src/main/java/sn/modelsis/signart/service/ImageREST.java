@@ -28,6 +28,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.ImageMiniature;
@@ -42,7 +44,6 @@ import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.facade.ArtisteFacade;
 import sn.modelsis.signart.facade.OeuvreFacade;
 import sn.modelsis.signart.facade.OeuvreSouscriptionFacade;
-import sun.misc.BASE64Encoder;
 //import org.glassfish.jersey.media.multipart.MultiPartFeature;
 //import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
@@ -72,8 +73,7 @@ public class ImageREST {
             //ImageIO.write(image, type, bos);
             imageBytes = bos.toByteArray();
 
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
+            imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
             bos.close();
         } catch (IOException e) {
@@ -177,7 +177,9 @@ public class ImageREST {
         //ImageDto imgdto = new ImageDto();
             OeuvreSouscription oeuvreSouscription = oeuvreSouscriptionFacade.findById(id);
             //System.out.println(oeuvreSouscription.getImage()+"+++++++++++++++++++++++++++++++++++++++OEUVRE IMAGE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            
+           /** if(oeuvreSouscription.getImageText() != null)
+                oeuvreSouscription.setImage(Base64.decodeBase64(oeuvreSouscription.getImageText().getBytes()));**/
+
             final ResponseBuilder response = Response.ok(oeuvreSouscription.getImage());
             response.header("Content-Disposition", "attachment;filename=" + "image.jpg");
             return response.build();
@@ -200,8 +202,7 @@ public class ImageREST {
         dto.setId(entity.getId());
         dto.setNomImage(entity.getNom());
          byte[] imageBytes = entity.getImage();
-         BASE64Encoder encoder = new BASE64Encoder();
-         String imageString = encoder.encode(imageBytes);
+         String imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
         dto.setValeurImage(imageString);
         return dto;
     }
@@ -241,8 +242,7 @@ public class ImageREST {
             ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();
 
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
+            imageString = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
             bos.close();
         } catch (IOException e) {

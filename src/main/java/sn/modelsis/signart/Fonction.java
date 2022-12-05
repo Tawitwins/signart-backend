@@ -35,9 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Fonction.findById", query = "SELECT f FROM Fonction f WHERE f.id = :id"),
     @NamedQuery(name = "Fonction.findByLibelle", query = "SELECT f FROM Fonction f WHERE f.libelle = :libelle")})
 public class Fonction implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fonction")
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "fonction")
     private Collection<ArtisteFonction> artisteFonctionCollection;
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;*/
     @Id
     @Basic(optional = false)
     @NotNull
@@ -46,8 +46,8 @@ public class Fonction implements Serializable {
     @Size(max = 250)
     @Column(name = "libelle")
     private String libelle;
-    @ManyToMany(mappedBy = "fonctionSet")
-    private Set<Artiste> artisteSet;
+  /*  @ManyToMany(mappedBy = "fonctionSet")
+    private Set<Artiste> artisteSet;*/
 
     public Fonction() {
     }
@@ -100,18 +100,15 @@ public class Fonction implements Serializable {
     /**
      * @return the artisteSet
      */
-    public Set<Artiste> getArtisteSet() {
+/*    public Set<Artiste> getArtisteSet() {
         return artisteSet;
     }
 
-    /**
-     * @param artisteSet the artisteSet to set
-     */
     public void setArtisteSet(Set<Artiste> artisteSet) {
         this.artisteSet = artisteSet;
-    }
+    }*/
 
-    @XmlTransient
+/*    @XmlTransient
     public Collection<ArtisteFonction> getArtisteFonctionCollection() {
         return artisteFonctionCollection;
     }
@@ -119,5 +116,5 @@ public class Fonction implements Serializable {
     public void setArtisteFonctionCollection(Collection<ArtisteFonction> artisteFonctionCollection) {
         this.artisteFonctionCollection = artisteFonctionCollection;
     }
-    
+    */
 }

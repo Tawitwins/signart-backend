@@ -58,7 +58,7 @@ public class MagasinFacade extends AbstractFacade<Magasin> {
             final TypedQuery<Magasin> query = getEntityManager().createNamedQuery("Magasin.findByNom",
                     Magasin.class);
             query.setParameter("nom", nom);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<Magasin> users = query.getResultList();
             if (users.isEmpty()) {
                 return null;

@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  signart_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4848:4848
+      - 8080:8080
+    volumes:
+      - data:/signartFiles
+      - "./script.sh:/usr/local/bin/script.sh"
+    command:
+      - bash
+      - -c
+      - |
+        /usr/local/bin/script.sh
+  signart_module_paiement:
+    build:
+      context: ../payment/
+      dockerfile: Dockerfile
+    ports:
+      - 8023:8023
+  signart_front_web:
+    build:
+      context: ../signartweb_v2/
+      dockerfile: Dockerfile
+    ports:
+      - 4200:80
+  signart_front_admin:
+    build:
+      context: ../adminweb/
+      dockerfile: Dockerfile
+    ports:
+      - 4201:80
+volumes:
+  data:
+
+
+

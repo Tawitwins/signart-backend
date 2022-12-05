@@ -1,5 +1,6 @@
 package sn.modelsis.signart;
 
+import org.hibernate.annotations.Type;
 import sn.modelsis.signart.facade.MagasinFacade;
 
 import java.io.Serializable;
@@ -30,7 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
         , @NamedQuery(name = "Oeuvre.findBySpecialDelivery", query = "SELECT o FROM Oeuvre o WHERE o.specialDelivery = :specialDelivery")
         , @NamedQuery(name = "Oeuvre.findByIsPaid", query = "SELECT o FROM Oeuvre o WHERE o.isPaid = :isPaid")
         , @NamedQuery(name = "Oeuvre.findByReference", query = "SELECT o FROM Oeuvre o WHERE o.reference = :reference")
-        , @NamedQuery(name = "Oeuvre.findByDimensions", query = "SELECT o FROM Oeuvre o WHERE o.dimensions = :dimensions")})
+        , @NamedQuery(name = "Oeuvre.findByDimensions", query = "SELECT o FROM Oeuvre o WHERE o.dimensions = :dimensions")
+        , @NamedQuery(name = "Oeuvre.findByPourcentageOeuvre", query = "SELECT o FROM Oeuvre o WHERE o.pourcentageOeuvre = :pourcentageOeuvre")
+        , @NamedQuery(name = "Oeuvre.findByUsure", query = "SELECT o FROM Oeuvre o WHERE o.usure = :usure")
+})
 public class Oeuvre implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,8 +86,7 @@ public class Oeuvre implements Serializable {
 
     @Column(name = "taxes", precision = 19, scale = 4)
     private BigDecimal taxes;
-
-        @Lob
+//@Type(type = "org.hibernate.type.TextType")
     @Column(name = "image")
     private byte[] image;
 
@@ -92,7 +95,8 @@ public class Oeuvre implements Serializable {
 
     @Column(name = "reference", length = 1000)
     private String reference;
-
+    @Column(name = "libelleDimension", length = 1000)
+    private String libelleDimension;
       @JoinColumn(name = "idArtiste", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Artiste idArtiste;
@@ -100,18 +104,28 @@ public class Oeuvre implements Serializable {
     @Column(name = "fraisLivraison", precision = 19, scale = 4)
     private BigDecimal fraisLivraison;
 
+    @Column(name = "poids")
+    private Integer poids;
+    @Column(name = "libellePoids", length = 1000)
+    private String libellePoids;
     @Column(name = "dateAjout")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAjout;
 
-    @Lob
+    @Column(name = "usure", length = 100)
+    private String usure;
+
+    @Column(name = "pourcentageOeuvre")
+    private Float pourcentageOeuvre;
+
+//@Type(type = "org.hibernate.type.TextType")
     @Column(name = "miniature")
     private byte[] miniature;
 
     @ManyToMany(mappedBy = "oeuvreSet")
     private Set<MotCle> motCleSet;
 
-    @JoinTable(name = "Theme_Oeuvre", joinColumns = {
+    @JoinTable(name = "Theme_Oeuvre", catalog = "signart", schema = "dbo", joinColumns = {
         @JoinColumn(name = "idOeuvre", referencedColumnName = "id", nullable = true)}, inverseJoinColumns = {
         @JoinColumn(name = "idTheme", referencedColumnName = "id", nullable = true)})
     @ManyToMany
@@ -270,6 +284,23 @@ public class Oeuvre implements Serializable {
     public void setIdMagasin(Magasin idMagasin) {
         this.idMagasin = idMagasin;
     }
+
+    public String getLibelleDimension() {
+        return libelleDimension;
+    }
+
+    public void setLibelleDimension(String libelleDimension) {
+        this.libelleDimension = libelleDimension;
+    }
+
+    public Float getPourcentageOeuvre() {
+        return pourcentageOeuvre;
+    }
+
+    public void setPourcentageOeuvre(Float pourcentageOeuvre) {
+        this.pourcentageOeuvre = pourcentageOeuvre;
+    }
+
     @XmlTransient
     public Set<MotCle> getMotCleSet() {
         return motCleSet;
@@ -413,6 +444,30 @@ public class Oeuvre implements Serializable {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public Integer getPoids() {
+        return poids;
+    }
+
+    public void setPoids(Integer poids) {
+        this.poids = poids;
+    }
+
+    public String getLibellePoids() {
+        return libellePoids;
+    }
+
+    public void setLibellePoids(String libellePoids) {
+        this.libellePoids = libellePoids;
+    }
+
+    public String getUsure() {
+        return usure;
+    }
+
+    public void setUsure(String usure) {
+        this.usure = usure;
     }
 
     @Override

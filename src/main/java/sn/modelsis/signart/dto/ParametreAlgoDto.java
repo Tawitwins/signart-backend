@@ -8,9 +8,13 @@ public class ParametreAlgoDto {
     private Integer id;
     private String niveau;
     private String libelle;
-    private String note;
+    private Integer note;
     private Integer baseNote;
     private Integer pourcentReduction;
+    private float borneSup;
+    private float borneInf;
+
+    private Integer idCoefficientParametrage;
 
     public Integer getId() {
         return id;
@@ -36,11 +40,11 @@ public class ParametreAlgoDto {
         this.libelle = libelle;
     }
 
-    public String getNote() {
+    public Integer getNote() {
         return note;
     }
 
-    public void setNote(String note) {
+    public void setNote(Integer note) {
         this.note = note;
     }
 
@@ -59,12 +63,33 @@ public class ParametreAlgoDto {
     public void setPourcentReduction(Integer pourcentReduction) {
         this.pourcentReduction = pourcentReduction;
     }
+    public float getBorneSup() {
+        return borneSup;
+    }
 
+    public void setBorneSup(float borneSup) {
+        this.borneSup = borneSup;
+    }
+
+    public float getBorneInf() {
+        return borneInf;
+    }
+
+    public void setBorneInf(float borneInf) {
+        this.borneInf = borneInf;
+    }
+    public Integer getIdCoefficientParametrage() {
+        return idCoefficientParametrage;
+    }
+
+    public void setIdCoefficientParametrage(Integer idCoefficientParametrage) {
+        this.idCoefficientParametrage = idCoefficientParametrage;
+    }
 
     public ParametreAlgoDto() {
     }
 
-    public ParametreAlgoDto(Integer id, String niveau, String libelle, String note, Integer baseNote, Integer pourcentReduction) {
+    public ParametreAlgoDto(Integer id, String niveau, String libelle, Integer note, Integer baseNote, Integer pourcentReduction) {
         this.id = id;
         this.niveau = niveau;
         this.libelle = libelle;

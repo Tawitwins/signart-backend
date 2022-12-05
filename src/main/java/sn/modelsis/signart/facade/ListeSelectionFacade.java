@@ -42,7 +42,7 @@ public class ListeSelectionFacade extends AbstractFacade<ListeSelection> {
             final TypedQuery<ListeSelection> query = getEntityManager().createNamedQuery("ListeSelection.findById",
                     ListeSelection.class);
             query.setParameter("id", id);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<ListeSelection> listeSelections = query.getResultList();
             if (listeSelections.isEmpty()) {
                 return null;
@@ -58,7 +58,7 @@ public class ListeSelectionFacade extends AbstractFacade<ListeSelection> {
             final TypedQuery<ListeSelection> query = getEntityManager().createNamedQuery("ListeSelection.findName",
                     ListeSelection.class);
             query.setParameter("nomListe", nomListe);
-            query.setMaxResults(1);
+            //query.setMaxResults(1);
             final List<ListeSelection> listeSelections = query.getResultList();
             if (listeSelections.isEmpty()) {
                 return null;

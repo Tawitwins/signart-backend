@@ -1,6 +1,6 @@
 package sn.modelsis.signart.converter;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.ejb.Stateless;
@@ -24,17 +24,11 @@ public class LigneLivraisonConverter {
     @Inject
     LivraisonFacade livraisonFacade;
     @Inject
-    LivraisonConverter livraisonConverter;
-    @Inject
     LigneCommandeConverter ligneCommandeConverter;
-    @Inject
-    CommandeConverter commandeConverter;
     @Inject
     CommandeFacade commandeFacade;
     @Inject
     EtatLivraisonFacade etatLivraisonFacade;
-    @Inject
-    EtatLivraisonFacade etatLivraisonConverter;
     @Inject
     LigneCommandeFacade ligneCommandeFacade;
     @Inject

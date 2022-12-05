@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.ChiffrementCompressionREST.class);
         resources.add(sn.modelsis.signart.service.ClientFacadeREST.class);
         resources.add(sn.modelsis.signart.service.CodeSignartREST.class);
+        resources.add(sn.modelsis.signart.service.CodeEventSignartREST.class);
         resources.add(sn.modelsis.signart.service.CommandeREST.class);
         resources.add(sn.modelsis.signart.service.CommentaireFacadeREST.class);
         resources.add(sn.modelsis.signart.service.CompteFacadeREST.class);
@@ -46,6 +47,7 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.EtatLivraisonFacadeREST.class);
         resources.add(sn.modelsis.signart.service.EtatPaiementFacadeREST.class);
         resources.add(sn.modelsis.signart.service.EtatPanierFacadeREST.class);
+        resources.add(sn.modelsis.signart.service.EvenementSignartREST.class);
         resources.add(sn.modelsis.signart.service.ExpositionREST.class);
         resources.add(sn.modelsis.signart.service.FilmographieREST.class);
         resources.add(sn.modelsis.signart.service.FonctionREST.class);
