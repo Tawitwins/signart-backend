@@ -1,9 +1,10 @@
 FROM maven:3.8.4-openjdk-8 as builder
-
+WORKDIR /
 COPY pom.xml /tmp/
 COPY src /tmp/src
+WORKDIR /tmp/
 RUN mvn verify
-COPY target /tmp/target
+#COPY target /tmp/target
 
 
 
