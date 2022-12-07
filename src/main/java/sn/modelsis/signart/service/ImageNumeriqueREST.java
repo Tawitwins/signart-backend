@@ -254,7 +254,7 @@ public class ImageNumeriqueREST {
             try {
                 bImageFromConvert = ImageIO.read(in);
                 System.out.println(bImageFromConvert+"+++++++++++++++++++++++++++++++++++++++++++++bImageFromConvert++++++++++++++++++++++++++++++++++++");
-               ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images"+nom+".jpg"));
+               ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+nom+".jpg"));
               // System.out.println(source+"+++++++++++++++++++++++++++++++++++++++++++++source++++++++++++++++++++++++++++++++++++");
 
                //   ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snfayemp\\Documents\\Projet\\Stockage\\"+nom+".jpg"));
@@ -396,8 +396,8 @@ public class ImageNumeriqueREST {
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get(PATH+"images\\min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get(PATH+"images\\"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -421,8 +421,8 @@ public class ImageNumeriqueREST {
              OeuvreNumerique oeuvreNum = oeuvreNumeriqueFacade.findById(id);
              ImageNumerique imageNum = imageNumeriqueFacade.findByValue(oeuvreNum.getNom());
              ImageMiniature imageMin = imageMiniaturefacade.findByName(oeuvreNum.getNom());
-             java.nio.file.Path minImagePath = Paths.get(PATH+"images\\min_"+oeuvreNum.getNom()+".jpg");
-             java.nio.file.Path imagePath = Paths.get(PATH+"images\\"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path minImagePath = Paths.get(PATH+"images/min_"+oeuvreNum.getNom()+".jpg");
+             java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
 
             try {
                     Files.delete((java.nio.file.Path) minImagePath);
@@ -529,7 +529,7 @@ public class ImageNumeriqueREST {
             Integer longueur = dto.getLongueur()/3;
             
             java.nio.file.Path minImagePath = Paths.get(PATH + "min_"+oeuvreNum.getNom()+".jpg");
-            java.nio.file.Path imagePath = Paths.get(PATH+"image\\"+oeuvreNum.getNom()+".jpg");
+            java.nio.file.Path imagePath = Paths.get(PATH+"images/"+oeuvreNum.getNom()+".jpg");
             try {
                    Files.delete((java.nio.file.Path) minImagePath);
                     Files.delete((java.nio.file.Path) imagePath);

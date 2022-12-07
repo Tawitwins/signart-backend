@@ -1,8 +1,11 @@
 FROM maven:3.8.4-openjdk-8 as builder
+WORKDIR /
 COPY pom.xml /tmp/
-COPY target /tmp/target
 COPY src /tmp/src
-#RUN mvn verify
+WORKDIR /tmp/
+RUN mvn verify
+#COPY target /tmp/target
+
 
 
 
@@ -31,6 +34,7 @@ COPY lib/postgresql-42.5.0.jar /usr/local/glassfish4/glassfish/lib
 RUN rm -rf /usr/local/glassfish4/glassfish/modules/jboss-logging.jar
 COPY lib/jboss-logging.jar /usr/local/glassfish4/glassfish/modules/
 COPY script.sh /usr/local/bin/
+
 WORKDIR /
 
 
@@ -41,9 +45,9 @@ RUN \
  $ASADMINPATH start-domain && \
  $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/tmpfile change-admin-password && \
  $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile enable-secure-admin && \
- #$ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-connection-pool --restype=javax.sql.ConnectionPoolDataSource --datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --property "User=signart:Password=passer123:DatebaseName=signart:ServerName=192.168.1.3:PortNumber=5432" poolSignart && \
+ #$ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-connection-pool #--restype=javax.sql.ConnectionPoolDataSource #--datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --property #"User=signart:Password=passer123:DatebaseName=signart:ServerName=192.168.1.3:PortNumber=5432" #poolSignart && \
  
- $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-connection-pool #--restype=javax.sql.ConnectionPoolDataSource --datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --property #"User=signart:Password=passer123:DatebaseName=signart:ServerName=10.42.1.205:PortNumber=5432" poolSignart && \
+ $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-connection-pool --restype=javax.sql.ConnectionPoolDataSource --datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --property "User=signart:Password=passer123:DatebaseName=signart:ServerName=10.42.1.205:PortNumber=5432" poolSignart && \
  
  $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-resource --connectionpoolid poolSignart jdbc/signart && \
  $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile deploy /SignArt.war

@@ -482,7 +482,7 @@ public class ChiffrementCompressionREST {
      
         public byte[] getRealImage(ListeSelection_Oeuvres oeuvre) throws IOException{
             //BufferedImage image = ImageIO.read(new File(PATHTEST+"\\images\\"+oeuvre.getNomOeuvre()+".jpg"));
-            BufferedImage image = ImageIO.read(new File(PATH+"images\\"+oeuvre.getNomOeuvre()+".jpg"));
+            BufferedImage image = ImageIO.read(new File(PATH+"images/"+oeuvre.getNomOeuvre()+".jpg"));
             byte[] imageByte = toByteArray(image,"jpg");          
             return imageByte;
         }
