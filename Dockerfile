@@ -31,6 +31,7 @@ COPY lib/postgresql-42.5.0.jar /usr/local/glassfish4/glassfish/lib
 RUN rm -rf /usr/local/glassfish4/glassfish/modules/jboss-logging.jar
 COPY lib/jboss-logging.jar /usr/local/glassfish4/glassfish/modules/
 COPY script.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/script.sh
 WORKDIR /
 
 
