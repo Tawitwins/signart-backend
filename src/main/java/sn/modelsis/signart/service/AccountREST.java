@@ -57,48 +57,54 @@ public class AccountREST {
     @Consumes({MediaType.APPLICATION_JSON})
     //@Produces({MediaType.APPLICATION_JSON})
     public Response create(AccountDto dto) throws SignArtException {
-        Utilisateur user = dtoToEntity(dto);
-        user.setActif(Boolean.TRUE);
-        final String passwordEncoded = passwordEncoder.encodePassword(dto.getPassword(), dto.getEmail());
-        System.out.println("passwordEncoded " + passwordEncoded);
-        user.setPassword(passwordEncoded);
-        utilisateurFacade.create(user);
-        switch (user.getIdProfil().getCode()) {
-            case Profil.CODE_PROFIL_ARTISTE:
-                user.setUserType(Utilisateur.CODE_USER_TYPE_ARTISTE);
-                //création de l'artiste
-                Artiste artiste = artisteFacade.findById(dto.getIdArtiste());//dtoToArtisteEntity(dto, user);
-                artiste.setIdEtatArtiste(etatArtisteFacade.findByCode(EtatArtiste.CODE_ETAT_ARTISTE_ACTIF));
-                artiste.setTelephone(dto.getMobile());
-                artiste.setIdUser(user);
-                artiste = artisteFacade.save(artiste);
-                if (artiste.getId() != null) {
-                    dto.setIdArtiste(artiste.getId());
-                }   break;
-        //utilisateurFacade.create(user);
-        //Vérification du type d'utilisateur
-            case Profil.CODE_PROFIL_ADMIN:
-                user.setUserType(Utilisateur.CODE_USER_TYPE_ADMIN);
-                AdminsTable admin= dtoToAdminEntity(dto,user);
-                adminsTableFacade.create(admin);
-                if (admin.getId() != null) {
-                    dto.setIdAdmin(admin.getId());
-                }   break;
-            default:
-                user.setUserType(Utilisateur.CODE_USER_TYPE_CLIENT);
-                //création du client
-                Client client = dtoToClientEntity(dto, user);
-                client.setIdEtatClient(etatClientFacade.findByCode(EtatClient.CODE_ETAT_CLIENT_ACTIF));
-                client.setTelephone(dto.getMobile());
-                clientFacade.create(client);
-                if (client.getId() != null) {
-                    dto.setIdClient(client.getId());
-                }   break;
-        }
-        
-        dto.setIdUser(user.getId());
+       if(!isExistEmail(dto.getEmail())){
+           Utilisateur user = dtoToEntity(dto);
+           user.setActif(Boolean.TRUE);
+           final String passwordEncoded = passwordEncoder.encodePassword(dto.getPassword(), dto.getEmail());
+           System.out.println("passwordEncoded " + passwordEncoded);
+           user.setPassword(passwordEncoded);
+           utilisateurFacade.create(user);
+           switch (user.getIdProfil().getCode()) {
+               case Profil.CODE_PROFIL_ARTISTE:
+                   user.setUserType(Utilisateur.CODE_USER_TYPE_ARTISTE);
+                   //création de l'artiste
+                   Artiste artiste = artisteFacade.findById(dto.getIdArtiste());//dtoToArtisteEntity(dto, user);
+                   artiste.setIdEtatArtiste(etatArtisteFacade.findByCode(EtatArtiste.CODE_ETAT_ARTISTE_ACTIF));
+                   artiste.setTelephone(dto.getMobile());
+                   artiste.setIdUser(user);
+                   artiste = artisteFacade.save(artiste);
+                   if (artiste.getId() != null) {
+                       dto.setIdArtiste(artiste.getId());
+                   }   break;
+               //utilisateurFacade.create(user);
+               //Vérification du type d'utilisateur
+               case Profil.CODE_PROFIL_ADMIN:
+                   user.setUserType(Utilisateur.CODE_USER_TYPE_ADMIN);
+                   AdminsTable admin= dtoToAdminEntity(dto,user);
+                   adminsTableFacade.create(admin);
+                   if (admin.getId() != null) {
+                       dto.setIdAdmin(admin.getId());
+                   }   break;
+               default:
+                   user.setUserType(Utilisateur.CODE_USER_TYPE_CLIENT);
+                   //création du client
+                   Client client = dtoToClientEntity(dto, user);
+                   client.setIdEtatClient(etatClientFacade.findByCode(EtatClient.CODE_ETAT_CLIENT_ACTIF));
+                   client.setTelephone(dto.getMobile());
+                   clientFacade.create(client);
+                   if (client.getId() != null) {
+                       dto.setIdClient(client.getId());
+                   }   break;
+           }
 
-        return Response.status(Response.Status.CREATED).entity(dto).build();
+           dto.setIdUser(user.getId());
+
+           return Response.status(Response.Status.CREATED).entity(dto).build();
+       }
+       dto.setExisteEmail(true);
+       dto.setCodeProfil(null);
+       dto.setPassword(null);
+       return Response.status(Response.Status.BAD_REQUEST).entity(dto).build();
     }
 
     private Utilisateur dtoToEntity(AccountDto dto) {
@@ -145,5 +151,10 @@ public class AccountREST {
         if(user.getId() != null)
             admin.setIdUser(utilisateurFacade.findById(user.getId()));
         return admin;
+    }
+
+    public boolean isExistEmail(String email){
+         if(utilisateurFacade.findByMail(email) != null) return true;
+        return false;
     }
 }

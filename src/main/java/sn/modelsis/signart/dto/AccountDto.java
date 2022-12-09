@@ -18,7 +18,7 @@ public class AccountDto {
     private Integer idUser;
     private Integer idClient;
     private Integer idArtiste;
-
+    private boolean isExisteEmail;
     /**
      * 
      * @return 
@@ -170,5 +170,13 @@ public class AccountDto {
 
     public void setIdArtiste(Integer idArtiste) {
         this.idArtiste = idArtiste;
+    }
+
+    public boolean isExisteEmail() {
+        return isExisteEmail;
+    }
+
+    public void setExisteEmail(boolean existeEmail) {
+        isExisteEmail = existeEmail;
     }
 }
