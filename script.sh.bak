@@ -21,7 +21,7 @@ mkdir -p "recues"
 #export PATH=$PATH:$JAVA_HOME/bin
 java -version
 echo $JAVA_HOME
-#/usr/local/glassfish4/bin/asadmin start-domain --verbose
+/usr/local/glassfish4/bin/asadmin start-domain --verbose
 #update-alternatives --set java /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java
 #update-alternatives --set javac /usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/javac
 #/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin:/usr/local/glassfish4/bin
