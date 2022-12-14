@@ -499,7 +499,28 @@ public class ImageNumeriqueREST {
              return Response.status(Response.Status.OK).entity(dto).build();
        
     }
-    
+    @PUT
+    @Path("reloadVraiImageOeuvre/{idOeuvre}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response reloadVraiImageOeuvre(@PathParam("idOeuvre") Integer idOeuvre, OeuvreNumeriqueDto dto) throws SignArtException, IOException {
+        ImageNumeriqueDto imgdto = dto.getAvatar();
+        String identite = artisteFacade.findById(dto.getIdentiteAuteur()).getIdentite();
+        String nom = dto.getTitre()+"_"+identite;
+        String img = imgdto.getValue();
+        final byte[] imageInByte = Base64.decodeBase64(img.getBytes());
+        final InputStream in = new ByteArrayInputStream(imageInByte);
+        BufferedImage bImageFromConvert;
+        try {
+            bImageFromConvert = ImageIO.read(in);
+            System.out.println(bImageFromConvert+"+++++++++++++++++++++++++++++++++++++++++++++bImageFromConvert++++++++++++++++++++++++++++++++++++");
+            //ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Users\\snmbengueo\\Desktop\\"+"images\\"+nom+".jpg"));
+            ImageIO.write(bImageFromConvert, "jpg", new File(PATH+"images/"+nom+".jpg"));
+        } catch (IOException e) {
+        }
+        return Response.status(Response.Status.OK).entity(dto).build();
+
+    }
+
     @GET
     @Path("loadOeuvre/{idOeuvre}")
     @Produces({MediaType.APPLICATION_JSON})
