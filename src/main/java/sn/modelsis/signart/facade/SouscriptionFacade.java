@@ -5,6 +5,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+
+import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.exception.SignArtException;
 import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Biographie;
@@ -33,8 +35,8 @@ public class SouscriptionFacade extends AbstractFacade<Souscription> {
      * Retourne la liste des artistes marqués(typeMarquage donné) par un client
      * donné
      *
-     * @param codeTypeMarquage
-     * @param idClient
+     * @param
+     * @param
      * @return
      * @throws sn.modelsis.signart.exception.SignArtException
      */
@@ -85,5 +87,26 @@ public class SouscriptionFacade extends AbstractFacade<Souscription> {
         } catch (Exception e) {
             throw new SignArtException(e.getMessage(), e);
         }
+    }
+
+/**    public Souscription findByEmail(String email) throws SignArtException {
+        try {
+            final TypedQuery<Souscription> query = getEntityManager().createNamedQuery("Souscription.findByEmail",
+                    Souscription.class);
+            query.setParameter("email", email);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            throw new SignArtException(e.getMessage(), e);
+        }
+    }**/
+
+    public Souscription findByEmail(String mail) {
+        final TypedQuery<Souscription> query = (TypedQuery<Souscription>) em.createNamedQuery("Souscription.findByEmail", Souscription.class);
+        query.setParameter("email", mail);
+        final List<Souscription> souscriptions = query.getResultList();
+        if (souscriptions.isEmpty()) {
+            return null;
+        }
+        return souscriptions.get(0);
     }
 }
