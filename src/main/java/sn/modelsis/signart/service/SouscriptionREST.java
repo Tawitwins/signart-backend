@@ -124,6 +124,16 @@ public class SouscriptionREST {
         return String.valueOf(souscriptionFacade.count());
     }
 
+    @GET
+    @Path("mail/{mail}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public SouscriptionDto findByEmail(@PathParam("mail") String mail) throws SignArtException {
+        Souscription souscription = souscriptionFacade.findByEmail(mail);
+        if(souscription != null)
+            return entityToDto(souscription);
+        else
+            return null;
+    }
     
     
     public Souscription dtoToEntity(SouscriptionDto dto) throws SignArtException {

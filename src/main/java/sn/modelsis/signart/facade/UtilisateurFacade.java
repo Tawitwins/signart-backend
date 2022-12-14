@@ -86,6 +86,7 @@ public class UtilisateurFacade extends AbstractFacade<Utilisateur> {
         if (users.isEmpty()) {
             return null;
         }
+        System.out.println(users.get(0));
         return users.get(0);
     }
 

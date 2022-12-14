@@ -32,6 +32,11 @@ public class Profil implements Serializable {
     public static final String CODE_PROFIL_ARTISTE = "ARTISTE";
     public static final String CODE_PROFIL_CLIENT = "CLIENT";
     public static final String CODE_PROFIL_ADMIN = "ADMIN";
+    public static final String CODE_PROFIL_AGENT_LIVREUR = "LIVREUR";
+    public static final String CODE_PROFIL_AGENT_CAISSIER = "CAISSIER";
+    public static final String CODE_PROFIL_AGENT_GESTSTOCK = "GESTSTOCK";
+    public static final String CODE_PROFIL_AGENT_GESTABMNT = "GESTABMNT";
+    public static final String CODE_PROFIL_AGENT_TECHABMNT = "TECHABMNT";
 
     private static final long serialVersionUID = 1L;
     @Id

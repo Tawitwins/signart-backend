@@ -18,6 +18,12 @@ public class AccountDto {
     private Integer idUser;
     private Integer idClient;
     private Integer idArtiste;
+    private Integer idAgent;
+    private String surnom;
+    private String telephone;
+    private String ville;
+    private Integer idMagasin;
+    private Integer idServiceLivraison;
     private boolean isExisteEmail;
     /**
      * 
@@ -172,8 +178,56 @@ public class AccountDto {
         this.idArtiste = idArtiste;
     }
 
+    public String getSurnom() {
+        return surnom;
+    }
+
+    public void setSurnom(String surnom) {
+        this.surnom = surnom;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public Integer getIdMagasin() {
+        return idMagasin;
+    }
+
+    public void setIdMagasin(Integer idMagasin) {
+        this.idMagasin = idMagasin;
+    }
+
+    public Integer getIdServiceLivraison() {
+        return idServiceLivraison;
+    }
+
+    public void setIdServiceLivraison(Integer idServiceLivraison) {
+        this.idServiceLivraison = idServiceLivraison;
+    }
+
     public boolean isExisteEmail() {
         return isExisteEmail;
+    }
+
+    public Integer getIdAgent() {
+        return idAgent;
+    }
+
+    public void setIdAgent(Integer idAgent) {
+        this.idAgent = idAgent;
     }
 
     public void setExisteEmail(boolean existeEmail) {

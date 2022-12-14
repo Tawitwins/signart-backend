@@ -20,6 +20,7 @@ import sn.modelsis.signart.Artiste;
 import sn.modelsis.signart.Utilisateur;
 import sn.modelsis.signart.dto.AccountInformation;
 import sn.modelsis.signart.dto.ArtisteDto;
+import sn.modelsis.signart.dto.UtilisateurDto;
 import sn.modelsis.signart.facade.UtilisateurFacade;
 import sn.modelsis.signart.utils.PasswordEncoder;
 
@@ -65,7 +66,19 @@ public class UserFacadeREST extends AbstractFacade<Utilisateur> {
         userFacade.edit(utilisateur);
         return Response.status(Response.Status.OK).build();
     }
-    
+
+    @PUT
+    @Path("forgotPassword")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response forgotPassword(AccountInformation dto) {
+        Utilisateur foundUser = userFacade.findByMail(dto.getUserName());
+
+        String  newPassword = passwordEncoder.encodePassword(dto.getPassword(), dto.getUserName());
+        foundUser.setPassword(newPassword);
+
+        userFacade.edit(foundUser);
+        return Response.status(Response.Status.OK).build();
+    }
 
     @DELETE
     @Path("{id}")
@@ -117,5 +130,32 @@ public class UserFacadeREST extends AbstractFacade<Utilisateur> {
         }
         return foundUser;
     }
-    
+    @GET
+    @Path("mail/{mail}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Integer getUserIdByMail(@PathParam("mail") String mail){
+        Utilisateur utilisateur = userFacade.findByMail(mail);
+        if(utilisateur != null)
+            return utilisateur.getId();
+        else
+            return null;
+    }
+
+    @GET
+    @Path("user/{userId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public AccountInformation getUser(@PathParam("userId") Integer userId){
+        Utilisateur u = userFacade.findById(userId);
+        String pwd = u.getPassword();
+        System.out.println(pwd);
+        System.out.println(entityToDto(u));
+        return entityToDto(u);
+    }
+
+    public AccountInformation entityToDto(Utilisateur entity){
+        AccountInformation dto = new AccountInformation();
+        dto.setUserName(entity.getMail());
+        dto.setPassword(entity.getPassword());
+        return dto;
+    }
 }

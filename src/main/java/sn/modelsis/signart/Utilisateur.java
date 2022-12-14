@@ -34,7 +34,11 @@ public class Utilisateur implements Serializable {
     public static final String CODE_USER_TYPE_CLIENT = "CLIENT";
     public static final String CODE_USER_TYPE_ARTISTE = "ARTISTE";
     public static final String CODE_USER_TYPE_ADMIN = "ADMIN";
-    
+    public static final String CODE_USER_TYPE_AGENT_LIVREUR = "LIVREUR";
+    public static final String CODE_USER_TYPE_AGENT_CAISSIER = "CAISSIER";
+    public static final String CODE_USER_TYPE_AGENT_GESTSTOCK = "GESTSTOCK";
+    public static final String CODE_USER_TYPE_AGENT_GESTABMNT = "GESTABMNT";
+    public static final String CODE_USER_TYPE_AGENT_TECHABMNT = "TECHABMNT";
     public static final String FIND_BY_MAIL = "Utilisateur.findByMail";
     public static final String FIND_BY_ID = "Utilisateur.findById";
 
@@ -63,6 +67,8 @@ public class Utilisateur implements Serializable {
     private Set<Client> clientSet;
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idUser")
     private Set<AdminsTable> adminsTableSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private Set<Agent> agentSet;
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "idAdminUser")
     private Set<EvenementSignart> evenementSignarts;

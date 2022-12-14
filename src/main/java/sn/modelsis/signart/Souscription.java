@@ -14,7 +14,8 @@ import javax.persistence.*;
     , @NamedQuery(name = "Souscription.findById", query = "SELECT a FROM Souscription a WHERE a.id = :id")
     , @NamedQuery(name = "Souscription.findByNom", query = "SELECT a FROM Souscription a WHERE a.nom = :nom")
     , @NamedQuery(name = "Souscription.findByPrenom", query = "SELECT a FROM Souscription a WHERE a.prenom = :prenom")
-    , @NamedQuery(name = "Souscription.findByTelephone", query = "SELECT a FROM Souscription a WHERE a.telephone = :telephone")
+        , @NamedQuery(name = "Souscription.findByEmail", query = "SELECT a FROM Souscription a WHERE a.email = :email")
+        , @NamedQuery(name = "Souscription.findByTelephone", query = "SELECT a FROM Souscription a WHERE a.telephone = :telephone")
     , @NamedQuery(name = "Souscription.findByVille", query = "SELECT a FROM Souscription a WHERE a.ville = :ville")})
 
 public class Souscription implements Serializable {
