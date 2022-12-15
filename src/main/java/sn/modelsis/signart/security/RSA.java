@@ -1,9 +1,6 @@
 package sn.modelsis.signart.security;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -64,7 +61,7 @@ public class RSA {
         return publicKey;
     }
 
-    public static byte[] encrypt(String data, String keypub) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException {
+    public static byte[] encrypt(String data, String keypub)  throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(keypub));
         return cipher.doFinal(data.getBytes());
