@@ -47,7 +47,7 @@ RUN \
  $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile enable-secure-admin && \
  #$ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-connection-pool #--restype=javax.sql.ConnectionPoolDataSource #--datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --property #"User=signart:Password=passer123:DatebaseName=signart:ServerName=192.168.1.3:PortNumber=5432" #poolSignart && \
  
- $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-connection-pool --restype=javax.sql.ConnectionPoolDataSource --datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --property "User=signart:Password=passer123:DatebaseName=signart:ServerName=10.42.1.205:PortNumber=5432" poolSignart && \
+ $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-connection-pool --restype=javax.sql.ConnectionPoolDataSource --datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource --property "User=signart:Password=passer123:DatebaseName=signart:ServerName=10.0.0.15:PortNumber=5432" poolSignart && \
  
  $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile create-jdbc-resource --connectionpoolid poolSignart jdbc/signart && \
  $ASADMINPATH --user $ADMIN_USER --passwordfile=/opt/pwdfile deploy /SignArt.war
