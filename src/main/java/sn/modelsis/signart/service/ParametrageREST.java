@@ -29,18 +29,21 @@ public class ParametrageREST {
 
     public Parametrage dtoToEntity(ParametrageDto dto){
         Parametrage parametrage = new Parametrage();
-        parametrage.setStatut(dto.getStatut());
-        parametrage.setParamName(dto.getParamName());
-        parametrage.setValue(dto.getValue());
+        if(dto != null){
+            parametrage.setStatut(dto.getStatut());
+            parametrage.setParamName(dto.getParamName());
+            parametrage.setValue(dto.getValue());
+        }
         return parametrage;
     }
 
     public ParametrageDto entityDto(Parametrage parametrage){
         ParametrageDto parametrageDto = new ParametrageDto();
-
-        parametrageDto.setParamName(parametrage.getParamName());
-        parametrageDto.setStatut(parametrage.getStatut());
-        parametrageDto.setValue(parametrage.getValue());
+        if(parametrage != null){
+            parametrageDto.setParamName(parametrage.getParamName());
+            parametrageDto.setStatut(parametrage.getStatut());
+            parametrageDto.setValue(parametrage.getValue());
+        }
         return parametrageDto;
     }
 
@@ -59,7 +62,10 @@ public class ParametrageREST {
     @Produces({MediaType.APPLICATION_JSON})
     public ParametrageDto find(@PathParam("paramName") String paramName) {
         Parametrage parametrage = parametrageFacade.find(paramName);
-        return entityDto(parametrage);
+        if(parametrage != null){
+            return entityDto(parametrage);
+        }
+        return null;
     }
 
     @GET
@@ -76,9 +82,11 @@ public class ParametrageREST {
     }
 
     public Parametrage dtoToEtityParamNam(ParametrageDto parametrageDto, Parametrage parametrage){
-        parametrage.setValue(parametrageDto.getValue());
-        parametrage.setParamName(parametrageDto.getParamName());
-        parametrage.setStatut(parametrageDto.getStatut());
+        if(parametrage != null){
+            parametrage.setValue(parametrageDto.getValue());
+            parametrage.setParamName(parametrageDto.getParamName());
+            parametrage.setStatut(parametrageDto.getStatut());
+        }
         return parametrage;
     }
 }

@@ -98,5 +98,6 @@ public class ApplicationConfig extends Application {
         resources.add(sn.modelsis.signart.service.VisiteurFacadeREST.class);
         resources.add(sn.modelsis.signart.service.CoefficientParametrageREST.class);
         resources.add(sn.modelsis.signart.security.RsaRest.class);
+        resources.add(sn.modelsis.signart.security.AESRest.class);
     }
 }
