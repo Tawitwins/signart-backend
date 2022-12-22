@@ -22,7 +22,7 @@ public class JwtSubject {
     String userType;
 
     String profil;
-
+    Boolean superAdmin;
     /**
      * Constructor from user Constructor.
      *
@@ -32,11 +32,11 @@ public class JwtSubject {
      */
     public JwtSubject(final Utilisateur user, String prenom, String nom) {
         this(user.getId(), user.getMail(), prenom, nom, user.getMail(),
-                user.getUserType(), user.getIdProfil());
+                user.getUserType(), user.getIdProfil(), user.getSuperAdmin());
     }
 
     public JwtSubject(final Integer id, final String userName, final String firstName, final String lastName,
-            final String email, final String userType, final Profil profil) {
+            final String email, final String userType, final Profil profil, final Boolean superAdmin) {
         super();
         this.id = id;
         this.userName = userName;
@@ -45,7 +45,9 @@ public class JwtSubject {
         this.email = email;
         this.userType = userType;
         this.profil = profil.getCode();
+        this.superAdmin = superAdmin;
     }
+
 
     public Integer getId() {
         return id;
@@ -101,5 +103,13 @@ public class JwtSubject {
 
     public void setProfil(String profil) {
         this.profil = profil;
+    }
+
+    public Boolean getSuperAdmin() {
+        return superAdmin;
+    }
+
+    public void setSuperAdmin(Boolean superAdmin) {
+        this.superAdmin = superAdmin;
     }
 }

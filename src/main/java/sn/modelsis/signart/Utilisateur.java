@@ -61,6 +61,8 @@ public class Utilisateur implements Serializable {
     private Boolean actif;
     @Column(name = "userType", nullable = false, length = 10)
     private String userType;
+    @Column(name = "isSuperAdmin")
+    private boolean superAdmin;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
     private Set<Artiste> artisteSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
@@ -161,6 +163,14 @@ public class Utilisateur implements Serializable {
 
     public void setIdProfil(Profil idProfil) {
         this.idProfil = idProfil;
+    }
+
+    public boolean getSuperAdmin() {
+        return superAdmin;
+    }
+
+    public void setSuperAdmin(boolean superAdmin) {
+        this.superAdmin = superAdmin;
     }
 
     @Override

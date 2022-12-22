@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   signart_backend:
@@ -23,19 +23,62 @@ services:
     ports:
       - 8023:8023
   signart_front_web:
+    restart: always
     build:
       context: ../signartweb_v2/
       dockerfile: Dockerfile
+    #image: signart-admin:test
     ports:
       - 8084:80
+    environment:
+      BACKEND_URL: http://localhost:8080
+      PAIEMENT_URL: http://localhost:8023
+      NOTIFICATION_URL: http://localhost:8087
+    #command:
+    #  - /bin/sh
+    #  - -c
+    #  #- envsubst '${PAIEMENT_URL} ${BACKEND_URL} ${NOTIFICATION_URL}' < /etc/nginx/conf.d/template.conf > /etc/nginx/default.conf 
+    #  #- nginx 
+    #  #- -g 
+    #  #- daemon off
+    #  #- systemctl status nginx
+    #  - |
+    #    /run.sh
   signart_front_admin:
+    restart: always
     build:
       context: ../adminweb/
       dockerfile: Dockerfile
+    #image: signart-admin:test
     ports:
       - 8085:80
+    environment:
+      BACKEND_URL: https://signart-api.modelsis.sn
+      PAIEMENT_URL: https://signart-api.modelsis.sn
+      NOTIFICATION_URL: https://signart-api.modelsis.sn
+#    command:
+#      - /bin/sh
+#      - -c
+#      #- envsubst '${PAIEMENT_URL} ${BACKEND_URL} ${NOTIFICATION_URL}' < /etc/nginx/conf.d/template.conf > /etc/nginx/default.conf
+#      #- nginx -g daemon off
+#      #- systemctl status nginx
+#      - |
+#        /run.sh
 volumes:
   data:
 
 
 
+
+#version: '3.9'
+#
+#services:
+#  signart-web:
+#    image: signart-web
+#    container_name: signart-admin
+#    restart: always
+#    environment:
+#      API_URL: signart-api.modelsis.sn
+#    ports:
+#      - 82:80
+#
