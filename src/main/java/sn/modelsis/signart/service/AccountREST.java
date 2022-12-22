@@ -54,6 +54,7 @@ public class AccountREST {
        if(!isExistEmail(dto.getEmail())){
            Utilisateur user = dtoToEntity(dto);
            user.setActif(Boolean.TRUE);
+
            final String passwordEncoded = passwordEncoder.encodePassword(dto.getPassword(), dto.getEmail());
            System.out.println("passwordEncoded " + passwordEncoded);
            user.setPassword(passwordEncoded);
@@ -111,7 +112,7 @@ public class AccountREST {
        dto.setExisteEmail(true);
        dto.setCodeProfil(null);
        dto.setPassword(null);
-       return Response.status(Response.Status.BAD_REQUEST).entity(dto).build();
+       return null;
     }
 
     private AccountDto agents(AccountDto dto){
@@ -121,7 +122,7 @@ public class AccountREST {
         Utilisateur entity = new Utilisateur();
         entity.setMail(dto.getEmail());
         entity.setPassword(dto.getPassword());
-
+        entity.setSuperAdmin(dto.getSuperAdmin());
         Profil profil = profilFacade.findByCode(dto.getCodeProfil());
         entity.setIdProfil(profil);
         entity.setUserType(dto.getCodeProfil());

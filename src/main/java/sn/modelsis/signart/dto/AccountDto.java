@@ -25,6 +25,8 @@ public class AccountDto {
     private Integer idMagasin;
     private Integer idServiceLivraison;
     private boolean isExisteEmail;
+
+    private boolean superAdmin;
     /**
      * 
      * @return 
@@ -232,5 +234,13 @@ public class AccountDto {
 
     public void setExisteEmail(boolean existeEmail) {
         isExisteEmail = existeEmail;
+    }
+
+    public boolean getSuperAdmin() {
+        return superAdmin;
+    }
+
+    public void setSuperAdmin(boolean superAdmin) {
+        this.superAdmin = superAdmin;
     }
 }
